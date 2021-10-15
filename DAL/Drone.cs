@@ -14,7 +14,18 @@ namespace IDAL
             public string model {  set; get; }
             public WeightCategories maxWeight { set; get; }
             public string status { set; get; }
-            public string battery { set; get; }
+            public double battery { set; get; }
+
+            public override string ToString()
+            {
+                string result = " ";
+                result += $"ID is {ID},\n";
+                result += $"model is {model},\n";
+                result += $"the maximum weight is {maxWeight},\n";
+                result += $"status: {status},\n";
+                result += $"battery: {battery},\n";
+                return result;
+            }
         }
     }
     
