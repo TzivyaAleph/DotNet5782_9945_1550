@@ -10,9 +10,9 @@ namespace IDAL
     {
         public struct Drone
         {
-            public int ID { private set; get; }
+            public string ID { private set; get; }
             public string model {  set; get; }
-            public weightCategories maxWeight { set; get; }
+            public WeightCategories maxWeight { set; get; }
             public string status { set; get; }
             public string battery { set; get; }
         }

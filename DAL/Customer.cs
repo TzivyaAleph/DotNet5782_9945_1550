@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    class Customer
+    namespace DO
     {
+        class Customer
+        {
+            public string ID { get; private set; }
+            public string name { get; set; }
+            public string phoneNumber { get; set; }
+            public double lattitude { get; set; }
+            public double longtitude { get; set; }
+        }
     }
 }
