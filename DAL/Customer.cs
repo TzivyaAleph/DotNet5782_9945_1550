@@ -15,6 +15,17 @@ namespace DAL
             public string phoneNumber { get; set; }
             public double lattitude { get; set; }
             public double longtitude { get; set; }
+
+            public override string ToString()
+            {
+                string result = " ";
+                result += $"ID is {ID},";
+                result += $"cosumer's name is {name},";
+                result += $"phoneNumber is {phoneNumber},";
+                result += $"lattitude is {lattitude},";
+                result += $"longtitude is {longtitude},";
+                return result;
+            }
         }
     }
 }
