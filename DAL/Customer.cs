@@ -19,11 +19,11 @@ namespace DAL
             public override string ToString()
             {
                 string result = " ";
-                result += $"ID is {ID},";
-                result += $"cosumer's name is {name},";
-                result += $"phoneNumber is {phoneNumber},";
-                result += $"lattitude is {lattitude},";
-                result += $"longtitude is {longtitude},";
+                result += $"ID is {ID},\n";
+                result += $"cosumer's name is {name},\n";
+                result += $"phoneNumber is {phoneNumber},\n";
+                result += $"lattitude is {lattitude},\n";
+                result += $"longtitude is {longtitude},\n";
                 return result;
             }
         }

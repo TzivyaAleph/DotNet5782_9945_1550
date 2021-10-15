@@ -14,11 +14,11 @@ namespace IDAL
             public override string ToString()
             {
                 string result=" ";
-                result += $"ID is {ID},";
-                result += $"station's name is {stationName},";
-                result += $"number of charge slot is {chargeSlots},";
-                result += $"longitude is {longitude},";
-                result += $"lattitude is {lattitude},";
+                result += $"ID is {ID},\n";
+                result += $"station's name is {stationName},\n";
+                result += $"number of charge slot is {chargeSlots},\n";
+                result += $"longitude is {longitude},\n";
+                result += $"lattitude is {lattitude},\n";
                 return result;
             }
         }
