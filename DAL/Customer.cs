@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace IDAL
 {
     namespace DO
     {
-        class Customer
+        public struct Customer
         {
             public string ID { get; private set; }
             public string name { get; set; }

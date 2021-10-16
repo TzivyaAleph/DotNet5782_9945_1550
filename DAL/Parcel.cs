@@ -8,7 +8,7 @@ namespace IDAL
     {
         public struct Parcel
         {
-            public string ID { get; private set; }
+            public int ID { get; private set; }
             public string senderID { get;  set; }
             public string targeID { get;  set; }
             public WeightCategories weight { get;  set; }
