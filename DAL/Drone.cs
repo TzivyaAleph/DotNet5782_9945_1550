@@ -10,10 +10,10 @@ namespace IDAL
     {
         public struct Drone
         {
-            public string ID { private set; get; }
+            public int ID {  set; get; }
             public string model {  set; get; }
             public WeightCategories maxWeight { set; get; }
-            public string status { set; get; }
+            public DroneStatuses status { set; get; }
             public double battery { set; get; }
 
             public override string ToString()
