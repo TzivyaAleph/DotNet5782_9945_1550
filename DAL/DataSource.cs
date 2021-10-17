@@ -22,14 +22,12 @@ namespace DalObject
             Config()
             {
                 int parcelNumber = rand.Next(1000, 2000);//creates a random number between 1000 to 2000
+
             }
         }
         public static void  Initialize(DataSource init)
         {
-            for(int i=0;i<2;i++)
-            {
-                init.stations[i] = new Station {lattitude=1,longitude=2,stationName="Ramot",chargeSlots=3};
-            }
+            init.parcels[0] =new Parcel{ID=rand }
         }
     }
 }
