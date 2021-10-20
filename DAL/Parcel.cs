@@ -24,7 +24,7 @@ namespace IDAL
                 string result = "";
                 result += $"parcel ID is: {ID} \n";
                 result += $"sender ID is: {senderID} \n";
-                result += $"target ID is: {targeID} \n";
+                result += $"target ID is: {targetID} \n";
                 result += $"parcel weight is: {weight} \n";
                 result += $"drone ID is: {droneID} \n";
                 result += $"priority is: {priority} \n";
