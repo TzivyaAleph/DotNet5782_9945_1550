@@ -10,11 +10,11 @@ namespace IDAL
     {
         public struct Customer
         {
-            public string ID { get; private set; }
+            public int ID { get;  set; }
             public string name { get; set; }
-            public string phoneNumber { get; set; }
+            public int phoneNumber { get; set; }
             public double lattitude { get; set; }
-            public double longtitude { get; set; }
+            public double longitude { get; set; }
 
             public override string ToString()
             {
@@ -23,7 +23,7 @@ namespace IDAL
                 result += $"cosumer's name is {name},\n";
                 result += $"phoneNumber is {phoneNumber},\n";
                 result += $"lattitude is {lattitude},\n";
-                result += $"longtitude is {longtitude},\n";
+                result += $"longitude is {longitude},\n";
                 return result;
             }
         }
