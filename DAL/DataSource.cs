@@ -11,6 +11,7 @@ namespace DalObject
         internal Parcel[] parcels = new Parcel[1000];
         internal Station[] stations = new Station[5];
         internal Customer[] customers = new Customer[100];
+        DataSource() { Initialize(this); }
         internal class Config
         {
             static int availableDrone = 0;
@@ -22,8 +23,14 @@ namespace DalObject
         public static void  Initialize(DataSource init)
         {
             Random rnd = new Random();
-            init.stations[0] = new Station {lattitude=rnd.Next(0,1000),longitude= rnd.Next(0, 1000), stationName= "Ramot", chargeSlots= rnd.Next(0, 50) };
+            init.stations[0] = new Station { lattitude = rnd.Next(0, 1000), longitude = rnd.Next(0, 1000), stationName = "Ramot", chargeSlots = rnd.Next(0, 50) };
             init.stations[1] = new Station { lattitude = rnd.Next(0, 1000), longitude = rnd.Next(0, 1000), stationName = "Har", chargeSlots = rnd.Next(0, 50) };
+            init.drones[0] = new Drone { ID = 11, model = "xPro", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
+            init.drones[1] = new Drone { ID = 22, model = "xMax", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
+            init.drones[2] = new Drone { ID = 33, model = "xPlus", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
+            init.drones[3] = new Drone { ID = 44, model = "zeo", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
+            init.drones[4] = new Drone { ID = 55, model = "xox", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
+            init.parcels[0] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 111, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 11 };
            
             init.drones[0] = new Drone { ID = 11, model = "xPro", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery=rnd.Next(0,100) };
             init.drones[1] = new Drone { ID = 22, model = "xMax", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
@@ -62,3 +69,5 @@ namespace DalObject
 
     }
 }
+
+
