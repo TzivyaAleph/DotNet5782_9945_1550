@@ -7,10 +7,10 @@ namespace DalObject
 {
     public class DataSource
     {
-        internal Drone[] drones = new Drone[10];
-        internal Parcel[] parcels = new Parcel[1000];
-        internal Station[] stations = new Station[5];
-        internal Customer[] customers = new Customer[100];
+        internal static Drone[] drones = new Drone[10];
+        internal static Parcel[] parcels = new Parcel[1000];
+        internal static Station[] stations = new Station[5];
+        internal static Customer[] customers = new Customer[100];
         DataSource() { Initialize(this); }
         internal class Config
         {
@@ -25,12 +25,13 @@ namespace DalObject
             Random rnd = new Random();
             init.stations[0] = new Station { lattitude = rnd.Next(0, 1000), longitude = rnd.Next(0, 1000), stationName = "Ramot", chargeSlots = rnd.Next(0, 50) };
             init.stations[1] = new Station { lattitude = rnd.Next(0, 1000), longitude = rnd.Next(0, 1000), stationName = "Har", chargeSlots = rnd.Next(0, 50) };
+            
             init.drones[0] = new Drone { ID = 11, model = "xPro", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
             init.drones[1] = new Drone { ID = 22, model = "xMax", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
             init.drones[2] = new Drone { ID = 33, model = "xPlus", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
             init.drones[3] = new Drone { ID = 44, model = "zeo", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
             init.drones[4] = new Drone { ID = 55, model = "xox", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
-            init.parcels[0] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 111, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 11 };
+            
            
             init.drones[0] = new Drone { ID = 11, model = "xPro", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery=rnd.Next(0,100) };
             init.drones[1] = new Drone { ID = 22, model = "xMax", maxWeight = (WeightCategories)rnd.Next(0, 2), status = (DroneStatuses)rnd.Next(0, 2), battery = rnd.Next(0, 100) };
@@ -66,6 +67,43 @@ namespace DalObject
 
     public class DalObject
     {
+        public static void AttributingParcelToDrone(Parcel p, Drone d)//function that recieves a parcel and a drone and attributes the parcel to the drone
+        {
+            p.droneID = d.ID;//updates the parcels drone id to the id of the drone that recieved it
+            p.scheduled = DateTime.Today;//updates the parcels schedule time
+            d.status = (DroneStatuses)2;//updates the drones status to delivery
+        }
+
+        public static void PickedUp(Parcel p)//function that recieves a parcel and updates the parcels picked up time
+        {
+            p.pickedUp= DateTime.Today;//updates the parcels pickedUp time
+        }
+
+        public static void Delivered(Parcel p)//function that recieves a parcel and updates the parcels delivered time
+        {
+            p.delivered = DateTime.Today;//updates the parcels delivered time
+        }
+
+        public static void SendDroneToChargeSlot(Drone d, Station s)//function that recieves a drone and a station and sends the drone to a chargeSlot in that staition
+        {
+            d.status = (DroneStatuses)1;//updates the drone status to charging
+            DroneCharge dc=new DroneCharge();//creates a new drone charge struct with the current drone and station
+            dc.droneID = d.ID;
+            dc.stationID = s.ID;
+            s.chargeSlots--;//updates the available charge slots in the current staition
+        }
+
+        public static void ReleaseDrone(Drone d, Station s, DroneCharge dc)//function that recieves a drone and a station and releses the drone from the chargeSlot 
+        {
+            d.status = (DroneStatuses)0;//updates the drones status to available
+            d.battery = 100;
+            s.chargeSlots++;//updates the available charge slots in the current staition
+        }
+
+   
+
+
+       
 
     }
 }
