@@ -23,5 +23,11 @@
             delivery = 2
         };
 
+        public enum customersName
+        {
+            Dan,Tony,Caleb,Gorge,Alis,Bob,Aria,Kally,Katy,Ariana
+        };
+
+       
     }
 }
