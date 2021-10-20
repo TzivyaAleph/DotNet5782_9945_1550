@@ -7,7 +7,7 @@ namespace IDAL
         {
             public int ID {  set; get; }
             public string stationName { set; get; }
-            public int chargeSlots { set; get; }
+            public int chargeSlots { set; get; }//the amout of slots that available
             public long longitude { set; get; }
             public long lattitude { set; get; }
 
