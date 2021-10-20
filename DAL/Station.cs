@@ -5,7 +5,7 @@ namespace IDAL
     {
         public struct Station
         {
-            public string ID { private set; get; }
+            public int ID {  set; get; }
             public string stationName { set; get; }
             public int chargeSlots { set; get; }
             public long longitude { set; get; }

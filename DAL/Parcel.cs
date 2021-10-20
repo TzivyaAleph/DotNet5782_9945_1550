@@ -9,12 +9,12 @@ namespace IDAL
         public struct Parcel
         {
             public int ID { get;  set; }
-            public int senderID { get;  set; }
-            public int targetID { get;  set; }
-            public WeightCategories weight { get;  set; }
+            public int senderID { get;  set; }//the sender of the parcel
+            public int targetID { get;  set; }//the costumer rwho orded the parcel
+            public WeightCategories weight { get;  set; }//the weight of the parcel
             public Priorities priority { get; set; }
-            public DateTime requested { get; set; }
-            public int droneID { get; set; }
+            public DateTime requested { get; set; }//the time when the parcel has been made and ready.
+            public int droneID { get; set; }//the drone who takes this parcel
             public DateTime scheduled { get; set; }
             public DateTime pickedUp { get; set; }
             public DateTime delivered { get; set; }
