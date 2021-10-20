@@ -17,13 +17,7 @@ namespace DalObject
             static int availableParcel = 0;
             static int availableStation = 0;
             static int availableCustomer = 0;
-            int parcelNumber;
-            Random rand = new Random();
-            Config()
-            {
-                int parcelNumber = rand.Next(1000, 2000);//creates a random number between 1000 to 2000
-
-            }
+            static int parcelNumber=1020;
         }
         public static void  Initialize(DataSource init)
         {
@@ -49,17 +43,22 @@ namespace DalObject
             init.customers[9] = new Customer { ID = 1111, name = "Sara", phoneNumber = rnd.Next(0, 10000000), lattitude = rnd.Next(0, 1000), longitude = rnd.Next(0, 1000) };
 
 
-            init.parcels[0] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 111, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 11 };
-            init.parcels[1] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 222, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 22 };
-            init.parcels[2] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 333, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 33 };
-            init.parcels[3] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 444, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 44 };
-            init.parcels[4] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 555, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 55 };
-            init.parcels[5] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 666, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 66 };
-            init.parcels[6] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 777, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 77 };
-            init.parcels[7] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 888, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 88 };
-            init.parcels[8] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 999, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 99 };
-            init.parcels[9] = new Parcel { ID = rnd.Next(0, 1000), senderID = rnd.Next(0, 1000), targetID = 1111, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 115 };
+            init.parcels[0] = new Parcel { ID = 10000, senderID = 325, targetID = 111, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 11 };
+            init.parcels[1] = new Parcel { ID = 10001, senderID = 442, targetID = 222, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 22 };
+            init.parcels[2] = new Parcel { ID = 10002, senderID = 589, targetID = 333, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 33 };
+            init.parcels[3] = new Parcel { ID = 10003, senderID = 601, targetID = 444, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 44 };
+            init.parcels[4] = new Parcel { ID = 10004, senderID = 641, targetID = 555, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 55 };
+            init.parcels[5] = new Parcel { ID = 10005, senderID = 682, targetID = 666, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 66 };
+            init.parcels[6] = new Parcel { ID = 10006, senderID = 716, targetID = 777, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 77 };
+            init.parcels[7] = new Parcel { ID = 10007, senderID = 885, targetID = 888, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 88 };
+            init.parcels[8] = new Parcel { ID = 10008, senderID = 965, targetID = 999, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 99 };
+            init.parcels[9] = new Parcel { ID = 10009, senderID = 1001, targetID = 1111, weight = (WeightCategories)rnd.Next(0, 2), priority = (Priorities)rnd.Next(0, 2), droneID = 115 };
 
         }
+    }
+
+    public class DalObject
+    {
+
     }
 }
