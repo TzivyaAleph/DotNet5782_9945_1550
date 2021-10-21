@@ -28,6 +28,26 @@
             Dan,Tony,Caleb,Gorge,Alis,Bob,Aria,Kally,Katy,Ariana
         };
 
-       
+        public enum MenuOptions
+        {
+            Add=1, Update, Presentation, ArrayPresentation, Exit
+        };
+
+        public enum EntitiesOptions 
+        {
+            Station, Drone, Customer, Parcel
+        };
+
+        public enum UpdateEntitiesOptions
+        {
+            attribute, PickUp, Delivery, ChargeDrone, ReleaseDrone
+        };
+
+        public enum ArrayPresentationOptions
+        {
+            Station, Drone, Customer, Parcel, NonAttributedParcels, AvalableChargeSlots
+        };
+
+
     }
 }

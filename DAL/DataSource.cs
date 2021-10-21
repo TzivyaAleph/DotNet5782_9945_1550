@@ -86,11 +86,11 @@ namespace DalObject
             Config.AvailableDrone+=5;//updates the next available index.
         }
         /// <summary>
-        /// gets a maximum and minimum numbers and returns a double random number 
+        /// gets a maximum and minimum numbers and returns a random double number 
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>
-        /// <returns></returns a double random number>
+        /// <returns></returns a random double number>
         static double getRandomDoubleNumber(double min, double max)
         {
             return rand.NextDouble() * (max - min) + min;//return a random duble number 
@@ -197,7 +197,7 @@ namespace DalObject
         /// add new drone and updates 
         /// </summary>
         /// <returns></returns>
-        public static int   AddDrone(Drone d)
+        public static int AddDrone(Drone d)
         {
             Drone temp = new Drone();
             temp = d;
@@ -227,6 +227,7 @@ namespace DalObject
         public static int AddParcel(Parcel p)
          {
             Parcel temp = new Parcel();
+            p.ID = DataSource.Config.RunningParcelID++;
             temp = p;
             DataSource.Parcels[DataSource.Config.availableParcel] = temp;
             DataSource.Parcels[DataSource.Config.availableParcel].ID = DataSource.Config.RunningParcelID++;
