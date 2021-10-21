@@ -35,7 +35,7 @@
 
         public enum EntitiesOptions 
         {
-            Station, Drone, Customer, Parcel
+            Station=1, Drone, Customer, Parcel
         };
 
         public enum UpdateEntitiesOptions
@@ -45,7 +45,7 @@
 
         public enum ArrayPresentationOptions
         {
-            Station, Drone, Customer, Parcel, NonAttributedParcels, AvalableChargeSlots
+            Station=1, Drone, Customer, Parcel, NonAttributedParcels, AvalableChargeSlots
         };
 
 

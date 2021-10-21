@@ -88,8 +88,8 @@ namespace DalObject
         /// <summary>
         /// gets a maximum and minimum numbers and returns a random double number 
         /// </summary>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
+        /// <param Name="min"></param>
+        /// <param Name="max"></param>
         /// <returns></returns a random double number>
         static double getRandomDoubleNumber(double min, double max)
         {
@@ -105,23 +105,23 @@ namespace DalObject
                 ID = rand.Next(1000,10000),
                 stationName = "Ramot",
                 chargeSlots = rand.Next(0, 50),
-                lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                longitude = (long)getRandomDoubleNumber(-5000, 5000)
+                Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
+                Longitude = (long)getRandomDoubleNumber(-5000, 5000)
             };
             Stations[1] = new Station
             {
                 ID = rand.Next(1000, 10000),
                 stationName = "Bait Vagan",
                 chargeSlots = rand.Next(0, 50),
-                lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                longitude = (long)getRandomDoubleNumber(-5000, 5000)
+                Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
+                Longitude = (long)getRandomDoubleNumber(-5000, 5000)
             };
             Config.availableStation+=2;
         }
         /// <summary>
         /// creates 10 customers with random data
         /// </summary>
-        /// <param name="NumberOfCustumers"></param>the amount of new costumers
+        /// <param Name="NumberOfCustumers"></param>the amount of new costumers
        private static void createCustomer(int NumberOfCustumers)
         {
             for(int i=0;i<NumberOfCustumers;i++)//add new customers to the array
@@ -130,17 +130,17 @@ namespace DalObject
                 Customers[Config.availableCustomer++] = new Customer
                 {
                     ID = rand.Next(100000000, 1000000000),
-                    name = $"{(customersName)rand.Next(10)}",
-                    phoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
-                    lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                    longtitude = (long)getRandomDoubleNumber(-5000, 5000),
+                    Name = $"{(customersName)rand.Next(10)}",
+                    PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
+                    Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
+                    Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
                 };
             }
         }
         /// <summary>
         /// gets parcels and updates their data randomely.
         /// </summary>
-        /// <param name="NumberOfParcels"></param>
+        /// <param Name="NumberOfParcels"></param>
         private static void createParcels(int NumberOfParcels)
         {
             DateTime start = new DateTime(1, 1, 2020);
@@ -165,8 +165,8 @@ namespace DalObject
         /// <summary>
         /// gets  2 dates and return a random date between the 2 dates
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
+        /// <param Name="start"></param>
+        /// <param Name="end"></param>
         /// <returns></returns a random date between the 2 dates>
         private static DateTime getRandomDateTime(DateTime start, DateTime end)
         { 
@@ -182,7 +182,7 @@ namespace DalObject
         /// <summary>
         /// gets a station and adds it to the array
         /// </summary>
-        /// <param name="s"></param>
+        /// <param Name="s"></param>
         /// <returns></returns>
        public static int AddStation(Station s)
         {
@@ -209,7 +209,7 @@ namespace DalObject
         /// <summary>
         /// gets a customer and adds it to the array.
         /// </summary>
-        /// <param name="c"></param>
+        /// <param Name="c"></param>
         /// <returns></returns>
         public static int AddCusomer(Customer c)
         {
@@ -222,7 +222,7 @@ namespace DalObject
         /// <summary>
         /// gets a customer and adds it to the array
         /// </summary>
-        /// <param name="p"></param>
+        /// <param Name="p"></param>
         /// <returns></returns>
         public static int AddParcel(Parcel p)
          {
@@ -237,8 +237,8 @@ namespace DalObject
         /// <summary>
         /// recieves a parcel and a drone and attributes the parcel to the drone
         /// </summary>
-        /// <param name="p"></param>
-        /// <param name="d"></param>
+        /// <param Name="p"></param>
+        /// <param Name="d"></param>
         public static void AttributingParcelToDrone(Parcel p, Drone d)
         {
             p.droneID = d.ID;//updates the parcels drone id to the id of the drone that recieved it
@@ -248,7 +248,7 @@ namespace DalObject
         /// <summary>
         /// recieves a parcel and updates the parcels picked up time
         /// </summary>
-        /// <param name="p"></param>
+        /// <param Name="p"></param>
         public static void PickedUp(Parcel p)
         {
             p.pickedUp = DateTime.Today;//updates the parcels pickedUp time
@@ -256,7 +256,7 @@ namespace DalObject
         /// <summary>
         /// function that recieves a parcel and updates the parcels delivered time
         /// </summary>
-        /// <param name="p"></param>
+        /// <param Name="p"></param>
         public static void Delivered(Parcel p)
         {
             p.delivered = DateTime.Today;//updates the parcels delivered time
@@ -264,8 +264,8 @@ namespace DalObject
         /// <summary>
         /// recieves a drone and a station and sends the drone to a chargeSlot in that staition
         /// </summary>
-        /// <param name="d"></param>
-        /// <param name="s"></param>
+        /// <param Name="d"></param>
+        /// <param Name="s"></param>
         public static void SendDroneToChargeSlot(Drone d, Station s)
         {
             d.status = (DroneStatuses)1;//updates the drone status to charging
@@ -278,9 +278,9 @@ namespace DalObject
         /// <summary>
         /// recieves a drone and a station and releses the drone from the chargeSlot
         /// </summary>
-        /// <param name="d"></param>
-        /// <param name="s"></param>
-        /// <param name="dc"></param>
+        /// <param Name="d"></param>
+        /// <param Name="s"></param>
+        /// <param Name="dc"></param>
         public static void ReleaseDrone(Drone d, Station s, DroneCharge dc) 
         {
             d.status = (DroneStatuses)0;//updates the drones status to available
@@ -294,7 +294,7 @@ namespace DalObject
         /// <summary>
         /// searches for the station in the array by the Id
         /// </summary>
-        /// <param name="stationID"></param>
+        /// <param Name="stationID"></param>
         /// <returns></returs the station were looking for>
         public static Station GetStation(int stationID)
         {
@@ -310,7 +310,7 @@ namespace DalObject
         /// <summary>
         /// searches for the drone in the array by the Id
         /// </summary>
-        /// <param name="droneID"></param>
+        /// <param Name="droneID"></param>
         /// <returns></returnsthe drone were looking for>
         public static Drone GetDrone(int droneID)
         {
@@ -325,7 +325,7 @@ namespace DalObject
         /// <summary>
         /// searches for the customer in the array by the Id
         /// </summary>
-        /// <param name="customerID"></param>
+        /// <param Name="customerID"></param>
         /// <returns></returnsthe customer were looking for>
         public static Customer GetCustomer(int customerID)
         {
@@ -341,7 +341,7 @@ namespace DalObject
         /// <summary>
         /// searches for the parcel in the array by the Id
         /// </summary>
-        /// <param name="parcelID"></param>
+        /// <param Name="parcelID"></param>
         /// <returns></returns parcel were looking for>
         public static Parcel GetParcel(int parcelID)
         {
@@ -431,8 +431,8 @@ namespace DalObject
 //DataSource.Customers[DataSource.Config.availableCustomer] = new Customer
 //{
 //    ID = DataSource.Config.availableCustomer,
-//    phoneNumber = customerphone,
-//    name = customername
+//    PhoneNumber = customerphone,
+//    Name = customername
 //};
 
 //gets new cosumer and updates his values.

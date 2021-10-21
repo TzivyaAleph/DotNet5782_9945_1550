@@ -11,19 +11,19 @@ namespace IDAL
         public struct Customer
         {
             public int ID { get;  set; }
-            public string name { get; set; }
-            public string phoneNumber { get; set; }
-            public double lattitude { get; set; }
-            public double longtitude { get; set; }
+            public string Name { get; set; }
+            public string PhoneNumber { get; set; }
+            public double Lattitude { get; set; }
+            public double Longtitude { get; set; }
 
             public override string ToString()
             {
                 string result = " ";
                 result += $"ID is {ID},\n";
-                result += $"cosumer's name is {name},\n";
-                result += $"phoneNumber is {phoneNumber},\n";
-                result += $"lattitude is {lattitude},\n";
-                result += $"longtitude is {longtitude},\n";
+                result += $"cosumer's name is {Name},\n";
+                result += $"phoneNumber is {PhoneNumber},\n";
+                result += $"lattitude is {Lattitude},\n";
+                result += $"longtitude is {Longtitude},\n";
                 return result;
             }
         }
