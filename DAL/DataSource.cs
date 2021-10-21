@@ -95,7 +95,7 @@ namespace DalObject
             };
             Stations[1] = new Station
             {
-                ID = and.Next(1000, 10000),
+                ID = rand.Next(1000, 10000),
                 stationName = "Bait Vagan",
                 chargeSlots = rand.Next(0, 50),
                 lattitude = (long)getRandomDoubleNumber(-5000, 5000),
@@ -235,7 +235,7 @@ namespace DalObject
         public static Station GetStation(int stationID)
         {
             Station StationToReturn = new Station();
-            foreach (Station s in DataSource.stations)
+            foreach (Station s in DataSource.Stations)
                 if (s.ID == stationID)
                 {
                     StationToReturn= s;
@@ -246,7 +246,7 @@ namespace DalObject
         public static Drone GetDrone(int droneID)
         {
             Drone DroneToReturn = new Drone();
-            foreach (Drone d in DataSource.drones)//searches for the drone 
+            foreach (Drone d in DataSource.Drones)//searches for the drone 
                 if (d.ID == droneID)
                 {
                     DroneToReturn= d;
@@ -257,7 +257,7 @@ namespace DalObject
         public static Customer GetCustomer(int customerID)
         {
             Customer CustomerToReturn = new Customer();
-            foreach (Customer c in DataSource.customers)
+            foreach (Customer c in DataSource.Customers)
                 if (c.ID == customerID)
                 {
                     CustomerToReturn= c;
@@ -268,7 +268,7 @@ namespace DalObject
         public static Parcel GetParcel(int parcelID)
         {
             Parcel ParcelToReturn = new Parcel();
-            foreach (Parcel p in DataSource.parcels)
+            foreach (Parcel p in DataSource.Parcels)
                 if (p.ID == parcelID)
                 {
                     ParcelToReturn= p;
@@ -278,25 +278,25 @@ namespace DalObject
 
         public static Station [] CopyStationArray()
         {
-            Station[] arr2 = (Station[])DataSource.stations.Clone();
+            Station[] arr2 = (Station[])DataSource.Stations.Clone();
             return arr2;
         }
 
         public static Drone [] CopyDroneArray()
         {
-            Drone[] arr2 = (Drone[])DataSource.drones.Clone();
+            Drone[] arr2 = (Drone[])DataSource.Drones.Clone();
             return arr2;
         }
 
         public static Customer [] CopyCustomerArray()
         {
-            Customer[] arr2 = (Customer[])DataSource.customers.Clone();
+            Customer[] arr2 = (Customer[])DataSource.Customers.Clone();
             return arr2;
         }
 
         public static Parcel [] CopyParcelArray()
         {
-            Parcel[] arr2 = (Parcel[])DataSource.parcels.Clone();
+            Parcel[] arr2 = (Parcel[])DataSource.Parcels.Clone();
             return arr2;
         }
 
@@ -304,7 +304,7 @@ namespace DalObject
         {
             int i = 0;//for the array's index
             Parcel[] NotAttributed = new Parcel[1000];//new array to hold non attributed parcels
-            foreach (Parcel p in DataSource.parcels)//searches for the non attributed parcels
+            foreach (Parcel p in DataSource.Parcels)//searches for the non attributed parcels
             {
                 if (p.droneID != 0)
                 {
@@ -319,7 +319,7 @@ namespace DalObject
         {
             int i = 0;//for the array's index
             Station[] availableStations = new Station[50];//new array to hold Available Stations
-            foreach (Station s in DataSource.stations)
+            foreach (Station s in DataSource.Stations)
                 if (s.chargeSlots > 0)
                     availableStations[i] = s;
             return availableStations;
