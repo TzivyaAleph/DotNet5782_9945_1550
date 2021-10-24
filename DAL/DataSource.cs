@@ -249,8 +249,9 @@ namespace DalObject
         /// recieves a parcel and updates the parcels picked up time
         /// </summary>
         /// <param Name="p"></param>
-        public static void PickedUp(Parcel p)
+        public static void PickedUp(Parcel p, Drone d)
         {
+            p.droneID = d.ID;
             p.pickedUp = DateTime.Today;//updates the parcels pickedUp time
         }
         /// <summary>
@@ -260,6 +261,11 @@ namespace DalObject
         public static void Delivered(Parcel p)
         {
             p.delivered = DateTime.Today;//updates the parcels delivered time
+            for(int i=0;i<DataSource.Drones.Length;i++)//updates the current drone's status to available
+            {
+                if (DataSource.Drones[i].ID == p.droneID)
+                    DataSource.Drones[i].status = 0;
+            }
         }
         /// <summary>
         /// recieves a drone and a station and sends the drone to a chargeSlot in that staition
@@ -283,7 +289,7 @@ namespace DalObject
         /// <param Name="dc"></param>
         public static void ReleaseDrone(Drone d, Station s, DroneCharge dc) 
         {
-            d.status = (DroneStatuses)0;//updates the drones status to available
+            d.status = 0;//updates the drones status to available
             d.battery = 100;
             s.chargeSlots++;//updates the available charge slots in the current staition
             int index = System.Array.IndexOf(DataSource.DroneCharges, dc);
@@ -291,6 +297,22 @@ namespace DalObject
             DataSource.DroneCharges[index].stationID = 0;
         }
 
+        /// <summary>
+        /// searches for the droneCharge in the array by the station Id and drone id
+        /// </summary>
+        /// <param Name="stationID"></param>
+        /// <returns></returs the drone charge object were looking for>
+        public static DroneCharge GetDroneCharge(int stationID, int droneID)
+        {
+            DroneCharge droneChargeToReturn = new DroneCharge();
+            //searches the station with the recieved id.
+            foreach (DroneCharge dc in DataSource.DroneCharges)
+                if (dc.stationID == stationID&&dc.droneID==droneID)
+                {
+                    droneChargeToReturn = dc;
+                }
+            return droneChargeToReturn;
+        }
         /// <summary>
         /// searches for the station in the array by the Id
         /// </summary>

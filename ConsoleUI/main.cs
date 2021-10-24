@@ -10,6 +10,7 @@ namespace ConsoleUI
             MenuOptions menuOption;
             EntitiesOptions entitiesOptions;
             ArrayPresentationOptions arrayOption;
+            UpdateEntitiesOptions updateEntitiesOption;
             Console.WriteLine("Welcome!\n" );
             do
             {
@@ -41,7 +42,7 @@ namespace ConsoleUI
                                         string model;
                                         model = Console.ReadLine();
                                         Drone d = new Drone();
-                                        d = CreateObjectDrone(model);
+                                        d = createObjectDrone(model);
                                         DalObject.DalObject.AddDrone(d);
                                         break;
                                     }
@@ -51,7 +52,7 @@ namespace ConsoleUI
                                         string name;
                                         name = Console.ReadLine();
                                         Customer c = new Customer();
-                                        c = CreateObjectCustomer(name);
+                                        c = createObjectCustomer(name);
                                         DalObject.DalObject.AddCusomer(c);
                                         break;
 
@@ -152,6 +153,88 @@ namespace ConsoleUI
                             }
                             break;
                         }
+                    case MenuOptions.Update:
+                        {
+                            Console.WriteLine("Choose an update option:\n 1: Attribute parcel, 2: Pick-up, 3: Delivery, 4: Charge drone, 5: Release drone\n");
+                            updateEntitiesOption=(UpdateEntitiesOptions)int.Parse(Console.ReadLine());
+                            switch(updateEntitiesOption)
+                            {
+                                case UpdateEntitiesOptions.attribute:
+                                    {
+                                        Console.WriteLine("Enter the drone's ID:\n"); 
+                                        int droneID;
+                                        int parcelID;
+                                        string input = Console.ReadLine();
+                                        int.TryParse(input, out droneID);
+                                        Console.WriteLine("Enter the ID of the parcel to attribute: ");
+                                        input= Console.ReadLine();
+                                        int.TryParse(input, out parcelID);
+                                        Drone d = DalObject.DalObject.GetDrone(droneID);
+                                        Parcel p = DalObject.DalObject.GetParcel(parcelID);
+                                        DalObject.DalObject.AttributingParcelToDrone(p, d);
+                                        break;
+                                    }
+                                case UpdateEntitiesOptions.PickUp:
+                                    {
+                                        Console.WriteLine("Enter the drone's ID:\n");
+                                        int droneID;
+                                        int parcelID;
+                                        string input = Console.ReadLine();
+                                        int.TryParse(input, out droneID);
+                                        Console.WriteLine("Enter the ID of the parcel to pick up: ");
+                                        input = Console.ReadLine();
+                                        int.TryParse(input, out parcelID);
+                                        Drone d = DalObject.DalObject.GetDrone(droneID);
+                                        Parcel p = DalObject.DalObject.GetParcel(parcelID);
+                                        DalObject.DalObject.PickedUp(p, d);
+                                        break;
+                                    }
+                                case UpdateEntitiesOptions.Delivery:
+                                    {
+                                        Console.WriteLine("Enter parcel ID: ");
+                                        int parcelID;
+                                        string input = Console.ReadLine();
+                                        int.TryParse(input, out parcelID);
+                                        Parcel p = DalObject.DalObject.GetParcel(parcelID);
+                                        DalObject.DalObject.Delivered(p);
+                                        break;
+                                    }
+                                case UpdateEntitiesOptions.ChargeDrone:
+                                    {
+                                        Console.WriteLine("Enter the drone's ID:\n");
+                                        int droneID;
+                                        int stationID;
+                                        string input = Console.ReadLine();
+                                        int.TryParse(input, out droneID);
+                                        Console.WriteLine("Choose a station: \n");
+                                        Console.WriteLine(DalObject.DalObject.FindAvailableStations());
+                                        input= Console.ReadLine();
+                                        int.TryParse(input, out stationID);
+                                        Drone d = DalObject.DalObject.GetDrone(droneID);
+                                        Station s = DalObject.DalObject.GetStation(stationID);
+                                        DalObject.DalObject.SendDroneToChargeSlot(d, s);
+                                        break;
+                                    }
+                                case UpdateEntitiesOptions.ReleaseDrone:
+                                    {
+                                        Console.WriteLine("Enter the drone's ID:\n");
+                                        int droneID;
+                                        int stationID;
+                                        string input = Console.ReadLine();
+                                        int.TryParse(input, out droneID);
+                                        Drone d = DalObject.DalObject.GetDrone(droneID);
+                                        Console.WriteLine("Enter the station's ID:\n");
+                                        input = Console.ReadLine();
+                                        int.TryParse(input, out stationID);
+                                        Station s = DalObject.DalObject.GetStation(stationID);
+                                        DroneCharge dc = DalObject.DalObject.GetDroneCharge(stationID, droneID);
+                                        DalObject.DalObject.ReleaseDrone(d, s, dc);
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+
                     case MenuOptions.Exit:
                         break;
                 }
@@ -159,6 +242,8 @@ namespace ConsoleUI
             while (menuOption!=MenuOptions.Exit);
             
         }
+        
+        
         /// <summary>
         /// prints the list of stations
         /// </summary>
