@@ -47,40 +47,61 @@ namespace ConsoleUI
                                     }
                                 case EntitiesOptions.Drone:
                                     {
-                                        Console.WriteLine("Enter the drone's ID, model, maximum weight:\n1: light, 2: standard, 3: heavy, :\n");
                                         string model;
                                         int ID;
                                         WeightCategories maxWeight;
                                         double battery;
                                         Console.WriteLine("Enter drone's ID:\n" );
                                         int.TryParse(Console.ReadLine(), out ID);
+                                        Console.WriteLine("Enter drone's model:\n");
                                         model = Console.ReadLine();
+                                        Console.WriteLine("Enter drone's  maximum weight:\n1: light, 2: standard, 3: heavy:\n");
+                                        maxWeight = (WeightCategories)int.Parse(Console.ReadLine());
+                                        Console.WriteLine("Enter drone's battery:\n");
+                                        double.TryParse(Console.ReadLine(), out battery);
                                         Drone d = new Drone();
-                                        d = createObjectDrone(model);
+                                        d = createObjectDrone(ID, model, maxWeight, battery);
                                         DalObject.DalObject.AddDrone(d);
                                         break;
                                     }
                                 case EntitiesOptions.Customer:
                                     {
-                                        Console.WriteLine("Enter the customer's name:\n");
                                         string name;
+                                        int ID;
+                                        string phoneNumber;
+                                        long Longitude, Lattitude;
+                                        Console.WriteLine("Enter customer's ID:\n");
+                                        int.TryParse(Console.ReadLine(), out ID);
+                                        Console.WriteLine("Enter customer's name:\n");
                                         name = Console.ReadLine();
+                                        Console.WriteLine("Enter customer's phone number:\n");
+                                        phoneNumber= Console.ReadLine();
+                                        Console.WriteLine("Enter customer's Longitude:\n");
+                                        long.TryParse(Console.ReadLine(), out Longitude);
+                                        Console.WriteLine("Enter customer's Lattitude:\n");
+                                        long.TryParse(Console.ReadLine(), out Lattitude);
                                         Customer c = new Customer();
-                                        c = createObjectCustomer(name);
+                                        c = createObjectCustomer(ID, name, phoneNumber, Longitude, Lattitude);
                                         DalObject.DalObject.AddCusomer(c);
                                         break;
 
                                     }
                                 case EntitiesOptions.Parcel:
                                     {
-                                        Console.WriteLine("Enter parcel's weight:\n 0: light, 1: standard, 2: heavy\n  " +
-                                            "Enter parcel's priority:\n 0: normal, 1: fast, 2: emergency\n");
+                                        int senderID;
+                                        int targetID;
                                         WeightCategories weight;
                                         Priorities priority;
+                                        Console.WriteLine("Enter sender ID:\n");
+                                        int.TryParse(Console.ReadLine(), out senderID);
+                                        Console.WriteLine("Enter target ID:\n");
+                                        int.TryParse(Console.ReadLine(), out targetID);
+                                        Console.WriteLine("Enter parcel's weight:\n 0: light, 1: standard, 2: heavy\n  ");
                                         weight = (WeightCategories)int.Parse(Console.ReadLine());
+                                        Console.WriteLine("Enter parcel's priority:\n 0: normal, 1: fast, 2: emergency\n");
                                         priority = (Priorities)int.Parse(Console.ReadLine());
                                         Parcel p = new Parcel();
-                                        p = CreateObjectParcel(weight, priority);
+                                        p = CreateObjectParcel(senderID, targetID, weight, priority);
                                         DalObject.DalObject.AddParcel(p);
                                         break;
                                     }
@@ -318,16 +339,15 @@ namespace ConsoleUI
         /// </summary>
         /// <param Name="myModel"></param>
         /// <returns></returns the new drone>
-        private static Drone createObjectDrone(string myModel)
+        private static Drone createObjectDrone(int myID, string myModel, WeightCategories myMaxWeight, double myBattery)
         {
-            Random rand = new Random();
             Drone d = new Drone
             {
-                ID = rand.Next(1000, 10000),
+                ID = myID,
                 model = myModel,
-                maxWeight = (WeightCategories)rand.Next(3),
-                status = (DroneStatuses)rand.Next(3),
-                battery = getRandomDoubleNumber(0, 100)
+                maxWeight = myMaxWeight,
+                status = 0,
+                battery = myBattery
             };
             return d;
         }
@@ -337,32 +357,32 @@ namespace ConsoleUI
         /// </summary>
         /// <param Name="myName"></param>
         /// <returns></returns the new customer>
-        private static Customer createObjectCustomer(string myName)
+        private static Customer createObjectCustomer(int myID, string myName, string myPhoneNumber, long myLongitude, long myLattitude)
         {
-            Random rand = new Random();
             Customer c = new Customer
             {
-                ID = rand.Next(100000000, 1000000000),
+                ID = myID,
                 Name = myName,
-                PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
-                Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
+                PhoneNumber = myPhoneNumber,
+                Lattitude = myLongitude,
+                Longtitude = myLattitude,
             };
             return c;
         }
 
-        //private static Customer createObjectParcel(WeightCategories myWeight, Priorities myPrioriy)
-        //{
-        //    Parcel p = new Parcel
-        //    {
-        //        senderID = da,
-        //        targetID = target,
-        //        weight = ParcelWeight,
-        //        priority = HisPriority,
-        //        requested = DateTime.Today,//the parcel has been ready today
-        //        droneID = 0//no drone has been costumed yet
-        //    };
-        //}
+        private static Parcel CreateObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
+        {
+            Parcel p = new Parcel
+            {
+                senderID = mySenderID,
+                targetID = myTargetID,
+                weight = myWeight,
+                priority = myPriority,
+                requested = DateTime.Today,//the parcel has been ready today
+                droneID = 0//no drone has been costumed yet
+            };
+            return p;
+        }
 
         /// <summary>
         /// gets a maximum and minimum numbers and returns a random double number 
