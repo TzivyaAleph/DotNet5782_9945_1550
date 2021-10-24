@@ -26,20 +26,34 @@ namespace ConsoleUI
                             {
                                 case EntitiesOptions.Station:
                                     {
-                                        Console.WriteLine("Enter name and number of charging slots:\n");
                                         string name;
-                                        int num;
+                                        int numOfSlots;
+                                        long Longitude, Lattitude;
+                                        int ID;
+                                        Console.WriteLine("Enter station's ID:\n");
+                                        int.TryParse(Console.ReadLine(), out ID);
+                                        Console.WriteLine("Enter station's name:\n");
                                         name = Console.ReadLine();
-                                        int.TryParse(Console.ReadLine(), out num);
+                                        Console.WriteLine("Enter number of available charging slots:\n");
+                                        int.TryParse(Console.ReadLine(), out numOfSlots);
+                                        Console.WriteLine("Enter station's Longitude:\n");
+                                        long.TryParse(Console.ReadLine(), out Longitude);
+                                        Console.WriteLine("Enter station's Lattitude:\n");
+                                        long.TryParse(Console.ReadLine(), out Lattitude);
                                         Station s = new Station();
-                                        s = CreateObjectStation(name, num);
+                                        s = CreateObjectStation(ID, name, numOfSlots,Longitude,Lattitude);
                                         DalObject.DalObject.AddStation(s);
                                         break;
                                     }
                                 case EntitiesOptions.Drone:
                                     {
-                                        Console.WriteLine("Enter the drone's model:\n");
+                                        Console.WriteLine("Enter the drone's ID, model, maximum weight:\n1: light, 2: standard, 3: heavy, :\n");
                                         string model;
+                                        int ID;
+                                        WeightCategories maxWeight;
+                                        double battery;
+                                        Console.WriteLine("Enter drone's ID:\n" );
+                                        int.TryParse(Console.ReadLine(), out ID);
                                         model = Console.ReadLine();
                                         Drone d = new Drone();
                                         d = createObjectDrone(model);
@@ -284,16 +298,16 @@ namespace ConsoleUI
         /// <param Name="name"></param>
         /// <param Name="num"></param>
         /// <returns></returns the new station>
-        private static Station CreateObjectStation(string name, int num)
+        private static Station CreateObjectStation(int myID, string name, int numOfSlots, long myLongitude, long myLattitude)
         {
             Random rand = new Random();
             Station s = new Station
             {
-                ID = rand.Next(1000, 10000),
+                ID = myID,
                 stationName= name,
-                chargeSlots= num,
-                Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                Longitude = (long)getRandomDoubleNumber(-5000, 5000)
+                chargeSlots= numOfSlots,
+                Lattitude = myLattitude,
+                Longitude = myLongitude
             };
             return s;
             
