@@ -23,7 +23,7 @@
             delivery = 2
         };
 
-        public enum customersName
+        public enum CustomersName
         {
             Dan,Tony,Caleb,Gorge,Alis,Bob,Aria,Kally,Katy,Ariana
         };

@@ -28,7 +28,7 @@ namespace ConsoleUI
                                     {
                                         string name;
                                         int numOfSlots;
-                                        long Longitude, Lattitude;
+                                        long longitude, lattitude;
                                         int ID;
                                         Console.WriteLine("Enter station's ID:\n");
                                         int.TryParse(Console.ReadLine(), out ID);
@@ -37,11 +37,11 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter number of available charging slots:\n");
                                         int.TryParse(Console.ReadLine(), out numOfSlots);
                                         Console.WriteLine("Enter station's Longitude:\n");
-                                        long.TryParse(Console.ReadLine(), out Longitude);
+                                        long.TryParse(Console.ReadLine(), out longitude);
                                         Console.WriteLine("Enter station's Lattitude:\n");
-                                        long.TryParse(Console.ReadLine(), out Lattitude);
+                                        long.TryParse(Console.ReadLine(), out lattitude);
                                         Station s = new Station();
-                                        s = CreateObjectStation(ID, name, numOfSlots,Longitude,Lattitude);
+                                        s = createObjectStation(ID, name, numOfSlots,longitude,lattitude);
                                         DalObject.DalObject.AddStation(s);
                                         break;
                                     }
@@ -69,7 +69,7 @@ namespace ConsoleUI
                                         string name;
                                         int ID;
                                         string phoneNumber;
-                                        long Longitude, Lattitude;
+                                        long longitude, lattitude;
                                         Console.WriteLine("Enter customer's ID:\n");
                                         int.TryParse(Console.ReadLine(), out ID);
                                         Console.WriteLine("Enter customer's name:\n");
@@ -77,11 +77,11 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter customer's phone number:\n");
                                         phoneNumber= Console.ReadLine();
                                         Console.WriteLine("Enter customer's Longitude:\n");
-                                        long.TryParse(Console.ReadLine(), out Longitude);
+                                        long.TryParse(Console.ReadLine(), out longitude);
                                         Console.WriteLine("Enter customer's Lattitude:\n");
-                                        long.TryParse(Console.ReadLine(), out Lattitude);
+                                        long.TryParse(Console.ReadLine(), out lattitude);
                                         Customer c = new Customer();
-                                        c = createObjectCustomer(ID, name, phoneNumber, Longitude, Lattitude);
+                                        c = createObjectCustomer(ID, name, phoneNumber, longitude, lattitude);
                                         DalObject.DalObject.AddCusomer(c);
                                         break;
 
@@ -101,7 +101,7 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter parcel's priority:\n 0: normal, 1: fast, 2: emergency\n");
                                         priority = (Priorities)int.Parse(Console.ReadLine());
                                         Parcel p = new Parcel();
-                                        p = CreateObjectParcel(senderID, targetID, weight, priority);
+                                        p = createObjectParcel(senderID, targetID, weight, priority);
                                         DalObject.DalObject.AddParcel(p);
                                         break;
                                     }
@@ -319,14 +319,14 @@ namespace ConsoleUI
         /// <param Name="name"></param>
         /// <param Name="num"></param>
         /// <returns></returns the new station>
-        private static Station CreateObjectStation(int myID, string name, int numOfSlots, long myLongitude, long myLattitude)
+        private static Station createObjectStation(int myID, string name, int numOfSlots, long myLongitude, long myLattitude)
         {
             Random rand = new Random();
             Station s = new Station
             {
                 ID = myID,
-                stationName= name,
-                chargeSlots= numOfSlots,
+                StationName= name,
+                ChargeSlots= numOfSlots,
                 Lattitude = myLattitude,
                 Longitude = myLongitude
             };
@@ -344,10 +344,10 @@ namespace ConsoleUI
             Drone d = new Drone
             {
                 ID = myID,
-                model = myModel,
-                maxWeight = myMaxWeight,
-                status = 0,
-                battery = myBattery
+                Model = myModel,
+                MaxWeight = myMaxWeight,
+                Status = 0,
+                Battery = myBattery
             };
             return d;
         }
@@ -370,16 +370,16 @@ namespace ConsoleUI
             return c;
         }
 
-        private static Parcel CreateObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
+        private static Parcel createObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
         {
             Parcel p = new Parcel
             {
-                senderID = mySenderID,
-                targetID = myTargetID,
-                weight = myWeight,
-                priority = myPriority,
-                requested = DateTime.Today,//the parcel has been ready today
-                droneID = 0//no drone has been costumed yet
+                SenderID = mySenderID,
+                TargetID = myTargetID,
+                Weight = myWeight,
+                Priority = myPriority,
+                Requested = DateTime.Today,//the parcel has been ready today
+                DroneID = 0//no drone has been costumed yet
             };
             return p;
         }
@@ -390,7 +390,7 @@ namespace ConsoleUI
         /// <param Name="min"></param>
         /// <param Name="max"></param>
         /// <returns></returns a random double number>
-        static double getRandomDoubleNumber(double min, double max)
+        private static double getRandomDoubleNumber(double min, double max)
         {
             Random rand = new Random();
             return rand.NextDouble() * (max - min) + min;//return a random double number 

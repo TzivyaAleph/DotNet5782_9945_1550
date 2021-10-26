@@ -11,19 +11,19 @@ namespace IDAL
         public struct Drone
         {
             public int ID {  set; get; }
-            public string model {  set; get; }
-            public WeightCategories maxWeight { set; get; } 
-            public DroneStatuses status { set; get; }
-            public double battery { set; get; }
+            public string Model {  set; get; }
+            public WeightCategories MaxWeight { set; get; } 
+            public DroneStatuses Status { set; get; }
+            public double Battery { set; get; }
 
             public override string ToString()
             {
                 string result = " ";
                 result += $"ID is {ID},\n";
-                result += $"model is {model},\n";
-                result += $"the maximum weight is {maxWeight},\n";
-                result += $"status: {status},\n";
-                result += $"battery: {battery},\n";
+                result += $"model is {Model},\n";
+                result += $"the maximum weight is {MaxWeight},\n";
+                result += $"status: {Status},\n";
+                result += $"battery: {Battery},\n";
                 return result;
             }
         }

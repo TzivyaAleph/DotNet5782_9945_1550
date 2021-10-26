@@ -15,10 +15,10 @@ namespace DalObject
         internal class Config
         {
             internal static int AvailableDrone = 0;
-            internal static int availableParcel = 0;
-            internal static int availableStation = 0;
-            internal static int availableCustomer = 0;
-            internal static int availableDroneCharge = 0;
+            internal static int AvailableParcel = 0;
+            internal static int AvailableStation = 0;
+            internal static int AvailableCustomer = 0;
+            internal static int AvailableDroneCharge = 0;
             internal static int RunningParcelID=200;
             //Random rand = new Random();
             //Config()
@@ -46,42 +46,42 @@ namespace DalObject
             Drones[0] = new Drone
             {
                 ID = rand.Next(1000,10000),
-                model = "maxP",
-                maxWeight = (WeightCategories)1,
-                status = (DroneStatuses)2,
-                battery = getRandomDoubleNumber(0, 100)
+                Model = "maxP",
+                MaxWeight = (WeightCategories)1,
+                Status = (DroneStatuses)2,
+                Battery = getRandomDoubleNumber(0, 100)
             };
             Drones[1] = new Drone
             {
                 ID = rand.Next(1000, 10000),
-                model = "maxG",
-                maxWeight = (WeightCategories)2,
-                status = (DroneStatuses)1,
-                battery = getRandomDoubleNumber(0, 100)
+                Model = "maxG",
+                MaxWeight = (WeightCategories)2,
+                Status = (DroneStatuses)1,
+                Battery = getRandomDoubleNumber(0, 100)
             };
             Drones[2] = new Drone
             {
                 ID = rand.Next(1000, 10000),
-                model = "maxF",
-                maxWeight = (WeightCategories)0,
-                status = (DroneStatuses)0,
-                battery = getRandomDoubleNumber(0, 100)
+                Model = "maxF",
+                MaxWeight = (WeightCategories)0,
+                Status = (DroneStatuses)0,
+                Battery = getRandomDoubleNumber(0, 100)
             };
             Drones[3] = new Drone
             {
                 ID = rand.Next(1000, 10000),
-                model = "maxT",
-                maxWeight = (WeightCategories)2,
-                status = (DroneStatuses)0,
-                battery = getRandomDoubleNumber(0, 100)
+                Model = "maxT",
+                MaxWeight = (WeightCategories)2,
+                Status = 0,
+                Battery = getRandomDoubleNumber(0, 100)
             };
             Drones[4] = new Drone
             {
                 ID = rand.Next(1000, 10000),
-                model = "maxD",
-                maxWeight = (WeightCategories)2,
-                status = (DroneStatuses)2,
-                battery = getRandomDoubleNumber(0, 100)
+                Model = "maxD",
+                MaxWeight = (WeightCategories)2,
+                Status = (DroneStatuses)2,
+                Battery = getRandomDoubleNumber(0, 100)
             };
             Config.AvailableDrone+=5;//updates the next available index.
         }
@@ -103,20 +103,20 @@ namespace DalObject
             Stations[0] = new Station
             {
                 ID = rand.Next(1000,10000),
-                stationName = "Ramot",
-                chargeSlots = rand.Next(0, 50),
+                StationName = "Ramot",
+                ChargeSlots = rand.Next(0, 50),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
             };
             Stations[1] = new Station
             {
                 ID = rand.Next(1000, 10000),
-                stationName = "Bait Vagan",
-                chargeSlots = rand.Next(0, 50),
+                StationName = "Bait Vagan",
+                ChargeSlots = rand.Next(0, 50),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
             };
-            Config.availableStation+=2;
+            Config.AvailableStation+=2;
         }
         /// <summary>
         /// creates 10 customers with random data
@@ -127,10 +127,10 @@ namespace DalObject
             for(int i=0;i<NumberOfCustumers;i++)//add new customers to the array
             {
                 //update their values.
-                Customers[Config.availableCustomer++] = new Customer
+                Customers[Config.AvailableCustomer++] = new Customer
                 {
                     ID = rand.Next(100000000, 1000000000),
-                    Name = $"{(customersName)rand.Next(10)}",
+                    Name = $"{(CustomersName)rand.Next(10)}",
                     PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
                     Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                     Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
@@ -147,18 +147,18 @@ namespace DalObject
             DateTime end = new DateTime(1, 2, 2020);
             for (int i = 0,j=9; i < NumberOfParcels; i++,j--)//add new Parcels to the array
             {
-                Parcels[Config.availableParcel++] = new Parcel
+                Parcels[Config.AvailableParcel++] = new Parcel
                 {
                     ID = Config.RunningParcelID,
-                    senderID = Customers[i].ID,
-                    targetID = Customers[j].ID,
-                    weight = (WeightCategories)rand.Next(3),
-                    priority = (Priorities)rand.Next(3),
-                    requested = getRandomDateTime(start,end),
-                    droneID= Drones[rand.Next(5)].ID,
-                    scheduled= getRandomDateTime(start.AddDays(31), end.AddDays(31)),
-                    pickedUp= getRandomDateTime(start.AddDays(62), end.AddDays(62)),
-                    delivered = getRandomDateTime(start.AddDays(93), end.AddDays(93))
+                    SenderID = Customers[i].ID,
+                    TargetID = Customers[j].ID,
+                    Weight = (WeightCategories)rand.Next(3),
+                    Priority = (Priorities)rand.Next(3),
+                    Requested = getRandomDateTime(start,end),
+                    DroneID= Drones[rand.Next(5)].ID,
+                    Scheduled= getRandomDateTime(start.AddDays(31), end.AddDays(31)),
+                    PickedUp= getRandomDateTime(start.AddDays(62), end.AddDays(62)),
+                    Delivered = getRandomDateTime(start.AddDays(93), end.AddDays(93))
                 };
             }
         }
@@ -188,9 +188,9 @@ namespace DalObject
         {
             Station temp = new Station();
             temp = s;
-            DataSource.Stations[DataSource.Config.availableStation] = temp;
-            DataSource.Config.availableStation++;//updates the availabeStation that new station been edit. 
-            return DataSource.Config.availableStation - 1;//return the id of the new  station.
+            DataSource.Stations[DataSource.Config.AvailableStation] = temp;
+            DataSource.Config.AvailableStation++;//updates the availabeStation that new station been edit. 
+            return DataSource.Config.AvailableStation - 1;//return the id of the new  station.
         }
 
         /// <addDrone>
@@ -215,9 +215,9 @@ namespace DalObject
         {
             Customer temp = new Customer();
             temp = c;
-            DataSource.Customers[DataSource.Config.availableCustomer] = temp;
-            DataSource.Config.availableCustomer++;//updates the availableCustomer that new customer been added. 
-            return DataSource.Config.availableCustomer - 1;//return the id of the new  customer.
+            DataSource.Customers[DataSource.Config.AvailableCustomer] = temp;
+            DataSource.Config.AvailableCustomer++;//updates the availableCustomer that new customer been added. 
+            return DataSource.Config.AvailableCustomer - 1;//return the id of the new  customer.
         }
         /// <summary>
         /// gets a customer and adds it to the array
@@ -229,10 +229,10 @@ namespace DalObject
             Parcel temp = new Parcel();
             p.ID = DataSource.Config.RunningParcelID++;
             temp = p;
-            DataSource.Parcels[DataSource.Config.availableParcel] = temp;
-            DataSource.Parcels[DataSource.Config.availableParcel].ID = DataSource.Config.RunningParcelID++;
-            DataSource.Config.availableParcel++;//updates the availableCustomer that new customer been added. 
-            return DataSource.Config.availableParcel - 1;//return the id of the new  customer.
+            DataSource.Parcels[DataSource.Config.AvailableParcel] = temp;
+            DataSource.Parcels[DataSource.Config.AvailableParcel].ID = DataSource.Config.RunningParcelID++;
+            DataSource.Config.AvailableParcel++;//updates the availableCustomer that new customer been added. 
+            return DataSource.Config.AvailableParcel - 1;//return the id of the new  customer.
          }
         /// <summary>
         /// recieves a parcel and a drone and attributes the parcel to the drone
@@ -241,9 +241,9 @@ namespace DalObject
         /// <param Name="d"></param>
         public static void AttributingParcelToDrone(Parcel p, Drone d)
         {
-            p.droneID = d.ID;//updates the parcels drone id to the id of the drone that recieved it
-            p.scheduled = DateTime.Today;//updates the parcels schedule time
-            d.status = (DroneStatuses)2;//updates the drones status to delivery
+            p.DroneID = d.ID;//updates the parcels drone id to the id of the drone that recieved it
+            p.Scheduled = DateTime.Today;//updates the parcels schedule time
+            d.Status = (DroneStatuses)2;//updates the drones status to delivery
         }
         /// <summary>
         /// recieves a parcel and updates the parcels picked up time
@@ -251,8 +251,8 @@ namespace DalObject
         /// <param Name="p"></param>
         public static void PickedUp(Parcel p, Drone d)
         {
-            p.droneID = d.ID;
-            p.pickedUp = DateTime.Today;//updates the parcels pickedUp time
+            p.DroneID = d.ID;
+            p.PickedUp = DateTime.Today;//updates the parcels pickedUp time
         }
         /// <summary>
         /// function that recieves a parcel and updates the parcels delivered time
@@ -260,11 +260,11 @@ namespace DalObject
         /// <param Name="p"></param>
         public static void Delivered(Parcel p)
         {
-            p.delivered = DateTime.Today;//updates the parcels delivered time
+            p.Delivered = DateTime.Today;//updates the parcels delivered time
             for(int i=0;i<DataSource.Drones.Length;i++)//updates the current drone's status to available
             {
-                if (DataSource.Drones[i].ID == p.droneID)
-                    DataSource.Drones[i].status = 0;
+                if (DataSource.Drones[i].ID == p.DroneID)
+                    DataSource.Drones[i].Status = 0;
             }
         }
         /// <summary>
@@ -274,12 +274,12 @@ namespace DalObject
         /// <param Name="s"></param>
         public static void SendDroneToChargeSlot(Drone d, Station s)
         {
-            d.status = (DroneStatuses)1;//updates the drone status to charging
+            d.Status = (DroneStatuses)1;//updates the drone status to charging
             DroneCharge dc = new DroneCharge();//creates a new drone charge object with the current drone and station
-            dc.droneID = d.ID;
-            dc.stationID = s.ID;
-            DataSource.DroneCharges[DataSource.Config.availableDroneCharge++] = dc;
-            s.chargeSlots--;//updates the available charge slots in the current staition
+            dc.DroneID = d.ID;
+            dc.StationID = s.ID;
+            DataSource.DroneCharges[DataSource.Config.AvailableDroneCharge++] = dc;
+            s.ChargeSlots--;//updates the available charge slots in the current staition
         }
         /// <summary>
         /// recieves a drone and a station and releses the drone from the chargeSlot
@@ -289,12 +289,12 @@ namespace DalObject
         /// <param Name="dc"></param>
         public static void ReleaseDrone(Drone d, Station s, DroneCharge dc) 
         {
-            d.status = 0;//updates the drones status to available
-            d.battery = 100;
-            s.chargeSlots++;//updates the available charge slots in the current staition
+            d.Status = 0;//updates the drones status to available
+            d.Battery = 100;
+            s.ChargeSlots++;//updates the available charge slots in the current staition
             int index = System.Array.IndexOf(DataSource.DroneCharges, dc);
-            DataSource.DroneCharges[index].droneID = 0;
-            DataSource.DroneCharges[index].stationID = 0;
+            DataSource.DroneCharges[index].DroneID = 0;
+            DataSource.DroneCharges[index].StationID = 0;
         }
 
         /// <summary>
@@ -307,7 +307,7 @@ namespace DalObject
             DroneCharge droneChargeToReturn = new DroneCharge();
             //searches the station with the recieved id.
             foreach (DroneCharge dc in DataSource.DroneCharges)
-                if (dc.stationID == stationID&&dc.droneID==droneID)
+                if (dc.StationID == stationID&&dc.DroneID==droneID)
                 {
                     droneChargeToReturn = dc;
                 }
@@ -320,14 +320,14 @@ namespace DalObject
         /// <returns></returs the station were looking for>
         public static Station GetStation(int stationID)
         {
-            Station StationToReturn = new Station();
+            Station stationToReturn = new Station();
             //searches the station with the recieved id.
             foreach (Station s in DataSource.Stations)
                 if (s.ID == stationID)
                 {
-                    StationToReturn= s;
+                    stationToReturn= s;
                 }
-            return StationToReturn;
+            return stationToReturn;
         }
         /// <summary>
         /// searches for the drone in the array by the Id
@@ -336,13 +336,13 @@ namespace DalObject
         /// <returns></returnsthe drone were looking for>
         public static Drone GetDrone(int droneID)
         {
-            Drone DroneToReturn = new Drone();
+            Drone droneToReturn = new Drone();
             foreach (Drone d in DataSource.Drones)//searches for the drone 
                 if (d.ID == droneID)
                 {
-                    DroneToReturn= d;
+                    droneToReturn= d;
                 }
-            return DroneToReturn;
+            return droneToReturn;
         }
         /// <summary>
         /// searches for the customer in the array by the Id
@@ -351,14 +351,14 @@ namespace DalObject
         /// <returns></returnsthe customer were looking for>
         public static Customer GetCustomer(int customerID)
         {
-            Customer CustomerToReturn = new Customer();
+            Customer customerToReturn = new Customer();
             //searches the customer by the id
             foreach (Customer c in DataSource.Customers)
                 if (c.ID == customerID)
                 {
-                    CustomerToReturn= c;
+                    customerToReturn= c;
                 }
-            return CustomerToReturn;
+            return customerToReturn;
         }
         /// <summary>
         /// searches for the parcel in the array by the Id
@@ -367,13 +367,13 @@ namespace DalObject
         /// <returns></returns parcel were looking for>
         public static Parcel GetParcel(int parcelID)
         {
-            Parcel ParcelToReturn = new Parcel();
+            Parcel parcelToReturn = new Parcel();
             foreach (Parcel p in DataSource.Parcels)
                 if (p.ID == parcelID)
                 {
-                    ParcelToReturn= p;
+                    parcelToReturn= p;
                 }
-             return ParcelToReturn;
+             return parcelToReturn;
         }
         /// <summary>
         /// coppies the station array
@@ -418,16 +418,16 @@ namespace DalObject
         public static Parcel[] FindNotAttributedParcels()
         {
             int i = 0;//for the array's index
-            Parcel[] NotAttributed = new Parcel[1000];//new array to hold non attributed parcels
+            Parcel[] notAttributed = new Parcel[1000];//new array to hold non attributed parcels
             foreach (Parcel p in DataSource.Parcels)//searches for the non attributed parcels
             {
-                if (p.droneID != 0)
+                if (p.DroneID != 0)
                 {
-                    NotAttributed[i] = p;
+                    notAttributed[i] = p;
                     i++;
                 }
             }
-            return NotAttributed;
+            return notAttributed;
         }
         /// <summary>
         /// creates an array by searching for available charge slots in the station array.
@@ -438,7 +438,7 @@ namespace DalObject
             int i = 0;//for the array's index
             Station[] availableStations = new Station[50];//new array to hold Available Stations
             foreach (Station s in DataSource.Stations)
-                if (s.chargeSlots > 0)
+                if (s.ChargeSlots > 0)
                     availableStations[i] = s;
             return availableStations;
 
@@ -449,22 +449,3 @@ namespace DalObject
 }
 
 
-////gets new cosumer and updates his values.
-//DataSource.Customers[DataSource.Config.availableCustomer] = new Customer
-//{
-//    ID = DataSource.Config.availableCustomer,
-//    PhoneNumber = customerphone,
-//    Name = customername
-//};
-
-//gets new cosumer and updates his values.
-//DataSource.Parcels[DataSource.Config.availableParcel] = new Parcel
-//{
-//    ID = DataSource.Config.availableParcel,
-//    senderID = sender,
-//    targetID = target,
-//    weight = ParcelWeight,
-//    priority = HisPriority,
-//    requested = DateTime.Today,//the parcel has been ready today
-//    droneID = 0//no drone has been costumed yet
-//};
