@@ -143,8 +143,7 @@ namespace DalObject
         /// <param Name="NumberOfParcels"></param>
         private static void createParcels(int NumberOfParcels)
         {
-            DateTime start = new DateTime(1, 1, 2020);
-            DateTime end = new DateTime(1, 2, 2020);
+            DateTime dateAndTime = new DateTime(2021, 1, 1);
             for (int i = 0,j=9; i < NumberOfParcels; i++,j--)//add new Parcels to the array
             {
                 Parcels[Config.AvailableParcel++] = new Parcel
@@ -154,11 +153,11 @@ namespace DalObject
                     TargetID = Customers[j].ID,
                     Weight = (WeightCategories)rand.Next(3),
                     Priority = (Priorities)rand.Next(3),
-                    Requested = getRandomDateTime(start,end),
-                    DroneID= Drones[rand.Next(5)].ID,
-                    Scheduled= getRandomDateTime(start.AddDays(31), end.AddDays(31)),
-                    PickedUp= getRandomDateTime(start.AddDays(62), end.AddDays(62)),
-                    Delivered = getRandomDateTime(start.AddDays(93), end.AddDays(93))
+                    Requested = dateAndTime,
+                    DroneID = Drones[rand.Next(5)].ID,
+                    Scheduled=dateAndTime.AddMinutes(rand.Next(10,1000)),
+                    PickedUp= dateAndTime.AddMinutes(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000)),
+                    Delivered = dateAndTime.AddMinutes(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000))
                 };
             }
         }
@@ -168,17 +167,16 @@ namespace DalObject
         /// <param Name="start"></param>
         /// <param Name="end"></param>
         /// <returns></returns a random date between the 2 dates>
-        private static DateTime getRandomDateTime(DateTime start, DateTime end)
-        { 
-            int range=(end-start).Days;
-            return start.AddDays(rand.Next(range));
-        }
+        //private static DateTime getRandomDateTime(DateTime start, DateTime end)
+        //{ 
+        //    int range=(end-start).Days;
+        //    return start.AddDays(rand.Next(range));
+        //}
     }
 
     public class DalObject
     {
-        DataSource dj;
-        DalObject() { DataSource.Initialize(); }//c-tor.
+        public DalObject() { DataSource.Initialize(); }//c-tor.
         /// <summary>
         /// gets a station and adds it to the array
         /// </summary>
