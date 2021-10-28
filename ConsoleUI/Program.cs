@@ -3,8 +3,10 @@ using IDAL.DO;
 
 namespace ConsoleUI
 {
-    class main
+    class Program
     {
+        static DalObject.DalObject data;
+
         static void Main(string[] args)
         {
             MenuOptions menuOption;
@@ -102,7 +104,8 @@ namespace ConsoleUI
                                         priority = (Priorities)int.Parse(Console.ReadLine());
                                         Parcel p = new Parcel();
                                         p = createObjectParcel(senderID, targetID, weight, priority);
-                                        DalObject.DalObject.AddParcel(p);
+                                        int newRunningID;
+                                        newRunningID= DalObject.DalObject.AddParcel(p);
                                         break;
                                     }
                             }
@@ -275,126 +278,130 @@ namespace ConsoleUI
                 }
             }
             while (menuOption!=MenuOptions.Exit);
-            
-        }
-        
-        
-        /// <summary>
-        /// prints the list of stations
-        /// </summary>
-        private static void printListOfStations()
-        {
-            foreach (var item in DalObject.DalObject.CopyStationArray())
-                Console.WriteLine(item);
-        }
-        /// <summary>
-        /// prints the list of drones
-        /// </summary>
-        private static void printListOfDrones()
-        {
-            foreach (var item in DalObject.DalObject.CopyDroneArray())
-                Console.WriteLine(item);
-        }
-        /// <summary>
-        /// prints the list of customers
-        /// </summary>
-        private static void printListOfCustomers()
-        {
-            foreach (var item in DalObject.DalObject.CopyCustomerArray())
-                Console.WriteLine(item);
-        }
-        /// <summary>
-        /// prints the list of parcels
-        /// </summary>
-        private static void printListOfParcels()
-        {
-            foreach (var item in DalObject.DalObject.CopyParcelArray())
-                Console.WriteLine(item);
-        }
-
-
-        /// <summary>
-        /// creates a station object and updates it's data with random and user's input
-        /// </summary>
-        /// <param Name="name"></param>
-        /// <param Name="num"></param>
-        /// <returns></returns the new station>
-        private static Station createObjectStation(int myID, string name, int numOfSlots, long myLongitude, long myLattitude)
-        {
-            Random rand = new Random();
-            Station s = new Station
+            /// <summary>
+            /// creates a station object and updates it's data with random and user's input
+            /// </summary>
+            /// <param Name="name"></param>
+            /// <param Name="num"></param>
+            /// <returns></returns the new station>
+            static Station createObjectStation(int myID, string name, int numOfSlots, long myLongitude, long myLattitude)
             {
-                ID = myID,
-                StationName= name,
-                ChargeSlots= numOfSlots,
-                Lattitude = myLattitude,
-                Longitude = myLongitude
-            };
-            return s;
-            
-        }
+                Random rand = new Random();
+                Station s = new Station
+                {
+                    ID = myID,
+                    StationName = name,
+                    ChargeSlots = numOfSlots,
+                    Lattitude = myLattitude,
+                    Longitude = myLongitude
+                };
+                return s;
 
-        /// <summary>
-        /// creates a Drone object and updates it's data with random and user's input
-        /// </summary>
-        /// <param Name="myModel"></param>
-        /// <returns></returns the new drone>
-        private static Drone createObjectDrone(int myID, string myModel, WeightCategories myMaxWeight, double myBattery)
-        {
-            Drone d = new Drone
+            }
+
+            /// <summary>
+            /// creates a Drone object and updates it's data with random and user's input
+            /// </summary>
+            /// <param Name="myModel"></param>
+            /// <returns></returns the new drone>
+            static Drone createObjectDrone(int myID, string myModel, WeightCategories myMaxWeight, double myBattery)
             {
-                ID = myID,
-                Model = myModel,
-                MaxWeight = myMaxWeight,
-                Status = 0,
-                Battery = myBattery
-            };
-            return d;
-        }
+                Drone d = new Drone
+                {
+                    ID = myID,
+                    Model = myModel,
+                    MaxWeight = myMaxWeight,
+                    Status = 0,
+                    Battery = myBattery
+                };
+                return d;
+            }
 
-        /// <summary>
-        /// creates a customer object and updates it's data with random and user's input
-        /// </summary>
-        /// <param Name="myName"></param>
-        /// <returns></returns the new customer>
-        private static Customer createObjectCustomer(int myID, string myName, string myPhoneNumber, long myLongitude, long myLattitude)
-        {
-            Customer c = new Customer
+            /// <summary>
+            /// creates a customer object and updates it's data with random and user's input
+            /// </summary>
+            /// <param Name="myName"></param>
+            /// <returns></returns the new customer>
+            static Customer createObjectCustomer(int myID, string myName, string myPhoneNumber, long myLongitude, long myLattitude)
             {
-                ID = myID,
-                Name = myName,
-                PhoneNumber = myPhoneNumber,
-                Lattitude = myLongitude,
-                Longtitude = myLattitude,
-            };
-            return c;
-        }
+                Customer c = new Customer
+                {
+                    ID = myID,
+                    Name = myName,
+                    PhoneNumber = myPhoneNumber,
+                    Lattitude = myLongitude,
+                    Longtitude = myLattitude,
+                };
+                return c;
+            }
 
-        private static Parcel createObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
-        {
-            Parcel p = new Parcel
+            static Parcel createObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
             {
-                SenderID = mySenderID,
-                TargetID = myTargetID,
-                Weight = myWeight,
-                Priority = myPriority,
-                Requested = DateTime.Today,//the parcel has been ready today
-                DroneID = 0//no drone has been costumed yet
-            };
-            return p;
-        }
+                Parcel p = new Parcel
+                {
+                    SenderID = mySenderID,
+                    TargetID = myTargetID,
+                    Weight = myWeight,
+                    Priority = myPriority,
+                    Requested = DateTime.Today,//the parcel has been ready today
+                    DroneID = 0//no drone has been costumed yet
+                };
+                return p;
+            }
 
-        /// <summary>
-        /// gets a maximum and minimum numbers and returns a random double number 
-        /// </summary>
-        /// <param Name="min"></param>
-        /// <param Name="max"></param>
-        /// <returns></returns a random double number>
-        private static double getRandomDoubleNumber(double min, double max)
-        {
-            Random rand = new Random();
-            return rand.NextDouble() * (max - min) + min;//return a random double number 
+            /// <summary>
+            /// gets a maximum and minimum numbers and returns a random double number 
+            /// </summary>
+            /// <param Name="min"></param>
+            /// <param Name="max"></param>
+            /// <returns></returns a random double number>
+            static double getRandomDoubleNumber(double min, double max)
+            {
+                Random rand = new Random();
+                return rand.NextDouble() * (max - min) + min;//return a random double number 
+            }
+            /// <summary>
+            /// prints the list of customers
+            /// </summary>
+            static void printListOfCustomers()
+            {
+                foreach (var item in DalObject.DalObject.CopyCustomerArray())
+                    Console.WriteLine(item);
+            }
+            /// <summary>
+            /// prints the list of parcels
+            /// </summary>
+            static void printListOfParcels()
+            {
+                foreach (var item in DalObject.DalObject.CopyParcelArray())
+                    Console.WriteLine(item);
+            }
+
+            /// <summary>
+            /// prints the list of stations
+            /// </summary>
+            static void printListOfStations()
+            {
+                foreach (var item in DalObject.DalObject.CopyStationArray())
+                    Console.WriteLine(item);
+            }
+            /// <summary>
+            /// prints the list of drones
+            /// </summary>
+            static void printListOfDrones()
+            {
+                foreach (var item in DalObject.DalObject.CopyDroneArray())
+                    Console.WriteLine(item);
+            }
+
+
         }
+         
+     
+      
+
+
+      
     }
 }
 

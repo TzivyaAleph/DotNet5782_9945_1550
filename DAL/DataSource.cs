@@ -20,11 +20,7 @@ namespace DalObject
             internal static int AvailableCustomer = 0;
             internal static int AvailableDroneCharge = 0;
             internal static int RunningParcelID=200;
-            //Random rand = new Random();
-            //Config()
-            //{
-            //    RunningParcelID = rand.Next(1000, 2000);//creates a random number between 1000 to 2000
-            //}
+
         }
 
         static Random rand = new Random();
@@ -177,47 +173,43 @@ namespace DalObject
 
     public class DalObject
     {
-        DataSource dj;
-        DalObject() { DataSource.Initialize(); }//c-tor.
+        DalObject() { DataSource.Initialize(); }//constructor.
         /// <summary>
         /// gets a station and adds it to the array
         /// </summary>
         /// <param Name="s"></param>
         /// <returns></returns>
-       public static int AddStation(Station s)
+       public static void AddStation(Station s)
         {
             Station temp = new Station();
             temp = s;
             DataSource.Stations[DataSource.Config.AvailableStation] = temp;
             DataSource.Config.AvailableStation++;//updates the availabeStation that new station been edit. 
-            return DataSource.Config.AvailableStation - 1;//return the id of the new  station.
         }
 
         /// <addDrone>
         /// add new drone and updates 
         /// </summary>
         /// <returns></returns>
-        public static int AddDrone(Drone d)
+        public static void AddDrone(Drone d)
         {
             Drone temp = new Drone();
             temp = d;
             //add a new drone to the array of drone.
             DataSource.Drones[DataSource.Config.AvailableDrone] = temp;
             DataSource.Config.AvailableDrone++;//updates the availabeDrone that new drone been added. 
-            return DataSource.Config.AvailableDrone - 1;//return the id of the new  drone.
         }
         /// <summary>
         /// gets a customer and adds it to the array.
         /// </summary>
         /// <param Name="c"></param>
         /// <returns></returns>
-        public static int AddCusomer(Customer c)
+        public static void AddCusomer(Customer c)
         {
             Customer temp = new Customer();
             temp = c;
             DataSource.Customers[DataSource.Config.AvailableCustomer] = temp;
             DataSource.Config.AvailableCustomer++;//updates the availableCustomer that new customer been added. 
-            return DataSource.Config.AvailableCustomer - 1;//return the id of the new  customer.
         }
         /// <summary>
         /// gets a customer and adds it to the array
