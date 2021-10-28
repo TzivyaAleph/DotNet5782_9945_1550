@@ -9,14 +9,15 @@ namespace ConsoleUI
 
         static void Main(string[] args)
         {
+            DalObject.DalObject data = new DalObject.DalObject();
             MenuOptions menuOption;
             EntitiesOptions entitiesOptions;
             ArrayPresentationOptions arrayOption;
             UpdateEntitiesOptions updateEntitiesOption;
-            Console.WriteLine("Welcome!\n" );
+            Console.WriteLine("Welcome!" );
             do
             {
-                Console.WriteLine("Choose an option: \n 1: Add, 2:Update, 3: Object presentation, 4: Array presentation, 5:Exit\n");
+                Console.WriteLine("Choose an option: \n 1: Add, 2:Update, 3: Object presentation, 4: Array presentation, 5:Exit");
                 menuOption = (MenuOptions)int.Parse(Console.ReadLine());
                 switch (menuOption)
                 {
@@ -32,16 +33,16 @@ namespace ConsoleUI
                                         int numOfSlots;
                                         long longitude, lattitude;
                                         int ID;
-                                        Console.WriteLine("Enter station's ID:\n");
+                                        Console.WriteLine("Enter station's ID:");
                                         int.TryParse(Console.ReadLine(), out ID);
-                                        Console.WriteLine("Enter station's name:\n");
+                                        Console.WriteLine("Enter station's name:");
                                         name = Console.ReadLine();
-                                        Console.WriteLine("Enter number of available charging slots:\n");
+                                        Console.WriteLine("Enter number of available charging slots:");
                                         int.TryParse(Console.ReadLine(), out numOfSlots);
-                                        Console.WriteLine("Enter station's Longitude:\n");
+                                        Console.WriteLine("Enter station's Longitude:");
                                         long.TryParse(Console.ReadLine(), out longitude);
-                                        Console.WriteLine("Enter station's Lattitude:\n");
-                                        long.TryParse(Console.ReadLine(), out lattitude);
+                                        Console.WriteLine("Enter station's Lattitude:");
+                                        bool flag=long.TryParse(Console.ReadLine(), out lattitude);
                                         Station s = new Station();
                                         s = createObjectStation(ID, name, numOfSlots,longitude,lattitude);
                                         DalObject.DalObject.AddStation(s);
@@ -53,13 +54,13 @@ namespace ConsoleUI
                                         int ID;
                                         WeightCategories maxWeight;
                                         double battery;
-                                        Console.WriteLine("Enter drone's ID:\n" );
+                                        Console.WriteLine("Enter drone's ID:" );
                                         int.TryParse(Console.ReadLine(), out ID);
-                                        Console.WriteLine("Enter drone's model:\n");
+                                        Console.WriteLine("Enter drone's model:");
                                         model = Console.ReadLine();
-                                        Console.WriteLine("Enter drone's  maximum weight:\n1: light, 2: standard, 3: heavy:\n");
+                                        Console.WriteLine("Enter drone's  maximum weight:\n1: light, 2: standard, 3: heavy:");
                                         maxWeight = (WeightCategories)int.Parse(Console.ReadLine());
-                                        Console.WriteLine("Enter drone's battery:\n");
+                                        Console.WriteLine("Enter drone's battery:");
                                         double.TryParse(Console.ReadLine(), out battery);
                                         Drone d = new Drone();
                                         d = createObjectDrone(ID, model, maxWeight, battery);
