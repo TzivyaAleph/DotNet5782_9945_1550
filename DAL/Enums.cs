@@ -40,7 +40,7 @@
 
         public enum UpdateEntitiesOptions
         {
-            attribute, PickUp, Delivery, ChargeDrone, ReleaseDrone
+            attribute=1, PickUp, Delivery, ChargeDrone, ReleaseDrone
         };
 
         public enum ArrayPresentationOptions
