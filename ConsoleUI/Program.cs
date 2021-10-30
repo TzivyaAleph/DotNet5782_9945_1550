@@ -188,7 +188,14 @@ namespace ConsoleUI
                                         printListOfParcels();
                                         break;
                                     }
-
+                                case ArrayPresentationOptions.NonAttributedParcels:
+                                    {
+                                        printNonAttributedParcels();
+                                        break;
+                                    }
+                                case ArrayPresentationOptions.AvalableChargeSlots:
+                                    printAvailableStations();
+                                    break;
                             }
                             break;
                         }
@@ -246,7 +253,11 @@ namespace ConsoleUI
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out droneID);
                                         Console.WriteLine("Choose a station: \n");
-                                        Console.WriteLine(DalObject.DalObject.FindAvailableStations());
+                                        Station[] available = DalObject.DalObject.FindAvailableStations();
+                                        foreach(Station ast in available)
+                                        {
+                                            Console.WriteLine(ast);
+                                        }
                                         input= Console.ReadLine();
                                         int.TryParse(input, out stationID);
                                         Drone d = DalObject.DalObject.GetDrone(droneID);
@@ -395,7 +406,24 @@ namespace ConsoleUI
                     Console.WriteLine(item);
             }
 
+            /// <summary>
+            /// prints the list of Non Attributed Parcels
+            /// </summary>
+            static void printNonAttributedParcels()
+            {
+                foreach (Parcel p in DalObject.DalObject.FindNotAttributedParcels())
+                    if (p.DroneID != 0)
+                        Console.WriteLine(p);
+            }
 
+            static void printAvailableStations()
+            {
+                foreach (Station s in DalObject.DalObject.FindAvailableStations())
+                    if (s.ChargeSlots > 0)
+                    {
+                        Console.WriteLine(s);
+                    }
+            }
         }
          
      

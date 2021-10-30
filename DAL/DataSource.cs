@@ -144,7 +144,7 @@ namespace DalObject
             {
                 Parcels[Config.AvailableParcel++] = new Parcel
                 {
-                    ID = Config.RunningParcelID,
+                    ID = Config.RunningParcelID++,
                     SenderID = Customers[i].ID,
                     TargetID = Customers[j].ID,
                     Weight = (WeightCategories)rand.Next(3),
@@ -270,7 +270,9 @@ namespace DalObject
             dc.DroneID = d.ID;
             dc.StationID = s.ID;
             DataSource.DroneCharges[DataSource.Config.AvailableDroneCharge++] = dc;
-            s.ChargeSlots--;//updates the available charge slots in the current staition
+            int index = System.Array.IndexOf(DataSource.Stations, s);
+            DataSource.Stations[index].ChargeSlots--;
+            //s.ChargeSlots--;//updates the available charge slots in the current staition
         }
         /// <summary>
         /// recieves a drone and a station and releses the drone from the chargeSlot
@@ -426,11 +428,14 @@ namespace DalObject
         /// <returns></returns the new array>
         public static Station[] FindAvailableStations()
         {
-            int i = 0;//for the array's index
+            int j = 0;//for the new array's index
             Station[] availableStations = new Station[50];//new array to hold Available Stations
-            foreach (Station s in DataSource.Stations)
-                if (s.ChargeSlots > 0)
-                    availableStations[i] = s;
+            for(int i = 0; i<DataSource.Stations.Length;i++)
+                if (DataSource.Stations[i].ChargeSlots > 0)
+                {
+                    availableStations[j] = DataSource.Stations[i];
+                    j++;
+                }
             return availableStations;
 
         }
