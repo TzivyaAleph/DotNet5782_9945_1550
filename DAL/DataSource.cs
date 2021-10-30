@@ -8,7 +8,7 @@ namespace DalObject
     public class DataSource
     {
         internal static Drone[] Drones = new Drone[10];
-        internal static Parcel[] Parcels = new Parcel[1000];
+        internal static Parcel[] Parcels = new Parcel[15];
         internal static Station[] Stations = new Station[5];
         internal static Customer[] Customers = new Customer[100];
         internal static DroneCharge[] DroneCharges = new DroneCharge[100];
@@ -144,7 +144,7 @@ namespace DalObject
             {
                 Parcels[Config.AvailableParcel++] = new Parcel
                 {
-                    ID = Config.RunningParcelID,
+                    ID = Config.RunningParcelID++,
                     SenderID = Customers[i].ID,
                     TargetID = Customers[j].ID,
                     Weight = (WeightCategories)rand.Next(3),

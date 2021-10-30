@@ -73,15 +73,15 @@ namespace ConsoleUI
                                         int ID;
                                         string phoneNumber;
                                         long longitude, lattitude;
-                                        Console.WriteLine("Enter customer's ID:\n");
+                                        Console.WriteLine("Enter customer's ID:");
                                         int.TryParse(Console.ReadLine(), out ID);
-                                        Console.WriteLine("Enter customer's name:\n");
+                                        Console.WriteLine("Enter customer's name:");
                                         name = Console.ReadLine();
-                                        Console.WriteLine("Enter customer's phone number:\n");
+                                        Console.WriteLine("Enter customer's phone number:");
                                         phoneNumber= Console.ReadLine();
-                                        Console.WriteLine("Enter customer's Longitude:\n");
+                                        Console.WriteLine("Enter customer's Longitude:");
                                         long.TryParse(Console.ReadLine(), out longitude);
-                                        Console.WriteLine("Enter customer's Lattitude:\n");
+                                        Console.WriteLine("Enter customer's Lattitude:");
                                         long.TryParse(Console.ReadLine(), out lattitude);
                                         Customer c = new Customer();
                                         c = createObjectCustomer(ID, name, phoneNumber, longitude, lattitude);
@@ -95,13 +95,13 @@ namespace ConsoleUI
                                         int targetID;
                                         WeightCategories weight;
                                         Priorities priority;
-                                        Console.WriteLine("Enter sender ID:\n");
+                                        Console.WriteLine("Enter sender ID:");
                                         int.TryParse(Console.ReadLine(), out senderID);
-                                        Console.WriteLine("Enter target ID:\n");
+                                        Console.WriteLine("Enter target ID:");
                                         int.TryParse(Console.ReadLine(), out targetID);
-                                        Console.WriteLine("Enter parcel's weight:\n 0: light, 1: standard, 2: heavy\n  ");
+                                        Console.WriteLine("Enter parcel's weight:\n 0: light, 1: standard, 2: heavy ");
                                         weight = (WeightCategories)int.Parse(Console.ReadLine());
-                                        Console.WriteLine("Enter parcel's priority:\n 0: normal, 1: fast, 2: emergency\n");
+                                        Console.WriteLine("Enter parcel's priority:\n 0: normal, 1: fast, 2: emergency");
                                         priority = (Priorities)int.Parse(Console.ReadLine());
                                         Parcel p = new Parcel();
                                         p = createObjectParcel(senderID, targetID, weight, priority);
@@ -215,7 +215,7 @@ namespace ConsoleUI
                                     }
                                 case UpdateEntitiesOptions.PickUp:
                                     {
-                                        Console.WriteLine("Enter the drone's ID:\n");
+                                        Console.WriteLine("Enter the drone's ID:");
                                         int droneID;
                                         int parcelID;
                                         string input = Console.ReadLine();
@@ -240,7 +240,7 @@ namespace ConsoleUI
                                     }
                                 case UpdateEntitiesOptions.ChargeDrone:
                                     {
-                                        Console.WriteLine("Enter the drone's ID:\n");
+                                        Console.WriteLine("Enter the drone's ID:");
                                         int droneID;
                                         int stationID;
                                         string input = Console.ReadLine();
@@ -256,13 +256,13 @@ namespace ConsoleUI
                                     }
                                 case UpdateEntitiesOptions.ReleaseDrone:
                                     {
-                                        Console.WriteLine("Enter the drone's ID:\n");
+                                        Console.WriteLine("Enter the drone's ID:");
                                         int droneID;
                                         int stationID;
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out droneID);
                                         Drone d = DalObject.DalObject.GetDrone(droneID);
-                                        Console.WriteLine("Enter the station's ID:\n");
+                                        Console.WriteLine("Enter the station's ID:");
                                         input = Console.ReadLine();
                                         int.TryParse(input, out stationID);
                                         Station s = DalObject.DalObject.GetStation(stationID);
