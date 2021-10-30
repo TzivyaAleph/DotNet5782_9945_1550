@@ -8,7 +8,7 @@ namespace DalObject
     public class DataSource
     {
         internal static Drone[] Drones = new Drone[10];
-        internal static Parcel[] Parcels = new Parcel[15];
+        internal static Parcel[] Parcels = new Parcel[1000];
         internal static Station[] Stations = new Station[5];
         internal static Customer[] Customers = new Customer[100];
         internal static DroneCharge[] DroneCharges = new DroneCharge[100];
@@ -232,9 +232,9 @@ namespace DalObject
         /// <param Name="d"></param>
         public static void AttributingParcelToDrone(Parcel p, Drone d)
         {
-            p.DroneID = d.ID;//updates the parcels drone id to the id of the drone that recieved it
-            p.Scheduled = DateTime.Today;//updates the parcels schedule time
-            d.Status = (DroneStatuses)2;//updates the drones status to delivery
+            int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
+            DataSource.Parcels[index].DroneID = d.ID;//updates the parcels drone id to the id of the drone that recieved it
+            DataSource.Parcels[index].Scheduled = DateTime.Today;//updates the parcels schedule time
         }
         /// <summary>
         /// recieves a parcel and updates the parcels picked up time
@@ -242,8 +242,11 @@ namespace DalObject
         /// <param Name="p"></param>
         public static void PickedUp(Parcel p, Drone d)
         {
-            p.DroneID = d.ID;
-            p.PickedUp = DateTime.Today;//updates the parcels pickedUp time
+            int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
+            DataSource.Parcels[index].DroneID = d.ID;
+            DataSource.Parcels[index].PickedUp = DateTime.Today;//updates the parcels pickedUp time
+            int indexOfDrones = System.Array.IndexOf(DataSource.Drones, d);//find the index of the drone were searching
+            DataSource.Drones[indexOfDrones].Status =(DroneStatuses) 2;//changes the status to deliverd.
         }
         /// <summary>
         /// function that recieves a parcel and updates the parcels delivered time
@@ -251,12 +254,8 @@ namespace DalObject
         /// <param Name="p"></param>
         public static void Delivered(Parcel p)
         {
-            p.Delivered = DateTime.Today;//updates the parcels delivered time
-            for(int i=0;i<DataSource.Drones.Length;i++)//updates the current drone's status to available
-            {
-                if (DataSource.Drones[i].ID == p.DroneID)
-                    DataSource.Drones[i].Status = 0;
-            }
+            int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
+            DataSource.Parcels[index].Delivered = DateTime.Today;//updates the parcels delivered time
         }
         /// <summary>
         /// recieves a drone and a station and sends the drone to a chargeSlot in that staition
@@ -265,14 +264,14 @@ namespace DalObject
         /// <param Name="s"></param>
         public static void SendDroneToChargeSlot(Drone d, Station s)
         {
-            d.Status = (DroneStatuses)1;//updates the drone status to charging
+            int indexOfDrones = System.Array.IndexOf(DataSource.Drones, d);//find the index of the parcel were searching
+            DataSource.Drones[indexOfDrones].Status = (DroneStatuses)1;//updates the drone status to charging
             DroneCharge dc = new DroneCharge();//creates a new drone charge object with the current drone and station
             dc.DroneID = d.ID;
             dc.StationID = s.ID;
             DataSource.DroneCharges[DataSource.Config.AvailableDroneCharge++] = dc;
             int index = System.Array.IndexOf(DataSource.Stations, s);
-            DataSource.Stations[index].ChargeSlots--;
-            //s.ChargeSlots--;//updates the available charge slots in the current staition
+            DataSource.Stations[index].ChargeSlots--;//updates the available charge slots in the current staition
         }
         /// <summary>
         /// recieves a drone and a station and releses the drone from the chargeSlot
@@ -282,9 +281,11 @@ namespace DalObject
         /// <param Name="dc"></param>
         public static void ReleaseDrone(Drone d, Station s, DroneCharge dc) 
         {
-            d.Status = 0;//updates the drones status to available
-            d.Battery = 100;
-            s.ChargeSlots++;//updates the available charge slots in the current staition
+            int indexOfDrones = System.Array.IndexOf(DataSource.Drones, d);//find the index of the parcel were searching
+            DataSource.Drones[indexOfDrones].Status = 0;//updates the drones status to available
+            DataSource.Drones[indexOfDrones].Battery = 100;
+            int indexOfStations = System.Array.IndexOf(DataSource.Stations, s);//find the index of the parcel were searching
+            DataSource.Stations[indexOfStations].ChargeSlots++;//updates the available charge slots in the current staition
             int index = System.Array.IndexOf(DataSource.DroneCharges, dc);
             DataSource.DroneCharges[index].DroneID = 0;
             DataSource.DroneCharges[index].StationID = 0;

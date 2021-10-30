@@ -17,7 +17,7 @@ namespace ConsoleUI
             Console.WriteLine("Welcome!" );
             do
             {
-                Console.WriteLine("Choose an option: \n 1: Add, 2:Update, 3: Object presentation, 4: Array presentation, 5:Exit");
+                Console.WriteLine("Choose an option: \n1: Add, 2:Update, 3: Object presentation, 4: Array presentation, 5:Exit");
                 menuOption = (MenuOptions)int.Parse(Console.ReadLine());
                 switch (menuOption)
                 {
@@ -114,7 +114,7 @@ namespace ConsoleUI
                         }
                             case MenuOptions.Presentation:
                         {
-                            Console.WriteLine("Choose an entity Presentation:\n 1: Station, 2: Drone, 3: Customer, 4: Parcel");
+                            Console.WriteLine("Choose an entity Presentation:\n1: Station, 2: Drone, 3: Customer, 4: Parcel");
                             entitiesOptions = (EntitiesOptions)int.Parse(Console.ReadLine());//foe choosing the entity
                             switch (entitiesOptions)
                             {
@@ -163,7 +163,7 @@ namespace ConsoleUI
                         }
                     case MenuOptions.ArrayPresentation:
                         {
-                            Console.WriteLine("Choose list Presentation:\n 1: Station, 2: Drone, 3: Customer, 4: Parcel," +
+                            Console.WriteLine("Choose list Presentation:\n1: Station, 2: Drone, 3: Customer, 4: Parcel," +
                                 " 5:Non-Attributed Parcels, 6:Avalable Charge Slots. ");
                             arrayOption = (ArrayPresentationOptions)int.Parse(Console.ReadLine());//foe choosing the entity
                             switch(arrayOption)
@@ -201,13 +201,13 @@ namespace ConsoleUI
                         }
                     case MenuOptions.Update:
                         {
-                            Console.WriteLine("Choose an update option:\n 1: Attribute parcel, 2: Pick-up, 3: Delivery, 4: Charge drone, 5: Release drone\n");
+                            Console.WriteLine("Choose an update option:\n1: Attribute parcel, 2: Pick-up, 3: Delivery, 4: Charge drone, 5: Release drone");
                             updateEntitiesOption=(UpdateEntitiesOptions)int.Parse(Console.ReadLine());
                             switch(updateEntitiesOption)
                             {
                                 case UpdateEntitiesOptions.attribute:
                                     {
-                                        Console.WriteLine("Enter the drone's ID:\n"); 
+                                        Console.WriteLine("Enter the drone's ID:"); 
                                         int droneID;
                                         int parcelID;
                                         string input = Console.ReadLine();
@@ -252,13 +252,9 @@ namespace ConsoleUI
                                         int stationID;
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out droneID);
-                                        Console.WriteLine("Choose a station: \n");
-                                        Station[] available = DalObject.DalObject.FindAvailableStations();
-                                        foreach(Station ast in available)
-                                        {
-                                            Console.WriteLine(ast);
-                                        }
-                                        input= Console.ReadLine();
+                                        printAvailableStations();
+                                        Console.WriteLine("Choose a station:");
+                                        input = Console.ReadLine();
                                         int.TryParse(input, out stationID);
                                         Drone d = DalObject.DalObject.GetDrone(droneID);
                                         Station s = DalObject.DalObject.GetStation(stationID);
@@ -362,31 +358,24 @@ namespace ConsoleUI
             }
 
             /// <summary>
-            /// gets a maximum and minimum numbers and returns a random double number 
-            /// </summary>
-            /// <param Name="min"></param>
-            /// <param Name="max"></param>
-            /// <returns></returns a random double number>
-            static double getRandomDoubleNumber(double min, double max)
-            {
-                Random rand = new Random();
-                return rand.NextDouble() * (max - min) + min;//return a random double number 
-            }
-            /// <summary>
             /// prints the list of customers
             /// </summary>
             static void printListOfCustomers()
             {
-                foreach (var item in DalObject.DalObject.CopyCustomerArray())
-                    Console.WriteLine(item);
+                Customer[] temp = DalObject.DalObject.CopyCustomerArray();
+                for(int i=0;i<temp.Length;i++)
+                    if(temp[i].ID>0)
+                        Console.WriteLine(temp[i]);
             }
             /// <summary>
             /// prints the list of parcels
             /// </summary>
             static void printListOfParcels()
             {
-                foreach (var item in DalObject.DalObject.CopyParcelArray())
-                    Console.WriteLine(item);
+                Parcel[] temp = DalObject.DalObject.CopyParcelArray();
+                for (int i = 0; i < temp.Length; i++)
+                    if (temp[i].ID > 0)
+                        Console.WriteLine(temp[i]);
             }
 
             /// <summary>
@@ -394,16 +383,20 @@ namespace ConsoleUI
             /// </summary>
             static void printListOfStations()
             {
-                foreach (var item in DalObject.DalObject.CopyStationArray())
-                    Console.WriteLine(item);
+                Station[] temp = DalObject.DalObject.CopyStationArray();
+                for (int i = 0; i < temp.Length; i++)
+                    if (temp[i].ID > 0)
+                        Console.WriteLine(temp[i]);
             }
             /// <summary>
             /// prints the list of drones
             /// </summary>
             static void printListOfDrones()
             {
-                foreach (var item in DalObject.DalObject.CopyDroneArray())
-                    Console.WriteLine(item);
+                Drone[] temp = DalObject.DalObject.CopyDroneArray();
+                for (int i = 0; i < temp.Length; i++)
+                    if (temp[i].ID > 0)
+                        Console.WriteLine(temp[i]);
             }
 
             /// <summary>
@@ -418,19 +411,17 @@ namespace ConsoleUI
 
             static void printAvailableStations()
             {
-                foreach (Station s in DalObject.DalObject.FindAvailableStations())
-                    if (s.ChargeSlots > 0)
+                Station[] temp = DalObject.DalObject.FindAvailableStations();
+                for (int i=0;i<temp.Length;i++)//prints the stations with available charging slots.
+                {
+                    if (temp[i].ChargeSlots > 0)
                     {
-                        Console.WriteLine(s);
+                        Console.WriteLine(temp[i]);
                     }
+                }
             }
         }
-         
-     
-      
 
-
-      
     }
 }
 
