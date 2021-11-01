@@ -9,12 +9,17 @@ namespace DalObject
 {
     public class DalObject
     {
-        public DalObject() { DataSource.Initialize(); }//c-tor.
+        public DalObject()
+        {
+            DataSource.Initialize(); 
+        }
+        
+        //c-tor.
         /// <summary>
         /// gets a station and adds it to the array
         /// </summary>
-        /// <param Name="s"></param>
-        /// <returns></returns>
+        /// <param Name="s">Station to add</param>
+
         public void AddStation(Station s)
         {
             Station temp = new Station();

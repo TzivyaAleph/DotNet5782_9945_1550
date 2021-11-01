@@ -147,8 +147,8 @@ namespace DalObject
                     ID = Config.RunningParcelID++,
                     SenderID = Customers[i].ID,
                     TargetID = Customers[j].ID,
-                    Weight = (WeightCategories)rand.Next(3),
-                    Priority = (Priorities)rand.Next(3),
+                    Weight = RandomEnumValue<WeightCategories>(),
+                    Priority = RandomEnumValue<Priorities>(),
                     Requested = dateAndTime,
                     DroneID = Drones[rand.Next(5)].ID,
                     Scheduled = dateAndTime.AddMinutes(rand.Next(10, 1000)),
@@ -157,17 +157,12 @@ namespace DalObject
                 };
             }
         }
-        /// <summary>
-        /// gets  2 dates and return a random date between the 2 dates
-        /// </summary>
-        /// <param Name="start"></param>
-        /// <param Name="end"></param>
-        /// <returns></returns a random date between the 2 dates>
-        //private static DateTime getRandomDateTime(DateTime start, DateTime end)
-        //{ 
-        //    int range=(end-start).Days;
-        //    return start.AddDays(rand.Next(range));
-        //}
+        
+        static T RandomEnumValue<T>()
+        {
+            var v = Enum.GetValues(typeof(T));
+            return (T)v.GetValue(rand.Next(v.Length));
+        }
     }
 
 }
