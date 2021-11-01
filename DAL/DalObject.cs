@@ -15,7 +15,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="s"></param>
         /// <returns></returns>
-        public static void AddStation(Station s)
+        public void AddStation(Station s)
         {
             Station temp = new Station();
             temp = s;
@@ -27,7 +27,7 @@ namespace DalObject
         /// add new drone and updates 
         /// </summary>
         /// <returns></returns>
-        public static void AddDrone(Drone d)
+        public void AddDrone(Drone d)
         {
             Drone temp = new Drone();
             temp = d;
@@ -40,7 +40,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="c"></param>
         /// <returns></returns>
-        public static void AddCusomer(Customer c)
+        public void AddCusomer(Customer c)
         {
             Customer temp = new Customer();
             temp = c;
@@ -52,7 +52,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="p"></param>
         /// <returns></returns>
-        public static int AddParcel(Parcel p)
+        public int AddParcel(Parcel p)
         {
             Parcel temp = new Parcel();
             p.ID = DataSource.Config.RunningParcelID++;
@@ -67,7 +67,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="p"></param>
         /// <param Name="d"></param>
-        public static void AttributingParcelToDrone(Parcel p, Drone d)
+        public void AttributingParcelToDrone(Parcel p, Drone d)
         {
             int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
             DataSource.Parcels[index].DroneID = d.ID;//updates the parcels drone id to the id of the drone that recieved it
@@ -77,7 +77,7 @@ namespace DalObject
         /// recieves a parcel and updates the parcels picked up time
         /// </summary>
         /// <param Name="p"></param>
-        public static void PickedUp(Parcel p, Drone d)
+        public void PickedUp(Parcel p, Drone d)
         {
             int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
             DataSource.Parcels[index].DroneID = d.ID;
@@ -89,7 +89,7 @@ namespace DalObject
         /// function that recieves a parcel and updates the parcels delivered time
         /// </summary>
         /// <param Name="p"></param>
-        public static void Delivered(Parcel p)
+        public void Delivered(Parcel p)
         {
             int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
             DataSource.Parcels[index].Delivered = DateTime.Today;//updates the parcels delivered time
@@ -99,7 +99,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="d"></param>
         /// <param Name="s"></param>
-        public static void SendDroneToChargeSlot(Drone d, Station s)
+        public void SendDroneToChargeSlot(Drone d, Station s)
         {
             int indexOfDrones = System.Array.IndexOf(DataSource.Drones, d);//find the index of the parcel were searching
             DataSource.Drones[indexOfDrones].Status = (DroneStatuses)1;//updates the drone status to charging
@@ -116,7 +116,7 @@ namespace DalObject
         /// <param Name="d"></param>
         /// <param Name="s"></param>
         /// <param Name="dc"></param>
-        public static void ReleaseDrone(Drone d, Station s, DroneCharge dc)
+        public void ReleaseDrone(Drone d, Station s, DroneCharge dc)
         {
             int indexOfDrones = System.Array.IndexOf(DataSource.Drones, d);//find the index of the parcel were searching
             DataSource.Drones[indexOfDrones].Status = 0;//updates the drones status to available
@@ -133,7 +133,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="stationID"></param>
         /// <returns></returs the drone charge object were looking for>
-        public static DroneCharge GetDroneCharge(int stationID, int droneID)
+        public DroneCharge GetDroneCharge(int stationID, int droneID)
         {
             DroneCharge droneChargeToReturn = new DroneCharge();
             //searches the station with the recieved id.
@@ -149,7 +149,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="stationID"></param>
         /// <returns></returs the station were looking for>
-        public static Station GetStation(int stationID)
+        public Station GetStation(int stationID)
         {
             Station stationToReturn = new Station();
             //searches the station with the recieved id.
@@ -165,7 +165,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="droneID"></param>
         /// <returns></returnsthe drone were looking for>
-        public static Drone GetDrone(int droneID)
+        public Drone GetDrone(int droneID)
         {
             Drone droneToReturn = new Drone();
             foreach (Drone d in DataSource.Drones)//searches for the drone 
@@ -180,7 +180,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="customerID"></param>
         /// <returns></returnsthe customer were looking for>
-        public static Customer GetCustomer(int customerID)
+        public Customer GetCustomer(int customerID)
         {
             Customer customerToReturn = new Customer();
             //searches the customer by the id
@@ -196,7 +196,7 @@ namespace DalObject
         /// </summary>
         /// <param Name="parcelID"></param>
         /// <returns></returns parcel were looking for>
-        public static Parcel GetParcel(int parcelID)
+        public Parcel GetParcel(int parcelID)
         {
             Parcel parcelToReturn = new Parcel();
             foreach (Parcel p in DataSource.Parcels)
@@ -210,7 +210,7 @@ namespace DalObject
         /// coppies the station array
         /// </summary>
         /// <returns></returns the coppied array>
-        public static Station[] CopyStationArray()
+        public Station[] CopyStationArray()
         {
             Station[] arr2 = (Station[])DataSource.Stations.Clone();
             return arr2;
@@ -219,7 +219,7 @@ namespace DalObject
         /// coppies the drone array
         /// </summary>
         /// <returns></returns the coppied array>
-        public static Drone[] CopyDroneArray()
+        public Drone[] CopyDroneArray()
         {
             Drone[] arr2 = (Drone[])DataSource.Drones.Clone();
             return arr2;
@@ -228,7 +228,7 @@ namespace DalObject
         /// coppies the customer array
         /// </summary>
         /// <returns></returns the coppied array>
-        public static Customer[] CopyCustomerArray()
+        public Customer[] CopyCustomerArray()
         {
             Customer[] arr2 = (Customer[])DataSource.Customers.Clone();
             return arr2;
@@ -237,7 +237,7 @@ namespace DalObject
         /// coppies the parcel array
         /// </summary>
         /// <returns></returns the coppied array>
-        public static Parcel[] CopyParcelArray()
+        public Parcel[] CopyParcelArray()
         {
             Parcel[] arr2 = (Parcel[])DataSource.Parcels.Clone();
             return arr2;
@@ -246,7 +246,7 @@ namespace DalObject
         /// searches for the non atributted parcels and coppies them into a new array.
         /// </summary>
         /// <returns></returns the new array>
-        public static Parcel[] FindNotAttributedParcels()
+        public Parcel[] FindNotAttributedParcels()
         {
             int i = 0;//for the array's index
             Parcel[] notAttributed = new Parcel[1000];//new array to hold non attributed parcels
@@ -264,7 +264,7 @@ namespace DalObject
         /// creates an array by searching for available charge slots in the station array.
         /// </summary>
         /// <returns></returns the new array>
-        public static Station[] FindAvailableStations()
+        public Station[] FindAvailableStations()
         {
             int j = 0;//for the new array's index
             Station[] availableStations = new Station[50];//new array to hold Available Stations
@@ -275,9 +275,7 @@ namespace DalObject
                     j++;
                 }
             return availableStations;
-
         }
-
 
     }
 }

@@ -5,7 +5,8 @@ namespace ConsoleUI
 {
     class Program
     {
-        DalObject.DalObject data = new DalObject.DalObject();
+
+        static DalObject.DalObject data = new DalObject.DalObject();
         static void Main(string[] args)
         {
             MenuOptions menuOption;
@@ -43,7 +44,7 @@ namespace ConsoleUI
                                         bool flag=long.TryParse(Console.ReadLine(), out lattitude);
                                         Station s = new Station();
                                         s = createObjectStation(ID, name, numOfSlots,longitude,lattitude);
-                                        DalObject.DalObject.AddStation(s);
+                                        data.AddStation(s);
                                         break;
                                     }
                                 case EntitiesOptions.Drone:
@@ -62,7 +63,7 @@ namespace ConsoleUI
                                         double.TryParse(Console.ReadLine(), out battery);
                                         Drone d = new Drone();
                                         d = createObjectDrone(ID, model, maxWeight, battery);
-                                        DalObject.DalObject.AddDrone(d);
+                                        data.AddDrone(d);
                                         break;
                                     }
                                 case EntitiesOptions.Customer:
@@ -83,7 +84,7 @@ namespace ConsoleUI
                                         long.TryParse(Console.ReadLine(), out lattitude);
                                         Customer c = new Customer();
                                         c = createObjectCustomer(ID, name, phoneNumber, longitude, lattitude);
-                                        DalObject.DalObject.AddCusomer(c);
+                                        data.AddCusomer(c);
                                         break;
 
                                     }
@@ -104,7 +105,7 @@ namespace ConsoleUI
                                         Parcel p = new Parcel();
                                         p = createObjectParcel(senderID, targetID, weight, priority);
                                         int newRunningID;
-                                        newRunningID= DalObject.DalObject.AddParcel(p);
+                                        newRunningID= data.AddParcel(p);
                                         break;
                                     }
                             }
@@ -122,7 +123,7 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter the station ID:");
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out stationID);
-                                        Station s= DalObject.DalObject.GetStation(stationID);
+                                        Station s= data.GetStation(stationID);
                                         Console.WriteLine(s);
                                         break;
                                     }
@@ -132,7 +133,7 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter the drone ID:");
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out droneID);
-                                        Drone d = DalObject.DalObject.GetDrone(droneID);
+                                        Drone d = data.GetDrone(droneID);
                                         Console.WriteLine(d);
                                         break;
                                     }
@@ -142,7 +143,7 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter the drone ID:");
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out costumerID);
-                                        Customer c = DalObject.DalObject.GetCustomer(costumerID);
+                                        Customer c = data.GetCustomer(costumerID);
                                         Console.WriteLine(c);
                                         break;
                                     }
@@ -152,7 +153,7 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter the parcel ID:");
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out parcelID);
-                                        Parcel p = DalObject.DalObject.GetParcel(parcelID);
+                                        Parcel p = data.GetParcel(parcelID);
                                         Console.WriteLine(p);
                                         break;
                                     }
@@ -213,9 +214,9 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter the ID of the parcel to attribute: ");
                                         input= Console.ReadLine();
                                         int.TryParse(input, out parcelID);
-                                        Drone d = DalObject.DalObject.GetDrone(droneID);
-                                        Parcel p = DalObject.DalObject.GetParcel(parcelID);
-                                        DalObject.DalObject.AttributingParcelToDrone(p, d);
+                                        Drone d = data.GetDrone(droneID);
+                                        Parcel p = data.GetParcel(parcelID);
+                                        data.AttributingParcelToDrone(p, d);
                                         break;
                                     }
                                 case UpdateEntitiesOptions.PickUp:
@@ -228,9 +229,9 @@ namespace ConsoleUI
                                         Console.WriteLine("Enter the ID of the parcel to pick up: ");
                                         input = Console.ReadLine();
                                         int.TryParse(input, out parcelID);
-                                        Drone d = DalObject.DalObject.GetDrone(droneID);
-                                        Parcel p = DalObject.DalObject.GetParcel(parcelID);
-                                        DalObject.DalObject.PickedUp(p, d);
+                                        Drone d = data.GetDrone(droneID);
+                                        Parcel p = data.GetParcel(parcelID);
+                                        data.PickedUp(p, d);
                                         break;
                                     }
                                 case UpdateEntitiesOptions.Delivery:
@@ -239,8 +240,8 @@ namespace ConsoleUI
                                         int parcelID;
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out parcelID);
-                                        Parcel p = DalObject.DalObject.GetParcel(parcelID);
-                                        DalObject.DalObject.Delivered(p);
+                                        Parcel p = data.GetParcel(parcelID);
+                                        data.Delivered(p);
                                         break;
                                     }
                                 case UpdateEntitiesOptions.ChargeDrone:
@@ -254,9 +255,9 @@ namespace ConsoleUI
                                         Console.WriteLine("Choose a station:");
                                         input = Console.ReadLine();
                                         int.TryParse(input, out stationID);
-                                        Drone d = DalObject.DalObject.GetDrone(droneID);
-                                        Station s = DalObject.DalObject.GetStation(stationID);
-                                        DalObject.DalObject.SendDroneToChargeSlot(d, s);
+                                        Drone d = data.GetDrone(droneID);
+                                        Station s = data.GetStation(stationID);
+                                        data.SendDroneToChargeSlot(d, s);
                                         break;
                                     }
                                 case UpdateEntitiesOptions.ReleaseDrone:
@@ -266,13 +267,13 @@ namespace ConsoleUI
                                         int stationID;
                                         string input = Console.ReadLine();
                                         int.TryParse(input, out droneID);
-                                        Drone d = DalObject.DalObject.GetDrone(droneID);
+                                        Drone d = data.GetDrone(droneID);
                                         Console.WriteLine("Enter the station's ID:");
                                         input = Console.ReadLine();
                                         int.TryParse(input, out stationID);
-                                        Station s = DalObject.DalObject.GetStation(stationID);
-                                        DroneCharge dc = DalObject.DalObject.GetDroneCharge(stationID, droneID);
-                                        DalObject.DalObject.ReleaseDrone(d, s, dc);
+                                        Station s = data.GetStation(stationID);
+                                        DroneCharge dc = data.GetDroneCharge(stationID, droneID);
+                                        data.ReleaseDrone(d, s, dc);
                                         break;
                                     }
                             }
@@ -362,7 +363,7 @@ namespace ConsoleUI
         /// </summary>
         static void printListOfCustomers()
         {
-            Customer[] temp = DalObject.DalObject.CopyCustomerArray();
+            Customer[] temp = data.CopyCustomerArray();
             for (int i = 0; i < temp.Length; i++)
                 if (temp[i].ID > 0)
                     Console.WriteLine(temp[i]);
@@ -372,7 +373,7 @@ namespace ConsoleUI
         /// </summary>
         static void printListOfParcels()
         {
-            Parcel[] temp = DalObject.DalObject.CopyParcelArray();
+            Parcel[] temp = data.CopyParcelArray();
             for (int i = 0; i < temp.Length; i++)
                 if (temp[i].ID > 0)
                     Console.WriteLine(temp[i]);
@@ -383,7 +384,7 @@ namespace ConsoleUI
         /// </summary>
         static void printListOfStations()
         {
-            Station[] temp = DalObject.DalObject.CopyStationArray();
+            Station[] temp = data.CopyStationArray();
             for (int i = 0; i < temp.Length; i++)
                 if (temp[i].ID > 0)
                     Console.WriteLine(temp[i]);
@@ -393,7 +394,7 @@ namespace ConsoleUI
         /// </summary>
         static void printListOfDrones()
         {
-            Drone[] temp = DalObject.DalObject.CopyDroneArray();
+            Drone[] temp = data.CopyDroneArray();
             for (int i = 0; i < temp.Length; i++)
                 if (temp[i].ID > 0)
                     Console.WriteLine(temp[i]);
@@ -404,14 +405,14 @@ namespace ConsoleUI
         /// </summary>
         static void printNonAttributedParcels()
         {
-            foreach (Parcel p in DalObject.DalObject.FindNotAttributedParcels())
+            foreach (Parcel p in data.FindNotAttributedParcels())
                 if (p.DroneID != 0)
                     Console.WriteLine(p);
         }
 
         static void printAvailableStations()
         {
-            Station[] temp = DalObject.DalObject.FindAvailableStations();
+            Station[] temp = data.FindAvailableStations();
             for (int i = 0; i < temp.Length; i++)//prints the stations with available charging slots.
             {
                 if (temp[i].ChargeSlots > 0)
