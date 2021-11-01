@@ -5,11 +5,9 @@ namespace ConsoleUI
 {
     class Program
     {
-        static DalObject.DalObject data;
-
+        DalObject.DalObject data = new DalObject.DalObject();
         static void Main(string[] args)
         {
-            DalObject.DalObject data = new DalObject.DalObject();
             MenuOptions menuOption;
             EntitiesOptions entitiesOptions;
             ArrayPresentationOptions arrayOption;
@@ -286,138 +284,139 @@ namespace ConsoleUI
                 }
             }
             while (menuOption!=MenuOptions.Exit);
-            /// <summary>
-            /// creates a station object and updates it's data with random and user's input
-            /// </summary>
-            /// <param Name="name"></param>
-            /// <param Name="num"></param>
-            /// <returns></returns the new station>
-            static Station createObjectStation(int myID, string name, int numOfSlots, long myLongitude, long myLattitude)
+            
+        }
+        /// <summary>
+        /// creates a station object and updates it's data with random and user's input
+        /// </summary>
+        /// <param Name="name"></param>
+        /// <param Name="num"></param>
+        /// <returns></returns the new station>
+        static Station createObjectStation(int myID, string name, int numOfSlots, long myLongitude, long myLattitude)
+        {
+            Random rand = new Random();
+            Station s = new Station
             {
-                Random rand = new Random();
-                Station s = new Station
+                ID = myID,
+                StationName = name,
+                ChargeSlots = numOfSlots,
+                Lattitude = myLattitude,
+                Longitude = myLongitude
+            };
+            return s;
+
+        }
+
+        /// <summary>
+        /// creates a Drone object and updates it's data with random and user's input
+        /// </summary>
+        /// <param Name="myModel"></param>
+        /// <returns></returns the new drone>
+        static Drone createObjectDrone(int myID, string myModel, WeightCategories myMaxWeight, double myBattery)
+        {
+            Drone d = new Drone
+            {
+                ID = myID,
+                Model = myModel,
+                MaxWeight = myMaxWeight,
+                Status = 0,
+                Battery = myBattery
+            };
+            return d;
+        }
+
+        /// <summary>
+        /// creates a customer object and updates it's data with random and user's input
+        /// </summary>
+        /// <param Name="myName"></param>
+        /// <returns></returns the new customer>
+        static Customer createObjectCustomer(int myID, string myName, string myPhoneNumber, long myLongitude, long myLattitude)
+        {
+            Customer c = new Customer
+            {
+                ID = myID,
+                Name = myName,
+                PhoneNumber = myPhoneNumber,
+                Lattitude = myLongitude,
+                Longtitude = myLattitude,
+            };
+            return c;
+        }
+
+        static Parcel createObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
+        {
+            Parcel p = new Parcel
+            {
+                SenderID = mySenderID,
+                TargetID = myTargetID,
+                Weight = myWeight,
+                Priority = myPriority,
+                Requested = DateTime.Today,//the parcel has been ready today
+                DroneID = 0//no drone has been costumed yet
+            };
+            return p;
+        }
+
+        /// <summary>
+        /// prints the list of customers
+        /// </summary>
+        static void printListOfCustomers()
+        {
+            Customer[] temp = DalObject.DalObject.CopyCustomerArray();
+            for (int i = 0; i < temp.Length; i++)
+                if (temp[i].ID > 0)
+                    Console.WriteLine(temp[i]);
+        }
+        /// <summary>
+        /// prints the list of parcels
+        /// </summary>
+        static void printListOfParcels()
+        {
+            Parcel[] temp = DalObject.DalObject.CopyParcelArray();
+            for (int i = 0; i < temp.Length; i++)
+                if (temp[i].ID > 0)
+                    Console.WriteLine(temp[i]);
+        }
+
+        /// <summary>
+        /// prints the list of stations
+        /// </summary>
+        static void printListOfStations()
+        {
+            Station[] temp = DalObject.DalObject.CopyStationArray();
+            for (int i = 0; i < temp.Length; i++)
+                if (temp[i].ID > 0)
+                    Console.WriteLine(temp[i]);
+        }
+        /// <summary>
+        /// prints the list of drones
+        /// </summary>
+        static void printListOfDrones()
+        {
+            Drone[] temp = DalObject.DalObject.CopyDroneArray();
+            for (int i = 0; i < temp.Length; i++)
+                if (temp[i].ID > 0)
+                    Console.WriteLine(temp[i]);
+        }
+
+        /// <summary>
+        /// prints the list of Non Attributed Parcels
+        /// </summary>
+        static void printNonAttributedParcels()
+        {
+            foreach (Parcel p in DalObject.DalObject.FindNotAttributedParcels())
+                if (p.DroneID != 0)
+                    Console.WriteLine(p);
+        }
+
+        static void printAvailableStations()
+        {
+            Station[] temp = DalObject.DalObject.FindAvailableStations();
+            for (int i = 0; i < temp.Length; i++)//prints the stations with available charging slots.
+            {
+                if (temp[i].ChargeSlots > 0)
                 {
-                    ID = myID,
-                    StationName = name,
-                    ChargeSlots = numOfSlots,
-                    Lattitude = myLattitude,
-                    Longitude = myLongitude
-                };
-                return s;
-
-            }
-
-            /// <summary>
-            /// creates a Drone object and updates it's data with random and user's input
-            /// </summary>
-            /// <param Name="myModel"></param>
-            /// <returns></returns the new drone>
-            static Drone createObjectDrone(int myID, string myModel, WeightCategories myMaxWeight, double myBattery)
-            {
-                Drone d = new Drone
-                {
-                    ID = myID,
-                    Model = myModel,
-                    MaxWeight = myMaxWeight,
-                    Status = 0,
-                    Battery = myBattery
-                };
-                return d;
-            }
-
-            /// <summary>
-            /// creates a customer object and updates it's data with random and user's input
-            /// </summary>
-            /// <param Name="myName"></param>
-            /// <returns></returns the new customer>
-            static Customer createObjectCustomer(int myID, string myName, string myPhoneNumber, long myLongitude, long myLattitude)
-            {
-                Customer c = new Customer
-                {
-                    ID = myID,
-                    Name = myName,
-                    PhoneNumber = myPhoneNumber,
-                    Lattitude = myLongitude,
-                    Longtitude = myLattitude,
-                };
-                return c;
-            }
-
-            static Parcel createObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
-            {
-                Parcel p = new Parcel
-                {
-                    SenderID = mySenderID,
-                    TargetID = myTargetID,
-                    Weight = myWeight,
-                    Priority = myPriority,
-                    Requested = DateTime.Today,//the parcel has been ready today
-                    DroneID = 0//no drone has been costumed yet
-                };
-                return p;
-            }
-
-            /// <summary>
-            /// prints the list of customers
-            /// </summary>
-            static void printListOfCustomers()
-            {
-                Customer[] temp = DalObject.DalObject.CopyCustomerArray();
-                for(int i=0;i<temp.Length;i++)
-                    if(temp[i].ID>0)
-                        Console.WriteLine(temp[i]);
-            }
-            /// <summary>
-            /// prints the list of parcels
-            /// </summary>
-            static void printListOfParcels()
-            {
-                Parcel[] temp = DalObject.DalObject.CopyParcelArray();
-                for (int i = 0; i < temp.Length; i++)
-                    if (temp[i].ID > 0)
-                        Console.WriteLine(temp[i]);
-            }
-
-            /// <summary>
-            /// prints the list of stations
-            /// </summary>
-            static void printListOfStations()
-            {
-                Station[] temp = DalObject.DalObject.CopyStationArray();
-                for (int i = 0; i < temp.Length; i++)
-                    if (temp[i].ID > 0)
-                        Console.WriteLine(temp[i]);
-            }
-            /// <summary>
-            /// prints the list of drones
-            /// </summary>
-            static void printListOfDrones()
-            {
-                Drone[] temp = DalObject.DalObject.CopyDroneArray();
-                for (int i = 0; i < temp.Length; i++)
-                    if (temp[i].ID > 0)
-                        Console.WriteLine(temp[i]);
-            }
-
-            /// <summary>
-            /// prints the list of Non Attributed Parcels
-            /// </summary>
-            static void printNonAttributedParcels()
-            {
-                foreach (Parcel p in DalObject.DalObject.FindNotAttributedParcels())
-                    if (p.DroneID != 0)
-                        Console.WriteLine(p);
-            }
-
-            static void printAvailableStations()
-            {
-                Station[] temp = DalObject.DalObject.FindAvailableStations();
-                for (int i=0;i<temp.Length;i++)//prints the stations with available charging slots.
-                {
-                    if (temp[i].ChargeSlots > 0)
-                    {
-                        Console.WriteLine(temp[i]);
-                    }
+                    Console.WriteLine(temp[i]);
                 }
             }
         }
