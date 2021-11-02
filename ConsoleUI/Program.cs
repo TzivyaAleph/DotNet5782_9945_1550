@@ -5,8 +5,9 @@ namespace ConsoleUI
 {
     class Program
     {
-
+        // an object for initialize and for reaching the function in dalObject.
         static DalObject.DalObject data = new DalObject.DalObject();
+
         static void Main(string[] args)
         {
             MenuOptions menuOption;
@@ -287,6 +288,7 @@ namespace ConsoleUI
             while (menuOption!=MenuOptions.Exit);
             
         }
+
         /// <summary>
         /// creates a station object and updates it's data with random and user's input
         /// </summary>
@@ -344,6 +346,14 @@ namespace ConsoleUI
             return c;
         }
 
+        /// <summary>
+        /// creates a new parcel with the data it recieves.
+        /// </summary>
+        /// <param name="mySenderID"></param>
+        /// <param name="myTargetID"></param>
+        /// <param name="myWeight"></param>
+        /// <param name="myPriority"></param>
+        /// <returns></returns the new parcel>
         static Parcel createObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
         {
             Parcel p = new Parcel
@@ -368,6 +378,7 @@ namespace ConsoleUI
                 if (temp[i].ID > 0)
                     Console.WriteLine(temp[i]);
         }
+
         /// <summary>
         /// prints the list of parcels
         /// </summary>
@@ -389,6 +400,7 @@ namespace ConsoleUI
                 if (temp[i].ID > 0)
                     Console.WriteLine(temp[i]);
         }
+
         /// <summary>
         /// prints the list of drones
         /// </summary>
@@ -410,6 +422,9 @@ namespace ConsoleUI
                     Console.WriteLine(p);
         }
 
+        /// <summary>
+        /// prints a list with all the available stations in it
+        /// </summary>
         static void printAvailableStations()
         {
             Station[] temp = data.FindAvailableStations();

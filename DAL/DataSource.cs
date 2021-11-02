@@ -12,6 +12,10 @@ namespace DalObject
         internal static Station[] Stations = new Station[5];
         internal static Customer[] Customers = new Customer[100];
         internal static DroneCharge[] DroneCharges = new DroneCharge[100];
+
+        /// <summary>
+        /// class for static variables for each array.
+        /// </summary>
         internal class Config
         {
             internal static int AvailableDrone = 0;
@@ -34,6 +38,7 @@ namespace DalObject
             createCustomer(10);
             createParcels(10);
         }
+
         /// <summary>
         /// /creates 5 drones with random datas
         /// </summary>
@@ -81,6 +86,7 @@ namespace DalObject
             };
             Config.AvailableDrone += 5;//updates the next available index.
         }
+
         /// <summary>
         /// gets a maximum and minimum numbers and returns a random double number 
         /// </summary>
@@ -91,6 +97,7 @@ namespace DalObject
         {
             return rand.NextDouble() * (max - min) + min;//return a random duble number 
         }
+
         /// <summary>
         /// creates 2 stations and puts random data. 
         /// </summary>
@@ -114,6 +121,7 @@ namespace DalObject
             };
             Config.AvailableStation += 2;
         }
+
         /// <summary>
         /// creates 10 customers with random data
         /// </summary>
@@ -133,6 +141,7 @@ namespace DalObject
                 };
             }
         }
+
         /// <summary>
         /// gets parcels and updates their data randomely.
         /// </summary>
@@ -158,11 +167,17 @@ namespace DalObject
             }
         }
         
+        /// <summary>
+        /// function for random enums.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         static T RandomEnumValue<T>()
         {
             var v = Enum.GetValues(typeof(T));
             return (T)v.GetValue(rand.Next(v.Length));
         }
+
     }
 
 }
