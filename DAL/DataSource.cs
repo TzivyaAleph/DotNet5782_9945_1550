@@ -31,6 +31,7 @@ namespace DalObject
         /// <summary>
         /// initializes the arrays with the entities.
         /// </summary>
+        
         internal static void Initialize()
         {
             createDrones();
@@ -41,6 +42,7 @@ namespace DalObject
         /// <summary>
         /// /creates 5 drones with random datas
         /// </summary>
+        /// 
         private static void createDrones()
         {
             Drones.Add(new Drone

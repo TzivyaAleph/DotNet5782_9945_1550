@@ -113,7 +113,7 @@ namespace DalObject
             int indexDrone = DataSource.Drones.FindIndex(item => item.ID == d.ID);//find the index of the parcel were searching
             if (indexDrone == -1)
             {
-                throw new ParcelException("id { p.Id}   does not exist !!!");
+                throw new ParcelException($"id { p.Id}   does not exist !!!");
             }
             d.Status = DroneStatuses.delivery;
             DataSource.Drones[indexDrone] = d;
@@ -155,12 +155,12 @@ namespace DalObject
         /// <param Name="dc"></param>
         public void ReleaseDrone(Drone d, Station s, DroneCharge dc)
         {
-            int indexOfDrones = System.Array.IndexOf(DataSource.Drones, d);//find the index of the parcel were searching
-            DataSource.Drones[indexOfDrones].Status = 0;//updates the drones status to available
+            int indexOfDrones = DataSource.Drones.FindIndex(item => item.ID == d.ID);//find the index of the drone were searching
+           DataSource.Drones[indexOfDrones].Status ;//updates the drones status to available
             DataSource.Drones[indexOfDrones].Battery = 100;
-            int indexOfStations = System.Array.IndexOf(DataSource.Stations, s);//find the index of the parcel were searching
+            int indexOfStations = DataSource.Stations.FindIndex(item => item.ID == d.ID);//find the index of the station were searching
             DataSource.Stations[indexOfStations].ChargeSlots++;//updates the available charge slots in the current staition
-            int index = System.Array.IndexOf(DataSource.DroneCharges, dc);
+            int index = DataSource.DroneCharges.FindIndex(item => (item.DroneID == dc.DroneID)&&(item.StationID==item.StationID));
             DataSource.DroneCharges[index].DroneID = 0;
             DataSource.DroneCharges[index].StationID = 0;
         }
@@ -253,53 +253,53 @@ namespace DalObject
         /// coppies the station array
         /// </summary>
         /// <returns></returns the coppied array>
-        public Station[] CopyStationArray()
+        public List<Station> CopyStationArray()
         {
-            Station[] arr2 = (Station[])DataSource.Stations.Clone();
-            return arr2;
+            List<Station> newList = new List<Station>(DataSource.Stations);
+            return newList;
         }
 
         /// <summary>
         /// coppies the drone array
         /// </summary>
         /// <returns></returns the coppied array>
-        public Drone[] CopyDroneArray()
+        public List<Drone> CopyDroneArray()
         {
-            Drone[] arr2 = (Drone[])DataSource.Drones.Clone();
-            return arr2;
+            List<Drone> newList = new List<Drone>(DataSource.Drones);
+            return newList;
         }
 
         /// <summary>
         /// coppies the customer array
         /// </summary>
         /// <returns></returns the coppied array>
-        public Customer[] CopyCustomerArray()
+        public List<Customer> CopyCustomerArray()
         {
-            Customer[] arr2 = (Customer[])DataSource.Customers.Clone();
-            return arr2;
+            List<Customer> newList=new List<Customer>(DataSource.Customers);
+            return newList;
         }
 
         /// <summary>
         /// coppies the parcel array
         /// </summary>
         /// <returns></returns the coppied array>
-        public Parcel[] CopyParcelArray()
+        public List<Parcel> CopyParcelArray()
         {
-            Parcel[] arr2 = (Parcel[])DataSource.Parcels.Clone();
-            return arr2;
+            List<Parcel> newLIst = new List<Parcel>(DataSource.Parcels);
+            return newLIst;
         }
 
         /// <summary>
         /// searches for the non atributted parcels and coppies them into a new array.
         /// </summary>
         /// <returns></returns the new array>
-        public Parcel[] FindNotAttributedParcels()
+        public List<Parcel> FindNotAttributedParcels()
         {
             int i = 0;//for the array's index
-            Parcel[] notAttributed = new Parcel[1000];//new array to hold non attributed parcels
+            List<Parcel> notAttributed =new List<Parcel>();//new list to hold non attributed parcels
             foreach (Parcel p in DataSource.Parcels)//searches for the non attributed parcels
             {
-                if (p.DroneID != 0)
+                if (p.DroneID == 0)
                 {
                     notAttributed[i] = p;
                     i++;
@@ -312,11 +312,11 @@ namespace DalObject
         /// creates an array by searching for available charge slots in the station array.
         /// </summary>
         /// <returns></returns the new array>
-        public Station[] FindAvailableStations()
+        public List<Station> FindAvailableStations()
         {
             int j = 0;//for the new array's index
-            Station[] availableStations = new Station[50];//new array to hold Available Stations
-            for (int i = 0; i < DataSource.Stations.Length; i++)
+            List<Station> availableStations = new List<Station>();//new array to hold Available Stations
+            for (int i = 0; i < DataSource.Stations.Count; i++)
                 if (DataSource.Stations[i].ChargeSlots > 0)
                 {
                     availableStations[j] = DataSource.Stations[i];
@@ -324,6 +324,10 @@ namespace DalObject
                 }
             return availableStations;
         }
+
+ 
+
+
 
         //public void AddBaseStation(BaseStation b)
         //{

@@ -11,6 +11,12 @@ namespace IBL.BO
         public int Id { get; set; }
         public CustomerParcel Recipient { get; set; }
         public CustomerParcel Sender { get; set; }
-
+        public Weight Weight { get; set; }
+        public Priority Priority { get; set; }
+        public DroneParcel DroneInParcel { get; set; }
+        public DateTime Requested { get; set; }//the time when the parcel has been made and ready.
+        public DateTime Scheduled { get; set; }
+        public DateTime PickedUp { get; set; }
+        public DateTime Delivered { get; set; }
     }
 }

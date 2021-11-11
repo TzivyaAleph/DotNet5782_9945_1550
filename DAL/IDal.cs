@@ -1,5 +1,7 @@
 ﻿
 
+using System.Collections.Generic;
+
 namespace IDAL.DO
 {
     public interface IDal
@@ -9,12 +11,12 @@ namespace IDAL.DO
         int AddParcel(Parcel p);
         void AddStation(Station s);
         void AttributingParcelToDrone(Parcel p, Drone d);
-        Customer[] CopyCustomerArray();
-        Drone[] CopyDroneArray();
-        Parcel[] CopyParcelArray();
-        Station[] CopyStationArray();
-        Station[] FindAvailableStations();
-        Parcel[] FindNotAttributedParcels();
+        List<Customer> CopyCustomerArray();
+        List<Drone> CopyDroneArray();
+        List<Parcel> CopyParcelArray();
+        List<Station> CopyStationArray();
+        List<Station> FindAvailableStations();
+        List<Parcel> FindNotAttributedParcels();
         Customer GetCustomer(int customerID);
         Drone GetDrone(int droneID);
         DroneCharge GetDroneCharge(int stationID, int droneID);
