@@ -85,7 +85,7 @@ namespace ConsoleUI
                                         long.TryParse(Console.ReadLine(), out lattitude);
                                         Customer c = new Customer();
                                         c = createObjectCustomer(ID, name, phoneNumber, longitude, lattitude);
-                                        data.AddCusomer(c);
+                                        data.AddCustomer(c);
                                         break;
 
                                     }

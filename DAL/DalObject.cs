@@ -7,7 +7,7 @@ using IDAL.DO;
 
 namespace DalObject
 {
-    public class DalObject
+    public class DalObject : IDal
     {
 
         /// <summary>
@@ -15,9 +15,9 @@ namespace DalObject
         /// </summary>
         public DalObject()
         {
-            DataSource.Initialize(); 
+            DataSource.Initialize();
         }
-        
+
         /// <summary>
         /// gets a station and adds it to the array
         /// </summary>
@@ -25,10 +25,11 @@ namespace DalObject
 
         public void AddStation(Station s)
         {
-            Station temp = new Station();
-            temp = s;
-            DataSource.Stations[DataSource.Config.AvailableStation] = temp;
-            DataSource.Config.AvailableStation++;//updates the availabeStation that new station been edit. 
+            if (DataSource.Stations.Exists(station => station.ID == s.ID))
+            {
+                throw new StationException($"id {s.ID} allready exists !!");
+            }
+            DataSource.Stations.Add(s);
         }
 
         /// <addDrone>
@@ -37,11 +38,11 @@ namespace DalObject
         /// <returns></returns>
         public void AddDrone(Drone d)
         {
-            Drone temp = new Drone();
-            temp = d;
-            //add a new drone to the array of drone.
-            DataSource.Drones[DataSource.Config.AvailableDrone] = temp;
-            DataSource.Config.AvailableDrone++;//updates the availabeDrone that new drone been added. 
+            if (DataSource.Drones.Exists(drone => drone.ID == d.ID))
+            {
+                throw new DroneException($"id {d.ID} allready exists !!");
+            }
+            DataSource.Drones.Add(d);
         }
 
         /// <summary>
@@ -49,12 +50,13 @@ namespace DalObject
         /// </summary>
         /// <param Name="c"></param>
         /// <returns></returns>
-        public void AddCusomer(Customer c)
+        public void AddCustomer(Customer c)
         {
-            Customer temp = new Customer();
-            temp = c;
-            DataSource.Customers[DataSource.Config.AvailableCustomer] = temp;
-            DataSource.Config.AvailableCustomer++;//updates the availableCustomer that new customer been added. 
+            if (DataSource.Customers.Exists(client => client.ID == c.ID))
+            {
+                throw new CustomerException($"id {c.ID} allready exists !!");
+            }
+            DataSource.Customers.Add(c);
         }
 
         /// <summary>
@@ -64,13 +66,10 @@ namespace DalObject
         /// <returns></returns>
         public int AddParcel(Parcel p)
         {
-            Parcel temp = new Parcel();
-            p.ID = DataSource.Config.RunningParcelID++;
-            temp = p;
-            DataSource.Parcels[DataSource.Config.AvailableParcel] = temp;
-            DataSource.Parcels[DataSource.Config.AvailableParcel].ID = DataSource.Config.RunningParcelID++;
-            DataSource.Config.AvailableParcel++;//updates the availableCustomer that new customer been added. 
-            return DataSource.Config.AvailableParcel - 1;//return the id of the new  customer.
+            int id = ++DataSource.Config.RunningParcelID;
+            p.ID = id;
+            DataSource.Parcels.Add(p);
+            return id;//return the id of the new  customer.
         }
 
         /// <summary>
@@ -78,11 +77,20 @@ namespace DalObject
         /// </summary>
         /// <param Name="p"></param>
         /// <param Name="d"></param>
-        public void AttributingParcelToDrone(Parcel p, Drone d)
+        public void AttributingParcelToDrone(Parcel p, Drone d)//targil1
         {
-            int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
-            DataSource.Parcels[index].DroneID = d.ID;//updates the parcels drone id to the id of the drone that recieved it
-            DataSource.Parcels[index].Scheduled = DateTime.Today;//updates the parcels schedule time
+            p.DroneID = d.ID;
+            UpdateParcel(p);
+        }
+
+        public void UpdateParcel(Parcel parcel)
+        {
+            if (!(DataSource.Parcels.Exists(p => p.ID == parcel.ID)))
+            {
+                throw new ParcelException("id { p.Id}  is not valid !!");
+            }
+            int index = DataSource.Parcels.FindIndex(item => item.ID == parcel.ID);
+            DataSource.Parcels[index] = parcel;
         }
 
         /// <summary>
@@ -91,21 +99,24 @@ namespace DalObject
         /// <param Name="p"></param>
         public void PickedUp(Parcel p, Drone d)
         {
-            int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
-            DataSource.Parcels[index].DroneID = d.ID;
-            DataSource.Parcels[index].PickedUp = DateTime.Today;//updates the parcels pickedUp time
-            int indexOfDrones = System.Array.IndexOf(DataSource.Drones, d);//find the index of the drone were searching
-            DataSource.Drones[indexOfDrones].Status = (DroneStatuses)2;//changes the status to deliverd.
-        }
+            int index = DataSource.Parcels.FindIndex(item => item.ID == p.ID);//find the index of the parcel were searching
+            if (index == -1)
+            {
 
-        /// <summary>
-        /// function that recieves a parcel and updates the parcels delivered time
-        /// </summary>
-        /// <param Name="p"></param>
-        public void Delivered(Parcel p)
-        {
-            int index = System.Array.IndexOf(DataSource.Parcels, p);//find the index of the parcel were searching
-            DataSource.Parcels[index].Delivered = DateTime.Today;//updates the parcels delivered time
+                throw new ParcelException("id { p.Id}  does not exist !!!");
+            }
+            Parcel parcel = DataSource.Parcels[index];
+            parcel.DroneID = d.ID;
+            parcel.PickedUp = DateTime.Today;//updates the parcels pickedUp time
+            DataSource.Parcels[index] = parcel;
+
+            int indexDrone = DataSource.Drones.FindIndex(item => item.ID == d.ID);//find the index of the parcel were searching
+            if (indexDrone == -1)
+            {
+                throw new ParcelException("id { p.Id}   does not exist !!!");
+            }
+            d.Status = DroneStatuses.delivery;
+            DataSource.Drones[indexDrone] = d;
         }
 
         /// <summary>
@@ -115,14 +126,25 @@ namespace DalObject
         /// <param Name="s"></param>
         public void SendDroneToChargeSlot(Drone d, Station s)
         {
-            int indexOfDrones = System.Array.IndexOf(DataSource.Drones, d);//find the index of the parcel were searching
-            DataSource.Drones[indexOfDrones].Status = (DroneStatuses)1;//updates the drone status to charging
-            DroneCharge dc = new DroneCharge();//creates a new drone charge object with the current drone and station
-            dc.DroneID = d.ID;
-            dc.StationID = s.ID;
-            DataSource.DroneCharges[DataSource.Config.AvailableDroneCharge++] = dc;
-            int index = System.Array.IndexOf(DataSource.Stations, s);
-            DataSource.Stations[index].ChargeSlots--;//updates the available charge slots in the current staition
+            int indexStation = DataSource.Stations.FindIndex(item => item.ID == s.ID);//find the index of the parcel were searching
+            if (indexStation == -1)
+            {
+
+                throw new StationException("id { s.Id}  does not exist !!!");
+            }
+            Station station = DataSource.Stations[indexStation];
+            station.ChargeSlots++;
+            //TODO
+            ///
+            DataSource.Stations[indexStation] = station;
+
+            int indexDrone = DataSource.Drones.FindIndex(item => item.ID == d.ID);//find the index of the parcel were searching
+            if (indexDrone == -1)
+            {
+                throw new ParcelException("id { p.Id}   does not exist !!!");
+            }
+            d.Status = DroneStatuses.maintenance;
+            DataSource.Drones[indexDrone] = d;
         }
 
         /// <summary>
@@ -200,13 +222,13 @@ namespace DalObject
         /// <returns></returnsthe customer were looking for>
         public Customer GetCustomer(int customerID)
         {
-            Customer customerToReturn = new Customer();
+            Customer customerToReturn = default;
             //searches the customer by the id
-            foreach (Customer c in DataSource.Customers)
-                if (c.ID == customerID)
-                {
-                    customerToReturn = c;
-                }
+            if (DataSource.Customers.Exists(client => client.ID == customerID))
+            {
+                throw new CustomerException($"id {customerID} doesn't exist !!");
+            };
+            customerToReturn = DataSource.Customers.Find(c => c.ID == customerID);
             return customerToReturn;
         }
 
@@ -215,14 +237,15 @@ namespace DalObject
         /// </summary>
         /// <param Name="parcelID"></param>
         /// <returns></returns parcel were looking for>
-        public Parcel GetParcel(int parcelID)
+        public Parcel GetParcel(int id)
         {
-            Parcel parcelToReturn = new Parcel();
-            foreach (Parcel p in DataSource.Parcels)
-                if (p.ID == parcelID)
-                {
-                    parcelToReturn = p;
-                }
+            Parcel parcelToReturn = default;
+            //searches the customer by the id
+            if (DataSource.Parcels.Exists(p => p.ID == id))
+            {
+                throw new ParcelException($"id {id} doesn't exist !!");
+            };
+            parcelToReturn = DataSource.Parcels.Find(c => c.ID == id);
             return parcelToReturn;
         }
 
@@ -302,6 +325,100 @@ namespace DalObject
             return availableStations;
         }
 
+        //public void AddBaseStation(BaseStation b)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void AddClient(Client c)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void AddPackage(Package p)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void AddSkimmer(Quadocopter q)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void AssignPackageSkimmer(int idp, int idq)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public List<BaseStation> BaseStationFreeCharging()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void CollectionPackage(int idp)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public BaseStation GetBaseStation(int IDb)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<BaseStation> GetBaseStationList()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Client GetClient(int IDc)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<Client> GetClientList()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Package GetPackage(int idp)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<Package> GetPackageList()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<Quadocopter> GetQuadocopterList()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Quadocopter GetQuadrocopter(int IDq)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void PackageDelivery(int idp)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public List<Package> PackagesWithoutSkimmer()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void SendingSkimmerForCharging(int idq, int idBS)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void SkimmerRelease(int idq, int IdBS)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
 

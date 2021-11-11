@@ -4,7 +4,7 @@
     {
         public enum WeightCategories
         {
-            light = 0,
+            Light = 0,
             standard=1,
             heavy=2
         };

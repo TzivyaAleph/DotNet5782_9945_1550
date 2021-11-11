@@ -7,24 +7,24 @@ namespace DalObject
 {
     public class DataSource
     {
-        internal static Drone[] Drones = new Drone[10];
-        internal static Parcel[] Parcels = new Parcel[1000];
-        internal static Station[] Stations = new Station[5];
-        internal static Customer[] Customers = new Customer[100];
-        internal static DroneCharge[] DroneCharges = new DroneCharge[100];
+        internal static List<Drone> Drones = new List<Drone>();
+        internal static List<Parcel> Parcels = new List<Parcel>();
+        internal static List<Station> Stations = new List<Station>();
+        internal static List<Customer> Customers = new List<Customer>();
+        internal static List<DroneCharge> DroneCharges = new List<DroneCharge>();
 
         /// <summary>
         /// class for static variables for each array.
         /// </summary>
         internal class Config
         {
-            internal static int AvailableDrone = 0;
-            internal static int AvailableParcel = 0;
-            internal static int AvailableStation = 0;
-            internal static int AvailableCustomer = 0;
-            internal static int AvailableDroneCharge = 0;
             internal static int RunningParcelID = 200;
 
+            internal static double Light { get => 10; }
+            internal static double Avalaible { get => 0; }
+            internal static double Heavy { get => 150; }
+            internal static double Medium { get => 50; }
+            internal static double ChargingRate { get => 10.25; }
         }
 
         static Random rand = new Random();
@@ -38,53 +38,52 @@ namespace DalObject
             createCustomer(10);
             createParcels(10);
         }
-
         /// <summary>
         /// /creates 5 drones with random datas
         /// </summary>
         private static void createDrones()
         {
-            Drones[0] = new Drone
+            Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxP",
                 MaxWeight = (WeightCategories)1,
                 Status = (DroneStatuses)2,
                 Battery = getRandomDoubleNumber(0, 100)
-            };
-            Drones[1] = new Drone
+            });
+            Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxG",
                 MaxWeight = (WeightCategories)2,
                 Status = (DroneStatuses)1,
                 Battery = getRandomDoubleNumber(0, 100)
-            };
-            Drones[2] = new Drone
+            });
+            Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxF",
                 MaxWeight = (WeightCategories)0,
                 Status = (DroneStatuses)0,
                 Battery = getRandomDoubleNumber(0, 100)
-            };
-            Drones[3] = new Drone
+            });
+            Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxT",
                 MaxWeight = (WeightCategories)2,
                 Status = 0,
                 Battery = getRandomDoubleNumber(0, 100)
-            };
-            Drones[4] = new Drone
+            });
+            Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxD",
                 MaxWeight = (WeightCategories)2,
                 Status = (DroneStatuses)2,
                 Battery = getRandomDoubleNumber(0, 100)
-            };
-            Config.AvailableDrone += 5;//updates the next available index.
+
+            });
         }
 
         /// <summary>
@@ -103,23 +102,23 @@ namespace DalObject
         /// </summary>
         private static void createStation()
         {
-            Stations[0] = new Station
+            Stations.Add(new Station
             {
                 ID = rand.Next(1000, 10000),
                 StationName = "Ramot",
                 ChargeSlots = rand.Next(0, 50),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
-            };
-            Stations[1] = new Station
+            });
+            Stations.Add( new Station
             {
                 ID = rand.Next(1000, 10000),
                 StationName = "Bait Vagan",
                 ChargeSlots = rand.Next(0, 50),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
-            };
-            Config.AvailableStation += 2;
+            });
+
         }
 
         /// <summary>
@@ -131,14 +130,15 @@ namespace DalObject
             for (int i = 0; i < NumberOfCustumers; i++)//add new customers to the array
             {
                 //update their values.
-                Customers[Config.AvailableCustomer++] = new Customer
-                {
-                    ID = rand.Next(100000000, 1000000000),
-                    Name = $"{(CustomersName)rand.Next(10)}",
-                    PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
-                    Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                    Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
-                };
+                Customers.Add(
+                    new Customer
+                    {
+                        ID = rand.Next(100000000, 1000000000),
+                        Name = $"{(CustomersName)rand.Next(10)}",
+                        PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
+                        Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
+                        Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
+                    });
             }
         }
 
@@ -151,9 +151,9 @@ namespace DalObject
             DateTime dateAndTime = new DateTime(2021, 1, 1);
             for (int i = 0, j = 9; i < NumberOfParcels; i++, j--)//add new Parcels to the array
             {
-                Parcels[Config.AvailableParcel++] = new Parcel
+                Parcels.Add(new Parcel
                 {
-                    ID = Config.RunningParcelID++,
+                    ID = ++Config.RunningParcelID,
                     SenderID = Customers[i].ID,
                     TargetID = Customers[j].ID,
                     Weight = RandomEnumValue<WeightCategories>(),
@@ -163,12 +163,13 @@ namespace DalObject
                     Scheduled = dateAndTime.AddMinutes(rand.Next(10, 1000)),
                     PickedUp = dateAndTime.AddMinutes(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000)),
                     Delivered = dateAndTime.AddMinutes(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000))
-                };
+                });
             }
         }
-        
+
         /// <summary>
         /// function for random enums.
+        /// https://stackoverflow.com/questions/3132126/how-do-i-select-a-random-value-from-an-enumeration?noredirect=1&lq=1
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
