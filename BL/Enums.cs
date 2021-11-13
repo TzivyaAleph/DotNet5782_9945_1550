@@ -12,4 +12,8 @@
     {
         Regular, Fast, Emergency
     }
+    public enum DroneStatuses
+    {
+        Available, Maintenance, Delivered 
+    };
 }

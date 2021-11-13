@@ -16,12 +16,7 @@
             emergency = 2
         };
 
-        public enum DroneStatuses
-        {
-            available = 0,
-            maintenance = 1,
-            delivery = 2
-        };
+
 
         public enum CustomersName
         {

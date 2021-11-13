@@ -9,6 +9,5 @@ namespace IBL.BO
         public Priority Priority {get;set;}
         public Status Status { get; set; }
         public CustomerParcel CustomerParcel { get; set; }
-
-    }
+    }                                                                                                                                                                                                               
 }

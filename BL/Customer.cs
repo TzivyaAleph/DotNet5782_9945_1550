@@ -15,6 +15,16 @@ namespace IBL.BO
         public List<ParcelCustomer> SentParcels { get; set; }
         public List<ParcelCustomer> ReceiveParcels { get; set; }
 
+        public override string ToString()
+        {
+            string result = " ";
+            result += $"ID is {Id},\n";
+            result += $"cosumer's name is {Name},\n";
+            result += $"phoneNumber is {Phone},\n";
+            return result;
+        }
 
     }
+
+
 }
