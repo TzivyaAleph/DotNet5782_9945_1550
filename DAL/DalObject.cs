@@ -7,7 +7,7 @@ using IDAL.DO;
 
 namespace DalObject
 {
-    public class DalObject : IDal
+    public partial class DalObject : IDal
     {
 
         /// <summary>
@@ -80,6 +80,7 @@ namespace DalObject
         public void AttributingParcelToDrone(Parcel p, Drone d)//targil1
         {
             p.DroneID = d.ID;
+            p.Requested = DateTime.Now;
             UpdateParcel(p);
         }
 
@@ -115,7 +116,6 @@ namespace DalObject
             {
                 throw new ParcelException($"id { p.Id}   does not exist !!!");
             }
-            d.Status = DroneStatuses.delivery;
             DataSource.Drones[indexDrone] = d;
         }
 
@@ -143,7 +143,6 @@ namespace DalObject
             {
                 throw new ParcelException("id { p.Id}   does not exist !!!");
             }
-            d.Status = DroneStatuses.maintenance;
             DataSource.Drones[indexDrone] = d;
         }
 
@@ -156,8 +155,6 @@ namespace DalObject
         public void ReleaseDrone(Drone d, Station s, DroneCharge dc)
         {
             int indexOfDrones = DataSource.Drones.FindIndex(item => item.ID == d.ID);//find the index of the drone were searching
-           DataSource.Drones[indexOfDrones].Status ;//updates the drones status to available
-            DataSource.Drones[indexOfDrones].Battery = 100;
             int indexOfStations = DataSource.Stations.FindIndex(item => item.ID == d.ID);//find the index of the station were searching
             DataSource.Stations[indexOfStations].ChargeSlots++;//updates the available charge slots in the current staition
             int index = DataSource.DroneCharges.FindIndex(item => (item.DroneID == dc.DroneID)&&(item.StationID==item.StationID));
@@ -253,7 +250,7 @@ namespace DalObject
         /// coppies the station array
         /// </summary>
         /// <returns></returns the coppied array>
-        public List<Station> CopyStationArray()
+        public IEnumerable<Station> CopyStationArray()
         {
             List<Station> newList = new List<Station>(DataSource.Stations);
             return newList;
@@ -263,7 +260,7 @@ namespace DalObject
         /// coppies the drone array
         /// </summary>
         /// <returns></returns the coppied array>
-        public List<Drone> CopyDroneArray()
+        public IEnumerable<Drone> CopyDroneArray()
         {
             List<Drone> newList = new List<Drone>(DataSource.Drones);
             return newList;
@@ -273,7 +270,7 @@ namespace DalObject
         /// coppies the customer array
         /// </summary>
         /// <returns></returns the coppied array>
-        public List<Customer> CopyCustomerArray()
+        public IEnumerable<Customer> CopyCustomerArray()
         {
             List<Customer> newList=new List<Customer>(DataSource.Customers);
             return newList;
@@ -283,7 +280,7 @@ namespace DalObject
         /// coppies the parcel array
         /// </summary>
         /// <returns></returns the coppied array>
-        public List<Parcel> CopyParcelArray()
+        public IEnumerable<Parcel> CopyParcelArray()
         {
             List<Parcel> newLIst = new List<Parcel>(DataSource.Parcels);
             return newLIst;

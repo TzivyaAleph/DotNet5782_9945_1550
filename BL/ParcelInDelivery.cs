@@ -26,11 +26,11 @@ namespace IBL.BO
                 result += "waiting for pick up,\n";
             else
                 result += "on its way,\n";
-            result += $"the sender of the parcel is {MaxWeight},\n";
-            result += $"the drone is {DroneStatuses},\n";
-            result += $"battery: {Battery},\n";
-            result += $"the parcel in delivery is: {ParcelInDelivery},\n";
-            result += $"the current location of th edrone is {CurrentLocation},\n";
+            result += $"the sender of the parcel is {CustomerSender},\n";
+            result += $"the reciever of the parcel is {CustomerReciever},\n";
+            result += $"the location's collection: {Collection},\n";
+            result += $"the location's destination: {Destination},\n";
+            result += $"the distance of the transportation(by meters)  is  {Transportation},\n";
             return result;
         }
     }
