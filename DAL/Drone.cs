@@ -14,7 +14,6 @@ namespace IDAL
             public string Model {  set; get; }
             public WeightCategories MaxWeight { set; get; } 
             public double Battery { set; get; }
-
             public override string ToString()
             {
                 string result = " ";

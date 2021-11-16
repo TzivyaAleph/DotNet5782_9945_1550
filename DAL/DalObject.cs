@@ -60,7 +60,7 @@ namespace DalObject
         }
 
         /// <summary>
-        /// gets a customer and adds it to the array
+        /// gets a parcel and adds it to the list
         /// </summary>
         /// <param Name="p"></param>
         /// <returns></returns>
@@ -69,7 +69,7 @@ namespace DalObject
             int id = ++DataSource.Config.RunningParcelID;
             p.ID = id;
             DataSource.Parcels.Add(p);
-            return id;//return the id of the new  customer.
+            return id;//return the id of the new  parcel.
         }
 
         /// <summary>

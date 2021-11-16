@@ -50,41 +50,30 @@ namespace DalObject
                 ID = rand.Next(1000, 10000),
                 Model = "maxP",
                 MaxWeight = (WeightCategories)1,
-                Status = (DroneStatuses)2,
-                Battery = getRandomDoubleNumber(0, 100)
             });
             Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxG",
                 MaxWeight = (WeightCategories)2,
-                Status = (DroneStatuses)1,
-                Battery = getRandomDoubleNumber(0, 100)
             });
             Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxF",
                 MaxWeight = (WeightCategories)0,
-                Status = (DroneStatuses)0,
-                Battery = getRandomDoubleNumber(0, 100)
             });
             Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxT",
                 MaxWeight = (WeightCategories)2,
-                Status = 0,
-                Battery = getRandomDoubleNumber(0, 100)
             });
             Drones.Add(new Drone
             {
                 ID = rand.Next(1000, 10000),
                 Model = "maxD",
                 MaxWeight = (WeightCategories)2,
-                Status = (DroneStatuses)2,
-                Battery = getRandomDoubleNumber(0, 100)
-
             });
         }
 
