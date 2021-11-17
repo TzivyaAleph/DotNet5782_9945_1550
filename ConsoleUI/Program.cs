@@ -191,7 +191,7 @@ namespace ConsoleUI
                                     }
                                 case ArrayPresentationOptions.NonAttributedParcels:
                                     {
-                                        printNonAttributedParcels();
+                                        //printNonAttributedParcels();
                                         break;
                                     }
                                 case ArrayPresentationOptions.AvalableChargeSlots:
@@ -323,7 +323,6 @@ namespace ConsoleUI
                 ID = myID,
                 Model = myModel,
                 MaxWeight = myMaxWeight,
-                Status = 0,
                 Battery = myBattery
             };
             return d;

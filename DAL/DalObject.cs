@@ -120,7 +120,7 @@ namespace DalObject
         }
 
         /// <summary>
-        /// recieves a drone and a station and sends the drone to a chargeSlot in that staition
+        /// recieves a drone and a station and sends the drone to a chargeSlot in that station
         /// </summary>
         /// <param Name="d"></param>
         /// <param Name="s"></param>
@@ -322,7 +322,49 @@ namespace DalObject
             return availableStations;
         }
 
- 
+        /// <summary>
+        /// return new list with customers who have parcel that has been delieverd.
+        /// </summary>
+        /// <returns>the new list</returns>
+        public IEnumerable<Customer> ListOfCustomerWithUnDelieverdParcel()
+        {
+            List<Customer> customerWithUnDelieverdParcel = new List<Customer>();
+            //add to new list the customer who has parcel that have been delieverd
+            foreach (var cust in DataSource.Customers)
+            {
+                foreach(var par in DataSource.Parcels)
+                {
+                    //the parcel has been attributed to the customer and has been delieverd
+                    if (par.TargetID==cust.ID&&par.Delivered < DateTime.Now)
+                    {
+                        customerWithUnDelieverdParcel.Add(cust);
+                        break;
+                    }
+                }
+            }
+            return customerWithUnDelieverdParcel;
+        }
+
+        /// <summary>
+        /// find closest station to a recieved customer
+        /// </summary>
+        /// <param name="customerTemp"></param>
+        /// <returns>return the closeset station</returns>
+       public  Station GetClossestStation(Customer customerTemp)
+        {
+            IDAL.DO.Station minStation = new IDAL.DO.Station();
+            double minDistance = Math.Sqrt((Math.Pow(customerTemp.Lattitude - DataSource.Stations.First().Lattitude, 2) + Math.Pow(customerTemp.Longtitude - DataSource.Stations.First().Longitude, 2))); ;
+            foreach (var st in DataSource.Stations)
+            {
+                double distance = Math.Sqrt((Math.Pow(customerTemp.Lattitude - st.Lattitude, 2) + Math.Pow(customerTemp.Longtitude - st.Longitude, 2)));
+                if (minDistance > distance)
+                {
+                    minDistance = distance;
+                    minStation = st;
+                }
+            }
+            return minStation;
+        }
 
 
 
