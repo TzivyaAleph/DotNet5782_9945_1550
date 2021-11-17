@@ -11,10 +11,10 @@ namespace IDAL.DO
         int AddParcel(Parcel p);
         void AddStation(Station s);
         void AttributingParcelToDrone(Parcel p, Drone d);
-        List<Customer> CopyCustomerArray();
-        List<Drone> CopyDroneArray();
-        List<Parcel> CopyParcelArray();
-        List<Station> CopyStationArray();
+        IEnumerable<Customer> CopyCustomerArray();
+        IEnumerable<Drone> CopyDroneArray();
+        IEnumerable<Parcel> CopyParcelArray();
+        IEnumerable<Station> CopyStationArray();
         List<Station> FindAvailableStations();
         List<Parcel> FindNotAttributedParcels();
         Customer GetCustomer(int customerID);

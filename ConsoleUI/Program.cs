@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IDAL.DO;
 
 namespace ConsoleUI
@@ -373,10 +374,10 @@ namespace ConsoleUI
         /// </summary>
         static void printListOfCustomers()
         {
-            Customer[] temp = data.CopyCustomerArray();
-            for (int i = 0; i < temp.Length; i++)
-                if (temp[i].ID > 0)
-                    Console.WriteLine(temp[i]);
+            List<Customer> newList = new List<Customer>(data.CopyCustomerArray());
+            for (int i = 0; i < newList.Count; i++)
+                if (newList[i].ID > 0)
+                    Console.WriteLine(newList[i]);
         }
 
         /// <summary>
@@ -384,10 +385,10 @@ namespace ConsoleUI
         /// </summary>
         static void printListOfParcels()
         {
-            Parcel[] temp = data.CopyParcelArray();
-            for (int i = 0; i < temp.Length; i++)
-                if (temp[i].ID > 0)
-                    Console.WriteLine(temp[i]);
+            List<Parcel> newList = new List<Parcel>(data.CopyParcelArray());
+            for (int i = 0; i < newList.Count; i++)
+                if (newList[i].ID > 0)
+                    Console.WriteLine(newList[i]);
         }
 
         /// <summary>
@@ -395,10 +396,10 @@ namespace ConsoleUI
         /// </summary>
         static void printListOfStations()
         {
-            Station[] temp = data.CopyStationArray();
-            for (int i = 0; i < temp.Length; i++)
-                if (temp[i].ID > 0)
-                    Console.WriteLine(temp[i]);
+            List<Station> newList = new List<Station>(data.CopyStationArray());
+            for (int i = 0; i < newList.Count; i++)
+                if (newList[i].ID > 0)
+                    Console.WriteLine(newList[i]);
         }
 
         /// <summary>
@@ -406,21 +407,21 @@ namespace ConsoleUI
         /// </summary>
         static void printListOfDrones()
         {
-            Drone[] temp = data.CopyDroneArray();
-            for (int i = 0; i < temp.Length; i++)
-                if (temp[i].ID > 0)
-                    Console.WriteLine(temp[i]);
+            List<Drone> newList = new List<Drone>(data.CopyDroneArray());
+            for (int i = 0; i < newList.Count; i++)
+                if (newList[i].ID > 0)
+                    Console.WriteLine(newList[i]);
         }
 
         /// <summary>
         /// prints the list of Non Attributed Parcels
         /// </summary>
-        static void printNonAttributedParcels()
-        {
-            foreach (Parcel p in data.FindNotAttributedParcels())
-                if (p.DroneID != 0)
-                    Console.WriteLine(p);
-        }
+        //static void printNonAttributedParcels()
+        //{
+        //    foreach (Parcel p in data.FindNotAttributedParcels())
+        //        if (p.DroneID != 0)
+        //            Console.WriteLine(p);
+        //}
 
         /// <summary>
         /// prints a list with all the available stations in it
