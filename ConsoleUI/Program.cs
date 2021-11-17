@@ -7,7 +7,7 @@ namespace ConsoleUI
     class Program
     {
         // an object for initialize and for reaching the function in dalObject.
-        static DalObject.DalObject data = new DalObject.DalObject();
+        static IDAL.DO.IDal data = new DalObject.DalObject();
 
         static void Main(string[] args)
         {
@@ -54,17 +54,14 @@ namespace ConsoleUI
                                         string model;
                                         int ID;
                                         WeightCategories maxWeight;
-                                        double battery;
                                         Console.WriteLine("Enter drone's ID:" );
                                         int.TryParse(Console.ReadLine(), out ID);
                                         Console.WriteLine("Enter drone's model:");
                                         model = Console.ReadLine();
                                         Console.WriteLine("Enter drone's  maximum weight:\n1: light, 2: standard, 3: heavy:");
-                                        maxWeight = (WeightCategories)int.Parse(Console.ReadLine());
-                                        Console.WriteLine("Enter drone's battery:");
-                                        double.TryParse(Console.ReadLine(), out battery);
+                                        maxWeight = (WeightCategories)int.Parse(Console.ReadLine());                                     
                                         Drone d = new Drone();
-                                        d = createObjectDrone(ID, model, maxWeight, battery);
+                                        d = createObjectDrone(ID, model, maxWeight);
                                         data.AddDrone(d);
                                         break;
                                     }
@@ -316,15 +313,13 @@ namespace ConsoleUI
         /// </summary>
         /// <param Name="myModel"></param>
         /// <returns></returns the new drone>
-        static Drone createObjectDrone(int myID, string myModel, WeightCategories myMaxWeight, double myBattery)
+        static Drone createObjectDrone(int myID, string myModel, WeightCategories myMaxWeight)
         {
             Drone d = new Drone
             {
                 ID = myID,
                 Model = myModel,
                 MaxWeight = myMaxWeight,
-                Status = 0,
-                Battery = myBattery
             };
             return d;
         }
@@ -375,9 +370,11 @@ namespace ConsoleUI
         static void printListOfCustomers()
         {
             List<Customer> newList = new List<Customer>(data.CopyCustomerArray());
-            for (int i = 0; i < newList.Count; i++)
-                if (newList[i].ID > 0)
-                    Console.WriteLine(newList[i]);
+            foreach (var c in newList)
+            {
+                if (c.ID > 0)
+                    Console.WriteLine(c);
+            }
         }
 
         /// <summary>
@@ -386,9 +383,11 @@ namespace ConsoleUI
         static void printListOfParcels()
         {
             List<Parcel> newList = new List<Parcel>(data.CopyParcelArray());
-            for (int i = 0; i < newList.Count; i++)
-                if (newList[i].ID > 0)
-                    Console.WriteLine(newList[i]);
+            foreach (var p in newList)
+            {
+                if (p.ID > 0)
+                    Console.WriteLine(p);
+            }
         }
 
         /// <summary>
@@ -397,9 +396,11 @@ namespace ConsoleUI
         static void printListOfStations()
         {
             List<Station> newList = new List<Station>(data.CopyStationArray());
-            for (int i = 0; i < newList.Count; i++)
-                if (newList[i].ID > 0)
-                    Console.WriteLine(newList[i]);
+            foreach (var s in newList)
+            {
+                if (s.ID > 0)
+                    Console.WriteLine(s);
+            }
         }
 
         /// <summary>
@@ -408,36 +409,35 @@ namespace ConsoleUI
         static void printListOfDrones()
         {
             List<Drone> newList = new List<Drone>(data.CopyDroneArray());
-            for (int i = 0; i < newList.Count; i++)
-                if (newList[i].ID > 0)
-                    Console.WriteLine(newList[i]);
+            foreach (var d in newList)
+            {
+                if (d.ID > 0)
+                    Console.WriteLine(d);
+            }
         }
 
         /// <summary>
         /// prints the list of Non Attributed Parcels
         /// </summary>
-        //static void printNonAttributedParcels()
-        //{
-        //    foreach (Parcel p in data.FindNotAttributedParcels())
-        //        if (p.DroneID != 0)
-        //            Console.WriteLine(p);
-        //}
+        static void printNonAttributedParcels()
+        {
+            foreach (Parcel p in data.FindNotAttributedParcels())
+                if (p.DroneID != 0)
+                    Console.WriteLine(p);
+        }
 
         /// <summary>
         /// prints a list with all the available stations in it
         /// </summary>
         static void printAvailableStations()
         {
-            Station[] temp = data.FindAvailableStations();
-            for (int i = 0; i < temp.Length; i++)//prints the stations with available charging slots.
+            IEnumerable<Station> temp = data.FindAvailableStations();
+            foreach(var s in temp)
             {
-                if (temp[i].ChargeSlots > 0)
-                {
-                    Console.WriteLine(temp[i]);
-                }
+                if (s.ChargeSlots > 0)
+                    Console.WriteLine(s);
             }
         }
-
     }
 }
 

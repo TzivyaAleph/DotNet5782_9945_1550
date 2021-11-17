@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using IDAL.DO;
@@ -27,7 +28,7 @@ namespace DalObject
         {
             if (DataSource.Stations.Exists(station => station.ID == s.ID))
             {
-                throw new StationException($"id {s.ID} allready exists !!");
+                throw new ExistingObjectException($"station {s.StationName} allready exists !!");
             }
             DataSource.Stations.Add(s);
         }
@@ -40,7 +41,7 @@ namespace DalObject
         {
             if (DataSource.Drones.Exists(drone => drone.ID == d.ID))
             {
-                throw new DroneException($"id {d.ID} allready exists !!");
+                throw new ExistingObjectException($"drone {d.ID} allready exists !!");
             }
             DataSource.Drones.Add(d);
         }
@@ -54,7 +55,7 @@ namespace DalObject
         {
             if (DataSource.Customers.Exists(client => client.ID == c.ID))
             {
-                throw new CustomerException($"id {c.ID} allready exists !!");
+                throw new ExistingObjectException($"customer {c.Name} allready exists !!");
             }
             DataSource.Customers.Add(c);
         }
@@ -88,10 +89,30 @@ namespace DalObject
         {
             if (!(DataSource.Parcels.Exists(p => p.ID == parcel.ID)))
             {
-                throw new ParcelException("id { p.Id}  is not valid !!");
+                throw new UnvalidIDException("id { p.Id}  is not valid !!");
             }
             int index = DataSource.Parcels.FindIndex(item => item.ID == parcel.ID);
             DataSource.Parcels[index] = parcel;
+        }
+
+        public void UpdateDrone(Drone drone)
+        {
+            if (!(DataSource.Drones.Exists(d => d.ID == drone.ID)))
+            {
+                throw new UnvalidIDException("id { d.Id}  is not valid !!");
+            }
+            int index = DataSource.Drones.FindIndex(item => item.ID == drone.ID);
+            DataSource.Drones[index] = drone;
+        }
+
+        public void UpdateStation(Station station)
+        {
+            if (!(DataSource.Stations.Exists(s => s.ID == station.ID)))
+            {
+                throw new UnvalidIDException("id { s.Id}  is not valid !!");
+            }
+            int index = DataSource.Stations.FindIndex(item => item.ID == station.ID);
+            DataSource.Stations[index] = station;
         }
 
         /// <summary>
@@ -100,23 +121,19 @@ namespace DalObject
         /// <param Name="p"></param>
         public void PickedUp(Parcel p, Drone d)
         {
-            int index = DataSource.Parcels.FindIndex(item => item.ID == p.ID);//find the index of the parcel were searching
-            if (index == -1)
-            {
+            p.DroneID = d.ID;
+            p.PickedUp = DateTime.Now;//updates the parcels pickedUp time
+            UpdateParcel(p);
+        }
 
-                throw new ParcelException("id { p.Id}  does not exist !!!");
-            }
-            Parcel parcel = DataSource.Parcels[index];
-            parcel.DroneID = d.ID;
-            parcel.PickedUp = DateTime.Today;//updates the parcels pickedUp time
-            DataSource.Parcels[index] = parcel;
-
-            int indexDrone = DataSource.Drones.FindIndex(item => item.ID == d.ID);//find the index of the parcel were searching
-            if (indexDrone == -1)
-            {
-                throw new ParcelException($"id { p.Id}   does not exist !!!");
-            }
-            DataSource.Drones[indexDrone] = d;
+        /// <summary>
+        /// recieves a parcel and updates the parcels delivery time
+        /// </summary>
+        /// <param name="p"></param>
+        public void Delivered(Parcel p)
+        {
+            p.Delivered = DateTime.Now;
+            UpdateParcel(p);
         }
 
         /// <summary>
@@ -126,24 +143,12 @@ namespace DalObject
         /// <param Name="s"></param>
         public void SendDroneToChargeSlot(Drone d, Station s)
         {
-            int indexStation = DataSource.Stations.FindIndex(item => item.ID == s.ID);//find the index of the parcel were searching
-            if (indexStation == -1)
-            {
-
-                throw new StationException("id { s.Id}  does not exist !!!");
-            }
-            Station station = DataSource.Stations[indexStation];
-            station.ChargeSlots++;
-            //TODO
-            ///
-            DataSource.Stations[indexStation] = station;
-
-            int indexDrone = DataSource.Drones.FindIndex(item => item.ID == d.ID);//find the index of the parcel were searching
-            if (indexDrone == -1)
-            {
-                throw new ParcelException("id { p.Id}   does not exist !!!");
-            }
-            DataSource.Drones[indexDrone] = d;
+            s.ChargeSlots--;
+            UpdateStation(s);
+            DroneCharge dc=new DroneCharge();
+            dc.DroneID = d.ID;
+            dc.StationID = s.ID;
+            DataSource.DroneCharges.Add(dc);
         }
 
         /// <summary>
@@ -154,12 +159,17 @@ namespace DalObject
         /// <param Name="dc"></param>
         public void ReleaseDrone(Drone d, Station s, DroneCharge dc)
         {
-            int indexOfDrones = DataSource.Drones.FindIndex(item => item.ID == d.ID);//find the index of the drone were searching
-            int indexOfStations = DataSource.Stations.FindIndex(item => item.ID == d.ID);//find the index of the station were searching
-            DataSource.Stations[indexOfStations].ChargeSlots++;//updates the available charge slots in the current staition
-            int index = DataSource.DroneCharges.FindIndex(item => (item.DroneID == dc.DroneID)&&(item.StationID==item.StationID));
-            DataSource.DroneCharges[index].DroneID = 0;
-            DataSource.DroneCharges[index].StationID = 0;
+            s.ChargeSlots++;
+            UpdateStation(s);//updates the available charge slots in the current staition
+            if (!(DataSource.DroneCharges.Exists(dc => dc.DroneID == d.ID && dc.StationID==s.ID)))
+            {
+                throw new UnvalidIDException("dc is not valid !!");
+            }
+            int index = DataSource.DroneCharges.FindIndex(item => item.StationID == s.ID && item.DroneID == d.ID);
+            DroneCharge help = DataSource.DroneCharges[index];
+            help.DroneID = 0;
+            help.StationID = 0;
+            DataSource.DroneCharges[index] = help;
         }
 
         /// <summary>
@@ -186,14 +196,12 @@ namespace DalObject
         /// <returns></returs the station were looking for>
         public Station GetStation(int stationID)
         {
-            Station stationToReturn = new Station();
-            //searches the station with the recieved id.
-            foreach (Station s in DataSource.Stations)
-                if (s.ID == stationID)
-                {
-                    stationToReturn = s;
-                }
-            return stationToReturn;
+            if (!(DataSource.Stations.Exists(s => s.ID == stationID)))
+            {
+                throw new UnvalidIDException("id { s.Id}  is not valid !!");
+            }
+            int index = DataSource.Stations.FindIndex(item => item.ID == stationID);
+            return DataSource.Stations[index];
         }
 
         /// <summary>
@@ -203,13 +211,12 @@ namespace DalObject
         /// <returns></returnsthe drone were looking for>
         public Drone GetDrone(int droneID)
         {
-            Drone droneToReturn = new Drone();
-            foreach (Drone d in DataSource.Drones)//searches for the drone 
-                if (d.ID == droneID)
-                {
-                    droneToReturn = d;
-                }
-            return droneToReturn;
+            if (!(DataSource.Drones.Exists(d => d.ID == droneID)))
+            {
+                throw new UnvalidIDException("id { d.Id}  is not valid !!");
+            }
+            int index = DataSource.Drones.FindIndex(item => item.ID == droneID);
+            return DataSource.Drones[index];
         }
 
         /// <summary>
@@ -221,9 +228,9 @@ namespace DalObject
         {
             Customer customerToReturn = default;
             //searches the customer by the id
-            if (DataSource.Customers.Exists(client => client.ID == customerID))
+            if (!(DataSource.Customers.Exists(client => client.ID == customerID)))
             {
-                throw new CustomerException($"id {customerID} doesn't exist !!");
+                throw new UnvalidIDException($"id {customerID} is not valid !!");
             };
             customerToReturn = DataSource.Customers.Find(c => c.ID == customerID);
             return customerToReturn;
@@ -238,9 +245,9 @@ namespace DalObject
         {
             Parcel parcelToReturn = default;
             //searches the customer by the id
-            if (DataSource.Parcels.Exists(p => p.ID == id))
+            if (!(DataSource.Parcels.Exists(p => p.ID == id)))
             {
-                throw new ParcelException($"id {id} doesn't exist !!");
+                throw new UnvalidIDException($"id {id} is not valid !!");
             };
             parcelToReturn = DataSource.Parcels.Find(c => c.ID == id);
             return parcelToReturn;
@@ -287,42 +294,53 @@ namespace DalObject
         }
 
         /// <summary>
-        /// searches for the non atributted parcels and coppies them into a new array.
+        /// searches for the non atributted parcels and coppies them into a new list.
         /// </summary>
         /// <returns></returns the new array>
-        public List<Parcel> FindNotAttributedParcels()
+        public IEnumerable<Parcel> FindNotAttributedParcels()
         {
-            int i = 0;//for the array's index
             List<Parcel> notAttributed =new List<Parcel>();//new list to hold non attributed parcels
             foreach (Parcel p in DataSource.Parcels)//searches for the non attributed parcels
             {
                 if (p.DroneID == 0)
                 {
-                    notAttributed[i] = p;
-                    i++;
+                    notAttributed.Add(p);
                 }
             }
             return notAttributed;
         }
 
         /// <summary>
-        /// creates an array by searching for available charge slots in the station array.
+        /// creates an array by searching for available charge slots in the station list.
         /// </summary>
-        /// <returns></returns the new array>
-        public List<Station> FindAvailableStations()
+        /// <returns></returns the new list>
+        public IEnumerable<Station> FindAvailableStations()
         {
-            int j = 0;//for the new array's index
-            List<Station> availableStations = new List<Station>();//new array to hold Available Stations
+            List<Station> availableStations = new List<Station>();//new list to hold Available Stations
             for (int i = 0; i < DataSource.Stations.Count; i++)
                 if (DataSource.Stations[i].ChargeSlots > 0)
                 {
-                    availableStations[j] = DataSource.Stations[i];
-                    j++;
+                    availableStations.Add(DataSource.Stations[i]);
                 }
             return availableStations;
         }
 
- 
+        /// <summary>
+        /// creates a new array with the drone's electricity use  
+        /// </summary>
+        /// <returns>the new array</returns>
+        public double[] GetElectricityUse()
+        {
+            double[] electricityUse = new double[5];
+            electricityUse[0] = DataSource.Config.Avalaible;
+            electricityUse[1] = DataSource.Config.Light;
+            electricityUse[2] = DataSource.Config.Medium;
+            electricityUse[3] = DataSource.Config.Heavy;
+            electricityUse[4] = DataSource.Config.ChargingRate;
+            return electricityUse;
+        }
+
+
 
 
 
@@ -421,6 +439,8 @@ namespace DalObject
         //    throw new NotImplementedException();
         //}
     }
+
+    
 }
 
 
