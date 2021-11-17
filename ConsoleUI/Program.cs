@@ -188,7 +188,7 @@ namespace ConsoleUI
                                     }
                                 case ArrayPresentationOptions.NonAttributedParcels:
                                     {
-                                        printNonAttributedParcels();
+                                        //printNonAttributedParcels();
                                         break;
                                     }
                                 case ArrayPresentationOptions.AvalableChargeSlots:

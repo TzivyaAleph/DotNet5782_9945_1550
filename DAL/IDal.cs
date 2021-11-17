@@ -28,5 +28,7 @@ namespace IDAL.DO
         void SendDroneToChargeSlot(Drone d, Station s);
         void UpdateParcel(Parcel parcel);
         double[] GetElectricityUse();
+        IEnumerable<Customer>  ListOfCustomerWithUnDelieverdParcel();
+        Station GetClossestStation(Customer customerTemp);
     }
 }
