@@ -57,23 +57,6 @@ namespace DalObject
         }
 
         /// <summary>
-        /// searches for the droneCharge in the array by the station Id and drone id
-        /// </summary>
-        /// <param Name="stationID"></param>
-        /// <returns></returs the drone charge object were looking for>
-        public DroneCharge GetDroneCharge(int stationID, int droneID)
-        {
-            DroneCharge droneChargeToReturn = new DroneCharge();
-            //searches the station with the recieved id.
-            foreach (DroneCharge dc in DataSource.DroneCharges)
-                if (dc.StationID == stationID && dc.DroneID == droneID)
-                {
-                    droneChargeToReturn = dc;
-                }
-            return droneChargeToReturn;
-        }
-
-        /// <summary>
         /// searches for the drone in the array by the Id
         /// </summary>
         /// <param Name="droneID"></param>
