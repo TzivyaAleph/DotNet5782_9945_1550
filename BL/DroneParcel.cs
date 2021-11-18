@@ -11,5 +11,14 @@ namespace IBL.BO
         public int Id { get; set; }
         public double BatteryLevel { get; set; }
         public Location Location { get; set; }
+
+        public override string ToString()
+        {
+            string result = " ";
+            result += $"ID is {Id},\n";
+            result += $"battery level is {BatteryLevel},\n";
+            result += $"location is {Location},\n";
+            return result;
+        }
     }
 }

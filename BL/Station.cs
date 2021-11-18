@@ -10,8 +10,23 @@ namespace IBL.BO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Location Location { get; set; }
+        public Location StationLocation { get; set; }
         public int AvailableChargingSlots { get; set; }
         public List<DroneCharge> DroneCharges { get; set; }
+
+        public override string ToString()
+        {
+            string result = " ";
+            result += $"ID is {Id},\n";
+            result += $"station's name is {Name},\n";
+            result += $"location is {StationLocation},\n";
+            result += $"number of available charging slots is {AvailableChargingSlots},\n";
+            result += $"the drones who are charging in this station are:\n";
+            foreach (var dc in DroneCharges)
+            {
+                result += $"{dc}\n";
+            }
+            return result;
+        }
     }
 }

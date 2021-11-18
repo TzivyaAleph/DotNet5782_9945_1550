@@ -18,5 +18,21 @@ namespace IBL.BO
         public DateTime Scheduled { get; set; }
         public DateTime PickedUp { get; set; }
         public DateTime Delivered { get; set; }
+
+        public override string ToString()
+        {
+            string result = "";
+            result += $"ID is {Id},\n";
+            result += $"recipient is {Recipient}\n";
+            result += $"sender is {Sender}\n";
+            result += $"weight is {Weight},\n";
+            result += $"priority is {Priority},\n";
+            result += $"the drone who is carrying the parcel is {DroneInParcel},\n";
+            result += $"requested time is {Requested}\n";
+            result += $"scheduled time is {Scheduled}\n";
+            result += $"picked up time is {PickedUp}\n";
+            result += $"delivered time is {Delivered}\n";
+            return result;
+        }
     }
 }

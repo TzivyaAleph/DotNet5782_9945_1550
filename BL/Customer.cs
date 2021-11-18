@@ -21,6 +21,17 @@ namespace IBL.BO
             result += $"ID is {Id},\n";
             result += $"cosumer's name is {Name},\n";
             result += $"phoneNumber is {Phone},\n";
+            result += $"location is {Location},\n";
+            result += $"sent parcels are:\n";
+            foreach (var pc in SentParcels)
+            {
+                result += $"{pc}\n";
+            }
+            result += $"recieved parcels are:\n";
+            foreach (var pc in ReceiveParcels)
+            {
+                result += $"{pc}\n";
+            }
             return result;
         }
 
