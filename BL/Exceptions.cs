@@ -12,6 +12,7 @@ namespace IBL.BO
 
         public BLIdException(string message) : base(message)
         {
+
         }
 
         public BLIdException(string message, Exception innerException) : base(message, innerException)
@@ -23,63 +24,26 @@ namespace IBL.BO
         }
     }
 
+
     [Serializable]
-    public class BLInvalidNumberException : Exception
+    internal class DronechargeException : Exception
     {
-        public BLInvalidNumberException()
+        public DronechargeException()
         {
         }
 
-        public BLInvalidNumberException(string message) : base(message)
+        public DronechargeException(string message) : base(message)
         {
         }
 
-        public BLInvalidNumberException(string message, Exception innerException) : base(message, innerException)
+        public DronechargeException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
-        protected BLInvalidNumberException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected DronechargeException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }
 
-    [Serializable]
-    public class BLInvalidStringException : Exception
-    {
-        public BLInvalidStringException()
-        {
-        }
 
-        public BLInvalidStringException(string message) : base(message)
-        {
-        }
-
-        public BLInvalidStringException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected BLInvalidStringException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
-
-    [Serializable]
-    public class InvalidLocationException : Exception
-    {
-        public InvalidLocationException()
-        {
-        }
-
-        public InvalidLocationException(string message) : base(message)
-        {
-        }
-
-        public InvalidLocationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected InvalidLocationException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
 }
