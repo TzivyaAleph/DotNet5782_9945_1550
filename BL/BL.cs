@@ -11,7 +11,7 @@ using IDAL;
 namespace BL
 {
     
-    public class BLObject
+    public partial class BL
     {
  
       IDAL.DO.IDal myDal;
@@ -22,7 +22,7 @@ namespace BL
         /// <summary>
         /// initializing list of drones.
         /// </summary>
-        public BLObject()
+        public BL()
         {
             myDal = new DalObject.DalObject();
             DroneForList droneTemp=new DroneForList();
@@ -52,7 +52,7 @@ namespace BL
                         {
                             //the current location is the clossest station to the sender
                             IDAL.DO.Station clossestStation = new IDAL.DO.Station();
-                            clossestStation = myDal.GetClossestStation(customerTemp);
+                            clossestStation = myDal.GetClossestStation(customerTemp.Lattitude,customerTemp.Longtitude,(List<IDAL.DO.Station>)myDal.CopyStationArray());
                             droneTemp.CurrentLocation.Latitude = clossestStation.Lattitude;
                             droneTemp.CurrentLocation.Longitude = clossestStation.Longitude;
                         }
@@ -107,6 +107,7 @@ namespace BL
                         droneTemp.CurrentLocation.Longitude = temp.Longtitude;
                     }
                 }
+                drones.Add(droneTemp);
             }
         }
 
@@ -118,7 +119,7 @@ namespace BL
             {
                 customer.Id = myDal.GetCustomer(id).ID;
             }
-            catch (IDAL.DO.CustomerException custEx)
+            catch (IDAL.DO.UnvalidIDException custEx)
             { 
                 throw new BLIdException($"Customer id {id} was not found",custEx);
             }
@@ -132,7 +133,7 @@ namespace BL
             {
                 IDAL.DO.Parcel dalParcel = myDal.GetParcel(id);
             }
-            catch (IDAL.DO.CustomerException custEx)
+            catch (IDAL.DO.UnvalidIDException custEx)
             {
                 throw new BLIdException($"Customer id {id} was not found", custEx);
             }

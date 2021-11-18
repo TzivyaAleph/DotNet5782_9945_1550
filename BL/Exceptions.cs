@@ -12,6 +12,7 @@ namespace IBL.BO
 
         public BLIdException(string message) : base(message)
         {
+
         }
 
         public BLIdException(string message, Exception innerException) : base(message, innerException)
@@ -22,4 +23,27 @@ namespace IBL.BO
         {
         }
     }
+
+
+    [Serializable]
+    internal class DronechargeException : Exception
+    {
+        public DronechargeException()
+        {
+        }
+
+        public DronechargeException(string message) : base(message)
+        {
+        }
+
+        public DronechargeException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected DronechargeException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
+
+
 }
