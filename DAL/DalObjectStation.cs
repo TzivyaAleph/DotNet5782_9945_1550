@@ -52,21 +52,21 @@ namespace DalObject
         /// </summary>
         /// <param name="customerTemp"></param>
         /// <returns>return the closeset station</returns>
-        public Station GetClossestStation(Customer customerTemp)
-        {
-            IDAL.DO.Station minStation = new IDAL.DO.Station();
-            double minDistance = Math.Sqrt((Math.Pow(customerTemp.Lattitude - DataSource.Stations.First().Lattitude, 2) + Math.Pow(customerTemp.Longtitude - DataSource.Stations.First().Longitude, 2))); ;
-            foreach (var st in DataSource.Stations)
-            {
-                double distance = Math.Sqrt((Math.Pow(customerTemp.Lattitude - st.Lattitude, 2) + Math.Pow(customerTemp.Longtitude - st.Longitude, 2)));
-                if (minDistance > distance)
-                {
-                    minDistance = distance;
-                    minStation = st;
-                }
-            }
-            return minStation;
-        }
+        //public Station GetClossestStationToCustomer(Customer customerTemp)
+        //{
+        //    IDAL.DO.Station minStation = new IDAL.DO.Station();
+        //    double minDistance = Math.Sqrt((Math.Pow(customerTemp.Lattitude - DataSource.Stations.First().Lattitude, 2) + Math.Pow(customerTemp.Longtitude - DataSource.Stations.First().Longitude, 2))); ;
+        //    foreach (var st in DataSource.Stations)
+        //    {
+        //        double distance = Math.Sqrt((Math.Pow(customerTemp.Lattitude - st.Lattitude, 2) + Math.Pow(customerTemp.Longtitude - st.Longitude, 2)));
+        //        if (minDistance > distance)
+        //        {
+        //            minDistance = distance;
+        //            minStation = st;
+        //        }
+        //    }
+        //    return minStation;
+        //}
 
         /// <summary>
         /// searches for the station in the array by the Id
@@ -95,6 +95,29 @@ namespace DalObject
             }
             int index = DataSource.Stations.FindIndex(item => item.ID == station.ID);
             DataSource.Stations[index] = station;
+        }
+
+        /// <summary>
+        /// creates list with all the available station and return the closest station in the list to the recieved drone.
+        /// </summary>
+        /// <param name="drone">for finding the closest </param>
+        /// <param name="longtitude"></param>
+        /// <param name="lattitude"></param>
+        /// <returns></returns>
+        public Station GetClossestStation(double lattitude, double longtitude, List<Station> stations)
+        {
+            IDAL.DO.Station minStation = new IDAL.DO.Station();
+            double minDistance = Math.Sqrt((Math.Pow(lattitude -stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2))); ;
+            foreach (var st in DataSource.Stations)
+            {
+                double distance = Math.Sqrt((Math.Pow(lattitude - st.Lattitude, 2) + Math.Pow(longtitude - st.Longitude, 2)));
+                if (minDistance > distance)
+                {
+                    minDistance = distance;
+                    minStation = st;
+                }
+            }
+            return minStation;
         }
 
     }
