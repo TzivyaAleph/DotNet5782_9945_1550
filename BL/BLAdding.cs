@@ -18,7 +18,7 @@ namespace BL
         /// <param name="name">station name</param>
         /// <param name="numOfSlots">number of available charge slots in station</param>
         /// <param name="location">station's location</param>
-        public void AddBlStation(Station s)
+        public void AddStation(Station s)
         {
             if( s.Id < 1000 || s.Id>10000)
             {
@@ -51,7 +51,7 @@ namespace BL
             }
             catch(IDAL.DO.ExistingObjectException stationExc)
             {
-                throw new ExistingObjectException($"station station {s.Name} allready exists !!");
+                throw new FailedToAddException(stationExc.ToString(), stationExc);
             }
         }
 
@@ -68,35 +68,49 @@ namespace BL
             }
             if (String.IsNullOrEmpty(d.Model))
             {
-                throw new BLInvalidInputException($"name {d.Model} is not correct !!");
+                throw new InvalidInputException($"name {d.Model} is not correct !!");
             }
             List<IDAL.DO.Station> stations = (List<IDAL.DO.Station>)myDal.CopyStationArray();
+            //checks if the station exists
             if (!(stations.Exists(station => station.ID == stationId)))
             {
-                throw new BLInvalidInputException($"station {stationId} does not exists !!");
+                throw new InputDoesNotExist($"station {stationId} does not exists !!");
             }
-            int index = stations.FindIndex(item => item.ID == stationId);
+            int index = stations.FindIndex(item => item.ID == stationId);//finds the station that the drone in it.
+            IDAL.DO.Station s = new IDAL.DO.Station();
+            s = stations[index];
             d.Battery = rand.Next(20, 40);
-            d.DroneStatuses =(DroneStatuses)1;
+            d.DroneStatuses =DroneStatuses.Maintenance;
             d.CurrentLocation.Latitude = stations[index].Lattitude;
             d.CurrentLocation.Longitude = stations[index].Longitude;
+            DroneCharge droneCharge = new();
+            droneCharge.Id = d.ID;
+            droneCharge.Battery = d.Battery;
+            Station blStation = new();
+            blStation = GetStation(stationId);
+            blStation.DroneCharges.Add(droneCharge);
             drones.Add(d);
-            IDAL.DO.Drone tmp = new IDAL.DO.Drone
+            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone
             {
                 ID = d.ID,
                 Model = d.Model,
                 MaxWeight = (IDAL.DO.WeightCategories)d.MaxWeight
             };
+            myDal.SendDroneToChargeSlot(dalDrone, s);
             try
             {
-                myDal.AddDrone(tmp);
+                myDal.AddDrone(dalDrone);
             }
             catch(IDAL.DO.ExistingObjectException droneExc)
             {
-                throw new ExistingObjectException($"station station {s.Name} allready exists !!");
+                throw new FailedToAddException(droneExc.ToString(), droneExc);
             }
         }
 
+        /// <summary>
+        /// adds customer to customers list
+        /// </summary>
+        /// <param name="customer"></param>
         public void AddCustomer(Customer customer)
         {
             if (customer.Id < 100000000 || customer.Id > 999999999)
@@ -110,7 +124,7 @@ namespace BL
                 throw new InvalidInputException($"location data: {customer.Location} is not valid !!");
             }
             IDAL.DO.Customer newCustomer = new();
-            customer.CopyPropertyTo(newCustomer);
+            newCustomer.CopyPropertyTo(customer);
             try
             {
                 myDal.AddCustomer(newCustomer);

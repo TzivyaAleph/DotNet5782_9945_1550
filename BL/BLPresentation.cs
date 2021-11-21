@@ -112,6 +112,11 @@ namespace BL
 
         }
 
+        private Station GetStation(int stationId)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 
 

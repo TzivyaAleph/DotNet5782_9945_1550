@@ -31,5 +31,7 @@ namespace IDAL.DO
         double[] GetElectricityUse();
         IEnumerable<Customer>  ListOfCustomerWithUnDelieverdParcel();
         public Station GetClossestStation(double lattitude, double longtitude, List<Station> stations);
+        public double getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2);
+        public double deg2rad(double deg);
     }
 }

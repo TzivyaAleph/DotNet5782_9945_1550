@@ -34,14 +34,14 @@ namespace BL
 
         public void SendDroneToChargeSlot(Drone d)
         {
-            if (d.DroneStatuses != DroneStatuses.Available)
-                throw new DronechargeException($"Drone {d.ID} is not available");
+            if (d.DroneStatuses != DroneStatuses.Available)//
+                throw new FailedToUpdateException($"Drone {d.ID} is not available");
             //if(d.Battery)
             List<IDAL.DO.Station> stations =(List<IDAL.DO.Station>) myDal.FindAvailableStations();
             IDAL.DO.Station clossestStation = new IDAL.DO.Station();
             clossestStation = myDal.GetClossestStation(d.CurrentLocation.Latitude, d.CurrentLocation.Longitude, stations);
             if (clossestStation.ChargeSlots == 0)
-                throw new DronechargeException($"There are no available charge slots in station {clossestStation.ID}");
+                throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.ID}");
             double[] electricity = myDal.GetElectricityUse();
             double distance= Math.Sqrt((Math.Pow(d.CurrentLocation.Latitude - clossestStation.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - clossestStation.Longitude, 2)));
             if (d.MaxWeight==Weight.Light)
@@ -76,13 +76,13 @@ namespace BL
             List<IDAL.DO.Parcel> parcels = (List<IDAL.DO.Parcel>)myDal.FindNotAttributedParcels();//gets the non attributed parcels list
             if (droneId < 1000 || droneId > 10000)//checks if id is valid
             {
-                throw new BLInvalidInputException($"id {droneId} is not valid !!");
+                throw new InvalidInputException($"id {droneId} is not valid !!");
             }
             int index = drones.FindIndex(item => item.ID == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = drones[index];
             if(droneToAttribute.DroneStatuses!= DroneStatuses.Available)//checkes if the drone is available
             {
-                throw new BLInvalidInputException($"drone {droneId} is not available !!");
+                throw new InvalidInputException($"drone {droneId} is not available !!");
             }
             IDAL.DO.WeightCategories droneWeight = (IDAL.DO.WeightCategories)droneToAttribute.MaxWeight;
             double dronesDistance;

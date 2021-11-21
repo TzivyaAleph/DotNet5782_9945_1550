@@ -61,10 +61,6 @@ namespace IBL.BO
         {
         }
 
-        public FailedToGetException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
         protected FailedToGetException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
