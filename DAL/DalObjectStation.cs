@@ -119,6 +119,5 @@ namespace DalObject
             }
             return minStation;
         }
-
     }
 }

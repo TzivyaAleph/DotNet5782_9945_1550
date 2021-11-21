@@ -36,6 +36,7 @@ namespace BL
             {
                 throw new InvalidInputException($"location {s.StationLocation} is not valid !!");
             }
+            s.DroneCharges = null;
             IDAL.DO.Station tmp= new IDAL.DO.Station
             {
                 ID = s.Id,
@@ -50,11 +51,16 @@ namespace BL
             }
             catch(IDAL.DO.ExistingObjectException stationExc)
             {
-                
+                throw new ExistingObjectException($"station station {s.Name} allready exists !!");
             }
         }
 
-        public void AddDrone(Drone d)
+        /// <summary>
+        /// adds a new drone to the drones' list
+        /// </summary>
+        /// <param name="d">drone to add</param>
+        /// <param name="stationId">station number to put the drone in</param>
+        public void AddDrone(DroneForList d, int stationId)
         {
             if (d.ID < 1000 || d.ID > 10000)
             {
@@ -62,12 +68,33 @@ namespace BL
             }
             if (String.IsNullOrEmpty(d.Model))
             {
-                throw new InvalidInputException($"name {d.Model} is not correct !!");
+                throw new BLInvalidInputException($"name {d.Model} is not correct !!");
             }
+            List<IDAL.DO.Station> stations = (List<IDAL.DO.Station>)myDal.CopyStationArray();
+            if (!(stations.Exists(station => station.ID == stationId)))
+            {
+                throw new BLInvalidInputException($"station {stationId} does not exists !!");
+            }
+            int index = stations.FindIndex(item => item.ID == stationId);
+            d.Battery = rand.Next(20, 40);
+            d.DroneStatuses =(DroneStatuses)1;
+            d.CurrentLocation.Latitude = stations[index].Lattitude;
+            d.CurrentLocation.Longitude = stations[index].Longitude;
+            drones.Add(d);
             IDAL.DO.Drone tmp = new IDAL.DO.Drone
             {
-                
+                ID = d.ID,
+                Model = d.Model,
+                MaxWeight = (IDAL.DO.WeightCategories)d.MaxWeight
             };
+            try
+            {
+                myDal.AddDrone(tmp);
+            }
+            catch(IDAL.DO.ExistingObjectException droneExc)
+            {
+                throw new ExistingObjectException($"station station {s.Name} allready exists !!");
+            }
         }
 
         public void AddCustomer(Customer customer)

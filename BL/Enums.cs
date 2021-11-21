@@ -2,7 +2,7 @@
 {
     public enum Weight
     {
-        Heavy, Medium, Light
+        Light, Medium, Heavy 
     }
     public enum Status
     {

@@ -55,6 +55,7 @@ namespace BL
                             clossestStation = myDal.GetClossestStation(customerTemp.Lattitude,customerTemp.Longtitude,(List<IDAL.DO.Station>)myDal.CopyStationArray());
                             droneTemp.CurrentLocation.Latitude = clossestStation.Lattitude;
                             droneTemp.CurrentLocation.Longitude = clossestStation.Longitude;
+                            droneTemp.Battery = 
                         }
                         //the parcel has been picked up
                         else

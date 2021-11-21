@@ -24,25 +24,7 @@ namespace IBL.BO
         }
     }
 
-    [Serializable]
-    internal class DronechargeException : Exception
-    {
-        public DronechargeException()
-        {
-        }
 
-        public DronechargeException(string message) : base(message)
-        {
-        }
-
-        public DronechargeException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected DronechargeException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
 
     [Serializable]
     internal class FailedToAddException : Exception
@@ -107,4 +89,26 @@ namespace IBL.BO
         {
         }
     }
+
+    [Serializable]
+    internal class FailedToUpdateException : Exception
+    {
+        public FailedToUpdateException()
+        {
+        }
+
+        public FailedToUpdateException(string message) : base(message)
+        {
+        }
+
+        public FailedToUpdateException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected FailedToUpdateException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
 }
+
+
