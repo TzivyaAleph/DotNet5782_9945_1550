@@ -55,6 +55,7 @@ namespace BL
                             clossestStation = myDal.GetClossestStation(customerTemp.Lattitude,customerTemp.Longtitude,(List<IDAL.DO.Station>)myDal.CopyStationArray());
                             droneTemp.CurrentLocation.Latitude = clossestStation.Lattitude;
                             droneTemp.CurrentLocation.Longitude = clossestStation.Longitude;
+                            droneTemp.Battery = 
                         }
                         //the parcel has been picked up
                         else
@@ -121,7 +122,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             { 
-                throw new BLIdException($"Customer id {id} was not found",custEx);
+                throw new BLInvalidInputException($"Customer id {id} was not found",custEx);
             }
             return customer;
         }
@@ -135,7 +136,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             {
-                throw new BLIdException($"Customer id {id} was not found", custEx);
+                throw new BLInvalidInputException($"Customer id {id} was not found", custEx);
             }
             return parcel;
         }

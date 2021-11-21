@@ -94,7 +94,6 @@ namespace DalObject
         /// <param Name="p"></param>
         public void PickedUp(Parcel p, Drone d)
         {
-            p.DroneID = d.ID;
             p.PickedUp = DateTime.Now;//updates the parcels pickedUp time
             UpdateParcel(p);
         }
