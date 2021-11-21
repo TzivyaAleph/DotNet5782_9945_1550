@@ -17,10 +17,10 @@ namespace BL
         {
             IDAL.DO.Drone droneTemp = new IDAL.DO.Drone();
             if (drone.ID < 1000 || drone.ID > 10000)
-                throw new BLIdException($"Drone ID {drone.ID} is not valid\n");
+                throw new InvalidInputException($"Drone ID {drone.ID} is not valid\n");
             droneTemp.ID = drone.ID;
             if (String.IsNullOrEmpty(drone.Model))
-                throw new BLInvalidStringException($"Drone model {drone.Model} is not valid\n");
+                throw new InvalidInputException($"Drone model {drone.Model} is not valid\n");
             droneTemp.Model = drone.Model;
             try
             {
@@ -32,7 +32,7 @@ namespace BL
             }
         }
 
-        public void SendDroneToChargeSlot(Drone d, Station s)
+        public void SendDroneToChargeSlot(Drone d)
         {
             if (d.DroneStatuses != DroneStatuses.Available)
                 throw new DronechargeException($"Drone {d.ID} is not available");
@@ -42,6 +42,13 @@ namespace BL
             clossestStation = myDal.GetClossestStation(d.CurrentLocation.Latitude, d.CurrentLocation.Longitude, stations);
             if (clossestStation.ChargeSlots == 0)
                 throw new DronechargeException($"There are no available charge slots in station {clossestStation.ID}");
+            double[] electricity = myDal.GetElectricityUse();
+            double distance= Math.Sqrt((Math.Pow(d.CurrentLocation.Latitude - clossestStation.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - clossestStation.Longitude, 2)));
+            if (d.MaxWeight==Weight.Light)
+            {
+            }
+            d.CurrentLocation.Latitude = clossestStation.Lattitude;
+            d.CurrentLocation.Latitude = clossestStation.Longitude;
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
                 ID = d.ID,

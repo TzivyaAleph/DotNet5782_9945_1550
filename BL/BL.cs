@@ -112,33 +112,33 @@ namespace BL
         }
 
 
-        public Customer GetCustomer(int id)
-        {
-            Customer customer = default;
-            try
-            {
-                customer.Id = myDal.GetCustomer(id).ID;
-            }
-            catch (IDAL.DO.UnvalidIDException custEx)
-            { 
-                throw new BLIdException($"Customer id {id} was not found",custEx);
-            }
-            return customer;
-        }
+        //public Customer GetCustomer(int id)
+        //{
+        //    Customer customer = default;
+        //    try
+        //    {
+        //        customer.Id = myDal.GetCustomer(id).ID;
+        //    }
+        //    catch (IDAL.DO.UnvalidIDException custEx)
+        //    { 
+        //        throw new InvalidInputException($"Customer id {id} was not found",custEx);
+        //    }
+        //    return customer;
+        //}
 
-        public Parcel GetParcel(int id)
-        {
-            Parcel parcel = default;
-            try
-            {
-                IDAL.DO.Parcel dalParcel = myDal.GetParcel(id);
-            }
-            catch (IDAL.DO.UnvalidIDException custEx)
-            {
-                throw new BLIdException($"Customer id {id} was not found", custEx);
-            }
-            return parcel;
-        }
+        //public Parcel GetParcel(int id)
+        //{
+        //    Parcel parcel = default;
+        //    try
+        //    {
+        //        IDAL.DO.Parcel dalParcel = myDal.GetParcel(id);
+        //    }
+        //    catch (IDAL.DO.UnvalidIDException custEx)
+        //    {
+        //        throw new InvalidInputException($"Customer id {id} was not found", custEx);
+        //    }
+        //    return parcel;
+        //}
 
 
 

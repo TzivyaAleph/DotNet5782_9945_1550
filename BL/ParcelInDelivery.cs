@@ -9,13 +9,13 @@ namespace IBL.BO
     public class ParcelInDelivery
     {
         public int Id { get; set; }
-        public bool ParcelStatus { get; set; }
+        public bool OnTheWay { get; set; }
         public Weight Weight { get; set; }
         public CustomerParcel CustomerSender { get; set; }
         public CustomerParcel CustomerReciever { get; set; }
         public Location Collection { get; set; }
         public Location Destination { get; set; }
-        public int Transportation { get; set; }//by meters
+        public int Transportation { get; set; }//the distance by meters
 
         public override string ToString()
         {

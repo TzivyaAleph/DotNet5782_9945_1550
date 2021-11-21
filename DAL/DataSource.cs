@@ -21,10 +21,10 @@ namespace DalObject
             internal static int RunningParcelID = 200;
 
             internal static double Light { get => 10; }
-            internal static double Avalaible { get => 0; }
-            internal static double Heavy { get => 150; }
-            internal static double Medium { get => 50; }
-            internal static double ChargingRate { get => 10.25; }
+            internal static double Avalaible { get => 5; }
+            internal static double Heavy { get => 25; }
+            internal static double Medium { get => 20; }
+            internal static double ChargingRate { get => 30; }//per hour
         }
 
         static Random rand = new Random();
