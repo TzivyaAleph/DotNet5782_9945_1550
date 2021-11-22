@@ -48,6 +48,20 @@ namespace DalObject
         }
 
         /// <summary>
+        /// puts a updated station in the stations list
+        /// </summary>
+        /// <param name="station">updated station to add</param>
+        public void UpdateStation(Station station)
+        {
+            if (!(DataSource.Stations.Exists(s => s.ID == station.ID)))
+            {
+                throw new UnvalidIDException($"id {station.ID} is not valid !!");
+            }
+            int index = DataSource.Stations.FindIndex(item => item.ID == station.ID);
+            DataSource.Stations[index] = station;
+        }
+
+        /// <summary>
         /// find closest station to a recieved customer
         /// </summary>
         /// <param name="customerTemp"></param>

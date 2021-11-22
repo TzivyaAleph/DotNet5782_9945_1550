@@ -24,8 +24,6 @@ namespace IBL.BO
         }
     }
 
-
-
     [Serializable]
     internal class FailedToAddException : Exception
     {

@@ -34,5 +34,7 @@ namespace IDAL.DO
          double getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2);
          double deg2rad(double deg);
         IEnumerable<DroneCharge> GetDroneChargeList();
+        public void UpdateStation(Station station);
+        public void UpdateCustomer(Customer customer);
     }
 }

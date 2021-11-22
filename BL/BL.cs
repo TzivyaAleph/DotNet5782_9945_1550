@@ -113,7 +113,7 @@ namespace BL
                 drones.Add(droneToAdd);
             }
             //a method for finding the battery use by the parcel weight.
-             double batteryByWeight(Weight maxWeight)
+            double batteryByWeight(Weight maxWeight)
             {
                 if (maxWeight == Weight.Light)
                     return lightElectricityUse;

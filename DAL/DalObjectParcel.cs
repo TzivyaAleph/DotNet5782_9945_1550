@@ -106,7 +106,7 @@ namespace DalObject
         {
             if (!(DataSource.Parcels.Exists(p => p.ID == parcel.ID)))
             {
-                throw new UnvalidIDException("id { p.Id}  is not valid !!");
+                throw new UnvalidIDException($"id { parcel.ID}  is not valid !!");
             }
             int index = DataSource.Parcels.FindIndex(item => item.ID == parcel.ID);
             DataSource.Parcels[index] = parcel;

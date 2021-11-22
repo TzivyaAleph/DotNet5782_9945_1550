@@ -73,5 +73,19 @@ namespace DalObject
             }
             return customerWithUnDelieverdParcel;
         }
+
+        /// <summary>
+        /// puts a updated customer in the customers list
+        /// </summary>
+        /// <param name="customer"></param>
+        public void UpdateCustomer(Customer customer)
+        {
+            if (!(DataSource.Customers.Exists(c => c.ID == customer.ID)))
+            {
+                throw new UnvalidIDException($"id {customer.ID}  is not valid !!");
+            }
+            int index = DataSource.Customers.FindIndex(item => item.ID == customer.ID);
+            DataSource.Customers[index] = customer;
+        }
     }
 }
