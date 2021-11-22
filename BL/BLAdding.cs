@@ -124,7 +124,7 @@ namespace BL
                 throw new InvalidInputException($"location data: {customer.Location} is not valid !!");
             }
             IDAL.DO.Customer newCustomer = new();
-            newCustomer.CopyPropertyTo(customer);
+            customer.CopyPropertiesTo(newCustomer);
             try
             {
                 myDal.AddCustomer(newCustomer);
@@ -142,7 +142,7 @@ namespace BL
             if (parcel.Recipient.Id < 100000000 || parcel.Recipient.Id > 999999999)
                 throw new InvalidInputException($"The Recipient ID {parcel.Recipient.Id} is not valid !!");
             IDAL.DO.Parcel newParcel = new();
-            newParcel.CopyPropertyTo(newParcel);
+            parcel.CopyPropertiesTo(newParcel);
         }
 
 
