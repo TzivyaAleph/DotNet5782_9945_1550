@@ -143,44 +143,13 @@ namespace BL
             {
                 throw new InvalidInputException($"drone {droneId} is not available !!");
             }
-            IDAL.DO.WeightCategories droneWeight = (IDAL.DO.WeightCategories)droneToAttribute.MaxWeight;
+            IDAL.DO.WeightCategories droneWeight = (IDAL.DO.WeightCategories)droneToAttribute.MaxWeight;//
             double dronesDistance;
+            parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));
+            parcels.Sort((p1, p2) => p1.Weight.CompareTo(p2.Weight));
             //searches for the parcel to attribute
             List<IDAL.DO.Parcel> tmp = new List<IDAL.DO.Parcel>();
             //creates a new parcels list sorted by their priority
-            foreach (var p in parcels)
-            {
-
-            }
-
-
-
-
-                foreach (var p in parcels)
-            {
-                if (p.Priority == IDAL.DO.Priorities.emergency)//if p has highest priority
-                {
-                    if(p.Weight== IDAL.DO.WeightCategories.heavy)//if p has highest weight to carry
-                    {
-
-                    }
-                    tmp.Insert(0, p); //add parcel to beggining of list
-                }
-                else
-                {
-                    if (p.Priority == IDAL.DO.Priorities.fast)
-                    {
-                        if (tmp.FindLastIndex(parcel => parcel.Priority == IDAL.DO.Priorities.emergency) != -1)//find the index of the last parcel with emergancy priority 
-                        {
-                            tmp[tmp.FindLastIndex(parcel => parcel.Priority == IDAL.DO.Priorities.emergency) + 1] = p;//add fast priority parcels after parcels with emergancy priority
-                        }
-                        else
-                            tmp.Insert(0, p);//if there are no emergancy priority parcels, add the fast priority parcel to beggining of list
-                    }
-                    else
-                        tmp.Add(p);
-                }
-            }
             
         }
 
@@ -279,7 +248,11 @@ namespace BL
             return distance;
         }
 
-        //a method for finding the battery use by the parcel weight.
+        /// <summary>
+        /// a method for finding the battery use by the parcel weight.
+        /// </summary>
+        /// <param name="maxWeight">weight of parcel</param>
+        /// <returns></returns>
         public double electricityByWeight(Weight maxWeight)
         {
             if (maxWeight == Weight.Light)
