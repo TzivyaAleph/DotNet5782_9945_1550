@@ -98,20 +98,6 @@ namespace DalObject
         }
 
         /// <summary>
-        /// updates a station in the stations' list
-        /// </summary>
-        /// <param name="station"></param>
-        public void UpdateStation(Station station)
-        {
-            if (!(DataSource.Stations.Exists(s => s.ID == station.ID)))
-            {
-                throw new UnvalidIDException("id { s.Id}  is not valid !!");
-            }
-            int index = DataSource.Stations.FindIndex(item => item.ID == station.ID);
-            DataSource.Stations[index] = station;
-        }
-
-        /// <summary>
         /// creates list with all the available station and return the closest station in the list to the recieved drone.
         /// </summary>
         /// <param name="drone">for finding the closest </param>
@@ -122,6 +108,27 @@ namespace DalObject
         {
             IDAL.DO.Station minStation = new IDAL.DO.Station();
             double minDistance = Math.Sqrt((Math.Pow(lattitude -stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2))); ;
+            foreach (var st in DataSource.Stations)
+            {
+                double distance = Math.Sqrt((Math.Pow(lattitude - st.Lattitude, 2) + Math.Pow(longtitude - st.Longitude, 2)));
+                if (minDistance > distance)
+                {
+                    minDistance = distance;
+                    minStation = st;
+                }
+            }
+            return minStation;
+        }
+
+        public Parcel GetClossestParcel(double lattitude, double longtitude, List<Parcel> parcels)
+        {
+            Parcel minParcel = new Parcel();
+            //finds the customer who has the parcel
+            foreach(var cus in DataSource.Customers)
+            {
+
+            }
+            double minDistance = Math.Sqrt((Math.Pow(lattitude - stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2))); ;
             foreach (var st in DataSource.Stations)
             {
                 double distance = Math.Sqrt((Math.Pow(lattitude - st.Lattitude, 2) + Math.Pow(longtitude - st.Longitude, 2)));

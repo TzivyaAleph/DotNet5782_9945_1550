@@ -145,11 +145,18 @@ namespace BL
             }
             IDAL.DO.WeightCategories droneWeight = (IDAL.DO.WeightCategories)droneToAttribute.MaxWeight;//
             double dronesDistance;
-            parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));
-            parcels.Sort((p1, p2) => p1.Weight.CompareTo(p2.Weight));
+            parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));//sorts the non attributed parcels list by the priority 
+            parcels.Where(p => p.Priority == IDAL.DO.Priorities.emergency).OrderBy(p => (int)p.Weight); //sorts the emergency parcels by their weight
+            parcels.Where(p => p.Priority == IDAL.DO.Priorities.fast).OrderBy(p => (int)p.Weight); //sorts the fast parcels by their weight
+            parcels.Where(p => p.Priority == IDAL.DO.Priorities.normal).OrderBy(p => (int)p.Weight); //sorts the normal parcels by their weight
+            parcels.Reverse();
+            //finds the parcel thats clossest to the drone
+            foreach (var p in parcels)
+            {
+
+            }
             //searches for the parcel to attribute
             List<IDAL.DO.Parcel> tmp = new List<IDAL.DO.Parcel>();
-            //creates a new parcels list sorted by their priority
             
         }
 
