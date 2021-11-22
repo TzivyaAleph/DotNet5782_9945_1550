@@ -21,38 +21,41 @@ namespace BL
 
             IDAL.DO.Parcel dalParcel = myDal.GetParcel(parcelId);
             Parcel parcel = new();//the parcel to return
-            parcel.CopyPropertyTo(dalParcel);
+            parcel.CopyPropertiesTo(dalParcel);
+            IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
             try
             {
-                IDAL.DO.Customer dalSender = myDal.GetCustomer(dalParcel.SenderID);
+                 dalSender = myDal.GetCustomer(dalParcel.SenderID);
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             {
                 throw new FailedToGetException(custEx.ToString(), custEx);
             }
-            parcel.Sender.CopyPropertyTo(dalSender);
+            parcel.Sender.CopyPropertiesTo(dalSender);
+            IDAL.DO.Customer dalRecipient = new IDAL.DO.Customer();
             try
             {
-                IDAL.DO.Customer dalRecipient = myDal.GetCustomer(dalParcel.TargetID);
+              dalRecipient = myDal.GetCustomer(dalParcel.TargetID);
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             {
                 throw new FailedToGetException(custEx.ToString(), custEx);
             }
-            parcel.Recipient.CopyPropertyTo(dalRecipient);
+            parcel.Recipient.CopyPropertiesTo(dalRecipient);
             if (dalParcel.ID == 0)//the parcel hasnt been atributted
                 parcel.DroneInParcel = default;
             else
             {
+                Drone droneInParcel = new();
                 try
                 {
-                    Drone droneInParcel = GetDrone(dalParcel.DroneID);
+                  droneInParcel = GetDrone(dalParcel.DroneID);
                 }
                 catch (IDAL.DO.UnvalidIDException custEx)
                 {
                     throw new FailedToGetException(custEx.ToString(), custEx);
                 }
-                parcel.DroneInParcel.CopyPropertyTo(droneInParcel);
+                parcel.DroneInParcel.CopyPropertiesTo(droneInParcel);
             }
             return parcel;
         }
@@ -68,7 +71,8 @@ namespace BL
             if (droneForList == default)
                 throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
             Drone returningDrone = new();
-            returningDrone.CopyPropertiesTo(droneForList);
+            //gets the fields from the drone list
+            droneForList.CopyPropertiesTo(returningDrone);
             //checks if there is  parcel atributted to the drone 
             if (droneForList.ParcelId == 0)
                 returningDrone.ParcelInDelivery = default;
@@ -109,14 +113,59 @@ namespace BL
                 throw new FailedToGetException(custEx.ToString(), custEx);
             }
 
-
+            return returningCustomer;
         }
 
+        /// <summary>
+        /// gets a station by the id and update the other fields by the fields in dal
+        /// </summary>
+        /// <param name="stationId">for getting the object</param>
+        /// <returns>the object</returns>
         private Station GetStation(int stationId)
         {
-            throw new NotImplementedException();
+            Station returningStation = new();
+            /*DAL.DO.Station dalStation = myDal.CopyStationArray().First(item => item.ID == stationId);*/
+            IDAL.DO.Station dalStation = new IDAL.DO.Station();
+            try
+            {
+                dalStation = myDal.GetStation(stationId);
+            }
+            catch (IDAL.DO.UnvalidIDException stationEx)
+            {
+                throw new FailedToGetException(stationEx.ToString(), stationEx);
+            }
+            dalStation.CopyPropertiesTo(returningStation);
+            //returningStation.StationLocation.Latitude = dalStation.Lattitude;
+            //returningStation.StationLocation.Longitude = dalStation.Longitude;
+            List<DroneCharge> droneCharges = FindListOfDroneLIstForStation(stationId);
+            returningStation.DroneCharges = droneCharges;
+            return returningStation;
         }
 
+        /// <summary>
+        /// creates list that contains all the charge slots of specific station.
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns>th ecreated station </returns>
+        private List<DroneCharge> FindListOfDroneLIstForStation(int stationId)
+        {
+            DroneCharge droneToAdd = new DroneCharge();
+            List<DroneCharge> droneChargesToReturn = new List<DroneCharge>();
+            //goes through the drone charges
+            foreach (var droneList in myDal.GetDroneChargeList())
+            {
+                //if the drone charge is in the station
+                if(droneList.StationID== stationId)
+                {
+                    //updates his fields and add to returning list
+                    droneToAdd.Id = droneList.DroneID;
+                    DroneForList drone = drones.First(item => item.ID == droneList.DroneID);
+                    droneToAdd.Battery = drone.Battery;
+                    droneChargesToReturn.Add(droneToAdd);
+                }
+            }
+            return droneChargesToReturn;
+        }
     }
 
 

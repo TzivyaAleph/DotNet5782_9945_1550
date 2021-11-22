@@ -30,8 +30,9 @@ namespace IDAL.DO
         public void UpdateDrone(Drone drone);
         double[] GetElectricityUse();
         IEnumerable<Customer>  ListOfCustomerWithUnDelieverdParcel();
-        public Station GetClossestStation(double lattitude, double longtitude, List<Station> stations);
-        public double getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2);
-        public double deg2rad(double deg);
+         Station GetClossestStation(double lattitude, double longtitude, List<Station> stations);
+         double getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2);
+         double deg2rad(double deg);
+        IEnumerable<DroneCharge> GetDroneChargeList();
     }
 }
