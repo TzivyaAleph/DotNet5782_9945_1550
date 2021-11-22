@@ -12,24 +12,46 @@ namespace BL
 
     public partial class BL
     {
-
-        public void UpdateDrone(Drone drone)
+        /// <summary>
+        /// updates a drones name
+        /// </summary>
+        /// <param name="drone">the drone to update</param>
+        public void UpdateDrone(int droneId, string newModel)
         {
-            IDAL.DO.Drone droneTemp = new IDAL.DO.Drone();
-            if (drone.ID < 1000 || drone.ID > 10000)
-                throw new InvalidInputException($"Drone ID {drone.ID} is not valid\n");
-            droneTemp.ID = drone.ID;
-            if (String.IsNullOrEmpty(drone.Model))
-                throw new InvalidInputException($"Drone model {drone.Model} is not valid\n");
-            droneTemp.Model = drone.Model;
+            if (droneId < 1000 || droneId > 10000)
+                throw new InvalidInputException($"Drone ID {droneId} is not valid\n");
+            if (String.IsNullOrEmpty(newModel))
+                throw new InvalidInputException($"Drone model {newModel} is not valid\n");
+            IDAL.DO.Drone droneTemp = myDal.CopyDroneArray().First(drone => drone.ID == droneId);//finds the drone to update in the dal drones list
+            droneTemp.Model = newModel;//updates the drone's name
             try
             {
-              myDal.UpdateDrone(droneTemp);
+              myDal.UpdateDrone(droneTemp);//updates the drone in idal drones list
             }
             catch (IDAL.DO.ExistingObjectException custEx)
             {
-                //throw new Exception($"Customer id {id} was not found", custEx);
+                throw new FailedToUpdateException(custEx.ToString(), custEx);
             }
+            int blDroneIndex= drones.FindIndex(blDrone => blDrone.ID == droneId);//finds the drone in the bl drones list
+            drones[blDroneIndex].Model= newModel;//updates the drone in the bl drones list
+        }
+
+        /// <summary>
+        /// updates a stations name and number of available charging slots
+        /// </summary>
+        /// <param name="stationToUpdate">station with the values to update</param>
+        public void UpdateStation(Station stationToUpdate, int numOfChargingSlots)
+        {
+            IDAL.DO.Station stationTemp = myDal.CopyStationArray().First(station => station.ID == stationToUpdate.Id);//finds the station to update in the dal station list
+            if (stationToUpdate .Id< 1000|| stationToUpdate.Id> 10000)
+                throw new InvalidInputException($"Station ID {stationToUpdate.Id} is not valid\n");
+            stationTemp.ID = stationToUpdate.Id;
+            if (!(string.IsNullOrEmpty(stationToUpdate.Name)))//checkes if the function recieved a station name
+                stationTemp.StationName = stationToUpdate.Name;
+            if(numOfChargingSlots<0||numOfChargingSlots>50)
+                throw new InvalidInputException($"number of charging slots {numOfChargingSlots} is not valid\n");
+
+            stationTemp.
         }
 
         public void SendDroneToChargeSlot(Drone d)

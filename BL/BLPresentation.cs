@@ -68,7 +68,7 @@ namespace BL
             if (droneForList == default)
                 throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
             Drone returningDrone = new();
-            returningDrone.CopyPropertyTo(droneForList);
+            returningDrone.CopyPropertiesTo(droneForList);
             //checks if there is  parcel atributted to the drone 
             if (droneForList.ParcelId == 0)
                 returningDrone.ParcelInDelivery = default;
@@ -100,7 +100,7 @@ namespace BL
             try
             {
                 IDAL.DO.Customer dalCustomer = myDal.GetCustomer(customerId);
-                returningCustomer.CopyPropertyTo(dalCustomer);
+                returningCustomer.CopyPropertiesTo(dalCustomer);
                 returningCustomer.Location.Latitude = dalCustomer.Lattitude;
                 returningCustomer.Location.Longitude = dalCustomer.Longtitude;
             }
