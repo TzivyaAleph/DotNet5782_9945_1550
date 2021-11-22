@@ -247,7 +247,7 @@ namespace BL
         /// <param name="d"></param>
         /// <param name="p"></param>
         /// <returns>the distance</returns>
-        public double GetDroneParcelDistance(DroneForList d, Parcel p)
+        private double getDroneParcelDistance(DroneForList d, Parcel p)
         {
             IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
             IDAL.DO.Customer parcelSender = customers.First(customer => customer.ID == p.Sender.Id);//finds the parcels sender
@@ -260,7 +260,7 @@ namespace BL
         /// </summary>
         /// <param name="maxWeight">weight of parcel</param>
         /// <returns></returns>
-        public double electricityByWeight(Weight maxWeight)
+        private double electricityByWeight(Weight maxWeight)
         {
             if (maxWeight == Weight.Light)
                 return myDal.GetElectricityUse()[1]; 
@@ -269,7 +269,35 @@ namespace BL
             return myDal.GetElectricityUse()[3];
         }
 
-
+        /// <summary>
+        /// release drone from charge slot by update the fields
+        /// </summary>
+        /// <param name="d">the dron to release</param>
+        /// <param name="timeInCharge">for the hour its been charging</param>
+        public void ReleasedroneFromeChargeSlot(Drone d,int timeInCharge)
+        {
+            if (d.DroneStatuses != DroneStatuses.Maintenance)
+                throw new FailedToUpdateException($"Cant realese drone frome charge if its not charging");
+            double batteryCharge = timeInCharge * myDal.GetElectricityUse()[4];
+            //cant charge more than 100
+            if ((d.Battery + batteryCharge) > 100)
+                d.Battery = 100;
+            else
+                d.Battery += batteryCharge;
+            d.DroneStatuses = DroneStatuses.Available;
+            IDAL.DO.Station dalStation = new IDAL.DO.Station();
+            dalStation = myDal.CopyStationArray().First(item => item.Lattitude == d.CurrentLocation.Latitude && item.Longitude == d.CurrentLocation.Longitude);
+            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone();
+            d.CopyPropertiesTo(dalDrone);
+            try
+            {
+                myDal.ReleaseDrone(dalDrone, dalStation);
+            }
+            catch (IDAL.DO.UnvalidIDException exc)
+            {
+                throw new FailedToUpdateException(exc.ToString(), exc);
+            }
+        }
     }
 
     

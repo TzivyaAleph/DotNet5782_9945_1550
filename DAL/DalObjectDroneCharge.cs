@@ -30,7 +30,7 @@ namespace DalObject
         /// <param Name="d"></param>
         /// <param Name="s"></param>
         /// <param Name="dc"></param>
-        public void ReleaseDrone(Drone d, Station s, DroneCharge dc)
+        public void ReleaseDrone(Drone d, Station s)
         {
             s.ChargeSlots++;
             UpdateStation(s);//updates the available charge slots in the current staition
