@@ -272,7 +272,7 @@ namespace ConsoleUI
                                         int.TryParse(input, out stationID);
                                         Station s = data.GetStation(stationID);
                                         DroneCharge dc = data.GetDroneCharge(stationID, droneID);
-                                        data.ReleaseDrone(d, s, dc);
+                                        data.ReleaseDrone(d, s);
                                         break;
                                     }
                             }

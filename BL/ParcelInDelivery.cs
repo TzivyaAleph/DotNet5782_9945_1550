@@ -22,7 +22,7 @@ namespace IBL.BO
             string result = " ";
             result += $"ID is {Id},\n";
             result += $"the parcel  is ";
-            if (ParcelStatus)
+            if (!OnTheWay)
                 result += "waiting for pick up,\n";
             else
                 result += "on its way,\n";
