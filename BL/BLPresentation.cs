@@ -18,11 +18,20 @@ namespace BL
         /// <returns>the parcel from the list</returns>
         public Parcel GetParcel(int parcelId)
         {
-
-            IDAL.DO.Parcel dalParcel = myDal.GetParcel(parcelId);
+            IDAL.DO.Parcel dalParcel = new IDAL.DO.Parcel();
+            //gets parcel from dal
+            try
+            {
+               dalParcel = myDal.GetParcel(parcelId);
+            }
+            catch (IDAL.DO.UnvalidIDException custEx)
+            {
+                throw new FailedToGetException(custEx.ToString(), custEx);
+            }
             Parcel parcel = new();//the parcel to return
             parcel.CopyPropertiesTo(dalParcel);
             IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
+            dalSender = new IDAL.DO.Customer();
             try
             {
                  dalSender = myDal.GetCustomer(dalParcel.SenderID);
@@ -78,26 +87,42 @@ namespace BL
                 returningDrone.ParcelInDelivery = default;
             else
             {
-                IDAL.DO.Parcel dalParcel =myDal.GetParcel(droneForList.ParcelId);
-                Parcel parcel = GetParcel(dalParcel.ID);
-                returningDrone.ParcelInDelivery.Id = parcel.Id;
-                if (parcel.PickedUp ==DateTime.MinValue)
-                    returningDrone.ParcelInDelivery.OnTheWay = true;
-                else
-                    returningDrone.ParcelInDelivery.OnTheWay = false;
-                returningDrone.ParcelInDelivery.Weight = parcel.Weight;
-                Customer sender = GetCustomer(parcel.Sender.Id);
-                Customer reciever = GetCustomer(parcel.Recipient.Id);
-                returningDrone.ParcelInDelivery.CustomerSender.Id = parcel.Sender.Id;
-                returningDrone.ParcelInDelivery.CustomerSender.Name = parcel.Sender.Name;
-                returningDrone.ParcelInDelivery.CustomerReciever.Name = parcel.Recipient.Name;
-                returningDrone.ParcelInDelivery.CustomerReciever.Id = parcel.Recipient.Id;
-                returningDrone.ParcelInDelivery.Collection = sender.Location;
-                returningDrone.ParcelInDelivery.Destination = reciever.Location;                
+                IDAL.DO.Parcel dalParcel = new IDAL.DO.Parcel();
+                try
+                {
+                    dalParcel = myDal.GetParcel(droneForList.ParcelId);
+                    //finds the parcel in bl
+                    Parcel parcel = new();
+                    parcel = GetParcel(dalParcel.ID);
+                    returningDrone.ParcelInDelivery.Id = parcel.Id;
+                    //checks if the parcel wasnt picked up
+                    if (parcel.PickedUp == DateTime.MinValue)
+                        returningDrone.ParcelInDelivery.OnTheWay = false;
+                    else
+                        returningDrone.ParcelInDelivery.OnTheWay = true;
+                    returningDrone.ParcelInDelivery.Weight = parcel.Weight;
+                    Customer sender = GetCustomer(parcel.Sender.Id);
+                    Customer reciever = GetCustomer(parcel.Recipient.Id);
+                    returningDrone.ParcelInDelivery.CustomerSender.Id = parcel.Sender.Id;
+                    returningDrone.ParcelInDelivery.CustomerSender.Name = parcel.Sender.Name;
+                    returningDrone.ParcelInDelivery.CustomerReciever.Name = parcel.Recipient.Name;
+                    returningDrone.ParcelInDelivery.CustomerReciever.Id = parcel.Recipient.Id;
+                    returningDrone.ParcelInDelivery.Collection = sender.Location;
+                    returningDrone.ParcelInDelivery.Destination = reciever.Location;
+                }
+                catch (IDAL.DO.UnvalidIDException DroneEx)
+                {
+                    throw new FailedToGetException(DroneEx.ToString(), DroneEx);
+                }
             }
             return returningDrone;
         }
 
+        /// <summary>
+        /// gets a customer by its id and from dal data.
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns>the customer</returns>
         public Customer GetCustomer(int customerId)
         {
             Customer returningCustomer = new();
@@ -105,8 +130,13 @@ namespace BL
             {
                 IDAL.DO.Customer dalCustomer = myDal.GetCustomer(customerId);
                 returningCustomer.CopyPropertiesTo(dalCustomer);
-                returningCustomer.Location.Latitude = dalCustomer.Lattitude;
-                returningCustomer.Location.Longitude = dalCustomer.Longtitude;
+                //returningCustomer.Location.Latitude = dalCustomer.Lattitude;
+                //returningCustomer.Location.Longitude = dalCustomer.Longtitude;
+                List<ParcelCustomer> Parcels = new List<ParcelCustomer>();
+                Parcels = getParcelToSend(returningCustomer);
+                returningCustomer.SentParcels = Parcels;
+                Parcels = getParcelToTarget(returningCustomer);
+                returningCustomer.ReceiveParcels = Parcels;
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             {
@@ -117,11 +147,89 @@ namespace BL
         }
 
         /// <summary>
+        /// creates list with all the parcels that a specific customer recieve.
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        private List<ParcelCustomer> getParcelToTarget(Customer customer)
+        {
+            List<ParcelCustomer> listToReturn = new List<ParcelCustomer>();
+            ParcelCustomer parcelToAdd = new();
+            //goes through the parcel list.
+            foreach (var par in myDal.CopyParcelArray())
+            {
+                //checks if its  the senders parcel 
+                if (par.TargetID == customer.Id)
+                {
+                    parcelToAdd.Id = par.ID;
+                    parcelToAdd.Weight = (Weight)par.Weight;
+                    parcelToAdd.Priority = (Priority)par.Priority;
+                    //checks the parcel status and updates the field.
+                    if (par.Delivered != DateTime.MinValue)
+                        parcelToAdd.Status = Status.Delivered;
+                    else if (par.PickedUp != DateTime.MinValue)
+                        parcelToAdd.Status = Status.Picked;
+                    else if (par.Scheduled != DateTime.MinValue)
+                        parcelToAdd.Status = Status.Assigned;
+                    else
+                        parcelToAdd.Status = Status.Created;
+                    //update the fields in customerParcel=the taget of the parcel data
+                    parcelToAdd.CustomerParcel.Id = par.TargetID;
+                    IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+                    dalTarget = myDal.CopyCustomerArray().First(item => item.ID == par.TargetID);
+                    parcelToAdd.CustomerParcel.Name = dalTarget.Name;
+                    listToReturn.Add(parcelToAdd);
+                }
+
+            }
+            return listToReturn;
+        }
+
+        /// <summary>
+        /// creates list with all the parcels that a specific customer send.
+        /// </summary>
+        /// <param name="customer">the sender</param>
+        /// <returns>the created list</returns>
+        private List<ParcelCustomer> getParcelToSend(Customer customer)
+        {
+            List<ParcelCustomer> listToReturn = new List<ParcelCustomer>();
+            ParcelCustomer parcelToAdd = new();
+            //goes through the parcel list.
+            foreach (var par in myDal.CopyParcelArray())
+            {
+                //checks if its  the senders parcel 
+                if(par.SenderID== customer.Id)
+                {
+                    parcelToAdd.Id = par.ID;
+                    parcelToAdd.Weight =(Weight) par.Weight;
+                    parcelToAdd.Priority =(Priority) par.Priority;
+                    //checks the parcel status and updates the field.
+                    if (par.Delivered != DateTime.MinValue)
+                        parcelToAdd.Status = Status.Delivered;
+                    else if (par.PickedUp != DateTime.MinValue)
+                        parcelToAdd.Status = Status.Picked;
+                    else if (par.Scheduled != DateTime.MinValue)
+                        parcelToAdd.Status = Status.Assigned;
+                    else
+                        parcelToAdd.Status = Status.Created;
+                    //update the fields in customerParcel=the target of the parcel data
+                    parcelToAdd.CustomerParcel.Id = par.TargetID;
+                    IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+                    dalTarget = myDal.CopyCustomerArray().First(item => item.ID == par.TargetID);
+                    parcelToAdd.CustomerParcel.Name = dalTarget.Name;
+                    listToReturn.Add(parcelToAdd);
+                }
+
+            }
+            return listToReturn;
+        }
+
+        /// <summary>
         /// gets a station by the id and update the other fields by the fields in dal
         /// </summary>
         /// <param name="stationId">for getting the object</param>
         /// <returns>the object</returns>
-        private Station GetStation(int stationId)
+        public Station GetStation(int stationId)
         {
             Station returningStation = new();
             /*DAL.DO.Station dalStation = myDal.CopyStationArray().First(item => item.ID == stationId);*/
