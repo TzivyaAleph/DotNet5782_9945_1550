@@ -91,23 +91,31 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// send drone to chargh slots by updating fields.
+        /// </summary>
+        /// <param name="d"></param>
         public void SendDroneToChargeSlot(Drone d)
         {
-            if (d.DroneStatuses != DroneStatuses.Available)//
+            //only send to charge slots when drone available
+            if (d.DroneStatuses != DroneStatuses.Available)
                 throw new FailedToUpdateException($"Drone {d.ID} is not available");
-            //if(d.Battery)
+            //finding all the available charging slots in station.
             List<IDAL.DO.Station> stations =(List<IDAL.DO.Station>) myDal.FindAvailableStations();
             IDAL.DO.Station clossestStation = new IDAL.DO.Station();
+            //finds the clossest station to the current location of the drone
             clossestStation = myDal.GetClossestStation(d.CurrentLocation.Latitude, d.CurrentLocation.Longitude, stations);
-            if (clossestStation.ChargeSlots == 0)
+            //finds the battery use for sending the drone to the clossest station
+            double batteryUse = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, d.CurrentLocation.Latitude, d.CurrentLocation.Longitude) * myDal.GetElectricityUse()[0];
+            //send the drone only if the drone has enough battery and the station has available charging slots.
+            if ((d.Battery- batteryUse)<0|| clossestStation.ChargeSlots == 0)
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.ID}");
             double[] electricity = myDal.GetElectricityUse();
             double distance= Math.Sqrt((Math.Pow(d.CurrentLocation.Latitude - clossestStation.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - clossestStation.Longitude, 2)));
-            if (d.MaxWeight==Weight.Light)
-            {
-            }
+            d.Battery -= batteryUse;
             d.CurrentLocation.Latitude = clossestStation.Lattitude;
             d.CurrentLocation.Latitude = clossestStation.Longitude;
+            d.DroneStatuses = DroneStatuses.Maintenance;
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
                 ID = d.ID,
@@ -122,7 +130,6 @@ namespace BL
             {
                 throw new FailedToAddException(custEx.ToString(), custEx);
             }
-
         }
 
         /// <summary>
@@ -247,7 +254,7 @@ namespace BL
         /// <param name="d"></param>
         /// <param name="p"></param>
         /// <returns>the distance</returns>
-        public double GetDroneParcelDistance(DroneForList d, Parcel p)
+        private double getDroneParcelDistance(DroneForList d, Parcel p)
         {
             IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
             IDAL.DO.Customer parcelSender = customers.First(customer => customer.ID == p.Sender.Id);//finds the parcels sender
@@ -260,7 +267,7 @@ namespace BL
         /// </summary>
         /// <param name="maxWeight">weight of parcel</param>
         /// <returns></returns>
-        public double electricityByWeight(Weight maxWeight)
+        private double electricityByWeight(Weight maxWeight)
         {
             if (maxWeight == Weight.Light)
                 return myDal.GetElectricityUse()[1]; 
@@ -269,28 +276,33 @@ namespace BL
             return myDal.GetElectricityUse()[3];
         }
 
-        public List<IDAL.DO.Parcel> sortParcels()
+        /// <summary>
+        /// release drone from charge slot by update the fields
+        /// </summary>
+        /// <param name="d">the dron to release</param>
+        /// <param name="timeInCharge">for the hour its been charging</param>
+        public void ReleasedroneFromeChargeSlot(Drone d,int timeInCharge)
         {
-            IEnumerable<IDAL.DO.Parcel> parcels = myDal.FindNotAttributedParcels();//gets the non attributed parcels list
-            List<IDAL.DO.Parcel> tmp = new List<IDAL.DO.Parcel>();
-            foreach (var p in parcels)
+            if (d.DroneStatuses != DroneStatuses.Maintenance)
+                throw new FailedToUpdateException($"Cant realese drone frome charge if its not charging");
+            double batteryCharge = timeInCharge * myDal.GetElectricityUse()[4];
+            //cant charge more than 100
+            if ((d.Battery + batteryCharge) > 100)
+                d.Battery = 100;
+            else
+                d.Battery += batteryCharge;
+            d.DroneStatuses = DroneStatuses.Available;
+            IDAL.DO.Station dalStation = new IDAL.DO.Station();
+            dalStation = myDal.CopyStationArray().First(item => item.Lattitude == d.CurrentLocation.Latitude && item.Longitude == d.CurrentLocation.Longitude);
+            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone();
+            d.CopyPropertiesTo(dalDrone);
+            try
             {
-                if (p.Priority == IDAL.DO.Priorities.emergency)//if p has highest priority
-                {
-                    tmp[0] = p;//put highst priority parcels in beggining of list 
-                }
-                else
-                {
-                    if (p.Priority == IDAL.DO.Priorities.fast)//if p has fast priority
-                    {
-                        if (tmp.FindLastIndex(parcel => parcel.Priority == IDAL.DO.Priorities.emergency) != -1)//find the index of the last parcel with emergancy priority 
-                            tmp[tmp.FindLastIndex(parcel => parcel.Priority == IDAL.DO.Priorities.emergency) + 1] = p;//add fast priority parcels after parcels with emergancy priority
-                        else
-                            tmp[0] = p;
-                    }
-                    else
-                        tmp.Add(p);//always add normal priority parcels to end of list
-                }
+                myDal.ReleaseDrone(dalDrone, dalStation);
+            }
+            catch (IDAL.DO.UnvalidIDException exc)
+            {
+                throw new FailedToUpdateException(exc.ToString(), exc);
             }
         }
     }

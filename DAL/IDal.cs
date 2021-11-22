@@ -24,7 +24,7 @@ namespace IDAL.DO
         Station GetStation(int stationID);
         void PickedUp(Parcel p, Drone d);
         void Delivered(Parcel p);
-        void ReleaseDrone(Drone d, Station s, DroneCharge dc);
+        void ReleaseDrone(Drone d, Station s);
         void SendDroneToChargeSlot(Drone d, Station s);
         void UpdateParcel(Parcel parcel);
         public void UpdateDrone(Drone drone);
