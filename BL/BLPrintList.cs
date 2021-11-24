@@ -36,5 +36,11 @@ namespace BL
             }
             return stationsToReturn;
         }
+
+        public IEnumerable<DroneForList> GetDroneList()
+        {
+            List<DroneForList> DroneToReturn = new List<DroneForList>();
+            
+        }
     }
 }

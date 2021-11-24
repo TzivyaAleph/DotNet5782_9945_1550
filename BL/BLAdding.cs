@@ -140,7 +140,7 @@ namespace BL
         /// adds parcel to parcel list
         /// </summary>
         /// <param name="parcel"></param>
-        public void AddParcel(Parcel parcel)
+        public int AddParcel(Parcel parcel)
         {
             if (parcel.Sender.Id < 100000000 || parcel.Sender.Id > 999999999)
                 throw new InvalidInputException($"The sender ID {parcel.Sender.Id} is not valid !!");
@@ -155,14 +155,16 @@ namespace BL
             IDAL.DO.Parcel newParcel = new();
             parcel.CopyPropertiesTo(newParcel);
             newParcel.DroneID = 0;
+            int runningNumber;
             try
             {
-                myDal.AddParcel(newParcel);
+                runningNumber=myDal.AddParcel(newParcel);
             }
             catch (IDAL.DO.ExistingObjectException parEx)
             {
                 throw new FailedToAddException(parEx.ToString(), parEx);
             }
+            return runningNumber;
         }
 
     }
@@ -172,4 +174,3 @@ namespace BL
 }
 
 
-}

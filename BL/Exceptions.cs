@@ -25,7 +25,7 @@ namespace IBL.BO
     }
 
     [Serializable]
-    internal class FailedToAddException : Exception
+    public class FailedToAddException : Exception
     {
         public FailedToAddException()
         {

@@ -123,12 +123,21 @@ namespace DalObject
         public Parcel GetClossestParcel(double lattitude, double longtitude, List<Parcel> parcels)
         {
             Parcel minParcel = new Parcel();
-            //finds the customer who has the parcel
-            foreach(var cus in DataSource.Customers)
+            Customer customerForParcelLocation = new Customer();
+            double minDistance;
+            //finds the distance between parcel and drone
+            customerForParcelLocation = DataSource.Customers.First(customer => customer.ID == parcels[0].SenderID);//finds the location of the first parcel's sender 
+            minDistance = Math.Sqrt((Math.Pow(lattitude - customerForParcelLocation.Lattitude, 2) + Math.Pow(longtitude - customerForParcelLocation.Longtitude, 2))); ;
+            foreach (var p in parcels)
             {
-
+                customerForParcelLocation = DataSource.Customers.First(customer => customer.ID ==p.SenderID);//finds the location of the parcel's sender (to know the senders location)
+                double distance = Math.Sqrt((Math.Pow(lattitude - customerForParcelLocation.Lattitude, 2) + Math.Pow(longtitude - customerForParcelLocation.Longtitude, 2)));//finds the distance between current parcel and drone
+                if(distance<minDistance)
+                {
+                    
+                }    
             }
-            double minDistance = Math.Sqrt((Math.Pow(lattitude - stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2))); ;
+            //finds the customer who has the parcel
             foreach (var st in DataSource.Stations)
             {
                 double distance = Math.Sqrt((Math.Pow(lattitude - st.Lattitude, 2) + Math.Pow(longtitude - st.Longitude, 2)));

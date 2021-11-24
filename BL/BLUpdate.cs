@@ -157,10 +157,12 @@ namespace BL
             parcels.Where(p => p.Priority == IDAL.DO.Priorities.fast).OrderBy(p => (int)p.Weight); //sorts the fast parcels by their weight
             parcels.Where(p => p.Priority == IDAL.DO.Priorities.normal).OrderBy(p => (int)p.Weight); //sorts the normal parcels by their weight
             parcels.Reverse();
+            //קריאה לפונקציה שתמיין כל אחד מהחלקים של המערך לפי מרחק
             //finds the parcel thats clossest to the drone
             foreach (var p in parcels)
             {
 
+                double batteryUseFromStationToSender=
             }
             //searches for the parcel to attribute
             List<IDAL.DO.Parcel> tmp = new List<IDAL.DO.Parcel>();
