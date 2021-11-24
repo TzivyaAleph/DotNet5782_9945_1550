@@ -20,14 +20,14 @@ namespace BL
             StationForList stationToAdd = new();
             foreach(var stat in myDal.CopyStationArray())
             {
-                stationToAdd.Id = stat.ID;
+                stationToAdd.Id = stat.Id;
                 stationToAdd.Name = stat.StationName;
                 stationToAdd.AvailableChargingSlots = stat.ChargeSlots;
                 // counts the drones that are charging in the current station
                 int countNumOfDronesInStation = 0;
                 foreach (var dc in myDal.GetDroneChargeList())
                 {
-                    if (dc.StationID == stat.ID)
+                    if (dc.StationID == stat.Id)
                         countNumOfDronesInStation++;
                 }
                 Station station = new();
@@ -35,6 +35,148 @@ namespace BL
                 stationsToReturn.Add(stationToAdd);
             }
             return stationsToReturn;
+        }
+
+        /// <summary>
+        /// creates new list and copies all the fields from the drone list in bl
+        /// </summary>
+        /// <returns>the created list</returns>
+        public IEnumerable<DroneForList> GetDroneList()
+        {
+            List<DroneForList> dronesForList = new List<DroneForList>(drones);
+            return dronesForList;
+        }
+
+        /// <summary>
+        /// creates new list with data frome the customer list and parcels from dal
+        /// </summary>
+        /// <returns>the created list</returns>
+        public IEnumerable<CustomerForList> GetCustomerList()
+        {
+            List<CustomerForList> customersForList = new List<CustomerForList>();
+            CustomerForList customerToAdd = new();
+            foreach(var cust in myDal.CopyCustomerArray())
+            {
+                customerToAdd.Id = cust.Id;
+                customerToAdd.Name = cust.Name;
+                customerToAdd.Phone = cust.PhoneNumber;
+                //counts all the parcel which he sends and been delievered.
+                int count = myDal.CopyParcelArray().Count(item => item.SenderID==cust.Id && item.Delivered!=DateTime.MinValue);
+                customerToAdd.ParcelProvided = count;
+                //counts all the parcel which he sends and not been delievered.
+                count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered == DateTime.MinValue);
+                customerToAdd.ParcelNotProvided = count;
+                //counts all the parcel which he gets.
+                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered!=DateTime.MinValue);
+                customerToAdd.ParcelRecieved = count;
+                //counts all the parcel that on the way to him.
+                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered == DateTime.MinValue&&item.PickedUp!=DateTime.MinValue);
+                customerToAdd.ParcelOnTheWay = count;
+                customersForList.Add(customerToAdd);
+            }
+            return customersForList;
+        }
+
+        /// <summary>
+        /// creates new list of parcels with data in fields.
+        /// </summary>
+        /// <returns>the created parcel</returns>
+        public IEnumerable<ParcelForList> GetParcelList()
+        {
+            List<ParcelForList> parcelsForList = new List<ParcelForList>();
+            ParcelForList parcelToAdd = new();
+            foreach (var par in myDal.CopyParcelArray())
+            {
+                parcelToAdd.Id = par.Id;
+                IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
+                //finds the sender in customer list for getting his name
+                dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
+                parcelToAdd.Sender = dalCustomer.Name;
+                //finds the reciepient in customer list for getting his name
+                dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                parcelToAdd.Reciever = dalCustomer.Name;
+                parcelToAdd.Weight = (Weight)par.Weight;
+                parcelToAdd.Priority = (Priority)par.Priority;
+                parcelToAdd.Status = (Status)getStatus(par);
+                parcelsForList.Add(parcelToAdd);
+            }
+            return parcelsForList;
+        }
+
+        /// <summary>
+        /// creates list of parcels who  does not attribute to drone
+        /// </summary>
+        /// <returns>the created list</returns>
+        public IEnumerable<ParcelForList> GetUnAtributtedParcels()
+        {
+            List<ParcelForList> parcelsForList = new List<ParcelForList>();
+            ParcelForList parcelToAdd = new();
+            foreach(var par in myDal.CopyParcelArray())
+            {
+                if(par.DroneID==0)
+                {
+                    parcelToAdd.Id = par.Id;
+                    IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
+                    //finds the sender in customer list for getting his name
+                    dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
+                    parcelToAdd.Sender = dalCustomer.Name;
+                    //finds the reciepient in customer list for getting his name
+                    dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                    parcelToAdd.Reciever = dalCustomer.Name;
+                    parcelToAdd.Weight = (Weight)par.Weight;
+                    parcelToAdd.Priority = (Priority)par.Priority;
+                    parcelToAdd.Status = (Status)getStatus(par);
+                    parcelsForList.Add(parcelToAdd);
+                }
+            }
+            return parcelsForList;
+        }
+
+        /// <summary>
+        /// creates list with all the station that has available charging slots.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<StationForList> GetAvailableChargingSlotsStations()
+        {
+            List<StationForList> stationsToReturn = new List<StationForList>();
+            StationForList stationToAdd = new();
+            foreach (var stat in myDal.CopyStationArray())
+            {
+                if(stat.ChargeSlots!=0)
+                {
+                    stationToAdd.Id = stat.Id;
+                    stationToAdd.Name = stat.StationName;
+                    stationToAdd.AvailableChargingSlots = stat.ChargeSlots;
+                    // counts the drones that are charging in the current station
+                    int countNumOfDronesInStation = 0;
+                    foreach (var dc in myDal.GetDroneChargeList())
+                    {
+                        if (dc.StationID == stat.Id)
+                            countNumOfDronesInStation++;
+                    }
+                    Station station = new();
+                    stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation - stat.ChargeSlots;
+                    stationsToReturn.Add(stationToAdd);
+                }
+            }
+            return stationsToReturn;
+        }
+
+        /// <summary>
+        /// checks the parcel status and updates the field.
+        /// </summary>
+        /// <param name="par"></param>
+        /// <returns>the status of the parcel</returns>
+        private Status getStatus(IDAL.DO.Parcel par)
+        {
+            if (par.Delivered != DateTime.MinValue)
+                return Status.Delivered;
+            else if (par.PickedUp != DateTime.MinValue)
+                return Status.Picked;
+            else if (par.Scheduled != DateTime.MinValue)
+                return Status.Assigned;
+            else
+                return Status.Created;
         }
     }
 }

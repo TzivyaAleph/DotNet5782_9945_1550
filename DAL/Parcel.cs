@@ -8,7 +8,7 @@ namespace IDAL
     {
         public struct Parcel
         {
-            public int ID { get;  set; }
+            public int Id { get;  set; }
             public int SenderID { get;  set; }//the sender of the parcel
             public int TargetID { get;  set; }//the costumer rwho orded the parcel
             public WeightCategories Weight { get;  set; }//the weight of the parcel
@@ -22,7 +22,7 @@ namespace IDAL
             public override string ToString()
             {
                 string result = "";
-                result += $"parcel ID is: {ID} \n";
+                result += $"parcel ID is: {Id} \n";
                 result += $"sender ID is: {SenderID} \n";
                 result += $"target ID is: {TargetID} \n";
                 result += $"parcel weight is: {Weight} \n";

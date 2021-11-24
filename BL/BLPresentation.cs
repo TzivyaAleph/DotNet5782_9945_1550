@@ -29,7 +29,7 @@ namespace BL
                 throw new FailedToGetException(custEx.ToString(), custEx);
             }
             Parcel parcel = new();//the parcel to return
-            parcel.CopyPropertiesTo(dalParcel);
+            dalParcel.CopyPropertiesTo(parcel);
             IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
             dalSender = new IDAL.DO.Customer();
             try
@@ -50,8 +50,9 @@ namespace BL
             {
                 throw new FailedToGetException(custEx.ToString(), custEx);
             }
+            parcel.Recipient = new();
             parcel.Recipient.CopyPropertiesTo(dalRecipient);
-            if (dalParcel.ID == 0)//the parcel hasnt been atributted
+            if (dalParcel.Id == 0)//the parcel hasnt been atributted
                 parcel.DroneInParcel = default;
             else
             {
@@ -76,7 +77,7 @@ namespace BL
         /// <returns>the drone from the list</returns>
         public Drone GetDrone(int droneID)
         {
-            DroneForList droneForList = drones.Find(item => item.ID == droneID);
+            DroneForList droneForList = drones.Find(item => item.Id == droneID);
             if (droneForList == default)
                 throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
             Drone returningDrone = new();
@@ -93,7 +94,7 @@ namespace BL
                     dalParcel = myDal.GetParcel(droneForList.ParcelId);
                     //finds the parcel in bl
                     Parcel parcel = new();
-                    parcel = GetParcel(dalParcel.ID);
+                    parcel = GetParcel(dalParcel.Id);
                     returningDrone.ParcelInDelivery.Id = parcel.Id;
                     //checks if the parcel wasnt picked up
                     if (parcel.PickedUp == DateTime.MinValue)
@@ -161,22 +162,15 @@ namespace BL
                 //checks if its  the senders parcel 
                 if (par.TargetID == customer.Id)
                 {
-                    parcelToAdd.Id = par.ID;
+                    parcelToAdd.Id = par.Id;
                     parcelToAdd.Weight = (Weight)par.Weight;
                     parcelToAdd.Priority = (Priority)par.Priority;
                     //checks the parcel status and updates the field.
-                    if (par.Delivered != DateTime.MinValue)
-                        parcelToAdd.Status = Status.Delivered;
-                    else if (par.PickedUp != DateTime.MinValue)
-                        parcelToAdd.Status = Status.Picked;
-                    else if (par.Scheduled != DateTime.MinValue)
-                        parcelToAdd.Status = Status.Assigned;
-                    else
-                        parcelToAdd.Status = Status.Created;
+                    parcelToAdd.Status = getStatus(par);
                     //update the fields in customerParcel=the taget of the parcel data
                     parcelToAdd.CustomerParcel.Id = par.TargetID;
                     IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
-                    dalTarget = myDal.CopyCustomerArray().First(item => item.ID == par.TargetID);
+                    dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
                     parcelToAdd.CustomerParcel.Name = dalTarget.Name;
                     listToReturn.Add(parcelToAdd);
                 }
@@ -200,7 +194,7 @@ namespace BL
                 //checks if its  the senders parcel 
                 if(par.SenderID== customer.Id)
                 {
-                    parcelToAdd.Id = par.ID;
+                    parcelToAdd.Id = par.Id;
                     parcelToAdd.Weight =(Weight) par.Weight;
                     parcelToAdd.Priority =(Priority) par.Priority;
                     //checks the parcel status and updates the field.
@@ -215,7 +209,7 @@ namespace BL
                     //update the fields in customerParcel=the target of the parcel data
                     parcelToAdd.CustomerParcel.Id = par.TargetID;
                     IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
-                    dalTarget = myDal.CopyCustomerArray().First(item => item.ID == par.TargetID);
+                    dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
                     parcelToAdd.CustomerParcel.Name = dalTarget.Name;
                     listToReturn.Add(parcelToAdd);
                 }
@@ -267,7 +261,7 @@ namespace BL
                 {
                     //updates his fields and add to returning list
                     droneToAdd.Id = droneList.DroneID;
-                    DroneForList drone = drones.First(item => item.ID == droneList.DroneID);
+                    DroneForList drone = drones.First(item => item.Id == droneList.DroneID);
                     droneToAdd.Battery = drone.Battery;
                     droneChargesToReturn.Add(droneToAdd);
                 }

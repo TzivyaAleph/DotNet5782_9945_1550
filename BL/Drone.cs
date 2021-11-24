@@ -8,7 +8,7 @@ namespace IBL.BO
 {
     public class Drone
     {
-        public int ID { set; get; }
+        public int Id { set; get; }
         public string Model { set; get; }
         public Weight MaxWeight { set; get; }
         public  DroneStatuses DroneStatuses { set; get; }
@@ -20,7 +20,7 @@ namespace IBL.BO
         public override string ToString()
         {
             string result = " ";
-            result += $"ID is {ID},\n";
+            result += $"ID is {Id},\n";
             result += $"model is {Model},\n";
             result += $"the maximum weight is {MaxWeight},\n";
             result += $"the drone is {DroneStatuses},\n";
