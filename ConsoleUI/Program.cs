@@ -110,7 +110,7 @@ namespace ConsoleUI
                             }
                             break;
                         }
-                            case MenuOptions.Presentation:
+                    case MenuOptions.Presentation:
                         {
                             Console.WriteLine("Choose an entity Presentation:\n1: Station, 2: Drone, 3: Customer, 4: Parcel");
                             entitiesOptions = (EntitiesOptions)int.Parse(Console.ReadLine());//foe choosing the entity
@@ -333,7 +333,7 @@ namespace ConsoleUI
         {
             Customer c = new Customer
             {
-                ID = myID,
+                Id = myID,
                 Name = myName,
                 PhoneNumber = myPhoneNumber,
                 Lattitude = myLongitude,
@@ -372,7 +372,7 @@ namespace ConsoleUI
             List<Customer> newList = new List<Customer>(data.CopyCustomerArray());
             foreach (var c in newList)
             {
-                if (c.ID > 0)
+                if (c.Id > 0)
                     Console.WriteLine(c);
             }
         }
@@ -385,7 +385,7 @@ namespace ConsoleUI
             List<Parcel> newList = new List<Parcel>(data.CopyParcelArray());
             foreach (var p in newList)
             {
-                if (p.ID > 0)
+                if (p.Id > 0)
                     Console.WriteLine(p);
             }
         }
@@ -398,7 +398,7 @@ namespace ConsoleUI
             List<Station> newList = new List<Station>(data.CopyStationArray());
             foreach (var s in newList)
             {
-                if (s.ID > 0)
+                if (s.Id > 0)
                     Console.WriteLine(s);
             }
         }
@@ -411,7 +411,7 @@ namespace ConsoleUI
             List<Drone> newList = new List<Drone>(data.CopyDroneArray());
             foreach (var d in newList)
             {
-                if (d.ID > 0)
+                if (d.Id > 0)
                     Console.WriteLine(d);
             }
         }

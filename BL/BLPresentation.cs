@@ -18,6 +18,8 @@ namespace BL
         /// <returns>the parcel from the list</returns>
         public Parcel GetParcel(int parcelId)
         {
+            if (parcelId < 200)
+                throw new InvalidInputException($"parcel id {parcelId} is not valid !!");
             IDAL.DO.Parcel dalParcel = new IDAL.DO.Parcel();
             //gets parcel from dal
             try
@@ -77,6 +79,10 @@ namespace BL
         /// <returns>the drone from the list</returns>
         public Drone GetDrone(int droneID)
         {
+            if (droneID < 1000 || droneID > 10000)
+            {
+                throw new InvalidInputException($"id {droneID} is not valid !!");
+            }
             DroneForList droneForList = drones.Find(item => item.Id == droneID);
             if (droneForList == default)
                 throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
@@ -126,6 +132,8 @@ namespace BL
         /// <returns>the customer</returns>
         public Customer GetCustomer(int customerId)
         {
+            if (customerId < 100000000 || customerId > 999999999)
+                throw new InvalidInputException($"ID {customerId} is not valid !!");
             Customer returningCustomer = new();
             try
             {
@@ -225,6 +233,10 @@ namespace BL
         /// <returns>the object</returns>
         public Station GetStation(int stationId)
         {
+            if (stationId < 1000 || stationId > 10000)
+            {
+                throw new InvalidInputException($"id {stationId} is not valid !!");
+            }
             Station returningStation = new();
             /*DAL.DO.Station dalStation = myDal.CopyStationArray().First(item => item.ID == stationId);*/
             IDAL.DO.Station dalStation = new IDAL.DO.Station();

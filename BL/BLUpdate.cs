@@ -40,24 +40,30 @@ namespace BL
         /// updates a stations name and number of available charging slots
         /// </summary>
         /// <param name="stationToUpdate">station with the values to update</param>
-        public void UpdateStation(Station stationToUpdate, int numOfChargingSlots)//לשאול את יהודה איזה תחנה צריך לעדכן
+        public void UpdateStation(int stationId, string stationName, int numOfChargingSlots) 
         {
-            IDAL.DO.Station stationTemp = myDal.CopyStationArray().First(station => station.Id == stationToUpdate.Id);//finds the station to update in the dal station list
-            if (stationToUpdate .Id< 1000|| stationToUpdate.Id> 10000)
-                throw new InvalidInputException($"Station ID {stationToUpdate.Id} is not valid\n");
-            if (!(string.IsNullOrEmpty(stationToUpdate.Name)))//checkes if the function recieved a station name
-                stationTemp.StationName = stationToUpdate.Name;
+            IDAL.DO.Station stationTemp = myDal.CopyStationArray().First(station => station.Id == stationId);//finds the station to update in the dal station list
+            if (stationId < 1000|| stationId > 10000)
+                throw new InvalidInputException($"Station ID {stationId} is not valid\n");
+            if (!(string.IsNullOrEmpty(stationName)))//checkes if the function recieved a station name
+                stationTemp.StationName = stationName;
             if(numOfChargingSlots<0||numOfChargingSlots>50)
                 throw new InvalidInputException($"number of charging slots {numOfChargingSlots} is not valid\n");
-            List<IDAL.DO.DroneCharge> droneCharges = (List<IDAL.DO.DroneCharge>)myDal.GetDroneChargeList();//recieves the dal droneCharge list
-            // counts the drones that are charging in the current station
-            int countNumOfDronesInStation = 0;
-            foreach(var dc in droneCharges)
+            //updates the number of charging slots if the func recieved user's input
+            if (numOfChargingSlots != -1)
             {
-                if (dc.StationID == stationToUpdate.Id)
-                    countNumOfDronesInStation++;
+                List<IDAL.DO.DroneCharge> droneCharges = (List<IDAL.DO.DroneCharge>)myDal.GetDroneChargeList();//recieves the dal droneCharge list
+                // counts the drones that are charging in the current station                                                                                              
+                int countNumOfDronesInStation = 0;
+                foreach (var dc in droneCharges)
+                {
+                    if (dc.StationID == stationId)
+                        countNumOfDronesInStation++;
+                }
+                if((numOfChargingSlots - countNumOfDronesInStation)<0)
+                    throw new InvalidInputException($"number of charging slots {numOfChargingSlots} is not valid\n");
+                stationTemp.ChargeSlots = numOfChargingSlots - countNumOfDronesInStation;//updates the number of available charging slots in the current station
             }
-            stationTemp.ChargeSlots = numOfChargingSlots - countNumOfDronesInStation;//updates the number of available charging slots in the current station
             try
             {
                 myDal.UpdateStation(stationTemp);//update station in dal stations list 
@@ -72,15 +78,15 @@ namespace BL
         /// updates a customer's id, phone number and name
         /// </summary>
         /// <param name="customer">customer to update</param>
-        public void UpdateCustomer(Customer customer)
+        public void UpdateCustomer(int customerId, string customerName, string customerPhone)
         {
             IDAL.DO.Customer customerTemp = myDal.CopyCustomerArray().First(customer => customer.Id == customer.Id);//finds the customer to update in the dal customers list
-            if (customer.Id<100000000||customer.Id>1000000000)
-                throw new InvalidInputException($"customer ID {customer.Id} is not valid\n");
-            if (!(string.IsNullOrEmpty(customer.Name)))//checkes if the user put in a name to update
-                customerTemp.Name = customer.Name;
-            if (!(string.IsNullOrEmpty(customer.Phone)))//checkes if the user put in a phone number to update
-                customerTemp.PhoneNumber = customer.Phone;
+            if (customerId < 100000000|| customerId > 1000000000)
+                throw new InvalidInputException($"customer ID {customerId} is not valid\n");
+            if (!(string.IsNullOrEmpty(customerName)))//checkes if the user put in a name to update
+                customerTemp.Name = customerName;
+            if (!(string.IsNullOrEmpty(customerPhone)))//checkes if the user put in a phone number to update
+                customerTemp.PhoneNumber = customerPhone;
             try
             {
                 myDal.UpdateCustomer(customerTemp);//update the customer in the dal customers list
