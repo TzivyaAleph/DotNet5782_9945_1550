@@ -104,11 +104,11 @@ namespace DalObject
         /// <param name="parcel"></param>
         public void UpdateParcel(Parcel parcel)
         {
-            if (!(DataSource.Parcels.Exists(p => p.ID == parcel.ID)))
+            if (!(DataSource.Parcels.Exists(p => p.Id == parcel.Id)))
             {
-                throw new UnvalidIDException($"id { parcel.ID}  is not valid !!");
+                throw new UnvalidIDException($"id { parcel.Id}  is not valid !!");
             }
-            int index = DataSource.Parcels.FindIndex(item => item.ID == parcel.ID);
+            int index = DataSource.Parcels.FindIndex(item => item.Id == parcel.Id);
             DataSource.Parcels[index] = parcel;
         }
 

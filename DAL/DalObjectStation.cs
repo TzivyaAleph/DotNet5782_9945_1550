@@ -126,11 +126,11 @@ namespace DalObject
             Customer customerForParcelLocation = new Customer();
             double minDistance;
             //finds the distance between parcel and drone
-            customerForParcelLocation = DataSource.Customers.First(customer => customer.ID == parcels[0].SenderID);//finds the location of the first parcel's sender 
+            customerForParcelLocation = DataSource.Customers.First(customer => customer.Id == parcels[0].SenderID);//finds the location of the first parcel's sender 
             minDistance = Math.Sqrt((Math.Pow(lattitude - customerForParcelLocation.Lattitude, 2) + Math.Pow(longtitude - customerForParcelLocation.Longtitude, 2))); ;
             foreach (var p in parcels)
             {
-                customerForParcelLocation = DataSource.Customers.First(customer => customer.ID ==p.SenderID);//finds the location of the parcel's sender (to know the senders location)
+                customerForParcelLocation = DataSource.Customers.First(customer => customer.Id ==p.SenderID);//finds the location of the parcel's sender (to know the senders location)
                 double distance = Math.Sqrt((Math.Pow(lattitude - customerForParcelLocation.Lattitude, 2) + Math.Pow(longtitude - customerForParcelLocation.Longtitude, 2)));//finds the distance between current parcel and drone
                 if(distance<minDistance)
                 {

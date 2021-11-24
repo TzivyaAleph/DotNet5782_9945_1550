@@ -34,7 +34,7 @@ namespace BL
             //goes throuhgh the da list drones
             foreach(var item in myDal.CopyDroneArray())
             {
-                droneToAdd.ID = item.ID;
+                droneToAdd.Id = item.Id;
                 droneToAdd.Model = item.Model;
                 droneToAdd.MaxWeight =(Weight)item.MaxWeight;
                 //goes through the parcels list in dal for the exstract fields from drone for list
@@ -42,14 +42,14 @@ namespace BL
                 {
                     IDAL.DO.Station clossestStation = new IDAL.DO.Station();
                     // the drone has been attributted but the parcel has not delievred.
-                    if (par.DroneID==item.ID&&par.Delivered==DateTime.MinValue)
+                    if (par.DroneID==item.Id&&par.Delivered==DateTime.MinValue)
                     {
                         droneToAdd.DroneStatuses = DroneStatuses.Delivered;
                         //finds the customer who send the parcel.
                         IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
                         IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
-                        dalSender = myDal.CopyCustomerArray().First(item => item.ID == par.SenderID);//finds the parcels sender
-                        dalTarget = myDal.CopyCustomerArray().First(item => item.ID == par.TargetID);//finds the parcels target
+                        dalSender = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);//finds the parcels sender
+                        dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);//finds the parcels target
                         clossestStation = myDal.GetClossestStation(dalSender.Lattitude, dalSender.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());
                         double batteryUseFromSenderToTarget = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, dalSender.Lattitude, dalSender.Longtitude) * batteryByWeight(droneToAdd.MaxWeight);
                         clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());//finds the clossest station to the target.

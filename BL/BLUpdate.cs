@@ -147,28 +147,76 @@ namespace BL
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
-            DroneForList droneToAttribute = drones[index];
+            DroneForList droneToAttribute = new();
+            droneToAttribute = drones[index];
             if(droneToAttribute.DroneStatuses!= DroneStatuses.Available)//checkes if the drone is available
             {
                 throw new InvalidInputException($"drone {droneId} is not available !!");
             }
             IDAL.DO.WeightCategories droneWeight = (IDAL.DO.WeightCategories)droneToAttribute.MaxWeight;//
-            double dronesDistance;
             parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));//sorts the non attributed parcels list by the priority 
             parcels.Where(p => p.Priority == IDAL.DO.Priorities.emergency).OrderBy(p => (int)p.Weight); //sorts the emergency parcels by their weight
             parcels.Where(p => p.Priority == IDAL.DO.Priorities.fast).OrderBy(p => (int)p.Weight); //sorts the fast parcels by their weight
             parcels.Where(p => p.Priority == IDAL.DO.Priorities.normal).OrderBy(p => (int)p.Weight); //sorts the normal parcels by their weight
             parcels.Reverse();
-            //קריאה לפונקציה שתמיין כל אחד מהחלקים של המערך לפי מרחק
+            parcels.RemoveAll(p => (int)p.Weight > (int)droneToAttribute.MaxWeight);
+            double minDistance = getDroneParcelDistance(droneToAttribute,parcels[0]);
+            IDAL.DO.Parcel minParcel=parcels[0];
+            double distance;
             //finds the parcel thats clossest to the drone
             foreach (var p in parcels)
             {
-
-                double batteryUseFromStationToSender=
+                distance = getDroneParcelDistance(droneToAttribute, p);
+                if(distance<minDistance)
+                {
+                    double batteryUseForPickUp = distance * myDal.GetElectricityUse()[0];
+                    IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
+                    dalSender = myDal.CopyCustomerArray().First(customer => customer.Id == p.SenderID);//finds the parcel's sender
+                    IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+                    dalTarget = myDal.CopyCustomerArray().First(customer => customer.Id == p.TargetID);//finds the target
+                    double batteryUseForDelivery = myDal.getDistanceFromLatLonInKm(dalSender.Lattitude, dalSender.Longtitude, dalTarget.Lattitude, dalTarget.Longtitude)* electricityByWeight((Weight)p.Weight);
+                    IDAL.DO.Station clossestStation = new IDAL.DO.Station();
+                    clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude,(List< IDAL.DO.Station>) myDal.CopyStationArray());
+                    double batteryUseForCharging = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, dalTarget.Lattitude, dalTarget.Longtitude) * myDal.GetElectricityUse()[0];
+                    //checkes if the drone has enough battery for the whole delivery
+                    if((droneToAttribute.Battery-(batteryUseForPickUp+ batteryUseForDelivery+ batteryUseForCharging))>0)
+                    {
+                        minParcel = p;
+                        minDistance = distance;
+                    }
+                }
             }
-            //searches for the parcel to attribute
-            List<IDAL.DO.Parcel> tmp = new List<IDAL.DO.Parcel>();
-            
+            int minIndex = parcels.FindIndex(item => item.Id == minParcel.Id);
+            if (minIndex == 0)
+            {
+                double batteryUseForPickUp = minDistance * myDal.GetElectricityUse()[0];
+                IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
+                dalSender = myDal.CopyCustomerArray().First(customer => customer.Id == minParcel.SenderID);//finds the parcel's sender
+                IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+                dalTarget = myDal.CopyCustomerArray().First(customer => customer.Id == minParcel.TargetID);//finds the target
+                double batteryUseForDelivery = myDal.getDistanceFromLatLonInKm(dalSender.Lattitude, dalSender.Longtitude, dalTarget.Lattitude, dalTarget.Longtitude) * electricityByWeight((Weight)p.Weight);
+                IDAL.DO.Station clossestStation = new IDAL.DO.Station();
+                clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());
+                double batteryUseForCharging = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, dalTarget.Lattitude, dalTarget.Longtitude) * myDal.GetElectricityUse()[0];
+                //checkes if the drone has enough battery for the whole delivery
+                if ((droneToAttribute.Battery - (batteryUseForPickUp + batteryUseForDelivery + batteryUseForCharging)) > 0)
+                    throw new FailedToUpdateException("There is no parcel to attribute !!");
+            }
+            drones[index].DroneStatuses = DroneStatuses.Delivered;
+            drones[index].ParcelId = minParcel.Id;
+            IDAL.DO.Parcel dalParcel = new();
+            dalParcel = myDal.FindNotAttributedParcels().First(par => par.Id == minParcel.Id);
+            dalParcel.DroneID = droneToAttribute.Id;
+            dalParcel.Scheduled = DateTime.Now;
+            try
+            {
+                myDal.UpdateParcel(dalParcel);
+            }
+            catch (IDAL.DO.ExistingObjectException parEx)
+            {
+                throw new FailedToUpdateException(parEx.ToString(), parEx);
+            }
+
         }
 
         /// <summary>
@@ -258,20 +306,20 @@ namespace BL
         /// <param name="d"></param>
         /// <param name="p"></param>
         /// <returns>the distance</returns>
-        private double getDroneParcelDistance(DroneForList d, Parcel p)
+        private double getDroneParcelDistance(DroneForList d, IDAL.DO.Parcel p)
         {
             IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
-            IDAL.DO.Customer parcelSender = customers.First(customer => customer.Id == p.Sender.Id);//finds the parcels sender
+            IDAL.DO.Customer parcelSender = customers.First(customer => customer.Id == p.SenderID);//finds the parcels sender
             double distance = Math.Sqrt((Math.Pow(d.CurrentLocation.Latitude - parcelSender.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - parcelSender.Longtitude, 2)));//finds the distance between the drone and the parcel
             return distance;
         }
 
         /// <summary>
-        /// a method for finding the battery use by the parcel weight.
-        /// </summary>
-        /// <param name="maxWeight">weight of parcel</param>
-        /// <returns></returns>
-        private double electricityByWeight(Weight maxWeight)
+            /// a method for finding the battery use by the parcel weight.
+            /// </summary>
+            /// <param name="maxWeight">weight of parcel</param>
+            /// <returns></returns>
+          private double electricityByWeight(Weight maxWeight)
         {
             if (maxWeight == Weight.Light)
                 return myDal.GetElectricityUse()[1]; 
@@ -315,6 +363,8 @@ namespace BL
                 throw new FailedToUpdateException(exc.ToString(), exc);
             }
         }
+
+
     }
 
     

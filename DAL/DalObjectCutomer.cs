@@ -80,11 +80,11 @@ namespace DalObject
         /// <param name="customer"></param>
         public void UpdateCustomer(Customer customer)
         {
-            if (!(DataSource.Customers.Exists(c => c.ID == customer.ID)))
+            if (!(DataSource.Customers.Exists(c => c.Id == customer.Id)))
             {
-                throw new UnvalidIDException($"id {customer.ID}  is not valid !!");
+                throw new UnvalidIDException($"id {customer.Id}  is not valid !!");
             }
-            int index = DataSource.Customers.FindIndex(item => item.ID == customer.ID);
+            int index = DataSource.Customers.FindIndex(item => item.Id == customer.Id);
             DataSource.Customers[index] = customer;
         }
     }
