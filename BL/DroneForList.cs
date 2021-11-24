@@ -8,7 +8,7 @@ namespace IBL.BO
 {
     public class DroneForList
     {
-        public int ID { set; get; }
+        public int Id { set; get; }
         public string Model { set; get; }
         public Weight MaxWeight { set; get; }
         public DroneStatuses DroneStatuses { set; get; }

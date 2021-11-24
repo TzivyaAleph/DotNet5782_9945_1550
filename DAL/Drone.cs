@@ -10,14 +10,14 @@ namespace IDAL
     {
         public struct Drone
         {
-            public int ID {  set; get; }
+            public int Id {  set; get; }
             public string Model {  set; get; }
             public WeightCategories MaxWeight { set; get; } 
 
             public override string ToString()
             {
                 string result = " ";
-                result += $"ID is {ID},\n";
+                result += $"ID is {Id},\n";
                 result += $"model is {Model},\n";
                 result += $"the maximum weight is {MaxWeight},\n";
                 return result;

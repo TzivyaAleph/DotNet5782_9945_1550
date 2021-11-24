@@ -22,7 +22,7 @@ namespace BL
                 throw new InvalidInputException($"Drone ID {droneId} is not valid\n");
             if (String.IsNullOrEmpty(newModel))
                 throw new InvalidInputException($"Drone model {newModel} is not valid\n");
-            IDAL.DO.Drone droneTemp = myDal.CopyDroneArray().First(drone => drone.ID == droneId);//finds the drone to update in the dal drones list
+            IDAL.DO.Drone droneTemp = myDal.CopyDroneArray().First(drone => drone.Id == droneId);//finds the drone to update in the dal drones list
             droneTemp.Model = newModel;//updates the drone's name
             try
             {
@@ -32,7 +32,7 @@ namespace BL
             {
                 throw new FailedToUpdateException(custEx.ToString(), custEx);
             }
-            int blDroneIndex= drones.FindIndex(blDrone => blDrone.ID == droneId);//finds the drone in the bl drones list
+            int blDroneIndex= drones.FindIndex(blDrone => blDrone.Id == droneId);//finds the drone in the bl drones list
             drones[blDroneIndex].Model= newModel;//updates the drone in the bl drones list
         }
 
@@ -42,7 +42,7 @@ namespace BL
         /// <param name="stationToUpdate">station with the values to update</param>
         public void UpdateStation(Station stationToUpdate, int numOfChargingSlots)//לשאול את יהודה איזה תחנה צריך לעדכן
         {
-            IDAL.DO.Station stationTemp = myDal.CopyStationArray().First(station => station.ID == stationToUpdate.Id);//finds the station to update in the dal station list
+            IDAL.DO.Station stationTemp = myDal.CopyStationArray().First(station => station.Id == stationToUpdate.Id);//finds the station to update in the dal station list
             if (stationToUpdate .Id< 1000|| stationToUpdate.Id> 10000)
                 throw new InvalidInputException($"Station ID {stationToUpdate.Id} is not valid\n");
             if (!(string.IsNullOrEmpty(stationToUpdate.Name)))//checkes if the function recieved a station name
@@ -74,7 +74,7 @@ namespace BL
         /// <param name="customer">customer to update</param>
         public void UpdateCustomer(Customer customer)
         {
-            IDAL.DO.Customer customerTemp = myDal.CopyCustomerArray().First(customer => customer.ID == customer.ID);//finds the customer to update in the dal customers list
+            IDAL.DO.Customer customerTemp = myDal.CopyCustomerArray().First(customer => customer.Id == customer.Id);//finds the customer to update in the dal customers list
             if (customer.Id<100000000||customer.Id>1000000000)
                 throw new InvalidInputException($"customer ID {customer.Id} is not valid\n");
             if (!(string.IsNullOrEmpty(customer.Name)))//checkes if the user put in a name to update
@@ -97,9 +97,11 @@ namespace BL
         /// <param name="d"></param>
         public void SendDroneToChargeSlot(Drone d)
         {
+            DroneForList droneForList=new();
+            droneForList = drones.First(item => item.Id == d.Id);
             //only send to charge slots when drone available
-            if (d.DroneStatuses != DroneStatuses.Available)
-                throw new FailedToUpdateException($"Drone {d.ID} is not available");
+            if (droneForList.DroneStatuses != DroneStatuses.Available)
+                throw new FailedToUpdateException($"Drone {d.Id} is not available");
             //finding all the available charging slots in station.
             List<IDAL.DO.Station> stations =(List<IDAL.DO.Station>) myDal.FindAvailableStations();
             IDAL.DO.Station clossestStation = new IDAL.DO.Station();
@@ -109,16 +111,16 @@ namespace BL
             double batteryUse = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, d.CurrentLocation.Latitude, d.CurrentLocation.Longitude) * myDal.GetElectricityUse()[0];
             //send the drone only if the drone has enough battery and the station has available charging slots.
             if ((d.Battery- batteryUse)<0|| clossestStation.ChargeSlots == 0)
-                throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.ID}");
+                throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
             double[] electricity = myDal.GetElectricityUse();
             double distance= Math.Sqrt((Math.Pow(d.CurrentLocation.Latitude - clossestStation.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - clossestStation.Longitude, 2)));
-            d.Battery -= batteryUse;
-            d.CurrentLocation.Latitude = clossestStation.Lattitude;
-            d.CurrentLocation.Latitude = clossestStation.Longitude;
-            d.DroneStatuses = DroneStatuses.Maintenance;
+            droneForList.Battery -= batteryUse;
+            droneForList.CurrentLocation.Latitude = clossestStation.Lattitude;
+            droneForList.CurrentLocation.Latitude = clossestStation.Longitude;
+            droneForList.DroneStatuses = DroneStatuses.Maintenance;
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
-                ID = d.ID,
+                Id = d.Id,
                 Model = d.Model,
                 MaxWeight=(IDAL.DO.WeightCategories)d.MaxWeight,
             };
@@ -144,7 +146,7 @@ namespace BL
             {
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
-            int index = drones.FindIndex(item => item.ID == droneId);//searches for the index of the drone in the drones list
+            int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = drones[index];
             if(droneToAttribute.DroneStatuses!= DroneStatuses.Available)//checkes if the drone is available
             {
@@ -182,20 +184,20 @@ namespace BL
             IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
             IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
             IDAL.DO.Parcel parcelToPickUp = parcels.First(parcel => parcel.DroneID == droneId);//finds the parcel thats attributed to the drone
-            IDAL.DO.Drone idalPickUpDrone = idalDrones.First(drone => drone.ID == droneId);//finds the pick up drone in idal drones list
+            IDAL.DO.Drone idalPickUpDrone = idalDrones.First(drone => drone.Id == droneId);//finds the pick up drone in idal drones list
             if (parcelToPickUp.PickedUp!=DateTime.MinValue)//checkes if the parcel was already picked up
             {
-                throw new InvalidInputException($"parcel {parcelToPickUp.ID} was already picked up !!");
+                throw new InvalidInputException($"parcel {parcelToPickUp.Id} was already picked up !!");
             }
-            DroneForList pickUpDrone = drones.Find(drone => drone.ID == droneId);//finds the drone thats picking up the parcel in the bl drones list
+            DroneForList pickUpDrone = drones.Find(drone => drone.Id == droneId);//finds the drone thats picking up the parcel in the bl drones list
             IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
             double[] electricity = myDal.GetElectricityUse();
-            IDAL.DO.Customer parcelSender = customers.First(customer => customer.ID == parcelToPickUp.SenderID);//finds the parcels sender (for finding the parcels location)
+            IDAL.DO.Customer parcelSender = customers.First(customer => customer.Id == parcelToPickUp.SenderID);//finds the parcels sender (for finding the parcels location)
             double electricityForPickUp = electricity[0] * myDal.getDistanceFromLatLonInKm(pickUpDrone.CurrentLocation.Latitude, pickUpDrone.CurrentLocation.Longitude, parcelSender.Lattitude, parcelSender.Longtitude);//calculates the battery use from drones current location to the parcel 
             pickUpDrone.Battery = pickUpDrone.Battery - electricityForPickUp;//updates the drones battery 
             pickUpDrone.CurrentLocation.Latitude = parcelSender.Lattitude;//updates the drones location to where he picked up the parcel 
             pickUpDrone.CurrentLocation.Longitude = parcelSender.Longtitude;
-            int droneBlIndex= drones.FindIndex(item => item.ID == droneId);//finds the index of the pickup drone in the bl drones list
+            int droneBlIndex= drones.FindIndex(item => item.Id == droneId);//finds the index of the pickup drone in the bl drones list
             drones[droneBlIndex] = pickUpDrone;//puts the updated drone into the bl drones list
             try
             {
@@ -220,25 +222,25 @@ namespace BL
             IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
             IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
             IDAL.DO.Parcel parcelToDeliver = parcels.First(parcel => parcel.DroneID == droneId);//finds the parcel thats attributed to the drone
-            IDAL.DO.Drone idalDeliveryDrone = idalDrones.First(drone => drone.ID == droneId);//finds the pick up drone in idal drones list
-            DroneForList blDeliveryDrone = drones.Find(drone => drone.ID == droneId);//finds the drone thats picking up the parcel in the bl drones list
+            IDAL.DO.Drone idalDeliveryDrone = idalDrones.First(drone => drone.Id == droneId);//finds the pick up drone in idal drones list
+            DroneForList blDeliveryDrone = drones.Find(drone => drone.Id == droneId);//finds the drone thats picking up the parcel in the bl drones list
             if (parcelToDeliver.PickedUp == DateTime.MinValue)//checkes if the parcel wasnt picked up yet
             {
-                throw new FailedToUpdateException($"parcel {parcelToDeliver.ID} wasn't picked up yet !!");
+                throw new FailedToUpdateException($"parcel {parcelToDeliver.Id} wasn't picked up yet !!");
             }
             if (parcelToDeliver.Delivered != DateTime.MinValue)//checkes if the parcel has been delivered 
             {
-                throw new FailedToUpdateException($"parcel {parcelToDeliver.ID} was already delivered !!");
+                throw new FailedToUpdateException($"parcel {parcelToDeliver.Id} was already delivered !!");
             }
             double[] electricity = myDal.GetElectricityUse();
             IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
-            IDAL.DO.Customer parcelReciever = customers.First(customer => customer.ID == parcelToDeliver.TargetID);//finds the parcels target customer (for finding the parcels location)
+            IDAL.DO.Customer parcelReciever = customers.First(customer => customer.Id == parcelToDeliver.TargetID);//finds the parcels target customer (for finding the parcels location)
             double electricityForDelivery = electricityByWeight((Weight)parcelToDeliver.Weight)* myDal.getDistanceFromLatLonInKm(blDeliveryDrone.CurrentLocation.Latitude, blDeliveryDrone.CurrentLocation.Longitude, parcelReciever.Lattitude, parcelReciever.Longtitude);
             blDeliveryDrone.Battery = blDeliveryDrone.Battery - electricityForDelivery;//updates the drones battery 
             blDeliveryDrone.CurrentLocation.Latitude = parcelReciever.Lattitude;//updates the drones location to where he picked up the parcel 
             blDeliveryDrone.CurrentLocation.Longitude = parcelReciever.Longtitude;
             blDeliveryDrone.DroneStatuses = DroneStatuses.Available;//update the delivery drone status to available
-            int droneBlIndex = drones.FindIndex(item => item.ID == droneId);//finds the index of the delivery drone in the bl drones list
+            int droneBlIndex = drones.FindIndex(item => item.Id == droneId);//finds the index of the delivery drone in the bl drones list
             drones[droneBlIndex] = blDeliveryDrone;//puts the updated drone into the bl drones list
             try
             {
@@ -259,7 +261,7 @@ namespace BL
         private double getDroneParcelDistance(DroneForList d, Parcel p)
         {
             IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
-            IDAL.DO.Customer parcelSender = customers.First(customer => customer.ID == p.Sender.Id);//finds the parcels sender
+            IDAL.DO.Customer parcelSender = customers.First(customer => customer.Id == p.Sender.Id);//finds the parcels sender
             double distance = Math.Sqrt((Math.Pow(d.CurrentLocation.Latitude - parcelSender.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - parcelSender.Longtitude, 2)));//finds the distance between the drone and the parcel
             return distance;
         }
@@ -285,19 +287,25 @@ namespace BL
         /// <param name="timeInCharge">for the hour its been charging</param>
         public void ReleasedroneFromeChargeSlot(Drone d,int timeInCharge)
         {
+            DroneForList droneForList = new();
+            droneForList = drones.First(item => item.Id == d.Id);
             if (d.DroneStatuses != DroneStatuses.Maintenance)
                 throw new FailedToUpdateException($"Cant realese drone frome charge if its not charging");
             double batteryCharge = timeInCharge * myDal.GetElectricityUse()[4];
             //cant charge more than 100
-            if ((d.Battery + batteryCharge) > 100)
-                d.Battery = 100;
+            if ((droneForList.Battery + batteryCharge) > 100)
+                droneForList.Battery = 100;
             else
-                d.Battery += batteryCharge;
-            d.DroneStatuses = DroneStatuses.Available;
+                droneForList.Battery += batteryCharge;
+            droneForList.DroneStatuses = DroneStatuses.Available;
             IDAL.DO.Station dalStation = new IDAL.DO.Station();
             dalStation = myDal.CopyStationArray().First(item => item.Lattitude == d.CurrentLocation.Latitude && item.Longitude == d.CurrentLocation.Longitude);
-            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone();
-            d.CopyPropertiesTo(dalDrone);
+            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
+            {
+                Id = d.Id,
+                Model = d.Model,
+                MaxWeight = (IDAL.DO.WeightCategories)d.MaxWeight,
+            };
             try
             {
                 myDal.ReleaseDrone(dalDrone, dalStation);

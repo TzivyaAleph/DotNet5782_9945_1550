@@ -20,18 +20,18 @@ namespace DalObject
         {
             internal static int RunningParcelID = 200;
 
-            internal static double Light { get => 10; }
-            internal static double Avalaible { get => 5; }
-            internal static double Heavy { get => 25; }
-            internal static double Medium { get => 20; }
+            internal static double Light { get => 0.01; }
+            internal static double Avalaible { get => 0.001; }
+            internal static double Heavy { get => 0.04; }
+            internal static double Medium { get => 0.02; }
             internal static double ChargingRate { get => 30; }//per hour
         }
 
         static Random rand = new Random();
+
         /// <summary>
         /// initializes the arrays with the entities.
         /// </summary>
-        
         internal static void Initialize()
         {
             createDrones();
@@ -39,6 +39,7 @@ namespace DalObject
             createCustomer(10);
             createParcels(10);
         }
+
         /// <summary>
         /// /creates 5 drones with random datas
         /// </summary>
@@ -47,31 +48,31 @@ namespace DalObject
         {
             Drones.Add(new Drone
             {
-                ID = rand.Next(1000, 10000),
+                Id = rand.Next(1000, 10000),
                 Model = "maxP",
                 MaxWeight = (WeightCategories)1,
             });
             Drones.Add(new Drone
             {
-                ID = rand.Next(1000, 10000),
+                Id = rand.Next(1000, 10000),
                 Model = "maxG",
                 MaxWeight = (WeightCategories)2,
             });
             Drones.Add(new Drone
             {
-                ID = rand.Next(1000, 10000),
+                Id = rand.Next(1000, 10000),
                 Model = "maxF",
                 MaxWeight = (WeightCategories)0,
             });
             Drones.Add(new Drone
             {
-                ID = rand.Next(1000, 10000),
+                Id = rand.Next(1000, 10000),
                 Model = "maxT",
                 MaxWeight = (WeightCategories)2,
             });
             Drones.Add(new Drone
             {
-                ID = rand.Next(1000, 10000),
+                Id = rand.Next(1000, 10000),
                 Model = "maxD",
                 MaxWeight = (WeightCategories)2,
             });
@@ -95,7 +96,7 @@ namespace DalObject
         {
             Stations.Add(new Station
             {
-                ID = rand.Next(1000, 10000),
+                Id = rand.Next(1000, 10000),
                 StationName = "Ramot",
                 ChargeSlots = rand.Next(0, 50),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
@@ -103,7 +104,7 @@ namespace DalObject
             });
             Stations.Add( new Station
             {
-                ID = rand.Next(1000, 10000),
+                Id = rand.Next(1000, 10000),
                 StationName = "Bait Vagan",
                 ChargeSlots = rand.Next(0, 50),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
@@ -124,7 +125,7 @@ namespace DalObject
                 Customers.Add(
                     new Customer
                     {
-                        ID = rand.Next(100000000, 1000000000),
+                        Id = rand.Next(100000000, 1000000000),
                         Name = $"{(CustomersName)rand.Next(10)}",
                         PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
                         Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
@@ -144,13 +145,13 @@ namespace DalObject
             {
                 Parcels.Add(new Parcel
                 {
-                    ID = ++Config.RunningParcelID,
-                    SenderID = Customers[i].ID,
-                    TargetID = Customers[j].ID,
+                    Id = ++Config.RunningParcelID,
+                    SenderID = Customers[i].Id,
+                    TargetID = Customers[j].Id,
                     Weight = RandomEnumValue<WeightCategories>(),
                     Priority = RandomEnumValue<Priorities>(),
                     Requested = dateAndTime,
-                    DroneID = Drones[rand.Next(5)].ID,
+                    DroneID = Drones[rand.Next(5)].Id,
                     Scheduled = dateAndTime.AddMinutes(rand.Next(10, 1000)),
                     PickedUp = dateAndTime.AddMinutes(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000)),
                     Delivered = dateAndTime.AddMinutes(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000))

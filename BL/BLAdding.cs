@@ -39,7 +39,7 @@ namespace BL
             s.DroneCharges = null;
             IDAL.DO.Station tmp = new IDAL.DO.Station
             {
-                ID = s.Id,
+                Id = s.Id,
                 StationName = s.Name,
                 ChargeSlots = s.AvailableChargingSlots,
                 Longitude = (long)s.StationLocation.Longitude,
@@ -62,9 +62,9 @@ namespace BL
         /// <param name="stationId">station number to put the drone in</param>
         public void AddDrone(DroneForList d, int stationId)
         {
-            if (d.ID < 1000 || d.ID > 10000)
+            if (d.Id < 1000 || d.Id > 10000)
             {
-                throw new InvalidInputException($"id {d.ID} is not valid !!");
+                throw new InvalidInputException($"id {d.Id} is not valid !!");
             }
             if (String.IsNullOrEmpty(d.Model))
             {
@@ -72,11 +72,11 @@ namespace BL
             }
             List<IDAL.DO.Station> stations = (List<IDAL.DO.Station>)myDal.CopyStationArray();
             //checks if the station exists
-            if (!(stations.Exists(station => station.ID == stationId)))
+            if (!(stations.Exists(station => station.Id == stationId)))
             {
                 throw new InputDoesNotExist($"station {stationId} does not exists !!");
             }
-            int index = stations.FindIndex(item => item.ID == stationId);//finds the station that the drone in it.
+            int index = stations.FindIndex(item => item.Id == stationId);//finds the station that the drone in it.
             IDAL.DO.Station s = new IDAL.DO.Station();
             s = stations[index];
             d.Battery = rand.Next(20, 40);
@@ -84,7 +84,7 @@ namespace BL
             d.CurrentLocation.Latitude = stations[index].Lattitude;
             d.CurrentLocation.Longitude = stations[index].Longitude;
             DroneCharge droneCharge = new();
-            droneCharge.Id = d.ID;
+            droneCharge.Id = d.Id;
             droneCharge.Battery = d.Battery;
             Station blStation = new();
             blStation = GetStation(stationId);
@@ -92,7 +92,7 @@ namespace BL
             drones.Add(d);
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone
             {
-                ID = d.ID,
+                Id = d.Id,
                 Model = d.Model,
                 MaxWeight = (IDAL.DO.WeightCategories)d.MaxWeight
             };
@@ -124,7 +124,12 @@ namespace BL
                 throw new InvalidInputException($"location data: {customer.Location} is not valid !!");
             }
             IDAL.DO.Customer newCustomer = new();
+            object obj = newCustomer;
+            customer.CopyPropertiesTo(obj);
+            newCustomer = (IDAL.DO.Customer)obj;
             customer.CopyPropertiesTo(newCustomer);
+            newCustomer.Lattitude = customer.Location.Latitude;
+            newCustomer.Longtitude = customer.Location.Longitude;
             try
             {
                 myDal.AddCustomer(newCustomer);
@@ -153,6 +158,9 @@ namespace BL
             parcel.Delivered = DateTime.MinValue;
             parcel.PickedUp = DateTime.MinValue;
             IDAL.DO.Parcel newParcel = new();
+            object obj = newParcel;
+            parcel.CopyPropertiesTo(obj);
+            newParcel = (IDAL.DO.Parcel)obj;
             parcel.CopyPropertiesTo(newParcel);
             newParcel.DroneID = 0;
             int runningNumber;
@@ -172,5 +180,6 @@ namespace BL
 
 
 }
+
 
 
