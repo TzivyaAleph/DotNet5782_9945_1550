@@ -24,8 +24,8 @@ namespace BL
         void pickedUp(int droneId);
         void ReleasedroneFromeChargeSlot(Drone d, int timeInCharge);
         void SendDroneToChargeSlot(Drone d);
-        void UpdateCustomer(Customer customer);
-        void UpdateDrone(int droneId, string newModel);
-        void UpdateStation(Station stationToUpdate, int numOfChargingSlots);
+        public void UpdateCustomer(int customerId, string customerName, string customerPhone);
+        public void UpdateDrone(int droneId, string newModel);
+        public void UpdateStation(int stationId, string stationName, int numOfChargingSlots);
     }
 }

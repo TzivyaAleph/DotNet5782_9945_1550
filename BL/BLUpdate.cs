@@ -46,7 +46,7 @@ namespace BL
             if (stationId < 1000|| stationId > 10000)
                 throw new InvalidInputException($"Station ID {stationId} is not valid\n");
             if (!(string.IsNullOrEmpty(stationName)))//checkes if the function recieved a station name
-                stationTemp.StationName = stationName;
+                stationTemp.Name = stationName;
             if(numOfChargingSlots<0||numOfChargingSlots>50)
                 throw new InvalidInputException($"number of charging slots {numOfChargingSlots} is not valid\n");
             //updates the number of charging slots if the func recieved user's input
@@ -200,7 +200,7 @@ namespace BL
                 dalSender = myDal.CopyCustomerArray().First(customer => customer.Id == minParcel.SenderID);//finds the parcel's sender
                 IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
                 dalTarget = myDal.CopyCustomerArray().First(customer => customer.Id == minParcel.TargetID);//finds the target
-                double batteryUseForDelivery = myDal.getDistanceFromLatLonInKm(dalSender.Lattitude, dalSender.Longtitude, dalTarget.Lattitude, dalTarget.Longtitude) * electricityByWeight((Weight)p.Weight);
+                double batteryUseForDelivery = myDal.getDistanceFromLatLonInKm(dalSender.Lattitude, dalSender.Longtitude, dalTarget.Lattitude, dalTarget.Longtitude) * electricityByWeight((Weight)minParcel.Weight);
                 IDAL.DO.Station clossestStation = new IDAL.DO.Station();
                 clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());
                 double batteryUseForCharging = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, dalTarget.Lattitude, dalTarget.Longtitude) * myDal.GetElectricityUse()[0];

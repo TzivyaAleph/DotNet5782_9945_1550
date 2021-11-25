@@ -6,40 +6,24 @@ namespace IDAL.DO
     [Serializable]
     public class UnvalidIDException : Exception
     {
-        public UnvalidIDException()
+        public UnvalidIDException() : base() { }
+        public UnvalidIDException(string message) : base(message) { }
+        public UnvalidIDException(string message, Exception innerException) : base(message, innerException) { }
+        public override string ToString()
         {
-        }
-
-        public UnvalidIDException(string message) : base(message)
-        {
-        }
-
-        public UnvalidIDException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected UnvalidIDException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
+            return Message;
         }
     }
 
     [Serializable]
     public class ExistingObjectException : Exception
     {
-        public ExistingObjectException()
+        public ExistingObjectException() : base() { }
+        public ExistingObjectException(string message) : base(message) { }
+        public ExistingObjectException(string message, Exception innerException) : base(message, innerException) { }
+        public override string ToString()
         {
-        }
-
-        public ExistingObjectException(string message) : base(message)
-        {
-        }
-
-        public ExistingObjectException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ExistingObjectException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
+            return Message;
         }
     }
 }
