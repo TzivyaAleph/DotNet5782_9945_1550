@@ -312,9 +312,25 @@ namespace ConsoleUI_BL
                 }
                 while (menuOption != MenuOptions.Exit);
             }
-            catch()
+            catch(InvalidInputException ex)
             {
-
+                Console.WriteLine(ex.Message);
+            }
+            catch (FailedToAddException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (FailedToGetException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (InputDoesNotExist ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (FailedToUpdateException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 

@@ -30,7 +30,7 @@ namespace IBL
         }
 
         [Serializable]
-        internal class FailedToGetException : Exception
+        public class FailedToGetException : Exception
         {
             public FailedToGetException() : base() { }
             public FailedToGetException(string message) : base(message) { }
@@ -42,7 +42,7 @@ namespace IBL
         }
 
         [Serializable]
-        internal class InputDoesNotExist : Exception
+        public class InputDoesNotExist : Exception
         {
             public InputDoesNotExist() : base() { }
             public InputDoesNotExist(string message) : base(message) { }
@@ -54,7 +54,7 @@ namespace IBL
         }
 
         [Serializable]
-        internal class FailedToUpdateException : Exception
+        public class FailedToUpdateException : Exception
         {
             public FailedToUpdateException() : base() { }
             public FailedToUpdateException(string message) : base(message) { }

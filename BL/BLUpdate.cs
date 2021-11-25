@@ -220,7 +220,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException parEx)
             {
-                throw new FailedToUpdateException(parEx.ToString(), parEx);
+                throw new FailedToUpdateException("ERROR\n", parEx);
             }
 
         }
