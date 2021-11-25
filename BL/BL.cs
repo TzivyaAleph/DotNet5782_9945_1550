@@ -24,19 +24,21 @@ namespace BL
         public BL()
         {
             myDal = new DalObject.DalObject();
+            drones = new List<DroneForList>();
             double[] electricityUse = myDal.GetElectricityUse();
             double availableElectricityUse = electricityUse[0];
             double lightElectricityUse = electricityUse[1];
             double standardElectricityUse = electricityUse[2];
             double heavyElectricityUse = electricityUse[3];
             double chargePerHour = electricityUse[4];
-            DroneForList droneToAdd = new DroneForList();//to add to the list
             //goes throuhgh the da list drones
             foreach (var item in myDal.CopyDroneArray())
             {
+                DroneForList droneToAdd = new DroneForList();//to add to the list
                 droneToAdd.Id = item.Id;
                 droneToAdd.Model = item.Model;
                 droneToAdd.Weight = (Weight)item.MaxWeight;
+                droneToAdd.CurrentLocation = new Location();
                 //goes through the parcels list in dal for the exstract fields from drone for list
                 foreach (var par in myDal.CopyParcelArray())
                 {
@@ -48,6 +50,7 @@ namespace BL
                         //finds the customer who send the parcel.
                         IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
                         IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+                      
                         try
                         {
                             dalSender = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);//finds the parcels sender
@@ -57,9 +60,9 @@ namespace BL
                         {
                             throw new InputDoesNotExist("the customer does not exist!!");
                         }
-                        clossestStation = myDal.GetClossestStation(dalSender.Lattitude, dalSender.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());
+                        clossestStation = myDal.GetClossestStation(dalSender.Lattitude, dalSender.Longtitude, myDal.CopyStationArray().ToList());
                         double batteryUseFromSenderToTarget = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, dalSender.Lattitude, dalSender.Longtitude) * batteryByWeight(droneToAdd.Weight);
-                        clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());//finds the clossest station to the target.
+                        clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, myDal.CopyStationArray().ToList());//finds the clossest station to the target.
                         double batteryUseFromTargetrToStation = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, clossestStation.Lattitude, clossestStation.Longitude) * availableElectricityUse;
                         //the drone has been attributted but wasnt picked up
                         if (par.PickedUp == DateTime.MinValue)

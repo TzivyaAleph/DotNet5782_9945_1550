@@ -163,10 +163,10 @@ namespace BL
         private List<ParcelCustomer> getParcelToTarget(Customer customer)
         {
             List<ParcelCustomer> listToReturn = new List<ParcelCustomer>();
-            ParcelCustomer parcelToAdd = new();
             //goes through the parcel list.
             foreach (var par in myDal.CopyParcelArray())
             {
+                ParcelCustomer parcelToAdd = new();
                 //checks if its  the senders parcel 
                 if (par.TargetID == customer.Id)
                 {
@@ -195,12 +195,12 @@ namespace BL
         private List<ParcelCustomer> getParcelToSend(Customer customer)
         {
             List<ParcelCustomer> listToReturn = new List<ParcelCustomer>();
-            ParcelCustomer parcelToAdd = new();
             //goes through the parcel list.
             foreach (var par in myDal.CopyParcelArray())
             {
+                ParcelCustomer parcelToAdd = new();
                 //checks if its  the senders parcel 
-                if(par.SenderID== customer.Id)
+                if (par.SenderID== customer.Id)
                 {
                     parcelToAdd.Id = par.Id;
                     parcelToAdd.Weight =(Weight) par.Weight;
@@ -263,13 +263,13 @@ namespace BL
         /// <returns>th ecreated station </returns>
         private List<DroneCharge> FindListOfDroneLIstForStation(int stationId)
         {
-            DroneCharge droneToAdd = new DroneCharge();
             List<DroneCharge> droneChargesToReturn = new List<DroneCharge>();
             //goes through the drone charges
             foreach (var droneList in myDal.GetDroneChargeList())
             {
+                DroneCharge droneToAdd = new DroneCharge();
                 //if the drone charge is in the station
-                if(droneList.StationID== stationId)
+                if (droneList.StationID== stationId)
                 {
                     //updates his fields and add to returning list
                     droneToAdd.Id = droneList.DroneID;

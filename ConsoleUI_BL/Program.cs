@@ -6,9 +6,10 @@ namespace ConsoleUI_BL
 {
     class Program
     {
-        static BL.IBL bO = new BL.BL();
+       
         static void Main(string[] args)
         {
+            BL.IBL bO = new BL.BL();
             try
             {
                 MenuOptions menuOption;
@@ -33,9 +34,12 @@ namespace ConsoleUI_BL
                                             string name;
                                             int numOfSlots;
                                             long longitude, lattitude;
-                                            int ID;
-                                            Console.WriteLine("Enter station's ID:");
-                                            int.TryParse(Console.ReadLine(), out ID);
+                                            int ID;  
+                                                do
+                                                {
+                                                Console.WriteLine("Enter station's ID:");
+                                                while (!(int.TryParse(Console.ReadLine(), out ID);
+                                                } while (ID < 1000);
                                             Console.WriteLine("Enter station's name:");
                                             name = Console.ReadLine();
                                             Console.WriteLine("Enter number of available charging slots:");
@@ -277,31 +281,31 @@ namespace ConsoleUI_BL
                                 {
                                     case ArrayPresentationOptions.Station:
                                         {
-                                            printListOfStations();
+                                            printListOfStations(bO);
                                             break;
                                         }
                                     case ArrayPresentationOptions.Drone:
                                         {
-                                            printListOfDrones();
+                                            printListOfDrones(bO);
                                             break;
                                         }
                                     case ArrayPresentationOptions.Customer:
                                         {
-                                            printListOfCustomers();
+                                            printListOfCustomers(bO);
                                             break;
                                         }
                                     case ArrayPresentationOptions.Parcel:
                                         {
-                                            printListOfParcels();
+                                            printListOfParcels(bO);
                                             break;
                                         }
                                     case ArrayPresentationOptions.NonAttributedParcels:
                                         {
-                                            printNonAttributedParcels();
+                                            printNonAttributedParcels(bO);
                                             break;
                                         }
                                     case ArrayPresentationOptions.AvalableChargeSlots:
-                                        printAvailableStations();
+                                        printAvailableStations(bO);
                                         break;
                                 }
                                 break;
@@ -437,7 +441,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of stations
         /// </summary>
-        static void printListOfStations()
+        static void printListOfStations(BL.IBL bO)
         {
             IEnumerable<StationForList> newList = new List<StationForList>();
             newList = bO.GetStationList();
@@ -451,7 +455,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of drones
         /// </summary>
-        static void printListOfDrones()
+        static void printListOfDrones(BL.IBL bO)
         {
             IEnumerable<DroneForList> newList = new List<DroneForList>();
             newList = bO.GetDroneList();
@@ -465,7 +469,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of customers
         /// </summary>
-        static void printListOfCustomers()
+        static void printListOfCustomers(BL.IBL bO)
         {
             IEnumerable<CustomerForList> newList = new List<CustomerForList>();
             newList = bO.GetCustomerList();
@@ -479,7 +483,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of parcels
         /// </summary>
-        static void printListOfParcels()
+        static void printListOfParcels(BL.IBL bO)
         {
             IEnumerable<ParcelForList> newList = new List<ParcelForList>();
             newList = bO.GetParcelList();
@@ -493,7 +497,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of Non Attributed Parcels
         /// </summary>
-        static void printNonAttributedParcels()
+        static void printNonAttributedParcels(BL.IBL bO)
         {
             IEnumerable<ParcelForList> newList = new List<ParcelForList>();
             newList = bO.GetUnAtributtedParcels();
@@ -504,7 +508,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints a list with all the available stations in it
         /// </summary>
-        static void printAvailableStations()
+        static void printAvailableStations(BL.IBL bO)
         {
             IEnumerable<StationForList> temp = new List<StationForList>();
             temp = bO.GetAvailableChargingSlotsStations();
