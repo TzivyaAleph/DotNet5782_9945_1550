@@ -50,31 +50,31 @@ namespace DalObject
             {
                 Id = rand.Next(1000, 10000),
                 Model = "maxP",
-                MaxWeight = (WeightCategories)1,
+                MaxWeight = (Weight)1,
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(1000, 10000),
                 Model = "maxG",
-                MaxWeight = (WeightCategories)2,
+                MaxWeight = (Weight)2,
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(1000, 10000),
                 Model = "maxF",
-                MaxWeight = (WeightCategories)0,
+                MaxWeight = (Weight)0,
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(1000, 10000),
                 Model = "maxT",
-                MaxWeight = (WeightCategories)2,
+                MaxWeight = (Weight)2,
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(1000, 10000),
                 Model = "maxD",
-                MaxWeight = (WeightCategories)2,
+                MaxWeight = (Weight)2,
             });
         }
 
@@ -148,8 +148,8 @@ namespace DalObject
                     Id = ++Config.RunningParcelID,
                     SenderID = Customers[i].Id,
                     TargetID = Customers[j].Id,
-                    Weight = RandomEnumValue<WeightCategories>(),
-                    Priority = RandomEnumValue<Priorities>(),
+                    Weight = RandomEnumValue<Weight>(),
+                    Priority = RandomEnumValue<Priority>(),
                     Requested = dateAndTime,
                     DroneID = Drones[rand.Next(5)].Id,
                     Scheduled = dateAndTime.AddMinutes(rand.Next(10, 1000)),

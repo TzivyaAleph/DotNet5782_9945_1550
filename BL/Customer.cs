@@ -4,38 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL.BO
+namespace IBL
 {
-    public class Customer
+    namespace BO
     {
-        public int Id { get; set; }
-        public string  Name { get; set; }
-        public string  Phone { get; set; }
-        public Location  Location { get; set; }
-        public List<ParcelCustomer> SentParcels { get; set; }
-        public List<ParcelCustomer> ReceiveParcels { get; set; }
-
-        public override string ToString()
+        public class Customer
         {
-            string result = " ";
-            result += $"ID is {Id},\n";
-            result += $"cosumer's name is {Name},\n";
-            result += $"phoneNumber is {Phone},\n";
-            result += $"location is {Location},\n";
-            result += $"sent parcels are:\n";
-            foreach (var pc in SentParcels)
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string PhoneNumber { get; set; }
+            public Location Location { get; set; }
+            public List<ParcelCustomer> SentParcels { get; set; }
+            public List<ParcelCustomer> ReceiveParcels { get; set; }
+
+            public override string ToString()
             {
-                result += $"{pc}\n";
+                string result = " ";
+                result += $"ID is {Id},\n";
+                result += $"cosumer's name is {Name},\n";
+                result += $"phoneNumber is {PhoneNumber},\n";
+                result += $"location is {Location},\n";
+                result += $"sent parcels are:\n";
+                foreach (var pc in SentParcels)
+                {
+                    result += $"{pc}\n";
+                }
+                result += $"recieved parcels are:\n";
+                foreach (var pc in ReceiveParcels)
+                {
+                    result += $"{pc}\n";
+                }
+                return result;
             }
-            result += $"recieved parcels are:\n";
-            foreach (var pc in ReceiveParcels)
-            {
-                result += $"{pc}\n";
-            }
-            return result;
+
         }
-
     }
-
 
 }

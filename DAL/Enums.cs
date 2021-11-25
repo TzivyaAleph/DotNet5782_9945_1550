@@ -2,14 +2,14 @@
 {
     namespace DO
     {
-        public enum WeightCategories
+        public enum Weight
         {
             Light = 0,
             standard=1,
             heavy=2
         };
 
-        public enum Priorities
+        public enum Priority
         {
             normal = 0,
             fast = 1,

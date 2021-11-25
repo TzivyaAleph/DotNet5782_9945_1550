@@ -46,7 +46,7 @@ namespace BL
             if (stationToUpdate .Id< 1000|| stationToUpdate.Id> 10000)
                 throw new InvalidInputException($"Station ID {stationToUpdate.Id} is not valid\n");
             if (!(string.IsNullOrEmpty(stationToUpdate.Name)))//checkes if the function recieved a station name
-                stationTemp.StationName = stationToUpdate.Name;
+                stationTemp.Name = stationToUpdate.Name;
             if(numOfChargingSlots<0||numOfChargingSlots>50)
                 throw new InvalidInputException($"number of charging slots {numOfChargingSlots} is not valid\n");
             List<IDAL.DO.DroneCharge> droneCharges = (List<IDAL.DO.DroneCharge>)myDal.GetDroneChargeList();//recieves the dal droneCharge list
@@ -79,8 +79,8 @@ namespace BL
                 throw new InvalidInputException($"customer ID {customer.Id} is not valid\n");
             if (!(string.IsNullOrEmpty(customer.Name)))//checkes if the user put in a name to update
                 customerTemp.Name = customer.Name;
-            if (!(string.IsNullOrEmpty(customer.Phone)))//checkes if the user put in a phone number to update
-                customerTemp.PhoneNumber = customer.Phone;
+            if (!(string.IsNullOrEmpty(customer.PhoneNumber)))//checkes if the user put in a phone number to update
+                customerTemp.PhoneNumber = customer.PhoneNumber;
             try
             {
                 myDal.UpdateCustomer(customerTemp);//update the customer in the dal customers list
@@ -122,7 +122,7 @@ namespace BL
             {
                 Id = d.Id,
                 Model = d.Model,
-                MaxWeight=(IDAL.DO.WeightCategories)d.MaxWeight,
+                MaxWeight=(IDAL.DO.Weight)d.Weight,
             };
             try
             {
@@ -153,13 +153,13 @@ namespace BL
             {
                 throw new InvalidInputException($"drone {droneId} is not available !!");
             }
-            IDAL.DO.WeightCategories droneWeight = (IDAL.DO.WeightCategories)droneToAttribute.MaxWeight;//
+            IDAL.DO.Weight droneWeight = (IDAL.DO.Weight)droneToAttribute.Weight;//
             parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));//sorts the non attributed parcels list by the priority 
-            parcels.Where(p => p.Priority == IDAL.DO.Priorities.emergency).OrderBy(p => (int)p.Weight); //sorts the emergency parcels by their weight
-            parcels.Where(p => p.Priority == IDAL.DO.Priorities.fast).OrderBy(p => (int)p.Weight); //sorts the fast parcels by their weight
-            parcels.Where(p => p.Priority == IDAL.DO.Priorities.normal).OrderBy(p => (int)p.Weight); //sorts the normal parcels by their weight
+            parcels.Where(p => p.Priority == IDAL.DO.Priority.emergency).OrderBy(p => (int)p.Weight); //sorts the emergency parcels by their weight
+            parcels.Where(p => p.Priority == IDAL.DO.Priority.fast).OrderBy(p => (int)p.Weight); //sorts the fast parcels by their weight
+            parcels.Where(p => p.Priority == IDAL.DO.Priority.normal).OrderBy(p => (int)p.Weight); //sorts the normal parcels by their weight
             parcels.Reverse();
-            parcels.RemoveAll(p => (int)p.Weight > (int)droneToAttribute.MaxWeight);
+            parcels.RemoveAll(p => (int)p.Weight > (int)droneToAttribute.Weight);
             double minDistance = getDroneParcelDistance(droneToAttribute,parcels[0]);
             IDAL.DO.Parcel minParcel=parcels[0];
             double distance;
@@ -352,7 +352,7 @@ namespace BL
             {
                 Id = d.Id,
                 Model = d.Model,
-                MaxWeight = (IDAL.DO.WeightCategories)d.MaxWeight,
+                MaxWeight = (IDAL.DO.Weight)d.Weight,
             };
             try
             {

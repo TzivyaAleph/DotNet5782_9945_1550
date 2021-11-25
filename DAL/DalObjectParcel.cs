@@ -38,11 +38,11 @@ namespace DalObject
         {
             Parcel parcelToReturn = default;
             //searches the customer by the id
-            if (!(DataSource.Parcels.Exists(p => p.ID == id)))
+            if (!(DataSource.Parcels.Exists(p => p.Id == id)))
             {
                 throw new UnvalidIDException($"id {id} is not valid !!");
             };
-            parcelToReturn = DataSource.Parcels.Find(c => c.ID == id);
+            parcelToReturn = DataSource.Parcels.Find(c => c.Id == id);
             return parcelToReturn;
         }
 
@@ -54,7 +54,7 @@ namespace DalObject
         public int AddParcel(Parcel p)
         {
             int id = ++DataSource.Config.RunningParcelID;
-            p.ID = id;
+            p.Id = id;
             DataSource.Parcels.Add(p);
             return id;//return the id of the new  parcel.
         }
@@ -66,7 +66,7 @@ namespace DalObject
         /// <param Name="d"></param>
         public void AttributingParcelToDrone(Parcel p, Drone d)//targil1
         {
-            p.DroneID = d.ID;
+            p.DroneID = d.Id;
             p.Requested = DateTime.Now;
             UpdateParcel(p);
         }
@@ -111,7 +111,5 @@ namespace DalObject
             int index = DataSource.Parcels.FindIndex(item => item.Id == parcel.Id);
             DataSource.Parcels[index] = parcel;
         }
-
-
     }
 }

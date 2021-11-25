@@ -24,9 +24,9 @@ namespace BL
             {
                 throw new InvalidInputException($"id {s.Id} is not valid !!");
             }
-            if (s.AvailableChargingSlots < 0 || s.AvailableChargingSlots > 50)
+            if (s.ChargeSlots < 0 || s.ChargeSlots > 50)
             {
-                throw new InvalidInputException($"number of slots {s.AvailableChargingSlots} is not valid !!");
+                throw new InvalidInputException($"number of slots {s.ChargeSlots} is not valid !!");
             }
             if (String.IsNullOrEmpty(s.Name))
             {
@@ -40,8 +40,8 @@ namespace BL
             IDAL.DO.Station tmp = new IDAL.DO.Station
             {
                 Id = s.Id,
-                StationName = s.Name,
-                ChargeSlots = s.AvailableChargingSlots,
+                Name = s.Name,
+                ChargeSlots = s.ChargeSlots,
                 Longitude = (long)s.StationLocation.Longitude,
                 Lattitude = (long)s.StationLocation.Latitude
             };
@@ -94,7 +94,7 @@ namespace BL
             {
                 Id = d.Id,
                 Model = d.Model,
-                MaxWeight = (IDAL.DO.WeightCategories)d.MaxWeight
+                MaxWeight = (IDAL.DO.Weight)d.Weight
             };
             myDal.SendDroneToChargeSlot(dalDrone, s);
             try
@@ -117,8 +117,8 @@ namespace BL
                 throw new InvalidInputException($"ID {customer.Id} is not valid !!");
             if (String.IsNullOrEmpty(customer.Name))
                 throw new InvalidInputException($"Name {customer.Name} is not correct !!");
-            if (customer.Phone.Length != 10)
-                throw new InvalidInputException($"Phone number {customer.Phone} is too short!");
+            if (customer.PhoneNumber.Length != 10)
+                throw new InvalidInputException($"Phone number {customer.PhoneNumber} is too short!");
             if (customer.Location.Latitude < -5000 || customer.Location.Latitude > 5000 || customer.Location.Longitude < -5000 || customer.Location.Longitude > 5000)
             {
                 throw new InvalidInputException($"location data: {customer.Location} is not valid !!");

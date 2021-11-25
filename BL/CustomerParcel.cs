@@ -1,16 +1,19 @@
-﻿namespace IBL.BO
+﻿namespace IBL
 {
-    public class CustomerParcel
+    namespace BO
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        public override string ToString()
+        public class CustomerParcel
         {
-            string result = "";
-            result += $"id is {Id}\n";
-            result += $"name is {Name}\n";
-            return result;
+            public int Id { get; set; }
+            public string Name { get; set; }
+
+            public override string ToString()
+            {
+                string result = "";
+                result += $"id is {Id}\n";
+                result += $"name is {Name}\n";
+                return result;
+            }
         }
     }
 }

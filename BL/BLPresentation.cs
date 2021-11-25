@@ -130,9 +130,9 @@ namespace BL
             try
             {
                 IDAL.DO.Customer dalCustomer = myDal.GetCustomer(customerId);
-                returningCustomer.CopyPropertiesTo(dalCustomer);
-                //returningCustomer.Location.Latitude = dalCustomer.Lattitude;
-                //returningCustomer.Location.Longitude = dalCustomer.Longtitude;
+                dalCustomer.CopyPropertiesTo(returningCustomer);
+                returningCustomer.Location.Latitude = dalCustomer.Lattitude;
+                returningCustomer.Location.Longitude = dalCustomer.Longtitude;
                 List<ParcelCustomer> Parcels = new List<ParcelCustomer>();
                 Parcels = getParcelToSend(returningCustomer);
                 returningCustomer.SentParcels = Parcels;
@@ -236,9 +236,9 @@ namespace BL
             {
                 throw new FailedToGetException(stationEx.ToString(), stationEx);
             }
-            dalStation.CopyPropertiesTo(returningStation);
-            //returningStation.StationLocation.Latitude = dalStation.Lattitude;
-            //returningStation.StationLocation.Longitude = dalStation.Longitude;
+            returningStation.CopyPropertiesTo(dalStation);
+            returningStation.StationLocation.Latitude = dalStation.Lattitude;
+            returningStation.StationLocation.Longitude = dalStation.Longitude;
             List<DroneCharge> droneCharges = FindListOfDroneLIstForStation(stationId);
             returningStation.DroneCharges = droneCharges;
             return returningStation;

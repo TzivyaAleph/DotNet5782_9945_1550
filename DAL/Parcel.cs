@@ -11,8 +11,8 @@ namespace IDAL
             public int Id { get;  set; }
             public int SenderID { get;  set; }//the sender of the parcel
             public int TargetID { get;  set; }//the costumer rwho orded the parcel
-            public WeightCategories Weight { get;  set; }//the weight of the parcel
-            public Priorities Priority { get; set; }
+            public Weight Weight { get;  set; }//the weight of the parcel
+            public Priority Priority { get; set; }
             public DateTime Requested { get; set; }//the time when the parcel has been made and ready.
             public int DroneID { get; set; }//the drone who takes this parcel
             public DateTime Scheduled { get; set; }

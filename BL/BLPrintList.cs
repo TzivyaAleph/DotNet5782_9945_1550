@@ -21,7 +21,7 @@ namespace BL
             foreach(var stat in myDal.CopyStationArray())
             {
                 stationToAdd.Id = stat.Id;
-                stationToAdd.Name = stat.StationName;
+                stationToAdd.Name = stat.Name;
                 stationToAdd.AvailableChargingSlots = stat.ChargeSlots;
                 // counts the drones that are charging in the current station
                 int countNumOfDronesInStation = 0;
@@ -145,7 +145,7 @@ namespace BL
                 if(stat.ChargeSlots!=0)
                 {
                     stationToAdd.Id = stat.Id;
-                    stationToAdd.Name = stat.StationName;
+                    stationToAdd.Name = stat.Name;
                     stationToAdd.AvailableChargingSlots = stat.ChargeSlots;
                     // counts the drones that are charging in the current station
                     int countNumOfDronesInStation = 0;

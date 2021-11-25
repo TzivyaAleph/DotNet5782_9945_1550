@@ -145,7 +145,7 @@ namespace ConsoleUI_BL
             {
                 Id = myID,
                 Name = name,
-                AvailableChargingSlots = numOfSlots,
+                ChargeSlots = numOfSlots,
                 StationLocation = createLocationObject(myLongitude, myLattitude),
             };
             return s;
@@ -161,9 +161,9 @@ namespace ConsoleUI_BL
         {
             Drone d = new Drone
             {
-                ID = myID,
+                Id = myID,
                 Model = myModel,
-                MaxWeight = myMaxWeight,
+                Weight = myMaxWeight,
             };
             return d;
         }
@@ -183,7 +183,7 @@ namespace ConsoleUI_BL
             {
                 Id = myID,
                 Name = myName,
-                Phone = myPhoneNumber,
+                PhoneNumber = myPhoneNumber,
                 Location = createLocationObject(myLongitude, myLattitude)
             };
             return c;

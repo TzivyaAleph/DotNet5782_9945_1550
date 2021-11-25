@@ -15,9 +15,9 @@ namespace DalObject
         /// <returns></returns>
         public void AddDrone(Drone d)
         {
-            if (DataSource.Drones.Exists(drone => drone.ID == d.ID))
+            if (DataSource.Drones.Exists(drone => drone.Id == d.Id))
             {
-                throw new ExistingObjectException($"drone {d.ID} allready exists !!");
+                throw new ExistingObjectException($"drone {d.Id} allready exists !!");
             }
             DataSource.Drones.Add(d);
         }
@@ -39,11 +39,11 @@ namespace DalObject
         /// <returns></returnsthe drone were looking for>
         public Drone GetDrone(int droneID)
         {
-            if (!(DataSource.Drones.Exists(d => d.ID == droneID)))
+            if (!(DataSource.Drones.Exists(d => d.Id == droneID)))
             {
                 throw new UnvalidIDException("id { d.Id}  is not valid !!");
             }
-            int index = DataSource.Drones.FindIndex(item => item.ID == droneID);
+            int index = DataSource.Drones.FindIndex(item => item.Id == droneID);
             return DataSource.Drones[index];
         }
 
@@ -68,11 +68,11 @@ namespace DalObject
         /// <param name="drone"></param>
         public void UpdateDrone(Drone drone)
         {
-            if (!(DataSource.Drones.Exists(d => d.ID == drone.ID)))
+            if (!(DataSource.Drones.Exists(d => d.Id == drone.Id)))
             {
                 throw new UnvalidIDException("id { d.Id}  is not valid !!");
             }
-            int index = DataSource.Drones.FindIndex(item => item.ID == drone.ID);
+            int index = DataSource.Drones.FindIndex(item => item.Id == drone.Id);
             DataSource.Drones[index] = drone;
         }
     }

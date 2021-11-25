@@ -19,8 +19,8 @@ namespace DalObject
             s.ChargeSlots--;
             UpdateStation(s);
             DroneCharge dc = new DroneCharge();
-            dc.DroneID = d.ID;
-            dc.StationID = s.ID;
+            dc.DroneID = d.Id;
+            dc.StationID = s.Id;
             DataSource.DroneCharges.Add(dc);
         }
 
@@ -34,11 +34,11 @@ namespace DalObject
         {
             s.ChargeSlots++;
             UpdateStation(s);//updates the available charge slots in the current staition
-            if (!(DataSource.DroneCharges.Exists(dc => dc.DroneID == d.ID && dc.StationID == s.ID)))
+            if (!(DataSource.DroneCharges.Exists(dc => dc.DroneID == d.Id && dc.StationID == s.Id)))
             {
                 throw new UnvalidIDException("dc is not valid !!");
             }
-            int index = DataSource.DroneCharges.FindIndex(item => item.StationID == s.ID && item.DroneID == d.ID);
+            int index = DataSource.DroneCharges.FindIndex(item => item.StationID == s.Id && item.DroneID == d.Id);
             DroneCharge help = DataSource.DroneCharges[index];
             help.DroneID = 0;
             help.StationID = 0;

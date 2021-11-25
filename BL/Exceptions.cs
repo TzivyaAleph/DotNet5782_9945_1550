@@ -1,106 +1,109 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace IBL.BO
+namespace IBL
 {
-    [Serializable]
-    public class InvalidInputException : Exception
+    namespace BO
     {
-        public InvalidInputException()
+        [Serializable]
+        public class InvalidInputException : Exception
         {
+            public InvalidInputException()
+            {
+            }
+
+            public InvalidInputException(string message) : base(message)
+            {
+
+            }
+
+            public InvalidInputException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected InvalidInputException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
         }
 
-        public InvalidInputException(string message) : base(message)
+        [Serializable]
+        public class FailedToAddException : Exception
         {
+            public FailedToAddException()
+            {
+            }
 
+            public FailedToAddException(string message) : base(message)
+            {
+            }
+
+            public FailedToAddException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected FailedToAddException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
         }
 
-        public InvalidInputException(string message, Exception innerException) : base(message, innerException)
+        [Serializable]
+        internal class FailedToGetException : Exception
         {
+            public FailedToGetException()
+            {
+            }
+
+            public FailedToGetException(string message) : base(message)
+            {
+            }
+
+            public FailedToGetException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected FailedToGetException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
         }
 
-        protected InvalidInputException(SerializationInfo info, StreamingContext context) : base(info, context)
+        [Serializable]
+        internal class InputDoesNotExist : Exception
         {
-        }
-    }
+            public InputDoesNotExist()
+            {
+            }
 
-    [Serializable]
-    public class FailedToAddException : Exception
-    {
-        public FailedToAddException()
-        {
-        }
+            public InputDoesNotExist(string message) : base(message)
+            {
+            }
 
-        public FailedToAddException(string message) : base(message)
-        {
-        }
+            public InputDoesNotExist(string message, Exception innerException) : base(message, innerException)
+            {
+            }
 
-        public FailedToAddException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected FailedToAddException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
-
-    [Serializable]
-    internal class FailedToGetException : Exception
-    {
-        public FailedToGetException()
-        {
+            protected InputDoesNotExist(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
         }
 
-        public FailedToGetException(string message) : base(message)
+        [Serializable]
+        internal class FailedToUpdateException : Exception
         {
-        }
+            public FailedToUpdateException()
+            {
+            }
 
-        public FailedToGetException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+            public FailedToUpdateException(string message) : base(message)
+            {
+            }
 
-        protected FailedToGetException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
+            public FailedToUpdateException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
 
-    [Serializable]
-    internal class InputDoesNotExist : Exception
-    {
-        public InputDoesNotExist()
-        {
-        }
-
-        public InputDoesNotExist(string message) : base(message)
-        {
-        }
-
-        public InputDoesNotExist(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected InputDoesNotExist(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
-
-    [Serializable]
-    internal class FailedToUpdateException : Exception
-    {
-        public FailedToUpdateException()
-        {
-        }
-
-        public FailedToUpdateException(string message) : base(message)
-        {
-        }
-
-        public FailedToUpdateException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected FailedToUpdateException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
+            protected FailedToUpdateException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
         }
     }
 }

@@ -19,11 +19,11 @@ namespace DalObject
         {
             Customer customerToReturn = default;
             //searches the customer by the id
-            if (!(DataSource.Customers.Exists(client => client.ID == customerID)))
+            if (!(DataSource.Customers.Exists(client => client.Id == customerID)))
             {
                 throw new UnvalidIDException($"id {customerID} is not valid !!");
             };
-            customerToReturn = DataSource.Customers.Find(c => c.ID == customerID);
+            customerToReturn = DataSource.Customers.Find(c => c.Id == customerID);
             return customerToReturn;
         }
 
@@ -34,7 +34,7 @@ namespace DalObject
         /// <returns></returns>
         public void AddCustomer(Customer c)
         {
-            if (DataSource.Customers.Exists(client => client.ID == c.ID))
+            if (DataSource.Customers.Exists(client => client.Id == c.Id))
             {
                 throw new ExistingObjectException($"customer {c.Name} allready exists !!");
             }
@@ -64,7 +64,7 @@ namespace DalObject
                 foreach (var par in DataSource.Parcels)
                 {
                     //the parcel has been attributed to the customer and has been delieverd
-                    if (par.TargetID == cust.ID && par.Delivered < DateTime.Now)
+                    if (par.TargetID == cust.Id && par.Delivered != DateTime.MinValue)
                     {
                         customerWithUnDelieverdParcel.Add(cust);
                         break;

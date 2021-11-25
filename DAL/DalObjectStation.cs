@@ -15,9 +15,9 @@ namespace DalObject
         /// <param Name="s">Station to add</param>
         public void AddStation(Station s)
         {
-            if (DataSource.Stations.Exists(station => station.ID == s.ID))
+            if (DataSource.Stations.Exists(station => station.Id == s.Id))
             {
-                throw new ExistingObjectException($"station {s.StationName} allready exists !!");
+                throw new ExistingObjectException($"station {s.Name} allready exists !!");
             }
             DataSource.Stations.Add(s);
         }
@@ -53,34 +53,13 @@ namespace DalObject
         /// <param name="station">updated station to add</param>
         public void UpdateStation(Station station)
         {
-            if (!(DataSource.Stations.Exists(s => s.ID == station.ID)))
+            if (!(DataSource.Stations.Exists(s => s.Id == station.Id)))
             {
-                throw new UnvalidIDException($"id {station.ID} is not valid !!");
+                throw new UnvalidIDException($"id {station.Id} is not valid !!");
             }
-            int index = DataSource.Stations.FindIndex(item => item.ID == station.ID);
+            int index = DataSource.Stations.FindIndex(item => item.Id == station.Id);
             DataSource.Stations[index] = station;
         }
-
-        /// <summary>
-        /// find closest station to a recieved customer
-        /// </summary>
-        /// <param name="customerTemp"></param>
-        /// <returns>return the closeset station</returns>
-        //public Station GetClossestStationToCustomer(Customer customerTemp)
-        //{
-        //    IDAL.DO.Station minStation = new IDAL.DO.Station();
-        //    double minDistance = Math.Sqrt((Math.Pow(customerTemp.Lattitude - DataSource.Stations.First().Lattitude, 2) + Math.Pow(customerTemp.Longtitude - DataSource.Stations.First().Longitude, 2))); ;
-        //    foreach (var st in DataSource.Stations)
-        //    {
-        //        double distance = Math.Sqrt((Math.Pow(customerTemp.Lattitude - st.Lattitude, 2) + Math.Pow(customerTemp.Longtitude - st.Longitude, 2)));
-        //        if (minDistance > distance)
-        //        {
-        //            minDistance = distance;
-        //            minStation = st;
-        //        }
-        //    }
-        //    return minStation;
-        //}
 
         /// <summary>
         /// searches for the station in the array by the Id
@@ -89,11 +68,11 @@ namespace DalObject
         /// <returns></returs the station were looking for>
         public Station GetStation(int stationID)
         {
-            if (!(DataSource.Stations.Exists(s => s.ID == stationID)))
+            if (!(DataSource.Stations.Exists(s => s.Id == stationID)))
             {
                 throw new UnvalidIDException("id { s.Id}  is not valid !!");
             }
-            int index = DataSource.Stations.FindIndex(item => item.ID == stationID);
+            int index = DataSource.Stations.FindIndex(item => item.Id == stationID);
             return DataSource.Stations[index];
         }
 
@@ -108,36 +87,6 @@ namespace DalObject
         {
             IDAL.DO.Station minStation = new IDAL.DO.Station();
             double minDistance = Math.Sqrt((Math.Pow(lattitude -stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2))); ;
-            foreach (var st in DataSource.Stations)
-            {
-                double distance = Math.Sqrt((Math.Pow(lattitude - st.Lattitude, 2) + Math.Pow(longtitude - st.Longitude, 2)));
-                if (minDistance > distance)
-                {
-                    minDistance = distance;
-                    minStation = st;
-                }
-            }
-            return minStation;
-        }
-
-        public Parcel GetClossestParcel(double lattitude, double longtitude, List<Parcel> parcels)
-        {
-            Parcel minParcel = new Parcel();
-            Customer customerForParcelLocation = new Customer();
-            double minDistance;
-            //finds the distance between parcel and drone
-            customerForParcelLocation = DataSource.Customers.First(customer => customer.Id == parcels[0].SenderID);//finds the location of the first parcel's sender 
-            minDistance = Math.Sqrt((Math.Pow(lattitude - customerForParcelLocation.Lattitude, 2) + Math.Pow(longtitude - customerForParcelLocation.Longtitude, 2))); ;
-            foreach (var p in parcels)
-            {
-                customerForParcelLocation = DataSource.Customers.First(customer => customer.Id ==p.SenderID);//finds the location of the parcel's sender (to know the senders location)
-                double distance = Math.Sqrt((Math.Pow(lattitude - customerForParcelLocation.Lattitude, 2) + Math.Pow(longtitude - customerForParcelLocation.Longtitude, 2)));//finds the distance between current parcel and drone
-                if(distance<minDistance)
-                {
-                    
-                }    
-            }
-            //finds the customer who has the parcel
             foreach (var st in DataSource.Stations)
             {
                 double distance = Math.Sqrt((Math.Pow(lattitude - st.Lattitude, 2) + Math.Pow(longtitude - st.Longitude, 2)));

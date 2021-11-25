@@ -53,13 +53,13 @@ namespace ConsoleUI
                                     {
                                         string model;
                                         int ID;
-                                        WeightCategories maxWeight;
+                                        Weight maxWeight;
                                         Console.WriteLine("Enter drone's ID:" );
                                         int.TryParse(Console.ReadLine(), out ID);
                                         Console.WriteLine("Enter drone's model:");
                                         model = Console.ReadLine();
                                         Console.WriteLine("Enter drone's  maximum weight:\n1: light, 2: standard, 3: heavy:");
-                                        maxWeight = (WeightCategories)int.Parse(Console.ReadLine());                                     
+                                        maxWeight = (Weight)int.Parse(Console.ReadLine());                                     
                                         Drone d = new Drone();
                                         d = createObjectDrone(ID, model, maxWeight);
                                         data.AddDrone(d);
@@ -91,16 +91,16 @@ namespace ConsoleUI
                                     {
                                         int senderID;
                                         int targetID;
-                                        WeightCategories weight;
-                                        Priorities priority;
+                                        Weight weight;
+                                        Priority priority;
                                         Console.WriteLine("Enter sender ID:");
                                         int.TryParse(Console.ReadLine(), out senderID);
                                         Console.WriteLine("Enter target ID:");
                                         int.TryParse(Console.ReadLine(), out targetID);
                                         Console.WriteLine("Enter parcel's weight:\n 0: light, 1: standard, 2: heavy ");
-                                        weight = (WeightCategories)int.Parse(Console.ReadLine());
+                                        weight = (Weight)int.Parse(Console.ReadLine());
                                         Console.WriteLine("Enter parcel's priority:\n 0: normal, 1: fast, 2: emergency");
-                                        priority = (Priorities)int.Parse(Console.ReadLine());
+                                        priority = (Priority)int.Parse(Console.ReadLine());
                                         Parcel p = new Parcel();
                                         p = createObjectParcel(senderID, targetID, weight, priority);
                                         int newRunningID;
@@ -298,8 +298,8 @@ namespace ConsoleUI
             Random rand = new Random();
             Station s = new Station
             {
-                ID = myID,
-                StationName = name,
+                Id = myID,
+                Name = name,
                 ChargeSlots = numOfSlots,
                 Lattitude = myLattitude,
                 Longitude = myLongitude
@@ -313,11 +313,11 @@ namespace ConsoleUI
         /// </summary>
         /// <param Name="myModel"></param>
         /// <returns></returns the new drone>
-        static Drone createObjectDrone(int myID, string myModel, WeightCategories myMaxWeight)
+        static Drone createObjectDrone(int myID, string myModel, Weight myMaxWeight)
         {
             Drone d = new Drone
             {
-                ID = myID,
+                Id = myID,
                 Model = myModel,
                 MaxWeight = myMaxWeight,
             };
@@ -333,7 +333,7 @@ namespace ConsoleUI
         {
             Customer c = new Customer
             {
-                ID = myID,
+                Id = myID,
                 Name = myName,
                 PhoneNumber = myPhoneNumber,
                 Lattitude = myLongitude,
@@ -350,7 +350,7 @@ namespace ConsoleUI
         /// <param name="myWeight"></param>
         /// <param name="myPriority"></param>
         /// <returns></returns the new parcel>
-        static Parcel createObjectParcel(int mySenderID, int myTargetID, WeightCategories myWeight, Priorities myPriority)
+        static Parcel createObjectParcel(int mySenderID, int myTargetID, Weight myWeight, Priority myPriority)
         {
             Parcel p = new Parcel
             {
@@ -372,7 +372,7 @@ namespace ConsoleUI
             List<Customer> newList = new List<Customer>(data.CopyCustomerArray());
             foreach (var c in newList)
             {
-                if (c.ID > 0)
+                if (c.Id > 0)
                     Console.WriteLine(c);
             }
         }
@@ -385,7 +385,7 @@ namespace ConsoleUI
             List<Parcel> newList = new List<Parcel>(data.CopyParcelArray());
             foreach (var p in newList)
             {
-                if (p.ID > 0)
+                if (p.Id > 0)
                     Console.WriteLine(p);
             }
         }
@@ -398,7 +398,7 @@ namespace ConsoleUI
             List<Station> newList = new List<Station>(data.CopyStationArray());
             foreach (var s in newList)
             {
-                if (s.ID > 0)
+                if (s.Id > 0)
                     Console.WriteLine(s);
             }
         }
@@ -411,7 +411,7 @@ namespace ConsoleUI
             List<Drone> newList = new List<Drone>(data.CopyDroneArray());
             foreach (var d in newList)
             {
-                if (d.ID > 0)
+                if (d.Id > 0)
                     Console.WriteLine(d);
             }
         }
