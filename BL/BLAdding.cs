@@ -51,7 +51,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException stationExc)
             {
-                throw new FailedToAddException(stationExc.ToString(), stationExc);
+                throw new FailedToAddException("ERROR", stationExc);
             }
         }
 
@@ -103,7 +103,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException droneExc)
             {
-                throw new FailedToAddException(droneExc.ToString(), droneExc);
+                throw new FailedToAddException("ERROR", droneExc);
             }
         }
 
@@ -136,7 +136,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException custEx)
             {
-                throw new FailedToAddException(custEx.ToString(), custEx);
+                throw new FailedToAddException("ERROR", custEx);
             }
 
         }
@@ -170,7 +170,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException parEx)
             {
-                throw new FailedToAddException(parEx.ToString(), parEx);
+                throw new FailedToAddException("ERROR", parEx);
             }
             return runningNumber;
         }

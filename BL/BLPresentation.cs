@@ -28,7 +28,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             {
-                throw new FailedToGetException(custEx.ToString(), custEx);
+                throw new FailedToGetException("ERROR", custEx);
             }
             Parcel parcel = new();//the parcel to return
             dalParcel.CopyPropertiesTo(parcel);
@@ -40,7 +40,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             {
-                throw new FailedToGetException(custEx.ToString(), custEx);
+                throw new FailedToGetException("ERROR", custEx);
             }
             parcel.Sender.CopyPropertiesTo(dalSender);
             IDAL.DO.Customer dalRecipient = new IDAL.DO.Customer();
@@ -50,7 +50,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             {
-                throw new FailedToGetException(custEx.ToString(), custEx);
+                throw new FailedToGetException("ERROR", custEx);
             }
             parcel.Recipient = new();
             parcel.Recipient.CopyPropertiesTo(dalRecipient);
@@ -65,7 +65,7 @@ namespace BL
                 }
                 catch (IDAL.DO.UnvalidIDException custEx)
                 {
-                    throw new FailedToGetException(custEx.ToString(), custEx);
+                    throw new FailedToGetException("ERROR", custEx);
                 }
                 parcel.DroneInParcel.CopyPropertiesTo(droneInParcel);
             }
@@ -119,7 +119,7 @@ namespace BL
                 }
                 catch (IDAL.DO.UnvalidIDException DroneEx)
                 {
-                    throw new FailedToGetException(DroneEx.ToString(), DroneEx);
+                    throw new FailedToGetException("ERROR", DroneEx);
                 }
             }
             return returningDrone;
@@ -149,7 +149,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException custEx)
             {
-                throw new FailedToGetException(custEx.ToString(), custEx);
+                throw new FailedToGetException("ERROR", custEx);
             }
 
             return returningCustomer;
@@ -246,7 +246,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException stationEx)
             {
-                throw new FailedToGetException(stationEx.ToString(), stationEx);
+                throw new FailedToGetException("ERROR", stationEx);
             }
             returningStation.CopyPropertiesTo(dalStation);
             returningStation.StationLocation.Latitude = dalStation.Lattitude;

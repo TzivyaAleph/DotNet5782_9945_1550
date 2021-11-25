@@ -30,7 +30,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException custEx)
             {
-                throw new FailedToUpdateException(custEx.ToString(), custEx);
+                throw new FailedToUpdateException("ERROR", custEx);
             }
             int blDroneIndex= drones.FindIndex(blDrone => blDrone.Id == droneId);//finds the drone in the bl drones list
             drones[blDroneIndex].Model= newModel;//updates the drone in the bl drones list
@@ -70,7 +70,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException stEx)
             {
-                throw new FailedToUpdateException(stEx.ToString(), stEx);
+                throw new FailedToUpdateException("ERROR", stEx);
             }
         }
 
@@ -93,7 +93,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException cusEx)
             {
-                throw new FailedToUpdateException(cusEx.ToString(), cusEx);
+                throw new FailedToUpdateException("ERROR", cusEx);
             }
         }
 
@@ -136,7 +136,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException custEx)
             {
-                throw new FailedToAddException(custEx.ToString(), custEx);
+                throw new FailedToAddException("ERROR", custEx);
             }
         }
 
@@ -220,7 +220,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException parEx)
             {
-                throw new FailedToUpdateException(parEx.ToString(), parEx);
+                throw new FailedToUpdateException("ERROR", parEx);
             }
 
         }
@@ -259,7 +259,7 @@ namespace BL
             }
             catch(IDAL.DO.UnvalidIDException exc)
             {
-                throw new FailedToUpdateException(exc.ToString(), exc);
+                throw new FailedToUpdateException("ERROR", exc);
             }
         }
 
@@ -302,7 +302,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException exc)
             {
-                throw new FailedToUpdateException(exc.ToString(), exc);
+                throw new FailedToUpdateException("ERROR", exc);
             }
         }
 
@@ -366,7 +366,7 @@ namespace BL
             }
             catch (IDAL.DO.UnvalidIDException exc)
             {
-                throw new FailedToUpdateException(exc.ToString(), exc);
+                throw new FailedToUpdateException("ERROR", exc);
             }
         }
     }
