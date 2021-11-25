@@ -273,7 +273,15 @@ namespace BL
                 {
                     //updates his fields and add to returning list
                     droneToAdd.Id = droneList.DroneID;
-                    DroneForList drone = drones.First(item => item.Id == droneList.DroneID);
+                    DroneForList drone = new();
+                    try
+                    {
+                      drone = drones.First(item => item.Id == droneList.DroneID);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new InputDoesNotExist("the drone does not exist!!");
+                    }
                     droneToAdd.Battery = drone.Battery;
                     droneChargesToReturn.Add(droneToAdd);
                 }

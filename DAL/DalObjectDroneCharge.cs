@@ -62,6 +62,10 @@ namespace DalObject
             return droneChargeToReturn;
         }
 
+        /// <summary>
+        /// returns the list of drone charges
+        /// </summary>
+        /// <returns>list of drone charges</returns>
         public IEnumerable<DroneCharge> GetDroneChargeList()
         {
             List<DroneCharge> newList =new List<DroneCharge>(DataSource.DroneCharges);

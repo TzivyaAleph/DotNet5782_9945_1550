@@ -48,31 +48,31 @@ namespace DalObject
         {
             Drones.Add(new Drone
             {
-                Id = rand.Next(1000, 10000),
+                Id = rand.Next(1000, 2000),
                 Model = "maxP",
                 MaxWeight = (Weight)1,
             });
             Drones.Add(new Drone
             {
-                Id = rand.Next(1000, 10000),
+                Id = rand.Next(2001, 3000),
                 Model = "maxG",
                 MaxWeight = (Weight)2,
             });
             Drones.Add(new Drone
             {
-                Id = rand.Next(1000, 10000),
+                Id = rand.Next(3001, 4000),
                 Model = "maxF",
                 MaxWeight = (Weight)0,
             });
             Drones.Add(new Drone
             {
-                Id = rand.Next(1000, 10000),
+                Id = rand.Next(4001, 5000),
                 Model = "maxT",
                 MaxWeight = (Weight)2,
             });
             Drones.Add(new Drone
             {
-                Id = rand.Next(1000, 10000),
+                Id = rand.Next(5001, 6000),
                 Model = "maxD",
                 MaxWeight = (Weight)2,
             });
@@ -96,16 +96,16 @@ namespace DalObject
         {
             Stations.Add(new Station
             {
-                Id = rand.Next(1000, 10000),
-                StationName = "Ramot",
+                Id = rand.Next(1000, 5000),
+                Name = "Ramot",
                 ChargeSlots = rand.Next(0, 50),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
             });
             Stations.Add( new Station
             {
-                Id = rand.Next(1000, 10000),
-                StationName = "Bait Vagan",
+                Id = rand.Next(5001, 10000),
+                Name = "Bait Vagan",
                 ChargeSlots = rand.Next(0, 50),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
@@ -122,15 +122,18 @@ namespace DalObject
             for (int i = 0; i < NumberOfCustumers; i++)//add new customers to the array
             {
                 //update their values.
-                Customers.Add(
-                    new Customer
+                Customer toAdd=new Customer
                     {
                         Id = rand.Next(100000000, 1000000000),
                         Name = $"{(CustomersName)rand.Next(10)}",
                         PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
                         Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                         Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
-                    });
+                    };
+                if (Customers.Exists(item => item.Id == toAdd.Id || item.PhoneNumber == toAdd.PhoneNumber))
+                    i--;
+                else
+                    Customers.Add(toAdd);
             }
         }
 

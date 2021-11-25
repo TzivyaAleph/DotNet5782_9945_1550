@@ -55,7 +55,7 @@ namespace DalObject
         /// return new list with customers who have parcel that has been delieverd.
         /// </summary>
         /// <returns>the new list</returns>
-        public IEnumerable<Customer> ListOfCustomerWithUnDelieverdParcel()
+        public IEnumerable<Customer> ListOfCustomerWithDelieverdParcel()
         {
             List<Customer> customerWithUnDelieverdParcel = new List<Customer>();
             //add to new list the customer who has parcel that have been delieverd

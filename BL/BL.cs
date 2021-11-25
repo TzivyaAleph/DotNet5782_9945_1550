@@ -48,8 +48,15 @@ namespace BL
                         //finds the customer who send the parcel.
                         IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
                         IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
-                        dalSender = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);//finds the parcels sender
-                        dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);//finds the parcels target
+                        try
+                        {
+                            dalSender = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);//finds the parcels sender
+                            dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);//finds the parcels target
+                        }
+                        catch(InvalidOperationException)
+                        {
+                            throw new InputDoesNotExist("the customer does not exist!!");
+                        }
                         clossestStation = myDal.GetClossestStation(dalSender.Lattitude, dalSender.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());
                         double batteryUseFromSenderToTarget = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, dalSender.Lattitude, dalSender.Longtitude) * batteryByWeight(droneToAdd.Weight);
                         clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());//finds the clossest station to the target.
@@ -99,9 +106,9 @@ namespace BL
                     {
                         //the cuurent location of the drone is the location of a random
                         //customer who has attributted parcel who hasnt been delieverd yet.
-                        int num = rand.Next(0, myDal.ListOfCustomerWithUnDelieverdParcel().Count());
+                        int num = rand.Next(0, myDal.ListOfCustomerWithDelieverdParcel().Count());
                         IDAL.DO.Customer randomCustomer = new IDAL.DO.Customer();
-                        randomCustomer = myDal.ListOfCustomerWithUnDelieverdParcel().ElementAt(num);//finds the customer by the random number
+                        randomCustomer = myDal.ListOfCustomerWithDelieverdParcel().ElementAt(num);//finds the customer by the random number
                         droneToAdd.CurrentLocation.Latitude = randomCustomer.Lattitude;
                         droneToAdd.CurrentLocation.Longitude = randomCustomer.Longtitude;
                         //battery status will be a random number between the min battery to 100.
@@ -135,34 +142,6 @@ namespace BL
 
 
 
-
-        //public Customer GetCustomer(int id)
-        //{
-        //    Customer customer = default;
-        //    try
-        //    {
-        //        customer.Id = myDal.GetCustomer(id).ID;
-        //    }
-        //    catch (IDAL.DO.UnvalidIDException custEx)
-        //    { 
-        //        throw new InvalidInputException($"Customer id {id} was not found",custEx);
-        //    }
-        //    return customer;
-        //}
-
-        //public Parcel GetParcel(int id)
-        //{
-        //    Parcel parcel = default;
-        //    try
-        //    {
-        //        IDAL.DO.Parcel dalParcel = myDal.GetParcel(id);
-        //    }
-        //    catch (IDAL.DO.UnvalidIDException custEx)
-        //    {
-        //        throw new InvalidInputException($"Customer id {id} was not found", custEx);
-        //    }
-        //    return parcel;
-        //}
 
 
 
