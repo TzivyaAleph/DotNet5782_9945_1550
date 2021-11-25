@@ -110,7 +110,7 @@ namespace ConsoleUI
                             }
                             break;
                         }
-                            case MenuOptions.Presentation:
+                    case MenuOptions.Presentation:
                         {
                             Console.WriteLine("Choose an entity Presentation:\n1: Station, 2: Drone, 3: Customer, 4: Parcel");
                             entitiesOptions = (EntitiesOptions)int.Parse(Console.ReadLine());//foe choosing the entity
