@@ -18,10 +18,6 @@ namespace BL
         /// <param name="drone">the drone to update</param>
         public void UpdateDrone(int droneId, string newModel)
         {
-            if (droneId < 1000 || droneId > 10000)
-                throw new InvalidInputException($"Drone ID {droneId} is not valid\n");
-            if (String.IsNullOrEmpty(newModel))
-                throw new InvalidInputException($"Drone model {newModel} is not valid\n");
             IDAL.DO.Drone droneTemp = new IDAL.DO.Drone();
             try
             {
@@ -59,12 +55,8 @@ namespace BL
             {
                 throw new InputDoesNotExist("the station does not exist !!");
             }
-            if (stationId < 1000|| stationId > 10000)
-                throw new InvalidInputException($"Station ID {stationId} is not valid\n");
             if (!(string.IsNullOrEmpty(stationName)))//checkes if the function recieved a station name
                 stationTemp.Name = stationName;
-            if(numOfChargingSlots<0||numOfChargingSlots>50)
-                throw new InvalidInputException($"number of charging slots {numOfChargingSlots} is not valid\n");
             //updates the number of charging slots if the func recieved user's input
             if (numOfChargingSlots != -1)
             {
@@ -105,8 +97,6 @@ namespace BL
             {
                 throw new InputDoesNotExist("the customer does not exist !!");
             }
-            if (customerId < 100000000|| customerId > 1000000000)
-                throw new InvalidInputException($"customer ID {customerId} is not valid\n");
             if (!(string.IsNullOrEmpty(customerName)))//checkes if the user put in a name to update
                 customerTemp.Name = customerName;
             if (!(string.IsNullOrEmpty(customerPhone)))//checkes if the user put in a phone number to update
@@ -179,10 +169,6 @@ namespace BL
         {
             List<IDAL.DO.Drone> dalDrones = (List<IDAL.DO.Drone>)myDal.CopyDroneArray();
             List<IDAL.DO.Parcel> parcels = (List<IDAL.DO.Parcel>)myDal.FindNotAttributedParcels();//gets the non attributed parcels list
-            if (droneId < 1000 || droneId > 10000)//checks if id is valid
-            {
-                throw new InvalidInputException($"id {droneId} is not valid !!");
-            }
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = new();
             droneToAttribute = drones[index];
@@ -297,10 +283,6 @@ namespace BL
         /// <param name="droneId">id of the pickup drone</param>
         public void pickedUp(int droneId)
         {
-            if (droneId < 1000 || droneId > 10000)//checks if id is valid
-            {
-                throw new InvalidInputException($"id {droneId} is not valid !!");
-            }
             IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
             IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
             IDAL.DO.Parcel parcelToPickUp = new IDAL.DO.Parcel();
