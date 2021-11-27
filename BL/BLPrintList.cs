@@ -17,19 +17,15 @@ namespace BL
         public IEnumerable<StationForList> GetStationList()
         {
             List<StationForList> stationsToReturn = new List<StationForList>();
-            StationForList stationToAdd = new();
-            foreach(var stat in myDal.CopyStationArray())
+            List<IDAL.DO.DroneCharge> droneCharges = new();
+            droneCharges = myDal.GetDroneChargeList().ToList();
+            foreach (var stat in myDal.CopyStationArray())
             {
+                StationForList stationToAdd = new();
                 stationToAdd.Id = stat.Id;
                 stationToAdd.Name = stat.Name;
                 stationToAdd.AvailableChargingSlots = stat.ChargeSlots;
-                // counts the drones that are charging in the current station
-                int countNumOfDronesInStation = 0;
-                foreach (var dc in myDal.GetDroneChargeList())
-                {
-                    if (dc.StationID == stat.Id)
-                        countNumOfDronesInStation++;
-                }
+                int countNumOfDronesInStation= droneCharges.Count(item => item.StationID == stat.Id);
                 Station station = new();
                 stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation - stat.ChargeSlots;
                 stationsToReturn.Add(stationToAdd);
@@ -54,9 +50,9 @@ namespace BL
         public IEnumerable<CustomerForList> GetCustomerList()
         {
             List<CustomerForList> customersForList = new List<CustomerForList>();
-            CustomerForList customerToAdd = new();
             foreach(var cust in myDal.CopyCustomerArray())
             {
+                CustomerForList customerToAdd = new();
                 customerToAdd.Id = cust.Id;
                 customerToAdd.Name = cust.Name;
                 customerToAdd.Phone = cust.PhoneNumber;
@@ -84,9 +80,9 @@ namespace BL
         public IEnumerable<ParcelForList> GetParcelList()
         {
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
-            ParcelForList parcelToAdd = new();
             foreach (var par in myDal.CopyParcelArray())
             {
+                ParcelForList parcelToAdd = new();
                 parcelToAdd.Id = par.Id;
                 IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
                 //finds the sender in customer list for getting his name
@@ -110,10 +106,10 @@ namespace BL
         public IEnumerable<ParcelForList> GetUnAtributtedParcels()
         {
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
-            ParcelForList parcelToAdd = new();
             foreach(var par in myDal.CopyParcelArray())
             {
-                if(par.DroneID==0)
+                ParcelForList parcelToAdd = new();
+                if (par.DroneID==0)
                 {
                     parcelToAdd.Id = par.Id;
                     IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
@@ -139,10 +135,10 @@ namespace BL
         public IEnumerable<StationForList> GetAvailableChargingSlotsStations()
         {
             List<StationForList> stationsToReturn = new List<StationForList>();
-            StationForList stationToAdd = new();
             foreach (var stat in myDal.CopyStationArray())
             {
-                if(stat.ChargeSlots!=0)
+                StationForList stationToAdd = new();
+                if (stat.ChargeSlots!=0)
                 {
                     stationToAdd.Id = stat.Id;
                     stationToAdd.Name = stat.Name;
