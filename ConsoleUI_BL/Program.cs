@@ -36,12 +36,18 @@ namespace ConsoleUI_BL
                                             long longitude, lattitude;
                                             int ID;
                                             Console.WriteLine("Enter a 4 digit station ID:");
-                                            int.TryParse(Console.ReadLine(), out ID);
+                                            while (!(int.TryParse(Console.ReadLine(), out ID)))
+                                            {
+                                                Console.WriteLine("Enter a 4 digit station ID:");
+                                            }
                                             while (ID < 1000 || ID > 10000) 
                                             {
                                                Console.WriteLine($"id {ID} is not valid !!");
                                                Console.WriteLine("Enter a 4 digit station ID:");
-                                               while (!(int.TryParse(Console.ReadLine(), out ID)));
+                                               while (!(int.TryParse(Console.ReadLine(), out ID)))
+                                                {
+                                                    Console.WriteLine("Enter a 4 digit station ID:");
+                                                }
                                             }
                                             Console.WriteLine("Enter station's name:");
                                             name = Console.ReadLine();
