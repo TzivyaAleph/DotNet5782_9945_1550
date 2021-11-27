@@ -20,14 +20,6 @@ namespace BL
         /// <param name="location">station's location</param>
         public void AddStation(Station s)
         {
-            if (s.Id < 1000 || s.Id > 10000)
-            {
-                throw new InvalidInputException($"id {s.Id} is not valid !!");
-            }
-            if (s.ChargeSlots < 0 || s.ChargeSlots > 50)
-            {
-                throw new InvalidInputException($"number of slots {s.ChargeSlots} is not valid !!");
-            }
             if (String.IsNullOrEmpty(s.Name))
             {
                 throw new InvalidInputException($"name {s.Name} is not correct !!");
@@ -62,10 +54,6 @@ namespace BL
         /// <param name="stationId">station number to put the drone in</param>
         public void AddDrone(DroneForList d, int stationId)
         {
-            if (d.Id < 1000 || d.Id > 10000)
-            {
-                throw new InvalidInputException($"id {d.Id} is not valid !!");
-            }
             if (String.IsNullOrEmpty(d.Model))
             {
                 throw new InvalidInputException($"name {d.Model} is not correct !!");

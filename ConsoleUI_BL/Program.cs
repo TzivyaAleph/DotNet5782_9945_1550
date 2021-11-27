@@ -34,16 +34,25 @@ namespace ConsoleUI_BL
                                             string name;
                                             int numOfSlots;
                                             long longitude, lattitude;
-                                            int ID;  
-                                                do
-                                                {
-                                                Console.WriteLine("Enter station's ID:");
-                                                while (!(int.TryParse(Console.ReadLine(), out ID);
-                                                } while (ID < 1000);
+                                            int ID;
+                                            Console.WriteLine("Enter a 4 digit station ID:");
+                                            int.TryParse(Console.ReadLine(), out ID);
+                                            while (ID < 1000 || ID > 10000) 
+                                            {
+                                               Console.WriteLine($"id {ID} is not valid !!");
+                                               Console.WriteLine("Enter a 4 digit station ID:");
+                                               while (!(int.TryParse(Console.ReadLine(), out ID)));
+                                            }
                                             Console.WriteLine("Enter station's name:");
                                             name = Console.ReadLine();
-                                            Console.WriteLine("Enter number of available charging slots:");
+                                            Console.WriteLine("Enter number of available charging slots between 0 and 50:");
                                             int.TryParse(Console.ReadLine(), out numOfSlots);
+                                            while(numOfSlots < 0|| numOfSlots > 50)
+                                            {
+                                                Console.WriteLine($"number of slots {numOfSlots} is not valid !!");
+                                                Console.WriteLine("Enter number of available charging slots between 0 and 50:");
+                                                int.TryParse(Console.ReadLine(), out numOfSlots);
+                                            }
                                             Console.WriteLine("Enter station's Longitude:");
                                             long.TryParse(Console.ReadLine(), out longitude);
                                             Console.WriteLine("Enter station's Lattitude:");
@@ -71,6 +80,7 @@ namespace ConsoleUI_BL
                                             DroneForList d = new DroneForList();
                                             d = createObjectDrone(ID, model, maxWeight);
                                             bO.AddDrone(d, stationId);
+                                            Console.WriteLine("Drone added successfully");
                                             break;
                                         }
                                     case EntitiesOptions.Customer:
