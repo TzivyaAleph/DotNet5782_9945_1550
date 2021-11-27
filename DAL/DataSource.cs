@@ -72,7 +72,7 @@ namespace DalObject
             });
             Drones.Add(new Drone
             {
-                Id = rand.Next(5001, 6000),
+                Id = rand.Next(5001, 10000),
                 Model = "maxD",
                 MaxWeight = (Weight)2,
             });
