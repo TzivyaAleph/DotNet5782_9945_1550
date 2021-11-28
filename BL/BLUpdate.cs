@@ -60,7 +60,8 @@ namespace BL
             //updates the number of charging slots if the func recieved user's input
             if (numOfChargingSlots != -1)
             {
-                List<IDAL.DO.DroneCharge> droneCharges = (List<IDAL.DO.DroneCharge>)myDal.GetDroneChargeList();//recieves the dal droneCharge list
+                List<IDAL.DO.DroneCharge> droneCharges = new List<IDAL.DO.DroneCharge>();//recieves the dal droneCharge list
+                droneCharges = myDal.GetDroneChargeList().ToList();
                 // counts the drones that are charging in the current station                                                                                              
                 int countNumOfDronesInStation = 0;
                 foreach (var dc in droneCharges)
@@ -130,7 +131,7 @@ namespace BL
             if (droneForList.DroneStatuses != DroneStatuses.Available)
                 throw new FailedToUpdateException($"Drone {d.Id} is not available");
             //finding all the available charging slots in station.
-            List<IDAL.DO.Station> stations =(List<IDAL.DO.Station>) myDal.FindAvailableStations();
+            List<IDAL.DO.Station> stations =myDal.FindAvailableStations().ToList();
             IDAL.DO.Station clossestStation = new IDAL.DO.Station();
             //finds the clossest station to the current location of the drone
             clossestStation = myDal.GetClossestStation(d.CurrentLocation.Latitude, d.CurrentLocation.Longitude, stations);
@@ -141,6 +142,7 @@ namespace BL
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
             double[] electricity = myDal.GetElectricityUse();
             double distance= Math.Sqrt((Math.Pow(d.CurrentLocation.Latitude - clossestStation.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - clossestStation.Longitude, 2)));
+            droneForList.CurrentLocation = new();
             droneForList.Battery -= batteryUse;
             droneForList.CurrentLocation.Latitude = clossestStation.Lattitude;
             droneForList.CurrentLocation.Latitude = clossestStation.Longitude;
@@ -167,8 +169,8 @@ namespace BL
         /// <param name="droneId">id of the drone we are attributing to the parcel</param>
         public void AttributingParcelToDrone(int droneId)
         {
-            List<IDAL.DO.Drone> dalDrones = (List<IDAL.DO.Drone>)myDal.CopyDroneArray();
-            List<IDAL.DO.Parcel> parcels = (List<IDAL.DO.Parcel>)myDal.FindNotAttributedParcels();//gets the non attributed parcels list
+            List<IDAL.DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
+            List<IDAL.DO.Parcel> parcels = myDal.FindNotAttributedParcels().ToList();//gets the non attributed parcels list
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = new();
             droneToAttribute = drones[index];
@@ -307,7 +309,8 @@ namespace BL
             {
                 throw new InvalidInputException($"parcel {parcelToPickUp.Id} was already picked up !!");
             }
-            DroneForList pickUpDrone = drones.Find(drone => drone.Id == droneId);//finds the drone thats picking up the parcel in the bl drones list
+            DroneForList pickUpDrone = new();
+            pickUpDrone = drones.Find(drone => drone.Id == droneId);//finds the drone thats picking up the parcel in the bl drones list
             IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
             double[] electricity = myDal.GetElectricityUse();
             IDAL.DO.Customer parcelSender = new IDAL.DO.Customer();
@@ -320,6 +323,7 @@ namespace BL
                 throw new InputDoesNotExist("the sender does not exist !!");
             }
             double electricityForPickUp = electricity[0] * myDal.getDistanceFromLatLonInKm(pickUpDrone.CurrentLocation.Latitude, pickUpDrone.CurrentLocation.Longitude, parcelSender.Lattitude, parcelSender.Longtitude);//calculates the battery use from drones current location to the parcel 
+            pickUpDrone.CurrentLocation = new();
             pickUpDrone.Battery = pickUpDrone.Battery - electricityForPickUp;//updates the drones battery 
             pickUpDrone.CurrentLocation.Latitude = parcelSender.Lattitude;//updates the drones location to where he picked up the parcel 
             pickUpDrone.CurrentLocation.Longitude = parcelSender.Longtitude;
@@ -341,10 +345,6 @@ namespace BL
         /// <param name="droneId">id of the drone who picked up the parcel</param>
         public void Delivered(int droneId)
         {
-            if (droneId < 1000 || droneId > 10000)//checks if id is valid
-            {
-                throw new InvalidInputException($"id {droneId} is not valid !!");
-            }
             IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
             IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
             IDAL.DO.Parcel parcelToDeliver = new IDAL.DO.Parcel();
@@ -365,7 +365,8 @@ namespace BL
             {
                 throw new InputDoesNotExist("the parcel does not exist !!");
             }
-            DroneForList blDeliveryDrone = drones.Find(drone => drone.Id == droneId);//finds the drone thats picking up the parcel in the bl drones list
+            DroneForList blDeliveryDrone = new();
+            blDeliveryDrone = drones.Find(drone => drone.Id == droneId);//finds the drone thats picking up the parcel in the bl drones list
             if (parcelToDeliver.PickedUp == DateTime.MinValue)//checkes if the parcel wasnt picked up yet
             {
                 throw new FailedToUpdateException($"parcel {parcelToDeliver.Id} wasn't picked up yet !!");
@@ -386,6 +387,7 @@ namespace BL
                 throw new InputDoesNotExist("the customer does not exist !!");
             }
             double electricityForDelivery = electricityByWeight((Weight)parcelToDeliver.Weight)* myDal.getDistanceFromLatLonInKm(blDeliveryDrone.CurrentLocation.Latitude, blDeliveryDrone.CurrentLocation.Longitude, parcelReciever.Lattitude, parcelReciever.Longtitude);
+            blDeliveryDrone.CurrentLocation = new();
             blDeliveryDrone.Battery = blDeliveryDrone.Battery - electricityForDelivery;//updates the drones battery 
             blDeliveryDrone.CurrentLocation.Latitude = parcelReciever.Lattitude;//updates the drones location to where he picked up the parcel 
             blDeliveryDrone.CurrentLocation.Longitude = parcelReciever.Longtitude;
