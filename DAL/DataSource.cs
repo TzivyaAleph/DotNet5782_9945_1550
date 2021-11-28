@@ -98,7 +98,7 @@ namespace DalObject
             {
                 Id = rand.Next(1000, 5000),
                 Name = "Ramot",
-                ChargeSlots = rand.Next(0, 50),
+                ChargeSlots = rand.Next(0, 51),
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
             });
@@ -144,23 +144,27 @@ namespace DalObject
         private static void createParcels(int NumberOfParcels)
         {
             DateTime dateAndTime = new DateTime(2021, 1, 1);
-            for (int i = 0, j = 9; i < NumberOfParcels; i++, j--)//add new Parcels to the array
+            for (int i = 0, j = 9,m=0; i < NumberOfParcels; i++, j--,m++)//add new Parcels to the array
             {
-                int num = rand.Next(0, 1);
                 Parcel toAdd = new Parcel();
-
                 toAdd.Id = ++Config.RunningParcelID;
                 toAdd.SenderID = Customers[i].Id;
                 toAdd.TargetID = Customers[j].Id;
                 toAdd.Weight = RandomEnumValue<Weight>();
                 toAdd.Priority = RandomEnumValue<Priority>();
                 toAdd.Requested = dateAndTime;
-                int numDrone = rand.Next(5);
+                int numDrone =m;
                 while((int)Drones[numDrone].MaxWeight<(int)toAdd.Weight)
-                    numDrone = rand.Next(5);
+                {
+                    numDrone += 1;
+                    if (numDrone == 4)
+                        numDrone = 0;
+                }
                 toAdd.DroneID = Drones[numDrone].Id;
-                num = rand.Next(0, 1);
-                if (num == 0)
+                if (m ==4)
+                    m = -1;
+                //num = rand.Next(0, 1);
+                if (i<2)
                 {
                     toAdd.Scheduled = DateTime.MinValue;
                     toAdd.PickedUp = DateTime.MinValue;
@@ -172,7 +176,7 @@ namespace DalObject
                     toAdd.PickedUp = dateAndTime.AddMinutes(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000));
                     toAdd.Delivered = dateAndTime.AddMinutes(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000)).AddHours(rand.Next(10, 1000));
                 }
-
+                Parcels.Add(toAdd);
             }
         }
 

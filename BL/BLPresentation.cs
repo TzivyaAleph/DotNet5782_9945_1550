@@ -248,10 +248,12 @@ namespace BL
             {
                 throw new FailedToGetException("ERROR", stationEx);
             }
-            returningStation.CopyPropertiesTo(dalStation);
+            dalStation.CopyPropertiesTo(returningStation);
+            returningStation.StationLocation = new();
             returningStation.StationLocation.Latitude = dalStation.Lattitude;
             returningStation.StationLocation.Longitude = dalStation.Longitude;
             List<DroneCharge> droneCharges = FindListOfDroneLIstForStation(stationId);
+            returningStation.DroneCharges = new();
             returningStation.DroneCharges = droneCharges;
             return returningStation;
         }

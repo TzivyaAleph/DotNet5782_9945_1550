@@ -64,7 +64,7 @@ namespace DalObject
                 foreach (var par in DataSource.Parcels)
                 {
                     //the parcel has been attributed to the customer and has been delieverd
-                    if (par.TargetID == cust.Id && par.Delivered != DateTime.MinValue)
+                        if (par.TargetID == cust.Id && par.Delivered != DateTime.MinValue)
                     {
                         customerWithUnDelieverdParcel.Add(cust);
                         break;

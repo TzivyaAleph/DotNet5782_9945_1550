@@ -6,12 +6,12 @@ namespace ConsoleUI_BL
 {
     class Program
     {
-       
         static void Main(string[] args)
         {
-            BL.IBL bO = new BL.BL();
             try
             {
+                BL.IBL bO;
+                bO = new BL.BL();
                 MenuOptions menuOption;
                 EntitiesOptions entitiesOptions;
                 ArrayPresentationOptions arrayOption;
@@ -40,11 +40,11 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 4 digit station ID:");
                                             }
-                                            while (ID < 1000 || ID > 10000) 
+                                            while (ID < 1000 || ID > 10000)
                                             {
-                                               Console.WriteLine($"id {ID} is not valid !!");
-                                               Console.WriteLine("Enter a 4 digit station ID:");
-                                               while (!(int.TryParse(Console.ReadLine(), out ID)))
+                                                Console.WriteLine($"id {ID} is not valid !!");
+                                                Console.WriteLine("Enter a 4 digit station ID:");
+                                                while (!(int.TryParse(Console.ReadLine(), out ID)))
                                                 {
                                                     Console.WriteLine("Enter a 4 digit station ID:");
                                                 }
@@ -61,18 +61,18 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter number of available charging slots between 0 and 50:");
                                             }
-                                            while (numOfSlots < 0|| numOfSlots > 50)
+                                            while (numOfSlots < 0 || numOfSlots > 50)
                                             {
                                                 Console.WriteLine($"number of slots {numOfSlots} is not valid !!");
                                                 Console.WriteLine("Enter number of available charging slots between 0 and 50:");
                                                 int.TryParse(Console.ReadLine(), out numOfSlots);
                                             }
                                             Console.WriteLine("Enter station's Longitude between -5000 and 5000:");
-                                            while(!(long.TryParse(Console.ReadLine(), out longitude)))
+                                            while (!(long.TryParse(Console.ReadLine(), out longitude)))
                                             {
                                                 Console.WriteLine("Enter station's Longitude between -5000 and 5000:");
                                             }
-                                            while(longitude < -5000 || longitude > 5000)
+                                            while (longitude < -5000 || longitude > 5000)
                                             {
                                                 Console.WriteLine($"Longitude {longitude} is not valid !!");
                                                 Console.WriteLine("Enter station's Longitude between -5000 and 5000:");
@@ -157,7 +157,7 @@ namespace ConsoleUI_BL
                                             string phoneNumber;
                                             double longitude, lattitude;
                                             Console.WriteLine("Enter a 9 digit customer ID:");
-                                            while(!(int.TryParse(Console.ReadLine(), out ID)))
+                                            while (!(int.TryParse(Console.ReadLine(), out ID)))
                                             {
                                                 Console.WriteLine("Enter a 9 digit customer ID:");
                                             }
@@ -177,21 +177,21 @@ namespace ConsoleUI_BL
                                                 Console.WriteLine("Enter customer's name:");
                                                 name = Console.ReadLine();
                                             }
-                                            Console.WriteLine("Enter a 9 digit customer phone number:");
+                                            Console.WriteLine("Enter customer's phone number:");
                                             phoneNumber = Console.ReadLine();
                                             while (String.IsNullOrEmpty(phoneNumber))
                                             {
-                                                Console.WriteLine("Enter a 9 digit customer phone number:");
+                                                Console.WriteLine("Enter customer's phone number:");
                                                 phoneNumber = Console.ReadLine();
                                             }
-                                            while(phoneNumber.Length!=9)
+                                            while (phoneNumber.Length != 9)
                                             {
                                                 Console.WriteLine($"phone number {phoneNumber} is not valid !!");
-                                                Console.WriteLine("Enter a 9 digit customer phone number:");
+                                                Console.WriteLine("Enter customer's phone number:");
                                                 phoneNumber = Console.ReadLine();
                                                 while (String.IsNullOrEmpty(phoneNumber))
                                                 {
-                                                    Console.WriteLine("Enter a 9 digit customer phone number:");
+                                                    Console.WriteLine("Enter customer's phone number:");
                                                     phoneNumber = Console.ReadLine();
                                                 }
                                             }
@@ -304,7 +304,7 @@ namespace ConsoleUI_BL
                                             }
                                             Console.WriteLine("Enter drone's model:");
                                             model = Console.ReadLine();
-                                            while(String.IsNullOrEmpty(model))
+                                            while (String.IsNullOrEmpty(model))
                                             {
                                                 Console.WriteLine($"Drone model {model} is not valid\n");
                                                 Console.WriteLine("Enter drone's model:");
@@ -360,18 +360,18 @@ namespace ConsoleUI_BL
                                             string customerName;
                                             string customerPhone;
                                             string input = Console.ReadLine();
-                                            Console.WriteLine("Enter a 4 digit customer's ID:");
+                                            Console.WriteLine("Enter a 9 digit customer's ID:");
                                             while (!int.TryParse(input, out customerID))
                                             {
-                                                Console.WriteLine("Enter a 4 digit customer's ID:");
+                                                Console.WriteLine("Enter a 9 digit customer's ID:");
                                             }
                                             while (customerID < 100000000 || customerID > 1000000000)
                                             {
                                                 Console.WriteLine($"Customer ID {customerID} is not valid\n");
-                                                Console.WriteLine("Enter a 4 digit customer's ID:");
+                                                Console.WriteLine("Enter a 9 digit customer's ID:");
                                                 while (!int.TryParse(input, out customerID))
                                                 {
-                                                    Console.WriteLine("Enter a 4 digit customer's ID:");
+                                                    Console.WriteLine("Enter a 9 digit customer's ID:");
                                                 }
                                             }
                                             Console.WriteLine("Enter the customer's name:");
@@ -451,7 +451,7 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter the amount of hour the drone was charging:");
                                             }
-                                            while (amountOfHours<0)
+                                            while (amountOfHours < 0)
                                             {
                                                 Console.WriteLine($"Invalid hours");
                                                 Console.WriteLine("Enter the amount of hour the drone was charging:");
@@ -539,9 +539,21 @@ namespace ConsoleUI_BL
                                     case EntitiesOptions.Station:
                                         {
                                             int stationID;
-                                            Console.WriteLine("Enter the station ID:");
                                             string input = Console.ReadLine();
-                                            int.TryParse(input, out stationID);
+                                            Console.WriteLine("Enter a 4 digit station ID:");
+                                            while (!(int.TryParse(Console.ReadLine(), out stationID)))
+                                            {
+                                                Console.WriteLine("Enter a 4 digit station ID:");
+                                            }
+                                            while (stationID < 1000 || stationID > 10000)
+                                            {
+                                                Console.WriteLine($"id {stationID} is not valid !!");
+                                                Console.WriteLine("Enter a 4 digit station ID:");
+                                                while (!(int.TryParse(Console.ReadLine(), out stationID)))
+                                                {
+                                                    Console.WriteLine("Enter a 4 digit station ID:");
+                                                }
+                                            }
                                             Station s = bO.GetStation(stationID);
                                             Console.WriteLine(s);
                                             break;
@@ -549,9 +561,21 @@ namespace ConsoleUI_BL
                                     case EntitiesOptions.Drone:
                                         {
                                             int droneID;
-                                            Console.WriteLine("Enter the drone ID:");
                                             string input = Console.ReadLine();
-                                            int.TryParse(input, out droneID);
+                                            Console.WriteLine("Enter a 4 digit drone ID:");
+                                            while (!(int.TryParse(Console.ReadLine(), out droneID)))
+                                            {
+                                                Console.WriteLine("Enter a 4 digit drone ID:");
+                                            }
+                                            while (droneID < 1000 || droneID > 10000)
+                                            {
+                                                Console.WriteLine($"id {droneID} is not valid !!");
+                                                Console.WriteLine("Enter a 4 digit drone ID:");
+                                                while (!(int.TryParse(Console.ReadLine(), out droneID)))
+                                                {
+                                                    Console.WriteLine("Enter a 4 digit drone ID:");
+                                                }
+                                            }
                                             Drone d = bO.GetDrone(droneID);
                                             Console.WriteLine(d);
                                             break;
@@ -559,9 +583,21 @@ namespace ConsoleUI_BL
                                     case EntitiesOptions.Customer:
                                         {
                                             int costumerID;
-                                            Console.WriteLine("Enter the costumer's ID:");
                                             string input = Console.ReadLine();
-                                            int.TryParse(input, out costumerID);
+                                            Console.WriteLine("Enter a 9 digit customer ID:");
+                                            while (!(int.TryParse(Console.ReadLine(), out costumerID)))
+                                            {
+                                                Console.WriteLine("Enter a 9 digit customer ID:");
+                                            }
+                                            while (costumerID < 100000000 || costumerID > 999999999)
+                                            {
+                                                Console.WriteLine($"id {costumerID} is not valid !!");
+                                                Console.WriteLine("Enter a 9 digit customer ID:");
+                                                while (!(int.TryParse(Console.ReadLine(), out costumerID)))
+                                                {
+                                                    Console.WriteLine("Enter a 9 digit customer ID:");
+                                                }
+                                            }
                                             Customer c = bO.GetCustomer(costumerID);
                                             Console.WriteLine(c);
                                             break;
@@ -572,6 +608,10 @@ namespace ConsoleUI_BL
                                             Console.WriteLine("Enter the parcel ID:");
                                             string input = Console.ReadLine();
                                             int.TryParse(input, out parcelID);
+                                            while (!(int.TryParse(Console.ReadLine(), out parcelID)))
+                                            {
+                                                Console.WriteLine("Enter the parcel ID:");
+                                            }
                                             Parcel p = bO.GetParcel(parcelID);
                                             Console.WriteLine(p);
                                             break;
@@ -623,17 +663,17 @@ namespace ConsoleUI_BL
                 }
                 while (menuOption != MenuOptions.Exit);
             }
-            catch(InvalidInputException ex)
+            catch (InvalidInputException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
             }
             catch (FailedToAddException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
             }
             catch (FailedToGetException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
             }
             catch (InputDoesNotExist ex)
             {
@@ -641,7 +681,7 @@ namespace ConsoleUI_BL
             }
             catch (FailedToUpdateException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
             }
         }
 

@@ -55,6 +55,7 @@ namespace BL
             int index = stations.FindIndex(item => item.Id == stationId);//finds the station that the drone in it.
             IDAL.DO.Station s = new IDAL.DO.Station();
             s = stations[index];
+            d.CurrentLocation = new();
             d.Battery = rand.Next(20, 40);
             d.DroneStatuses = DroneStatuses.Maintenance;
             d.CurrentLocation.Latitude = stations[index].Lattitude;

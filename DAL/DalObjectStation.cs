@@ -17,7 +17,7 @@ namespace DalObject
         {
             if (DataSource.Stations.Exists(station => station.Id == s.Id))
             {
-                throw new ExistingObjectException($"station {s.Name} allready exists !!");
+                throw new ExistingObjectException($"station {s.Id} allready exists !!");
             }
             DataSource.Stations.Add(s);
         }
