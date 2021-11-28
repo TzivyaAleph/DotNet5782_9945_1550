@@ -329,6 +329,7 @@ namespace ConsoleUI_BL
                                                 model = Console.ReadLine();
                                             }
                                             bO.UpdateDrone(droneID, model);
+                                            Console.WriteLine("Drone updated successfully");
                                             break;
                                         }
                                     case UpdateEntitiesOptions.StationUpdate:
@@ -375,6 +376,7 @@ namespace ConsoleUI_BL
                                                 }
                                             }
                                             bO.UpdateStation(stationID, stationName, numOfChargingSlots);
+                                            Console.WriteLine("Station updated successfully");
                                             break;
                                         }
                                     case UpdateEntitiesOptions.CustomerUpdate:
@@ -409,6 +411,7 @@ namespace ConsoleUI_BL
                                                 customerPhone = Console.ReadLine();
                                             }
                                             bO.UpdateCustomer(customerID, customerName, customerPhone);
+                                            Console.WriteLine("Customer updated successfully");
                                             break;
                                         }
                                     case UpdateEntitiesOptions.ChargeDrone:
@@ -434,6 +437,7 @@ namespace ConsoleUI_BL
                                             }
                                             Drone d = bO.GetDrone(droneID);
                                             bO.SendDroneToChargeSlot(d);
+                                            Console.WriteLine("Drone sent to charge successfully");
                                             break;
                                         }
                                     case UpdateEntitiesOptions.ReleaseDrone:
@@ -477,6 +481,7 @@ namespace ConsoleUI_BL
                                             }
                                             Drone d = bO.GetDrone(droneID);
                                             bO.ReleasedroneFromeChargeSlot(d, amountOfHours);
+                                            Console.WriteLine("Drone released from charging successfully");
                                             break;
                                         }
                                     case UpdateEntitiesOptions.attribute:
@@ -501,6 +506,7 @@ namespace ConsoleUI_BL
                                                 }
                                             }
                                             bO.AttributingParcelToDrone(droneID);
+                                            Console.WriteLine("Parcel attributed to drone successfully");
                                             break;
                                         }
                                     case UpdateEntitiesOptions.PickUp:
@@ -525,6 +531,7 @@ namespace ConsoleUI_BL
                                                 }
                                             }
                                             bO.pickedUp(droneID);
+                                            Console.WriteLine("Parcel pick up succeeded");
                                             break;
                                         }
                                     case UpdateEntitiesOptions.Delivery:
@@ -548,6 +555,7 @@ namespace ConsoleUI_BL
                                                 }
                                             }
                                             bO.Delivered(droneID);
+                                            Console.WriteLine("Parcel delivery succeeded");
                                             break;
                                         }
                                 }
