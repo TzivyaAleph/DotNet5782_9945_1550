@@ -20,12 +20,12 @@ namespace IBL
             public override string ToString()
             {
                 string result = "";
-                result += $"ID is {Id},\n";
-                result += $"recipient is {Reciever}\n";
-                result += $"sender is {Sender}\n";
-                result += $"weight is {Weight},\n";
-                result += $"priority is {Priority},\n";
-                result += $"the drone is {Status},\n";
+                result += $"ID is: {Id}\n";
+                result += $"recipient is: {Reciever}\n";
+                result += $"sender is: {Sender}\n";
+                result += $"weight is: {Weight}\n";
+                result += $"priority is: {Priority}\n";
+                result += $"the drone is: {Status}\n";
                 return result;
             }
         }

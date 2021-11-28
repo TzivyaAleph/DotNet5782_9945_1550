@@ -21,13 +21,13 @@ namespace IBL
             public override string ToString()
             {
                 string result = " ";
-                result += $"ID is {Id},\n";
-                result += $"model is {Model},\n";
-                result += $"the maximum weight is {Weight},\n";
-                result += $"the drone is {DroneStatuses},\n";
-                result += $"battery: {Battery},\n";
-                result += $"the current location of th edrone is {CurrentLocation},\n";
-                result += $"the attributted parcel's ID is {ParcelId},\n";
+                result += $"ID is: {Id}\n";
+                result += $"model is: {Model}\n";
+                result += $"the maximum weight is: {Weight}\n";
+                result += $"the drone is: {DroneStatuses}\n";
+                result += $"battery: {Battery}\n";
+                result += $"the current location of the drone is:\n {CurrentLocation}";
+                result += $"the attributted parcel's ID is: {ParcelId}\n";
                 return result;
             }
         }

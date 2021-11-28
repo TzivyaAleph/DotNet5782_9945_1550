@@ -17,9 +17,9 @@ namespace IBL
             public override string ToString()
             {
                 string result = " ";
-                result += $"ID is {Id},\n";
-                result += $"battery level is {Battery},\n";
-                result += $"location is {Location},\n";
+                result += $"ID is: {Id}\n";
+                result += $"battery level is: {Battery}\n";
+                result += $"location is:\n {Location}";
                 return result;
             }
         }

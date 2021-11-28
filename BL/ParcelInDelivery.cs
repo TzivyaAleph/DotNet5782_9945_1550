@@ -21,17 +21,17 @@ namespace IBL
             public override string ToString()
             {
                 string result = " ";
-                result += $"ID is {Id},\n";
+                result += $"ID is: {Id}\n";
                 result += $"the parcel  is ";
                 if (!OnTheWay)
                     result += "waiting for pick up,\n";
                 else
                     result += "on its way,\n";
-                result += $"the sender of the parcel is {CustomerSender},\n";
-                result += $"the reciever of the parcel is {CustomerReciever},\n";
-                result += $"the location's collection: {Collection},\n";
-                result += $"the location's destination: {Destination},\n";
-                result += $"the distance of the transportation(by meters)  is  {Transportation},\n";
+                result += $"the sender of the parcel is:\n {CustomerSender}";
+                result += $"the reciever of the parcel is:\n {CustomerReciever}";
+                result += $"the location's collection:\n {Collection}";
+                result += $"the location's destination:\n {Destination}";
+                result += $"the distance of the transportation (by meters)  is: {Transportation}\n";
                 return result;
             }
         }

@@ -22,14 +22,14 @@ namespace IBL
             public override string ToString()
             {
                 string result = " ";
-                result += $"ID is: {Id},\n";
-                result += $"model is: {Model},\n";
-                result += $"the maximum weight is: {Weight},\n";
-                result += $"the drone is: {DroneStatuses},\n";
-                result += $"battery: {Battery},\n";
+                result += $"ID is: {Id}\n";
+                result += $"model is: {Model}\n";
+                result += $"the maximum weight is: {Weight}\n";
+                result += $"the drone is: {DroneStatuses}\n";
+                result += $"battery: {Battery}\n";
                 if (DroneStatuses == DroneStatuses.Delivered)
-                    result += $"the parcel in delivery is: {ParcelInDelivery},\n";
-                result += $"the current location of the drone is: {CurrentLocation},\n";
+                    result += $"the parcel in delivery is: {ParcelInDelivery}\n";
+                result += $"the current location of the drone is:\n {CurrentLocation}";
                 return result;
             }
         }

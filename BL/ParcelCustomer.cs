@@ -14,11 +14,11 @@ namespace IBL
             public override string ToString()
             {
                 string result = " ";
-                result += $"id is {Id}\n";
-                result += $"weight is {Weight}\n";
-                result += $"priority is {Priority}\n";
-                result += $"status is {Status}\n";
-                result += $"sender is {CustomerParcel}\n";
+                result += $"id is: {Id}\n";
+                result += $"weight is: {Weight}\n";
+                result += $"priority is: {Priority}\n";
+                result += $"status is: {Status}\n";
+                result += $"sender is:\n {CustomerParcel}";
                 return result;
             }
         }
