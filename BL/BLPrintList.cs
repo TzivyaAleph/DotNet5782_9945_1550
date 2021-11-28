@@ -86,10 +86,24 @@ namespace BL
                 parcelToAdd.Id = par.Id;
                 IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
                 //finds the sender in customer list for getting his name
-                dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
+                try
+                {
+                    dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new InputDoesNotExist("cant print the parcel-sender id is missing!!");
+                }
                 parcelToAdd.Sender = dalCustomer.Name;
                 //finds the reciepient in customer list for getting his name
-                dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                try
+                {
+                    dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new InputDoesNotExist("cant print the parcel-reciepient id is missing!!");
+                }
                 parcelToAdd.Reciever = dalCustomer.Name;
                 parcelToAdd.Weight = (Weight)par.Weight;
                 parcelToAdd.Priority = (Priority)par.Priority;

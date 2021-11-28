@@ -8,16 +8,32 @@ namespace ConsoleUI_BL
     {
         static void Main(string[] args)
         {
-            try
+            BL.IBL bO=null;
+            bool unSuccess;
+            do
             {
-                BL.IBL bO;
-                bO = new BL.BL();
-                MenuOptions menuOption;
-                EntitiesOptions entitiesOptions;
-                ArrayPresentationOptions arrayOption;
-                UpdateEntitiesOptions updateEntitiesOption;
-                Console.WriteLine("Welcome!");
-                do
+                try
+                {
+                    bO = new BL.BL();
+                    unSuccess = false;
+                }
+                catch (InputDoesNotExist ex)
+                {
+                    if (ex.InnerException == default)
+                        Console.WriteLine(ex.Message);
+                    else
+                        Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
+                    unSuccess = true;
+                }
+            } while (unSuccess == true);
+            MenuOptions menuOption=default;
+            EntitiesOptions entitiesOptions;
+            ArrayPresentationOptions arrayOption;
+            UpdateEntitiesOptions updateEntitiesOption;
+            Console.WriteLine("Welcome!");
+            do
+            {
+                try
                 {
                     Console.WriteLine("Choose an option: \n1: Add, 2:Update, 3: Object presentation, 4: Array presentation, 5:Exit");
                     menuOption = (MenuOptions)int.Parse(Console.ReadLine());
@@ -97,7 +113,7 @@ namespace ConsoleUI_BL
                                             }
                                             Station s = new Station();
                                             s = createObjectStation(ID, name, numOfSlots, longitude, lattitude);
-                                            bO.AddStation(s);
+                                            if(bO !=null) bO.AddStation(s);
                                             Console.WriteLine("Station added successfully");
                                             break;
                                         }
@@ -320,20 +336,20 @@ namespace ConsoleUI_BL
                                             int stationID;
                                             string stationName;
                                             int numOfChargingSlots;
-                                            Console.WriteLine("Enter a 4 digit drone's ID:");
+                                            Console.WriteLine("Enter a 4 digit station's ID:");
                                             string input = Console.ReadLine();
                                             while (!(int.TryParse(input, out stationID)))
                                             {
-                                                Console.WriteLine("Enter a 4 digit drone's ID:");
+                                                Console.WriteLine("Enter a 4 digit station's ID:");
                                             }
                                             while (stationID < 1000 || stationID > 10000)
                                             {
                                                 Console.WriteLine($"Station ID {stationID} is not valid\n");
-                                                Console.WriteLine("Enter a 4 digit drone's ID:");
+                                                Console.WriteLine("Enter a 4 digit station's ID:");
                                                 input = Console.ReadLine();
                                                 while (!(int.TryParse(input, out stationID)))
                                                 {
-                                                    Console.WriteLine("Enter a 4 digit drone's ID:");
+                                                    Console.WriteLine("Enter a 4 digit station's ID:");
                                                     input = Console.ReadLine();
                                                 }
                                             }
@@ -384,28 +400,9 @@ namespace ConsoleUI_BL
                                             }
                                             Console.WriteLine("Enter the customer's name:");
                                             customerName = Console.ReadLine();
-                                            Console.WriteLine("Enter number of charging slots:");
-                                            int numOfChargingSlots;
-                                            bool flag = int.TryParse(input, out numOfChargingSlots);
-                                            if (flag == false)
-                                                numOfChargingSlots = -1;
-                                            else
-                                            {
-                                                while (numOfChargingSlots < 0 || numOfChargingSlots > 50)
-                                                {
-                                                    Console.WriteLine($"Number of charging slots is not valid\n");
-                                                    Console.WriteLine("Enter number of charging slots:"); 
-                                                    input = Console.ReadLine();
-                                                    while (!(int.TryParse(input, out numOfChargingSlots)))
-                                                    {
-                                                        Console.WriteLine("Enter number of charging slots:");
-                                                        input = Console.ReadLine();
-                                                    }
-                                                }
-                                            }
                                             Console.WriteLine("Enter the customer's phone number:");
                                             customerPhone = Console.ReadLine();
-                                            while (customerName.Length != 10)
+                                            while (customerPhone.Length != 10)
                                             {
                                                 Console.WriteLine("Invalid phone number!!\n");
                                                 Console.WriteLine("Enter the customer's phone number:");
@@ -428,11 +425,11 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine($"id {droneID} is not valid !!");
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
-                                                 input = Console.ReadLine();
+                                                input = Console.ReadLine();
                                                 while (!(int.TryParse(input, out droneID)))
                                                 {
                                                     Console.WriteLine("Enter a 4 digit drone's ID:");
-                                                     input = Console.ReadLine();
+                                                    input = Console.ReadLine();
                                                 }
                                             }
                                             Drone d = bO.GetDrone(droneID);
@@ -448,7 +445,7 @@ namespace ConsoleUI_BL
                                             while (!(int.TryParse(input, out droneID)))
                                             {
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
-                                                 input = Console.ReadLine();
+                                                input = Console.ReadLine();
                                             }
                                             while (droneID < 1000 || droneID > 10000)
                                             {
@@ -566,7 +563,6 @@ namespace ConsoleUI_BL
                                         {
                                             int stationID;
                                             Console.WriteLine("Enter a 4 digit station ID:");
-                                            string input = Console.ReadLine();
                                             while (!(int.TryParse(Console.ReadLine(), out stationID)))
                                             {
                                                 Console.WriteLine("Enter a 4 digit station ID:");
@@ -683,29 +679,47 @@ namespace ConsoleUI_BL
                             break;
                     }
                 }
-                while (menuOption != MenuOptions.Exit);
+                catch (InvalidInputException ex)
+                {
+                    if (ex.InnerException == default)
+                        Console.WriteLine(ex.Message);
+                    else
+                        Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
+                }
+                catch (FailedToAddException ex)
+                {
+                    if (ex.InnerException == default)
+                        Console.WriteLine(ex.Message);
+                    else
+                        Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
+                }
+                catch (FailedToGetException ex)
+                {
+                    if (ex.InnerException == default)
+                        Console.WriteLine(ex.Message);
+                    else
+                        Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
+                }
+                catch (InputDoesNotExist ex)
+                {
+                    if (ex.InnerException == default)
+                        Console.WriteLine(ex.Message);
+                    else
+                        Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
+                }
+                catch (FailedToUpdateException ex)
+                {
+                    if (ex.InnerException == default)
+                        Console.WriteLine(ex.Message);
+                    else
+                        Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
+                }
             }
-            catch (InvalidInputException ex)
-            {
-                Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
-            }
-            catch (FailedToAddException ex)
-            {
-                Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
-            }
-            catch (FailedToGetException ex)
-            {
-                Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
-            }
-            catch (InputDoesNotExist ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            catch (FailedToUpdateException ex)
-            {
-                Console.WriteLine(ex.Message + " " + ex.InnerException.Message);
-            }
+            while (menuOption != MenuOptions.Exit);
         }
+
+
+
 
         /// <summary>
         /// creates a station object and updates it's data with user's input

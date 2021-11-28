@@ -50,7 +50,7 @@ namespace DalObject
             {
                 Id = rand.Next(1000, 2000),
                 Model = "maxP",
-                MaxWeight = (Weight)1,
+                MaxWeight = (Weight)2,
             });
             Drones.Add(new Drone
             {
@@ -62,7 +62,7 @@ namespace DalObject
             {
                 Id = rand.Next(3001, 4000),
                 Model = "maxF",
-                MaxWeight = (Weight)0,
+                MaxWeight = (Weight)2,
             });
             Drones.Add(new Drone
             {
@@ -163,7 +163,6 @@ namespace DalObject
                 toAdd.DroneID = Drones[numDrone].Id;
                 if (m ==4)
                     m = -1;
-                //num = rand.Next(0, 1);
                 if (i<2)
                 {
                     toAdd.Scheduled = DateTime.MinValue;

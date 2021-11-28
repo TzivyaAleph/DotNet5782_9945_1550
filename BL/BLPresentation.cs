@@ -60,16 +60,20 @@ namespace BL
                 parcel.DroneInParcel = default;
             else
             {
-                Drone droneInParcel = new();
+                DroneForList droneInParcel = new();
                 try
                 {
-                  droneInParcel = GetDrone(dalParcel.DroneID);
+                  droneInParcel =drones.First(item=>item.ParcelId==dalParcel.Id);
                 }
-                catch (IDAL.DO.UnvalidIDException custEx)
+                catch (InvalidOperationException)
                 {
-                    throw new FailedToGetException("ERROR", custEx);
+                    throw new InputDoesNotExist("the drone does not exist !!");
                 }
-                parcel.DroneInParcel.CopyPropertiesTo(droneInParcel);
+                parcel.DroneInParcel = new();
+                droneInParcel.CopyPropertiesTo(parcel.DroneInParcel);
+                parcel.DroneInParcel.Location = new();
+                parcel.DroneInParcel.Location.Latitude = droneInParcel.CurrentLocation.Latitude;
+                parcel.DroneInParcel.Location.Longitude = droneInParcel.CurrentLocation.Longitude;
             }
             return parcel;
         }
@@ -86,7 +90,10 @@ namespace BL
                 throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
             Drone returningDrone = new();
             //gets the fields from the drone list
+            returningDrone.CurrentLocation = new();
             droneForList.CopyPropertiesTo(returningDrone);
+            returningDrone.CurrentLocation.Latitude = droneForList.CurrentLocation.Latitude;
+            returningDrone.CurrentLocation.Longitude = droneForList.CurrentLocation.Longitude;
             //checks if there is  parcel atributted to the drone 
             if (droneForList.ParcelId == 0)
                 returningDrone.ParcelInDelivery = default;
@@ -180,9 +187,17 @@ namespace BL
                     //checks the parcel status and updates the field.
                     parcelToAdd.Status = getStatus(par);
                     //update the fields in customerParcel=the taget of the parcel data
+                    parcelToAdd.CustomerParcel = new();
                     parcelToAdd.CustomerParcel.Id = par.TargetID;
                     IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
-                    dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                    try
+                    {
+                        dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new InputDoesNotExist("the recipient does not exist !!");
+                    }
                     parcelToAdd.CustomerParcel.Name = dalTarget.Name;
                     listToReturn.Add(parcelToAdd);
                 }
@@ -219,9 +234,17 @@ namespace BL
                     else
                         parcelToAdd.Status = Status.Created;
                     //update the fields in customerParcel=the target of the parcel data
+                    parcelToAdd.CustomerParcel = new();
                     parcelToAdd.CustomerParcel.Id = par.TargetID;
                     IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
-                    dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                    try
+                    {
+                        dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new InputDoesNotExist("the recipient does not exist !!");
+                    }
                     parcelToAdd.CustomerParcel.Name = dalTarget.Name;
                     listToReturn.Add(parcelToAdd);
                 }
