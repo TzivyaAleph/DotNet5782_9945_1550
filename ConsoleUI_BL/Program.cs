@@ -543,7 +543,6 @@ namespace ConsoleUI_BL
                                     case EntitiesOptions.Station:
                                         {
                                             int stationID;
-                                            string input = Console.ReadLine();
                                             Console.WriteLine("Enter a 4 digit station ID:");
                                             while (!(int.TryParse(Console.ReadLine(), out stationID)))
                                             {
@@ -565,7 +564,6 @@ namespace ConsoleUI_BL
                                     case EntitiesOptions.Drone:
                                         {
                                             int droneID;
-                                            string input = Console.ReadLine();
                                             Console.WriteLine("Enter a 4 digit drone ID:");
                                             while (!(int.TryParse(Console.ReadLine(), out droneID)))
                                             {
@@ -587,7 +585,6 @@ namespace ConsoleUI_BL
                                     case EntitiesOptions.Customer:
                                         {
                                             int costumerID;
-                                            string input = Console.ReadLine();
                                             Console.WriteLine("Enter a 9 digit customer ID:");
                                             while (!(int.TryParse(Console.ReadLine(), out costumerID)))
                                             {
@@ -610,8 +607,6 @@ namespace ConsoleUI_BL
                                         {
                                             int parcelID;
                                             Console.WriteLine("Enter the parcel ID:");
-                                            string input = Console.ReadLine();
-                                            int.TryParse(input, out parcelID);
                                             while (!(int.TryParse(Console.ReadLine(), out parcelID)))
                                             {
                                                 Console.WriteLine("Enter the parcel ID:");
