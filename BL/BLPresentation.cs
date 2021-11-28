@@ -42,7 +42,8 @@ namespace BL
             {
                 throw new FailedToGetException("ERROR", custEx);
             }
-            parcel.Sender.CopyPropertiesTo(dalSender);
+            parcel.Sender = new();
+            dalSender.CopyPropertiesTo(parcel.Sender);
             IDAL.DO.Customer dalRecipient = new IDAL.DO.Customer();
             try
             {
@@ -53,7 +54,8 @@ namespace BL
                 throw new FailedToGetException("ERROR", custEx);
             }
             parcel.Recipient = new();
-            parcel.Recipient.CopyPropertiesTo(dalRecipient);
+            dalRecipient.CopyPropertiesTo(parcel.Recipient);
+            parcel.DroneInParcel = new();
             if (dalParcel.Id == 0)//the parcel hasnt been atributted
                 parcel.DroneInParcel = default;
             else
@@ -79,10 +81,6 @@ namespace BL
         /// <returns>the drone from the list</returns>
         public Drone GetDrone(int droneID)
         {
-            if (droneID < 1000 || droneID > 10000)
-            {
-                throw new InvalidInputException($"id {droneID} is not valid !!");
-            }
             DroneForList droneForList = drones.Find(item => item.Id == droneID);
             if (droneForList == default)
                 throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
@@ -101,6 +99,7 @@ namespace BL
                     //finds the parcel in bl
                     Parcel parcel = new();
                     parcel = GetParcel(dalParcel.Id);
+                    returningDrone.ParcelInDelivery = new();
                     returningDrone.ParcelInDelivery.Id = parcel.Id;
                     //checks if the parcel wasnt picked up
                     if (parcel.PickedUp == DateTime.MinValue)
@@ -110,11 +109,15 @@ namespace BL
                     returningDrone.ParcelInDelivery.Weight = parcel.Weight;
                     Customer sender = GetCustomer(parcel.Sender.Id);
                     Customer reciever = GetCustomer(parcel.Recipient.Id);
+                    returningDrone.ParcelInDelivery.CustomerSender = new();
+                    returningDrone.ParcelInDelivery.CustomerReciever = new();
                     returningDrone.ParcelInDelivery.CustomerSender.Id = parcel.Sender.Id;
                     returningDrone.ParcelInDelivery.CustomerSender.Name = parcel.Sender.Name;
                     returningDrone.ParcelInDelivery.CustomerReciever.Name = parcel.Recipient.Name;
                     returningDrone.ParcelInDelivery.CustomerReciever.Id = parcel.Recipient.Id;
+                    returningDrone.ParcelInDelivery.Collection = new();
                     returningDrone.ParcelInDelivery.Collection = sender.Location;
+                    returningDrone.ParcelInDelivery.Transportation=new();
                     returningDrone.ParcelInDelivery.Destination = reciever.Location;
                 }
                 catch (IDAL.DO.UnvalidIDException DroneEx)
@@ -132,19 +135,20 @@ namespace BL
         /// <returns>the customer</returns>
         public Customer GetCustomer(int customerId)
         {
-            if (customerId < 100000000 || customerId > 999999999)
-                throw new InvalidInputException($"ID {customerId} is not valid !!");
             Customer returningCustomer = new();
             try
             {
                 IDAL.DO.Customer dalCustomer = myDal.GetCustomer(customerId);
                 dalCustomer.CopyPropertiesTo(returningCustomer);
+                returningCustomer.Location = new();
                 returningCustomer.Location.Latitude = dalCustomer.Lattitude;
                 returningCustomer.Location.Longitude = dalCustomer.Longtitude;
                 List<ParcelCustomer> Parcels = new List<ParcelCustomer>();
                 Parcels = getParcelToSend(returningCustomer);
+                returningCustomer.SentParcels = new();
                 returningCustomer.SentParcels = Parcels;
                 Parcels = getParcelToTarget(returningCustomer);
+                returningCustomer.ReceiveParcels = new();
                 returningCustomer.ReceiveParcels = Parcels;
             }
             catch (IDAL.DO.UnvalidIDException custEx)
@@ -233,12 +237,7 @@ namespace BL
         /// <returns>the object</returns>
         public Station GetStation(int stationId)
         {
-            if (stationId < 1000 || stationId > 10000)
-            {
-                throw new InvalidInputException($"id {stationId} is not valid !!");
-            }
             Station returningStation = new();
-            /*DAL.DO.Station dalStation = myDal.CopyStationArray().First(item => item.ID == stationId);*/
             IDAL.DO.Station dalStation = new IDAL.DO.Station();
             try
             {
