@@ -34,7 +34,7 @@
 
         public enum UpdateEntitiesOptions
         {
-            DroneUpdate, StationUpdate, CustomerUpdate, ChargeDrone, ReleaseDrone, attribute, PickUp, Delivery
+            DroneUpdate=1, StationUpdate, CustomerUpdate, ChargeDrone, ReleaseDrone, attribute, PickUp, Delivery
         };
 
         public enum ArrayPresentationOptions

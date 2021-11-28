@@ -126,6 +126,8 @@ namespace BL
             newParcel = (IDAL.DO.Parcel)obj;
             parcel.CopyPropertiesTo(newParcel);
             newParcel.DroneID = 0;
+            newParcel.SenderID = parcel.Sender.Id;
+            newParcel.TargetID = parcel.Recipient.Id;
             int runningNumber;
             try
             {
