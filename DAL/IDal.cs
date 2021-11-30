@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using System.Collections.Generic;
 
 namespace IDAL.DO
@@ -38,7 +39,7 @@ namespace IDAL.DO
         /// coppies the customer array
         /// </summary>
         /// <returns></returns the coppied array>
-        IEnumerable<Customer> CopyCustomerArray();
+        IEnumerable<Customer> CopyCustomerArray(Func<Customer, bool> predicate = null);
         /// <summary>
         /// coppies the drone array
         /// </summary>
@@ -53,12 +54,12 @@ namespace IDAL.DO
         /// coppies the station array
         /// </summary>
         /// <returns></returns the coppied array>
-        IEnumerable<Station> CopyStationArray();
+        IEnumerable<Station> CopyStationArray(Func<Station,bool> predicate=null);
         /// <summary>
         /// creates an array by searching for available charge slots in the station list.
         /// </summary>
         /// <returns></returns the new list>
-        IEnumerable<Station> FindAvailableStations();
+        //IEnumerable<Station> FindAvailableStations();
         /// <summary>
         /// searches for the non atributted parcels and coppies them into a new list.
         /// </summary>
@@ -136,7 +137,7 @@ namespace IDAL.DO
         /// return new list with customers who have parcel that has been delieverd.
         /// </summary>
         /// <returns>the new list</returns>
-        IEnumerable<Customer>  ListOfCustomerWithDelieverdParcel();
+        //IEnumerable<Customer>  ListOfCustomerWithDelieverdParcel();
         /// <summary>
         /// creates list with all the available station and return the closest station in the list to the recieved drone.
         /// </summary>

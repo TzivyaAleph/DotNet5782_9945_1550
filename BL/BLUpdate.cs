@@ -131,7 +131,7 @@ namespace BL
             if (droneForList.DroneStatuses != DroneStatuses.Available)
                 throw new FailedToUpdateException($"Drone {d.Id} is not available");
             //finding all the available charging slots in station.
-            List<IDAL.DO.Station> stations = myDal.FindAvailableStations().ToList();
+            List<IDAL.DO.Station> stations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
             IDAL.DO.Station clossestStation = new IDAL.DO.Station();
             //finds the clossest station to the current location of the drone
             clossestStation = myDal.GetClossestStation(d.CurrentLocation.Latitude, d.CurrentLocation.Longitude, stations);

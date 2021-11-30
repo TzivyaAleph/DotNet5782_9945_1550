@@ -45,34 +45,37 @@ namespace DalObject
         /// coppies the customer array
         /// </summary>
         /// <returns></returns the coppied array>
-        public IEnumerable<Customer> CopyCustomerArray()
+        public IEnumerable<Customer> CopyCustomerArray(Func<Customer, bool> predicate = null)
         {
             List<Customer> newList = new List<Customer>(DataSource.Customers);
-            return newList;
+            if(predicate==null)
+               return newList;
+            return newList.Where(predicate);
         }
 
         /// <summary>
         /// return new list with customers who have parcel that has been delieverd.
         /// </summary>
         /// <returns>the new list</returns>
-        public IEnumerable<Customer> ListOfCustomerWithDelieverdParcel()
-        {
-            List<Customer> customerWithUnDelieverdParcel = new List<Customer>();
-            //add to new list the customer who has parcel that have been delieverd
-            foreach (var cust in DataSource.Customers)
-            {
-                foreach (var par in DataSource.Parcels)
-                {
-                    //the parcel has been attributed to the customer and has been delieverd
-                        if (par.TargetID == cust.Id && par.Delivered != DateTime.MinValue)
-                    {
-                        customerWithUnDelieverdParcel.Add(cust);
-                        break;
-                    }
-                }
-            }
-            return customerWithUnDelieverdParcel;
-        }
+        //public IEnumerable<Customer> ListOfCustomerWithDelieverdParcel()
+        //{
+        //    List<Customer> customerWithUnDelieverdParcel = new List<Customer>();
+        //    //add to new list the customer who has parcel that have been delieverd
+        //    foreach (var cust in DataSource.Customers)
+        //    {
+        //        //foreach (var par in DataSource.Parcels)
+        //        //{
+        //        //    //the parcel has been attributed to the customer and has been delieverd
+        //        //        if (par.TargetID == cust.Id && par.Delivered != DateTime.MinValue)
+        //        //    {
+        //        //        customerWithUnDelieverdParcel.Add(cust);
+        //        //        break;
+        //        //    }
+        //        //}
+
+        //    }
+        //    return customerWithUnDelieverdParcel;
+        //}
 
         /// <summary>
         /// puts a updated customer in the customers list

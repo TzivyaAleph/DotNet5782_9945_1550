@@ -117,9 +117,11 @@ namespace BL
                 {
                     //the cuurent location of the drone is the location of a random
                     //customer who has attributted parcel who hasnt been delieverd yet.
-                    int num = rand.Next(0, myDal.ListOfCustomerWithDelieverdParcel().Count());
+                    List<IDAL.DO.Customer> CustomersWithDelieverdParcel = new List<IDAL.DO.Customer>();
+                    CustomersWithDelieverdParcel = myDal.CopyCustomerArray(x => myDal.CopyParcelArray().ToList().FindIndex(par => par.TargetID == x.Id && par.Delivered != DateTime.MinValue) == -1).ToList();
+                    int num = rand.Next(0, CustomersWithDelieverdParcel.Count());
                     IDAL.DO.Customer randomCustomer = new IDAL.DO.Customer();
-                    randomCustomer = myDal.ListOfCustomerWithDelieverdParcel().ElementAt(num);//finds the customer by the random number
+                    randomCustomer = CustomersWithDelieverdParcel.ElementAt(num);//finds the customer by the random number
                     droneToAdd.CurrentLocation.Latitude = randomCustomer.Lattitude;
                     droneToAdd.CurrentLocation.Longitude = randomCustomer.Longtitude;
                     //battery status will be a random number between the min battery to 100.

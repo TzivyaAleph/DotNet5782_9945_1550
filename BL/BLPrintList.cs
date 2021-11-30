@@ -24,9 +24,9 @@ namespace BL
                 StationForList stationToAdd = new();
                 stationToAdd.Id = stat.Id;
                 stationToAdd.Name = stat.Name;
-                int countNumOfDronesInStation= droneCharges.Count(item => item.StationID == stat.Id);
+                int countNumOfDronesInStation = droneCharges.Count(item => item.StationID == stat.Id);
                 Station station = new();
-                stationToAdd.AvailableChargingSlots = stat.ChargeSlots-countNumOfDronesInStation;
+                stationToAdd.AvailableChargingSlots = stat.ChargeSlots - countNumOfDronesInStation;
                 stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
                 stationsToReturn.Add(stationToAdd);
             }
@@ -50,23 +50,23 @@ namespace BL
         public IEnumerable<CustomerForList> GetCustomerList()
         {
             List<CustomerForList> customersForList = new List<CustomerForList>();
-            foreach(var cust in myDal.CopyCustomerArray())
+            foreach (var cust in myDal.CopyCustomerArray())
             {
                 CustomerForList customerToAdd = new();
                 customerToAdd.Id = cust.Id;
                 customerToAdd.Name = cust.Name;
                 customerToAdd.Phone = cust.PhoneNumber;
                 //counts all the parcel which he sends and been delievered.
-                int count = myDal.CopyParcelArray().Count(item => item.SenderID==cust.Id && item.Delivered!=DateTime.MinValue);
+                int count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered != DateTime.MinValue);
                 customerToAdd.ParcelProvided = count;
                 //counts all the parcel which he sends and not been delievered.
                 count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered == DateTime.MinValue);
                 customerToAdd.ParcelNotProvided = count;
                 //counts all the parcel which he gets.
-                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered!=DateTime.MinValue);
+                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered != DateTime.MinValue);
                 customerToAdd.ParcelRecieved = count;
                 //counts all the parcel that on the way to him.
-                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered == DateTime.MinValue&&item.PickedUp!=DateTime.MinValue);
+                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered == DateTime.MinValue && item.PickedUp != DateTime.MinValue);
                 customerToAdd.ParcelOnTheWay = count;
                 customersForList.Add(customerToAdd);
             }
@@ -120,10 +120,10 @@ namespace BL
         public IEnumerable<ParcelForList> GetUnAtributtedParcels()
         {
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
-            foreach(var par in myDal.CopyParcelArray())
+            foreach (var par in myDal.CopyParcelArray())
             {
                 ParcelForList parcelToAdd = new();
-                if (par.DroneID==0)
+                if (par.DroneID == 0)
                 {
                     parcelToAdd.Id = par.Id;
                     IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
@@ -149,25 +149,24 @@ namespace BL
         public IEnumerable<StationForList> GetAvailableChargingSlotsStations()
         {
             List<StationForList> stationsToReturn = new List<StationForList>();
-            foreach (var stat in myDal.CopyStationArray())
+            List<IDAL.DO.Station> dalStations = new List<IDAL.DO.Station>();
+            dalStations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
+            foreach (var stat in dalStations)
             {
                 StationForList stationToAdd = new();
-                if (stat.ChargeSlots!=0)
+                stationToAdd.Id = stat.Id;
+                stationToAdd.Name = stat.Name;
+                // counts the drones that are charging in the current station
+                int countNumOfDronesInStation = 0;
+                foreach (var dc in myDal.GetDroneChargeList())
                 {
-                    stationToAdd.Id = stat.Id;
-                    stationToAdd.Name = stat.Name;
-                    // counts the drones that are charging in the current station
-                    int countNumOfDronesInStation = 0;
-                    foreach (var dc in myDal.GetDroneChargeList())
-                    {
-                        if (dc.StationID == stat.Id)
-                            countNumOfDronesInStation++;
-                    }
-                    Station station = new();
-                    stationToAdd.AvailableChargingSlots = stat.ChargeSlots -countNumOfDronesInStation;
-                    stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
-                    stationsToReturn.Add(stationToAdd);
+                    if (dc.StationID == stat.Id)
+                        countNumOfDronesInStation++;
                 }
+                stationToAdd.AvailableChargingSlots = stat.ChargeSlots - countNumOfDronesInStation;
+                stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
+                stationsToReturn.Add(stationToAdd);
+
             }
             return stationsToReturn;
         }

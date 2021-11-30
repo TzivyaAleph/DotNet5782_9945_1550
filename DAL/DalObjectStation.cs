@@ -26,26 +26,28 @@ namespace DalObject
         /// coppies the station array
         /// </summary>
         /// <returns></returns the coppied array>
-        public IEnumerable<Station> CopyStationArray()
+        public IEnumerable<Station> CopyStationArray(Func<Station, bool> predicate = null)
         {
             List<Station> newList = new List<Station>(DataSource.Stations);
-            return newList;
+            if(predicate==null)
+                 return newList;
+            return newList.Where(predicate);
         }
 
         /// <summary>
         /// creates an array by searching for available charge slots in the station list.
         /// </summary>
         /// <returns></returns the new list>
-        public IEnumerable<Station> FindAvailableStations()
-        {
-            List<Station> availableStations = new List<Station>();//new list to hold Available Stations
-            for (int i = 0; i < DataSource.Stations.Count; i++)
-                if (DataSource.Stations[i].ChargeSlots > 0)
-                {
-                    availableStations.Add(DataSource.Stations[i]);
-                }
-            return availableStations;
-        }
+        //public IEnumerable<Station> FindAvailableStations()
+        //{
+        //    List<Station> availableStations = new List<Station>();//new list to hold Available Stations
+        //    for (int i = 0; i < DataSource.Stations.Count; i++)
+        //        if (DataSource.Stations[i].ChargeSlots > 0)
+        //        {
+        //            availableStations.Add(DataSource.Stations[i]);
+        //        }
+        //    return availableStations;
+        //}
 
         /// <summary>
         /// puts a updated station in the stations list
