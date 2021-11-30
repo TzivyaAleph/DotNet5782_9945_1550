@@ -19,11 +19,11 @@ namespace IBL
 
             public override string ToString()
             {
-                string result = " ";
+                string result = "";
                 result += $"ID is: {Id}\n";
                 result += $"cosumer's name is: {Name}\n";
                 result += $"phoneNumber is {PhoneNumber},\n";
-                result += $"location is:\n {Location}";
+                result += $"location is:\n{Location}";
                 result += $"sent parcels are:\n";
                 foreach (var pc in SentParcels)
                 {

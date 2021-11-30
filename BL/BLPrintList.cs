@@ -24,10 +24,10 @@ namespace BL
                 StationForList stationToAdd = new();
                 stationToAdd.Id = stat.Id;
                 stationToAdd.Name = stat.Name;
-                stationToAdd.AvailableChargingSlots = stat.ChargeSlots;
                 int countNumOfDronesInStation= droneCharges.Count(item => item.StationID == stat.Id);
                 Station station = new();
-                stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation - stat.ChargeSlots;
+                stationToAdd.AvailableChargingSlots = stat.ChargeSlots-countNumOfDronesInStation;
+                stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
                 stationsToReturn.Add(stationToAdd);
             }
             return stationsToReturn;
@@ -156,7 +156,6 @@ namespace BL
                 {
                     stationToAdd.Id = stat.Id;
                     stationToAdd.Name = stat.Name;
-                    stationToAdd.AvailableChargingSlots = stat.ChargeSlots;
                     // counts the drones that are charging in the current station
                     int countNumOfDronesInStation = 0;
                     foreach (var dc in myDal.GetDroneChargeList())
@@ -165,7 +164,8 @@ namespace BL
                             countNumOfDronesInStation++;
                     }
                     Station station = new();
-                    stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation - stat.ChargeSlots;
+                    stationToAdd.AvailableChargingSlots = stat.ChargeSlots -countNumOfDronesInStation;
+                    stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
                     stationsToReturn.Add(stationToAdd);
                 }
             }

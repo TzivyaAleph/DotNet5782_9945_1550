@@ -17,7 +17,7 @@ namespace IBL
             {
                 string result = "";
                 result += $"ID is: {Id}\n";
-                result += $"battery level is: {Battery}";
+                result += $"battery level is: {Battery}\n";
                 return result;
             }
         }

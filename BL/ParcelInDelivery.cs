@@ -20,7 +20,7 @@ namespace IBL
 
             public override string ToString()
             {
-                string result = " ";
+                string result = "";
                 result += $"ID is: {Id}\n";
                 result += $"the parcel  is ";
                 if (!OnTheWay)

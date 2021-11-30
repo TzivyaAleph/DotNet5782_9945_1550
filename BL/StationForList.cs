@@ -17,7 +17,7 @@ namespace IBL
 
             public override string ToString()
             {
-                string result = " ";
+                string result = "";
                 result += $"ID is: {Id}\n";
                 result += $"station's name is: {Name}\n";
                 result += $"The number of available charging slots in station is: {AvailableChargingSlots}\n";

@@ -13,7 +13,7 @@ namespace IBL
 
             public override string ToString()
             {
-                string result = " ";
+                string result = "";
                 result += $"id is: {Id}\n";
                 result += $"weight is: {Weight}\n";
                 result += $"priority is: {Priority}\n";

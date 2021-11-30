@@ -20,7 +20,7 @@ namespace IBL
 
             public override string ToString()
             {
-                string result = " ";
+                string result = "";
                 result += $"ID is: {Id}\n";
                 result += $"cosumer's name is: {Name}\n";
                 result += $"phoneNumber is: {Phone}\n";

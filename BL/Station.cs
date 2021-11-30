@@ -18,10 +18,10 @@ namespace IBL
 
             public override string ToString()
             {
-                string result = " ";
+                string result = "";
                 result += $"ID is: {Id}\n";
                 result += $"station's name is: {Name}\n";
-                result += $"location is:\n {StationLocation}";
+                result += $"location is:\n{StationLocation}";
                 result += $"number of available charging slots is: {ChargeSlots}\n";
                 result += $"the drones who are charging in this station are:\n";
                 foreach (var dc in DroneCharges)
