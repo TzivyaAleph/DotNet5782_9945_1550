@@ -79,6 +79,7 @@ namespace BL
         /// <returns>the created parcel</returns>
         public IEnumerable<ParcelForList> GetParcelList()
         {
+            
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
             foreach (var par in myDal.CopyParcelArray())
             {
@@ -107,7 +108,7 @@ namespace BL
                 parcelToAdd.Reciever = dalCustomer.Name;
                 parcelToAdd.Weight = (Weight)par.Weight;
                 parcelToAdd.Priority = (Priority)par.Priority;
-                parcelToAdd.Status = (Status)getStatus(par);
+                parcelToAdd.Status = getStatus(par);
                 parcelsForList.Add(parcelToAdd);
             }
             return parcelsForList;
@@ -120,24 +121,23 @@ namespace BL
         public IEnumerable<ParcelForList> GetUnAtributtedParcels()
         {
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
-            foreach (var par in myDal.CopyParcelArray())
+            List<IDAL.DO.Parcel> unAttributed = new List<IDAL.DO.Parcel>();
+            unAttributed = myDal.CopyParcelArray(par => par.DroneID == 0).ToList();
+            foreach (var par in unAttributed)
             {
                 ParcelForList parcelToAdd = new();
-                if (par.DroneID == 0)
-                {
-                    parcelToAdd.Id = par.Id;
-                    IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
-                    //finds the sender in customer list for getting his name
-                    dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
-                    parcelToAdd.Sender = dalCustomer.Name;
-                    //finds the reciepient in customer list for getting his name
-                    dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
-                    parcelToAdd.Reciever = dalCustomer.Name;
-                    parcelToAdd.Weight = (Weight)par.Weight;
-                    parcelToAdd.Priority = (Priority)par.Priority;
-                    parcelToAdd.Status = (Status)getStatus(par);
-                    parcelsForList.Add(parcelToAdd);
-                }
+                parcelToAdd.Id = par.Id;
+                IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
+                //finds the sender in customer list for getting his name
+                dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
+                parcelToAdd.Sender = dalCustomer.Name;
+                //finds the reciepient in customer list for getting his name
+                dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                parcelToAdd.Reciever = dalCustomer.Name;
+                parcelToAdd.Weight = (Weight)par.Weight;
+                parcelToAdd.Priority = (Priority)par.Priority;
+                parcelToAdd.Status = getStatus(par);
+                parcelsForList.Add(parcelToAdd);
             }
             return parcelsForList;
         }

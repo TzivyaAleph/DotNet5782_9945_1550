@@ -49,7 +49,7 @@ namespace IDAL.DO
         /// coppies the parcel array
         /// </summary>
         /// <returns></returns the coppied array>
-        IEnumerable<Parcel> CopyParcelArray();
+        IEnumerable<Parcel> CopyParcelArray(Func<Parcel, bool> predicate = null);
         /// <summary>
         /// coppies the station array
         /// </summary>
