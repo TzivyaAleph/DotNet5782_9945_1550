@@ -64,7 +64,7 @@ namespace IDAL.DO
         /// searches for the non atributted parcels and coppies them into a new list.
         /// </summary>
         /// <returns></returns the new array>
-        IEnumerable<Parcel> FindNotAttributedParcels();
+        //IEnumerable<Parcel> FindNotAttributedParcels();
         /// <summary>
         /// searches for the customer in the array by the Id
         /// </summary>
