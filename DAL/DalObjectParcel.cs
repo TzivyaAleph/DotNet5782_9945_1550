@@ -13,10 +13,12 @@ namespace DalObject
         /// coppies the parcel array
         /// </summary>
         /// <returns></returns the coppied array>
-        public IEnumerable<Parcel> CopyParcelArray()
+        public IEnumerable<Parcel> CopyParcelArray(Func<Parcel, bool> predicate = null)
         {
             List<Parcel> newLIst = new List<Parcel>(DataSource.Parcels);
-            return newLIst;
+            if (predicate==null)
+                return newLIst;
+            return newLIst.Where(predicate);
         }
 
         /// <summary>
@@ -71,22 +73,22 @@ namespace DalObject
             UpdateParcel(p);
         }
 
-        /// <summary>
-        /// searches for the non atributted parcels and coppies them into a new list.
-        /// </summary>
-        /// <returns></returns the new array>
-        public IEnumerable<Parcel> FindNotAttributedParcels()
-        {
-            List<Parcel> notAttributed = new List<Parcel>();//new list to hold non attributed parcels
-            foreach (Parcel p in DataSource.Parcels)//searches for the non attributed parcels
-            {
-                if (p.DroneID == 0)
-                {
-                    notAttributed.Add(p);
-                }
-            }
-            return notAttributed;
-        }
+        ///// <summary>
+        ///// searches for the non atributted parcels and coppies them into a new list.
+        ///// </summary>
+        ///// <returns></returns the new array>
+        //public IEnumerable<Parcel> FindNotAttributedParcels()
+        //{
+        //    List<Parcel> notAttributed = new List<Parcel>();//new list to hold non attributed parcels
+        //    foreach (Parcel p in DataSource.Parcels)//searches for the non attributed parcels
+        //    {
+        //        if (p.DroneID == 0)
+        //        {
+        //            notAttributed.Add(p);
+        //        }
+        //    }
+        //    return notAttributed;
+        //}
 
         /// <summary>
         /// recieves a parcel and updates the parcels picked up time

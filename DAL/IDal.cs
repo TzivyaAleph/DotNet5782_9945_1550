@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using System.Collections.Generic;
 
 namespace IDAL.DO
@@ -48,7 +49,7 @@ namespace IDAL.DO
         /// coppies the parcel array
         /// </summary>
         /// <returns></returns the coppied array>
-        IEnumerable<Parcel> CopyParcelArray();
+        IEnumerable<Parcel> CopyParcelArray(Func<Parcel, bool> predicate = null);
         /// <summary>
         /// coppies the station array
         /// </summary>
@@ -59,11 +60,11 @@ namespace IDAL.DO
         /// </summary>
         /// <returns></returns the new list>
         IEnumerable<Station> FindAvailableStations();
-        /// <summary>
-        /// searches for the non atributted parcels and coppies them into a new list.
-        /// </summary>
-        /// <returns></returns the new array>
-        IEnumerable<Parcel> FindNotAttributedParcels();
+        ///// <summary>
+        ///// searches for the non atributted parcels and coppies them into a new list.
+        ///// </summary>
+        ///// <returns></returns the new array>
+        //IEnumerable<Parcel> FindNotAttributedParcels();
         /// <summary>
         /// searches for the customer in the array by the Id
         /// </summary>

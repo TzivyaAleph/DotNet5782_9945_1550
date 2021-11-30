@@ -169,7 +169,7 @@ namespace BL
         public void AttributingParcelToDrone(int droneId)
         {
             List<IDAL.DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
-            List<IDAL.DO.Parcel> parcels = myDal.FindNotAttributedParcels().ToList();//gets the non attributed parcels list
+            List<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray(par=>par.DroneID==0).ToList();//gets the non attributed parcels list
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = new();
             droneToAttribute = drones[index];
@@ -207,7 +207,7 @@ namespace BL
             IDAL.DO.Parcel dalParcel = new();
             try
             {
-                dalParcel = myDal.FindNotAttributedParcels().First(par => par.Id == minParcel.Id);
+                dalParcel = myDal.CopyParcelArray(par=>par.DroneID==0).First(par => par.Id == minParcel.Id);
             }
             catch (InvalidOperationException)
             {
