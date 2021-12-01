@@ -23,5 +23,12 @@
             <Label Content="Label" Grid.Column="0" Margin="20"/>
 
         </Grid>
+        <ListView Grid.Row="1" x:Name="DronesListView">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

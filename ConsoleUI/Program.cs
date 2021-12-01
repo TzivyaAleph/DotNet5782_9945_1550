@@ -434,11 +434,10 @@ namespace ConsoleUI
         /// </summary>
         static void printAvailableStations()
         {
-            IEnumerable<Station> temp = data.FindAvailableStations();
+            IEnumerable<Station> temp = data.CopyStationArray(x=>x.ChargeSlots>0);
             foreach (var s in temp)
             {
-                if (s.ChargeSlots > 0)
-                    Console.WriteLine(s);
+                Console.WriteLine(s);
             }
         }
     }
