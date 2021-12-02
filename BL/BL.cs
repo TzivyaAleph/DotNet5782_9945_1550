@@ -38,6 +38,7 @@ namespace BL
                 DroneForList droneToAdd = new DroneForList();//to add to the list
                 droneToAdd.Id = item.Id;
                 droneToAdd.Model = item.Model;
+                droneToAdd.Weight = new Weight();
                 droneToAdd.Weight = (Weight)item.MaxWeight;
                 droneToAdd.CurrentLocation = new Location();
                 //goes through the parcels list in dal for the exstract fields from drone for list

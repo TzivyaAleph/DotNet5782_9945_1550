@@ -21,15 +21,28 @@ namespace PL
     /// </summary>
     public partial class DroneListView : Window
     {
+        private BL.IBL myBl;
+        
         public DroneListView(BL.IBL Bl)
         {
             InitializeComponent();
-            BL.IBL myBl = Bl;
+            myBl = Bl;
+            StatusSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatuses));
+            WeightSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.Weight));
+            this.DronesListView.ItemsSource = myBl.GetDroneList();
         }
 
-        //public DroneListView(BL.IBL Bl)
-        //{
-        //    BL.IBL myBl = Bl;
-        //}
+        private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Weight droneWeight = new();
+            droneWeight = (Weight)WeightSelector.SelectedItem;
+            this.DronesListView.ItemsSource = myBl.GetDroneList(d => d.Weight == droneWeight);
+        }
+
+        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DroneStatuses droneStatuse =(DroneStatuses) StatusSelector.SelectedItem;
+            this.DronesListView.ItemsSource = myBl.GetDroneList(d => d.DroneStatuses == droneStatuse);
+        }
     }
 }

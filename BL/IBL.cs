@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IBL.BO;
 
 namespace BL
@@ -65,7 +66,7 @@ namespace BL
         /// creates new list and copies all the fields from the drone list in bl
         /// </summary>
         /// <returns>the created list</returns>
-        IEnumerable<DroneForList> GetDroneList();
+        IEnumerable<DroneForList> GetDroneList(Func<DroneForList, bool> predicate = null);
         /// <summary>
         /// return parcel in the list by its recieved id.
         /// </summary>

@@ -37,10 +37,14 @@ namespace BL
         /// creates new list and copies all the fields from the drone list in bl
         /// </summary>
         /// <returns>the created list</returns>
-        public IEnumerable<DroneForList> GetDroneList()
+        public IEnumerable<DroneForList> GetDroneList(Func<DroneForList,bool> predicate=null)
         {
             List<DroneForList> dronesForList = new List<DroneForList>(drones);
-            return dronesForList;
+            if (predicate == null)
+            {
+                return dronesForList;
+            }
+            return dronesForList.Where(predicate);
         }
 
         /// <summary>
