@@ -44,5 +44,16 @@ namespace PL
             DroneStatuses droneStatuse =(DroneStatuses) StatusSelector.SelectedItem;
             this.DronesListView.ItemsSource = myBl.GetDroneList(d => d.DroneStatuses == droneStatuse);
         }
+
+        private void droneAdd_Click(object sender, RoutedEventArgs e)
+        {
+            DroneView droneWindow = new DroneView(myBl);
+            droneWindow.Show();
+        }
+
+        private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
     }
 }

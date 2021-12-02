@@ -28,14 +28,14 @@
             </ComboBox>
             <ComboBox Name="WeightSelector" Grid.Column="2" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="WeightSelector_SelectionChanged"/>
             <Label Content="Label" Grid.Column="0" Margin="20"/>
-
         </Grid>
-        <ListView Grid.Row="1" x:Name="DronesListView">
+        <ListView Grid.Row="1" x:Name="DronesListView" MouseDoubleClick="DronesListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="droneAdd" Content="add drone" Height="115" VerticalAlignment="Bottom" RenderTransformOrigin="1.596,5.374" Margin="560,0,33,27" Grid.Row="1" Click="droneAdd_Click" />
     </Grid>
 </Window>
