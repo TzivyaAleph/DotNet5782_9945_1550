@@ -19,8 +19,8 @@
         FontSize="30" Margin="0"/>
         </Grid>
         <Grid x:Name="gridUpdateDrone" >
-            <DataGrid x:Name="droneProperties" Margin="100" Height="100">
-            </DataGrid>
+            <TextBlock x:Name="droneProperties" Margin="100" Height="200" VerticalAlignment="Top" HorizontalAlignment="Left">
+            </TextBlock>
         </Grid>
     </Grid>
 

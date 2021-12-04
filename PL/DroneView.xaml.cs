@@ -35,8 +35,8 @@ namespace PL
             InitializeComponent();
             GridNewDrone.Visibility = Visibility.Hidden;
             DroneForList drone = new DroneForList();
-            this.droneProperties.DataContext = dr.ToString();
-            this.droneProperties.SelectedItem = dr.ToString();
+            this.droneProperties.Text = dr.ToString();
+            
             //this.droneProperties.ItemsSource = (System.Collections.IEnumerable)dr;
         }
 
