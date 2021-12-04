@@ -30,7 +30,7 @@ namespace PL
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-
+            GridNewDrone.Visibility = Visibility.Hidden;
         }
     }
 }

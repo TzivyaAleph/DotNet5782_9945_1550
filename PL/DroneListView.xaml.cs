@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,8 +54,25 @@ namespace PL
 
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DroneView droneWindow = new DroneView(myBl);
-            droneWindow.Show();
+
+            try
+            {
+                if (DronesListView.SelectedItem == null)
+                    return;
+                DroneForList dr = DronesListView.SelectedItem as DroneForList;
+                DroneView droneWindow = new DroneView(myBl);
+                droneWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
