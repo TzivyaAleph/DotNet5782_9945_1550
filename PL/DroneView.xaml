@@ -6,16 +6,23 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="DroneView" Height="450" Width="800">
-    <Grid x:Name="GridNewDrone">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Button x:Name="addButton" Content="Add" 
+    <Grid>
+        <Grid x:Name="GridNewDrone">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="addButton" Content="Add" 
         FontSize="30" Grid.Row="2" Margin="10" Click="addButton_Click"/>
-        <Label x:Name="label" Content="Add New Drone" 
+            <Label x:Name="label" Content="Add New Drone" 
         FontSize="30" Margin="0"/>
+        </Grid>
+        <Grid x:Name="gridUpdateDrone" >
+            <DataGrid x:Name="droneProperties" Margin="100" Height="100">
+            </DataGrid>
+        </Grid>
     </Grid>
-    
+
+
 </Window>

@@ -60,7 +60,7 @@ namespace PL
                 if (DronesListView.SelectedItem == null)
                     return;
                 DroneForList dr = DronesListView.SelectedItem as DroneForList;
-                DroneView droneWindow = new DroneView(myBl);
+                DroneView droneWindow = new DroneView(myBl,dr);
                 droneWindow.Show();
             }
             catch (Exception ex)

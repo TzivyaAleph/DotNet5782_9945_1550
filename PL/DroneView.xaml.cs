@@ -25,12 +25,23 @@ namespace PL
         public DroneView(BL.IBL bl)
         {
             myBl = bl;
-            InitializeComponent();            
+            InitializeComponent();
+            gridUpdateDrone.Visibility = Visibility.Hidden;
+        }
+
+        public DroneView(BL.IBL bl, DroneForList dr)
+        {
+            myBl = bl;
+            InitializeComponent();
+            GridNewDrone.Visibility = Visibility.Hidden;
+            DroneForList drone = new DroneForList();
+            this.droneProperties.DataContext = dr.ToString();
+            this.droneProperties.SelectedItem = dr.ToString();
+            //this.droneProperties.ItemsSource = (System.Collections.IEnumerable)dr;
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            GridNewDrone.Visibility = Visibility.Hidden;
         }
     }
 }
