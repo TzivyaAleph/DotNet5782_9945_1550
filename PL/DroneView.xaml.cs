@@ -25,7 +25,12 @@ namespace PL
         public DroneView(BL.IBL bl)
         {
             myBl = bl;
-            InitializeComponent();
+            InitializeComponent();            
+        }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
