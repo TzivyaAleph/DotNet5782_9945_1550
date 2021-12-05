@@ -41,5 +41,32 @@ namespace PL
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        private void AddNewDronFromPage()
+        {
+            DroneForList newDrone = new DroneForList();
+            newDrone.Id = int.Parse(txtID.Text);
+            newDrone.Model = txtModel.Text;
+            newDrone.Weight = (Weight)int.Parse(CBXWeight.Text);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Weight droneWeight = new();
+            droneWeight = (Weight)CBXWeight.SelectedItem;
+        }
+
+
+
+        //private void InitDronFromPage()
+        //{
+        //    //var newDrone = new Drone();
+        //    //txtID.Text = newDrone.Id ;
+        //    //newDrone.Model = txtModel.Text;
+        //    ////newDrone.Weight = txtID.Text;
+        //    //newDrone.Battery = double.Parse(txtID.Text);
+        //}
+
+
     }
 }
