@@ -141,7 +141,7 @@ namespace ConsoleUI_BL
                                             model = Console.ReadLine();
                                             while (String.IsNullOrEmpty(model))
                                             {
-                                                Console.WriteLine("Enter station's name:");
+                                                Console.WriteLine("Enter drone's model");
                                                 model = Console.ReadLine();
                                             }
                                             Console.WriteLine("Enter drone's  maximum weight:\n1: light, 2: standard, 3: heavy:");
