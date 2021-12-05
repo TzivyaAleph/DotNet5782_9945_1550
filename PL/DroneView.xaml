@@ -34,6 +34,8 @@
             <TextBox x:Name="txtLatitude" HorizontalAlignment="Left" Margin="256,234,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
             <Label x:Name="labelLongiitude" Content="Longitude" FontSize="20" HorizontalAlignment="Left" Margin="64,248,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
             <TextBox x:Name="txtLongitude" HorizontalAlignment="Left" Margin="256,262,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
+            <Button x:Name="ButtonCancel" Content="cancel" 
+                FontSize="30" Grid.Row="1" Margin="667,249,10,27" Click="ButtonCancel_Click"/>
         </Grid>
         <Grid x:Name="gridUpdateDrone" d:IsHidden="True" >
             <TextBlock x:Name="droneProperties" Margin="100" Height="200" VerticalAlignment="Top" HorizontalAlignment="Left" d:IsHidden="True"/>
