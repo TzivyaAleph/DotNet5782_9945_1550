@@ -23,33 +23,65 @@ namespace PL
     public partial class DroneListView : Window
     {
         private BL.IBL myBl;
-        
+        private Weight? selectedWeight = null;
+        private List<DroneForList> drones;
+
+        public Weight? SelectedWeight
+        {
+            get { return selectedWeight; }
+            set
+            {
+                selectedWeight = value;
+                FilterList();
+            }
+        }
+
+        private DroneStatuses? selectedStatus= null;
+
+        public DroneStatuses? SelectedStatus
+        {
+            get { return selectedStatus; }
+            set
+            {
+                selectedStatus = value;
+                FilterList();
+            }
+        }
+
         public DroneListView(BL.IBL Bl)
         {
-            InitializeComponent();
             myBl = Bl;
+            DataContext = this;
+            InitializeComponent();
+            GetDroneListFromBL();
             StatusSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatuses));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.Weight));
-            this.DronesListView.ItemsSource = myBl.GetDroneList();
         }
 
-        private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FilterList()
         {
-            Weight droneWeight = new();
-            droneWeight = (Weight)WeightSelector.SelectedItem;
-            this.DronesListView.ItemsSource = myBl.GetDroneList(d => d.Weight == droneWeight);
+            if (SelectedWeight != null && SelectedStatus != null)
+                DronesListView.ItemsSource = drones.Where(dr => dr.Weight == selectedWeight && dr.DroneStatuses == SelectedStatus);
+            else if(selectedWeight!=null)
+                DronesListView.ItemsSource = drones.Where(dr => dr.Weight == selectedWeight);
+            else
+                DronesListView.ItemsSource = drones.Where(dr => dr.DroneStatuses == SelectedStatus);
         }
 
-        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GetDroneListFromBL()
         {
-            DroneStatuses droneStatuse =(DroneStatuses) StatusSelector.SelectedItem;
-            this.DronesListView.ItemsSource = myBl.GetDroneList(d => d.DroneStatuses == droneStatuse);
+            drones = myBl.GetDroneList().ToList();
+            DronesListView.ItemsSource = drones;
         }
+
+
+
+
 
         private void droneAdd_Click(object sender, RoutedEventArgs e)
         {
             DroneView droneWindow = new DroneView(myBl);
-            droneWindow.Show();
+            droneWindow.ShowDialog();
         }
 
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -61,13 +93,19 @@ namespace PL
                     return;
                 DroneForList dr = DronesListView.SelectedItem as DroneForList;
                 DroneView droneWindow = new DroneView(myBl,dr);
-                droneWindow.Show();
+                droneWindow.OnUpdate += DroneWindow_onUpdate;
+                droneWindow.ShowDialog();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private void DroneWindow_onUpdate()
+        {
+            GetDroneListFromBL();
         }
 
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

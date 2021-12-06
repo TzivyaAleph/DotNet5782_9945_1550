@@ -18,16 +18,11 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ComboBox   Name="StatusSelector" Grid.Column="1" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="StatusSelector_SelectionChanged" Text="status">
-                <ComboBox.Background>
-                    <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#FFF0F0F0"/>
-                        <GradientStop Color="#FFB33B3B" Offset="1"/>
-                    </LinearGradientBrush>
-                </ComboBox.Background>
+            <ComboBox   Name="StatusSelector" Grid.Column="1" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="status" SelectedItem="{Binding SelectedStatus, Mode=TwoWay}">
             </ComboBox>
-            <ComboBox Name="WeightSelector" Grid.Column="2" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="WeightSelector_SelectionChanged"/>
-            <Label Content="Label" Grid.Column="0" Margin="20"/>
+            <ComboBox Name="WeightSelector" Grid.Column="3" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding SelectedWeight, Mode=TwoWay}"/>
+            <Label Content="Select Status:" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            <Label Content="Select Weight:" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </Grid>
         <ListView Grid.Row="1" x:Name="DronesListView" MouseDoubleClick="DronesListView_MouseDoubleClick" SelectionChanged="DronesListView_SelectionChanged">
             <ListView.View>

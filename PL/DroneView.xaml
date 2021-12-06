@@ -4,30 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
+        xmlns:Converters="clr-namespace:PL.Converters"
         mc:Ignorable="d"
         Title="DroneView" Height="450" Width="800">
+    <Window.Resources>
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <Converters:DroneStatusToBoolConverter x:Key="DroneStatusToBoolConverter"/>
+    </Window.Resources>
     <Grid>
-        <Grid x:Name="GridNewDrone" AllowDrop="True">
+        <Grid x:Name="GridNewDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Button x:Name="addButton" Content="Add" 
-        FontSize="30" Grid.Row="2" Margin="10" Click="addButton_Click"/>
+        FontSize="30" Grid.Row="1" Margin="646,103,10,150" Click="addButton_Click"/>
             <Label x:Name="labelAdd" Content="Add New Drone" 
-        FontSize="30" Margin="0" AllowDrop="True" Background="{x:Null}"/>
+        FontSize="30" Margin="0" AllowDrop="True" Background="{x:Null}" HorizontalContentAlignment="Center"/>
             <Label x:Name="labelId" Content="ID:" FontSize="20" HorizontalAlignment="Left" Margin="64,10,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="62" AllowDrop="True" Background="{x:Null}"/>
             <Label x:Name="labelBttery" Content="Battery:" FontSize="20" HorizontalAlignment="Left" Margin="64,54,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="83" RenderTransformOrigin="0.592,-0.318"/>
             <Label x:Name="labelWeight" Content="Max Weight:" FontSize="20" HorizontalAlignment="Left" Margin="64,94,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
             <Label x:Name="labelModel" Content="Model:" FontSize="20" HorizontalAlignment="Left" Margin="64,131,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
             <TextBox x:Name="txtModel" HorizontalAlignment="Left" Margin="256,142,0,0" Grid.Row="1" Text='{Binding Path=dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />
-            <TextBox x:Name="txtBattery" HorizontalAlignment="Left" Margin="256,63,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" TextChanged="txtBattery_TextChanged" />
+            <TextBox x:Name="txtBattery" HorizontalAlignment="Left" Margin="256,63,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
             <TextBox x:Name="txtID" HorizontalAlignment="Left" Margin="256,22,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AllowDrop="True" Background="{x:Null}" />
-            <ComboBox Name="CBXWeight" HorizontalAlignment="Left" Margin="256,101,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged" IsEnabled="True">
+            <ComboBox Name="CBXWeight" HorizontalAlignment="Left" Margin="256,101,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" IsEnabled="True">
             </ComboBox>
             <Label x:Name="labelStatus" Content="Status:" FontSize="20" HorizontalAlignment="Left" Margin="64,163,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-            <ComboBox x:Name="CBXStatus" HorizontalAlignment="Left" Margin="256,174,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged" IsEnabled="True" />
+            <ComboBox x:Name="CBXStatus" HorizontalAlignment="Left" Margin="256,174,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" IsEnabled="True" IsReadOnly="True" />
             <Label x:Name="labelDelievery" Content="Delievery:" FontSize="20" HorizontalAlignment="Left" Margin="64,193,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
             <TextBox x:Name="txtDelievery" HorizontalAlignment="Left" Margin="256,205,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
             <Label x:Name="labelLatitude" Content="Latitude:" FontSize="20" HorizontalAlignment="Left" Margin="64,222,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
@@ -35,12 +40,55 @@
             <Label x:Name="labelLongiitude" Content="Longitude" FontSize="20" HorizontalAlignment="Left" Margin="64,248,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
             <TextBox x:Name="txtLongitude" HorizontalAlignment="Left" Margin="256,262,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
             <Button x:Name="ButtonCancel" Content="cancel" 
-                FontSize="30" Grid.Row="1" Margin="667,249,10,27" Click="ButtonCancel_Click"/>
+                FontSize="30" Grid.Row="1" Margin="646,240,10,13" Click="ButtonCancel_Click"/>
         </Grid>
-        <Grid x:Name="gridUpdateDrone" d:IsHidden="True" >
-            <TextBlock x:Name="droneProperties" Margin="100" Height="200" VerticalAlignment="Top" HorizontalAlignment="Left" d:IsHidden="True"/>
+        <Grid Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="ID:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" />
+                <Label Content="Battery:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
+                <Label Content="Max Weight:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
+                <Label Content="Model:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
+                <Label Content="Status:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
+                <Label Content="Parcel Id:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
+                <Label Content="Longitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
+                <Label Content="Lattitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
+                <TextBox Text="{Binding SelectedDrone.Id}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox Text="{Binding SelectedDrone.Battery}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
+                <ComboBox ItemsSource="{Binding WeightOptions}" SelectedItem="{Binding SelectedDrone.Weight}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" IsReadOnly="True"/>
+                <TextBox Text="{Binding SelectedDrone.Model}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="False"/>
+                <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedDrone.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" IsReadOnly="True"/>
+                <TextBox Text="{Binding SelectedDrone.ParcelId}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox Text="{Binding SelectedDrone.CurrentLocation.Longitude}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox Text="{Binding SelectedDrone.CurrentLocation.Latitude}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button x:Name="updateModelBtn" Content="Update" Width="100" Click="UpdateModelBtn_Click"/>
+                <Button x:Name="closeWindowBtn" Content="Close" Width="100" Click="CloseWindowBtn_Click"/>
+                <Button x:Name="sendToChargeBtn" Content="Charge Drone" Width="100" IsEnabled="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverter}}" Click="sendToChargeBtn_Click"/>
+                <Button x:Name="releaseDroneBtn" Content="Release Drone" Width="100" Click="releaseDroneBtn_Click"/>
+                <Button x:Name="sendDroneToDeliverBtn" Content="Send To Delivery" Width="100"/>
+                <Button x:Name="dronePickUpBtn" Content="Pick Up" Width="100"/>
+                <Button x:Name="deliverParcelBtn" Content="Deliver Parcel" Width="100"/>
+            </StackPanel>
         </Grid>
     </Grid>
-
-
 </Window>

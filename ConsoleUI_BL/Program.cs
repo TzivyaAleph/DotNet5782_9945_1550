@@ -5,7 +5,7 @@ using IBL.BO;
 namespace ConsoleUI_BL
 {
     class Program
-    {
+    {/*
         static void Main(string[] args)
         {
             BL.IBL bO=null;
@@ -906,6 +906,6 @@ namespace ConsoleUI_BL
             foreach (var s in temp)
                 Console.WriteLine(s);
 
-        }
+        }*/
     }
 }

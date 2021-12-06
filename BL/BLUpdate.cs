@@ -116,29 +116,29 @@ namespace BL
         /// send drone to chargh slots by updating fields.
         /// </summary>
         /// <param name="d"></param>
-        public void SendDroneToChargeSlot(Drone d)
+        public void SendDroneToChargeSlot(DroneForList droneForList)
         {
-            DroneForList droneForList = new();
-            try
-            {
-                droneForList = drones.First(item => item.Id == d.Id);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new InputDoesNotExist("the drone does not exist !!");
-            }
+            //DroneForList droneForList = new();
+            //try
+            //{
+            //    droneForList = drones.First(item => item.Id == d.Id);
+            //}
+            //catch (InvalidOperationException)
+            //{
+            //    throw new InputDoesNotExist("the drone does not exist !!");
+            //}
             //only send to charge slots when drone available
             if (droneForList.DroneStatuses != DroneStatuses.Available)
-                throw new FailedToUpdateException($"Drone {d.Id} is not available");
+                throw new FailedToUpdateException($"Drone {droneForList.Id} is not available");
             //finding all the available charging slots in station.
             List<IDAL.DO.Station> stations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
             IDAL.DO.Station clossestStation = new IDAL.DO.Station();
             //finds the clossest station to the current location of the drone
-            clossestStation = myDal.GetClossestStation(d.CurrentLocation.Latitude, d.CurrentLocation.Longitude, stations);
+            clossestStation = myDal.GetClossestStation(droneForList.CurrentLocation.Latitude, droneForList.CurrentLocation.Longitude, stations);
             //finds the battery use for sending the drone to the clossest station
-            double batteryUse = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, d.CurrentLocation.Latitude, d.CurrentLocation.Longitude) * myDal.GetElectricityUse()[0];
+            double batteryUse = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, droneForList.CurrentLocation.Latitude, droneForList.CurrentLocation.Longitude) * myDal.GetElectricityUse()[0];
             //send the drone only if the drone has enough battery and the station has available charging slots.
-            if ((d.Battery - batteryUse) < 0 || clossestStation.ChargeSlots == 0)
+            if ((droneForList.Battery - batteryUse) < 0 || clossestStation.ChargeSlots == 0)
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
             double[] electricity = myDal.GetElectricityUse();
             droneForList.CurrentLocation = new();
@@ -148,9 +148,9 @@ namespace BL
             droneForList.DroneStatuses = DroneStatuses.Maintenance;
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
-                Id = d.Id,
-                Model = d.Model,
-                MaxWeight = (IDAL.DO.Weight)d.Weight,
+                Id = droneForList.Id,
+                Model = droneForList.Model,
+                MaxWeight = (IDAL.DO.Weight)droneForList.Weight,
             };
             try
             {
@@ -158,7 +158,7 @@ namespace BL
             }
             catch (IDAL.DO.ExistingObjectException custEx)
             {
-                throw new FailedToAddException("ERROR", custEx);
+                throw new FailedToUpdateException("ERROR", custEx);
             }
         }
 
@@ -431,26 +431,19 @@ namespace BL
         /// </summary>
         /// <param name="d">the dron to release</param>
         /// <param name="timeInCharge">for the hour its been charging</param>
-        public void ReleasedroneFromeChargeSlot(Drone d, int timeInCharge)
+        public void ReleasedroneFromeChargeSlot(DroneForList d)
         {
-            DroneForList droneForList = new();
-            try
-            {
-                droneForList = drones.First(item => item.Id == d.Id);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new InputDoesNotExist("the drone does not exist !!");
-            }
+            //DroneForList droneForList = new();
+            //try
+            //{
+            //    droneForList = drones.First(item => item.Id == d.Id);
+            //}
+            //catch (InvalidOperationException)
+            //{
+            //    throw new InputDoesNotExist("the drone does not exist !!");
+            //}
             if (d.DroneStatuses != DroneStatuses.Maintenance)
                 throw new FailedToUpdateException($"Cant realese drone frome charge if its not charging");
-            double batteryCharge = timeInCharge * myDal.GetElectricityUse()[4];
-            //cant charge more than 100
-            if ((droneForList.Battery + batteryCharge) > 100)
-                droneForList.Battery = 100;
-            else
-                droneForList.Battery += batteryCharge;
-            droneForList.DroneStatuses = DroneStatuses.Available;
             IDAL.DO.Station dalStation = new IDAL.DO.Station();
             try
             {
@@ -460,6 +453,16 @@ namespace BL
             {
                 throw new InputDoesNotExist("the station does not exist !!");
             }
+
+            TimeSpan timeInCharging = (TimeSpan)(DateTime.Now - myDal.GetDroneCharge(dalStation.Id, d.Id).SentToCharge);
+            double batteryCharge = timeInCharging.TotalHours * myDal.GetElectricityUse()[4];
+            //cant charge more than 100
+            if ((d.Battery + batteryCharge) > 100)
+                d.Battery = 100;
+            else
+                d.Battery += batteryCharge;
+            d.DroneStatuses = DroneStatuses.Available;
+
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
                 Id = d.Id,

@@ -78,6 +78,14 @@ namespace BL
             return parcel;
         }
 
+        public DroneForList GetDroneForList(int droneID)
+        {
+            DroneForList droneForList = drones.Find(item => item.Id == droneID);
+            if (droneForList == default)
+                throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
+            return droneForList;
+        }
+
         /// <summary>
         /// return drone in the list by its recieved id.
         /// </summary>
@@ -133,6 +141,7 @@ namespace BL
                 }
             }
             return returningDrone;
+            
         }
 
         /// <summary>
