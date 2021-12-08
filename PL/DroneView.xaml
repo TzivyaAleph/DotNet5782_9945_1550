@@ -12,37 +12,54 @@
         <Converters:DroneStatusToBoolConverter x:Key="DroneStatusToBoolConverter"/>
     </Window.Resources>
     <Grid>
-        <Grid x:Name="GridNewDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True" d:IsHidden="True">
+        <Grid x:Name="GridNewDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Button x:Name="addButton" Content="Add" 
-        FontSize="30" Grid.Row="1" Margin="646,103,10,150" Click="addButton_Click"/>
-            <Label x:Name="labelAdd" Content="Add New Drone" 
-        FontSize="30" Margin="0" AllowDrop="True" Background="{x:Null}" HorizontalContentAlignment="Center"/>
-            <Label x:Name="labelId" Content="ID:" FontSize="20" HorizontalAlignment="Left" Margin="64,10,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="62" AllowDrop="True" Background="{x:Null}"/>
-            <Label x:Name="labelBttery" Content="Battery:" FontSize="20" HorizontalAlignment="Left" Margin="64,54,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="83" RenderTransformOrigin="0.592,-0.318"/>
-            <Label x:Name="labelWeight" Content="Max Weight:" FontSize="20" HorizontalAlignment="Left" Margin="64,94,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-            <Label x:Name="labelModel" Content="Model:" FontSize="20" HorizontalAlignment="Left" Margin="64,131,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-            <TextBox x:Name="txtModel" HorizontalAlignment="Left" Margin="256,142,0,0" Grid.Row="1" Text='{Binding Path=dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />
-            <TextBox x:Name="txtBattery" HorizontalAlignment="Left" Margin="256,63,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
-            <TextBox x:Name="txtID" HorizontalAlignment="Left" Margin="256,22,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" AllowDrop="True" Background="{x:Null}" />
-            <ComboBox Name="CBXWeight" HorizontalAlignment="Left" Margin="256,101,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" IsEnabled="True">
-            </ComboBox>
-            <Label x:Name="labelStatus" Content="Status:" FontSize="20" HorizontalAlignment="Left" Margin="64,163,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-            <ComboBox x:Name="CBXStatus" HorizontalAlignment="Left" Margin="256,174,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" IsEnabled="True" IsReadOnly="True" />
-            <Label x:Name="labelDelievery" Content="Delievery:" FontSize="20" HorizontalAlignment="Left" Margin="64,193,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-            <TextBox x:Name="txtDelievery" HorizontalAlignment="Left" Margin="256,205,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
-            <Label x:Name="labelLatitude" Content="Latitude:" FontSize="20" HorizontalAlignment="Left" Margin="64,222,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-            <TextBox x:Name="txtLatitude" HorizontalAlignment="Left" Margin="256,234,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
-            <Label x:Name="labelLongiitude" Content="Longitude" FontSize="20" HorizontalAlignment="Left" Margin="64,248,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-            <TextBox x:Name="txtLongitude" HorizontalAlignment="Left" Margin="256,262,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
-            <Button x:Name="ButtonCancel" Content="cancel" 
-                FontSize="30" Grid.Row="1" Margin="646,240,10,13" Click="ButtonCancel_Click"/>
+            <Grid x:Name="gridForLayout">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="labelAdd" Content="Add New Drone" FontSize="25" HorizontalContentAlignment="Left" Grid.Column="2" />
+                <Label Content="ID:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
+                <Label Content="Battery:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
+                <Label Content="Max Weight:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
+                <Label Content="Model:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
+                <Label Content="Status:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
+                <Label x:Name="labelDelievery" Content="Delievery:" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
+                <Label Content="Longitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
+                <Label Content="Lattitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
+                <TextBox x:Name="txtID" Text="{Binding DroneToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtBattery" Text="{Binding DroneToAdd.Battery}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <TextBox x:Name="txtModel" HorizontalAlignment="Left" Margin="256,142,0,0" Grid.Row="1" Text='{Binding Path=dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />
+                <ComboBox Name="CBXWeight" HorizontalAlignment="Left" Margin="256,101,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" IsEnabled="True">
+                </ComboBox>
+                <ComboBox x:Name="CBXStatus" HorizontalAlignment="Left" Margin="256,174,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" IsEnabled="True" IsReadOnly="True" />
+                <TextBox x:Name="txtDelievery" HorizontalAlignment="Left" Margin="256,205,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
+                <Label x:Name="labelLatitude" Content="Latitude:" FontSize="20" HorizontalAlignment="Left" Margin="64,222,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
+                <TextBox x:Name="txtLatitude" HorizontalAlignment="Left" Margin="256,234,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
+                <Label x:Name="labelLongiitude" Content="Longitude" FontSize="20" HorizontalAlignment="Left" Margin="64,248,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
+                <TextBox x:Name="txtLongitude" HorizontalAlignment="Left" Margin="256,262,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
+                <Button x:Name="addButton" Content="Add"  FontSize="30" Click="addButton_Click" Grid.Column="3" Grid.Row="6"/>
+                <Button x:Name="ButtonCancel" Content="cancel" FontSize="30" Click="ButtonCancel_Click" Grid.Column="3" Grid.Row="7"/>
+            </Grid>
         </Grid>
-        <Grid Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}" d:IsHidden="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -79,14 +96,12 @@
                 <TextBox Text="{Binding SelectedDrone.CurrentLocation.Latitude}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <Grid Grid.Column="2" Grid.Row="3">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="17*"/>
-                        <ColumnDefinition Width="40*"/>
-                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock x:Name="parcelView" Grid.ColumnSpan="3" Margin="1,0,-1,0"/>
+                    <TextBlock x:Name="parcelView" />
                 </Grid>
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Horizontal">

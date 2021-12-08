@@ -25,7 +25,24 @@ namespace PL
         private BL.IBL myBl;
         private string originalDroneModel; //temp drone to hold the drone from the drone list view window (this drone will not be used for items source)
         private Drone selectedDrone;
+        private DroneForList droneToAdd;
 
+        /// <summary>
+        /// a drone for putting the input data in it.
+        /// </summary>
+        public DroneForList DroneToAdd
+        {
+            get { return droneToAdd; }
+            set
+            {
+                droneToAdd = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("DroneToAdd"));
+            }
+        }
+
+        /// <summary>
+        /// a drone for updating the drone data
+        /// </summary>
         public Drone SelectedDrone
         {
             get { return selectedDrone; }
@@ -43,11 +60,15 @@ namespace PL
         public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-
+        /// <summary>
+        /// a ctor foe adding new drone
+        /// </summary>
+        /// <param name="bl"></param>
         public DroneView(BL.IBL bl)
         {
-            myBl = bl;
             Initialize();
+            droneToAdd = new DroneForList();
+            myBl = bl;
             InitializeComponent();
         }
 
