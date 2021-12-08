@@ -18,7 +18,6 @@ namespace IBL
             public ParcelInDelivery ParcelInDelivery { get; set; }
             public Location CurrentLocation { get; set; }
 
-
             public override string ToString()
             {
                 string result = "";

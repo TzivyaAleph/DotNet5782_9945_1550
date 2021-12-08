@@ -21,6 +21,7 @@ namespace DalObject
             DroneCharge dc = new DroneCharge();
             dc.DroneID = d.Id;
             dc.StationID = s.Id;
+            dc.SentToCharge = DateTime.Now;
             DataSource.DroneCharges.Add(dc);
         }
 
@@ -42,6 +43,7 @@ namespace DalObject
             DroneCharge help = DataSource.DroneCharges[index];
             help.DroneID = 0;
             help.StationID = 0;
+            help.SentToCharge = null;
             DataSource.DroneCharges[index] = help;
         }
 

@@ -56,6 +56,8 @@ namespace BL
         /// </summary>
         /// <returns>the created list</returns>
         IEnumerable<CustomerForList> GetCustomerList();
+        public DroneForList GetDroneForList(int droneID);
+
         /// <summary>
         /// return drone in the list by its recieved id.
         /// </summary>
@@ -104,7 +106,7 @@ namespace BL
         /// </summary>
         /// <param name="d">the dron to release</param>
         /// <param name="timeInCharge">for the hour its been charging</param>
-        void ReleasedroneFromeChargeSlot(Drone d, int timeInCharge);
+        void ReleasedroneFromeChargeSlot(Drone d);
         /// <summary>
         /// send drone to chargh slots by updating fields.
         /// </summary>
