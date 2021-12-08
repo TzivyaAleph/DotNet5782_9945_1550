@@ -36,7 +36,7 @@ namespace PL
             }
         }
 
-        private DroneStatuses? selectedStatus= null;
+        private DroneStatuses? selectedStatus = null;
 
         public DroneStatuses? SelectedStatus
         {
@@ -62,7 +62,7 @@ namespace PL
         {
             if (SelectedWeight != null && SelectedStatus != null)
                 DronesListView.ItemsSource = drones.Where(dr => dr.Weight == selectedWeight && dr.DroneStatuses == SelectedStatus);
-            else if(selectedWeight!=null)
+            else if (selectedWeight != null)
                 DronesListView.ItemsSource = drones.Where(dr => dr.Weight == selectedWeight);
             else
                 DronesListView.ItemsSource = drones.Where(dr => dr.DroneStatuses == SelectedStatus);
@@ -86,21 +86,12 @@ namespace PL
 
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
-            try
-            {
-                if (DronesListView.SelectedItem == null)
-                    return;
-                DroneForList dr = DronesListView.SelectedItem as DroneForList;
-                DroneView droneWindow = new DroneView(myBl,dr);
-                droneWindow.OnUpdate += DroneWindow_onUpdate;
-                droneWindow.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
+            DroneForList d = DronesListView.SelectedItem as DroneForList;
+            Drone dr = new Drone();
+            dr = myBl.GetDrone(d.Id);//gets the selected drone as drone instead of drone for list 
+            DroneView droneWindow = new DroneView(myBl, dr);
+            droneWindow.OnUpdate += DroneWindow_onUpdate;
+            droneWindow.Show();
         }
 
         private void DroneWindow_onUpdate()
@@ -110,7 +101,6 @@ namespace PL
 
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
     }
 }

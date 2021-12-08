@@ -24,9 +24,9 @@ namespace PL
 
         private BL.IBL myBl;
         private string originalDroneModel; //temp drone to hold the drone from the drone list view window (this drone will not be used for items source)
-        private DroneForList selectedDrone;
+        private Drone selectedDrone;
 
-        public DroneForList SelectedDrone
+        public Drone SelectedDrone
         {
             get { return selectedDrone; }
             set
@@ -43,6 +43,7 @@ namespace PL
         public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
+
         public DroneView(BL.IBL bl)
         {
             myBl = bl;
@@ -55,13 +56,15 @@ namespace PL
         /// </summary>
         /// <param name="bl">bl object</param>
         /// <param name="dr">the selected drone</param>
-        public DroneView(BL.IBL bl, DroneForList dr)
+        public DroneView(BL.IBL bl, Drone dr)
         {
             Initialize();
             SelectedDrone = dr;
             originalDroneModel = dr.Model;
             myBl = bl;
             IsUpdateMode = true;
+            if (SelectedDrone.ParcelInDelivery != null) 
+                parcelView.Text = SelectedDrone.ParcelInDelivery.ToString();
             InitializeComponent();
         }
 
@@ -144,7 +147,7 @@ namespace PL
                     var res = MessageBox.Show("success");
                     if (res != MessageBoxResult.None)
                     {
-                        SelectedDrone = myBl.GetDroneForList(SelectedDrone.Id);
+                        SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
                 }
@@ -168,7 +171,7 @@ namespace PL
                 var res = MessageBox.Show("success");
                 if (res != MessageBoxResult.None)
                 {
-                    SelectedDrone = myBl.GetDroneForList(SelectedDrone.Id);
+                    SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                     OnUpdate();
                 }
             }
@@ -189,7 +192,7 @@ namespace PL
                 var res = MessageBox.Show("success");
                 if (res != MessageBoxResult.None)
                 {
-                    SelectedDrone = myBl.GetDroneForList(SelectedDrone.Id);
+                    SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                     OnUpdate();
                 }
             }

@@ -116,17 +116,17 @@ namespace BL
         /// send drone to chargh slots by updating fields.
         /// </summary>
         /// <param name="d"></param>
-        public void SendDroneToChargeSlot(DroneForList droneForList)
+        public void SendDroneToChargeSlot(Drone d)
         {
-            //DroneForList droneForList = new();
-            //try
-            //{
-            //    droneForList = drones.First(item => item.Id == d.Id);
-            //}
-            //catch (InvalidOperationException)
-            //{
-            //    throw new InputDoesNotExist("the drone does not exist !!");
-            //}
+            DroneForList droneForList = new();
+            try
+            {
+                droneForList = drones.First(item => item.Id == d.Id);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InputDoesNotExist("the drone does not exist !!");
+            }
             //only send to charge slots when drone available
             if (droneForList.DroneStatuses != DroneStatuses.Available)
                 throw new FailedToUpdateException($"Drone {droneForList.Id} is not available");
@@ -431,17 +431,17 @@ namespace BL
         /// </summary>
         /// <param name="d">the dron to release</param>
         /// <param name="timeInCharge">for the hour its been charging</param>
-        public void ReleasedroneFromeChargeSlot(DroneForList d)
+        public void ReleasedroneFromeChargeSlot(Drone d)
         {
-            //DroneForList droneForList = new();
-            //try
-            //{
-            //    droneForList = drones.First(item => item.Id == d.Id);
-            //}
-            //catch (InvalidOperationException)
-            //{
-            //    throw new InputDoesNotExist("the drone does not exist !!");
-            //}
+            DroneForList droneForList = new();
+            try
+            {
+                droneForList = drones.First(item => item.Id == d.Id);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InputDoesNotExist("the drone does not exist !!");
+            }
             if (d.DroneStatuses != DroneStatuses.Maintenance)
                 throw new FailedToUpdateException($"Cant realese drone frome charge if its not charging");
             IDAL.DO.Station dalStation = new IDAL.DO.Station();

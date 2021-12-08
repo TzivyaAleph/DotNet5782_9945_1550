@@ -106,12 +106,12 @@ namespace BL
         /// </summary>
         /// <param name="d">the dron to release</param>
         /// <param name="timeInCharge">for the hour its been charging</param>
-        void ReleasedroneFromeChargeSlot(DroneForList d);
+        void ReleasedroneFromeChargeSlot(Drone d);
         /// <summary>
         /// send drone to chargh slots by updating fields.
         /// </summary>
         /// <param name="d"></param>
-        void SendDroneToChargeSlot(DroneForList d);
+        void SendDroneToChargeSlot(Drone d);
         /// <summary>
         /// updates a customer's id, phone number and name
         /// </summary>
