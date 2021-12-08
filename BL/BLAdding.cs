@@ -48,10 +48,10 @@ namespace BL
         {
             List<IDAL.DO.Station> stations = (List<IDAL.DO.Station>)myDal.CopyStationArray();
             //checks if the station exists
-            if (!(stations.Exists(station => station.Id == stationId)))
-            {
-                throw new InputDoesNotExist($"station {stationId} does not exists !!");
-            }
+            //if (!(stations.Exists(station => station.Id == stationId)))
+            //{
+            //    throw new InputDoesNotExist($"station {stationId} does not exists !!");
+            //}
             int index = stations.FindIndex(item => item.Id == stationId);//finds the station that the drone in it.
             IDAL.DO.Station s = new IDAL.DO.Station();
             s = stations[index];
