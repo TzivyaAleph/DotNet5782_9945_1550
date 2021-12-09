@@ -18,11 +18,11 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ComboBox   Name="StatusSelector" Grid.Column="1" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="status" SelectedItem="{Binding SelectedStatus, Mode=TwoWay}">
+            <ComboBox   Name="StatusSelector" Grid.Column="1" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding SelectedStatus, Mode=TwoWay}">
             </ComboBox>
             <ComboBox Name="WeightSelector" Grid.Column="3" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding SelectedWeight, Mode=TwoWay}"/>
-            <Label Content="Select Status:" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-            <Label Content="Select Weight:" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            <Label Content="Select Status:" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Label Content="Select Weight:" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
         <ListView Grid.Row="1" x:Name="DronesListView" MouseDoubleClick="DronesListView_MouseDoubleClick" SelectionChanged="DronesListView_SelectionChanged">
             <ListView.View>

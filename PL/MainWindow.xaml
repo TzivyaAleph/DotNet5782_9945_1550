@@ -6,7 +6,18 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button  Content="View Drone List" FontSize="30"  Margin="100" Click="droneListViewBtn_Click" />
+    <Grid x:Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <ImageBrush x:Name="myImage"  ></ImageBrush>
+        </Grid.Background>
+        <Button  Content="View Drone List" Grid.Column="1" Grid.Row="1" FontSize="30"  Click="droneListViewBtn_Click" Background="Orange"  />
     </Grid>
 </Window>

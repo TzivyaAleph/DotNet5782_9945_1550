@@ -10,8 +10,13 @@
     <Window.Resources>
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Converters:DroneStatusToBoolConverter x:Key="DroneStatusToBoolConverter"/>
+        <Converters:DroneStatusToBoolConverterForRelease x:Key="DroneStatusToBoolConverterForRelease"/>
+        <Converters:DroneStatusToBoolConverterForPickUp x:Key="DroneStatusToBoolConverterForPickUp"/>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="grMain">
+        <Grid.Background>
+            <ImageBrush x:Name="myImage"  ></ImageBrush>
+        </Grid.Background>
         <Grid x:Name="GridNewDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -44,27 +49,26 @@
                 <Label x:Name="labelDelievery" Content="Delievery:" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
                 <Label Content="Longitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
                 <Label Content="Lattitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
-                <TextBox x:Name="txtID" Text="{Binding DroneToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtBattery" Text="{Binding DroneToAdd.Battery}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
-                <TextBox x:Name="txtModel" HorizontalAlignment="Left" Margin="256,142,0,0" Grid.Row="1" Text='{Binding Path=dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />
-                <ComboBox Name="CBXWeight" HorizontalAlignment="Left" Margin="256,101,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" IsEnabled="True">
-                </ComboBox>
-                <ComboBox x:Name="CBXStatus" HorizontalAlignment="Left" Margin="256,174,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" IsEnabled="True" IsReadOnly="True" />
-                <TextBox x:Name="txtDelievery" HorizontalAlignment="Left" Margin="256,205,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
-                <Label x:Name="labelLatitude" Content="Latitude:" FontSize="20" HorizontalAlignment="Left" Margin="64,222,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-                <TextBox x:Name="txtLatitude" HorizontalAlignment="Left" Margin="256,234,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
-                <Label x:Name="labelLongiitude" Content="Longitude" FontSize="20" HorizontalAlignment="Left" Margin="64,248,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" Width="137" RenderTransformOrigin="0.592,-0.318"/>
-                <TextBox x:Name="txtLongitude" HorizontalAlignment="Left" Margin="256,262,0,0" Grid.Row="1" Text='{Binding dr.Model}' TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
+                <TextBox x:Name="txtID" Text="{Binding DroneToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtBattery"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <ComboBox Name="CBXWeight" ItemsSource="{Binding WeightOptions}" SelectedItem="{Binding DroneToAdd.Weight}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"></ComboBox>
+                <TextBox x:Name="txtModel" Text="{Binding DroneToAdd.Model}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <ComboBox x:Name="CBXStatus" ItemsSource="{Binding Statuses}" SelectedItem="{Binding DroneToAdd.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" IsEnabled="False" />
+                <TextBox x:Name="txtDelievery"  Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <TextBox x:Name="txtLongitude" Text="{Binding DroneToAdd.CurrentLocation.Longitude}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <TextBox x:Name="txtLatitude" Text="{Binding DroneToAdd.CurrentLocation.Latitude}" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <Label x:Name="txtStationName" Content="Choose station to put the drone in it: " Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ComboBox Name="cbxStations" ItemsSource="{Binding Names}" SelectedItem="{Binding Names}" VerticalAlignment="Center"  Grid.Row="4" Grid.Column="2" Margin="110,0,106,0" />
                 <Button x:Name="addButton" Content="Add"  FontSize="30" Click="addButton_Click" Grid.Column="3" Grid.Row="6"/>
                 <Button x:Name="ButtonCancel" Content="cancel" FontSize="30" Click="ButtonCancel_Click" Grid.Column="3" Grid.Row="7"/>
             </Grid>
         </Grid>
-        <Grid Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}" d:IsHidden="True">
+        <Grid x:Name="GridUpdateDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Grid>
+            <Grid x:Name="GridForLayout">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -89,29 +93,21 @@
                 <Label Content="Lattitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
                 <TextBox Text="{Binding SelectedDrone.Id}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <TextBox Text="{Binding SelectedDrone.Battery}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
-                <ComboBox ItemsSource="{Binding WeightOptions}" SelectedItem="{Binding SelectedDrone.Weight}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" IsReadOnly="True"/>
+                <ComboBox ItemsSource="{Binding WeightOptions}" SelectedItem="{Binding SelectedDrone.Weight}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"  IsEnabled="False"/>
                 <TextBox Text="{Binding SelectedDrone.Model}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="False"/>
-                <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedDrone.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" IsReadOnly="True"/>
+                <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedDrone.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" IsEnabled="False"/>
                 <TextBox Text="{Binding SelectedDrone.CurrentLocation.Longitude}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <TextBox Text="{Binding SelectedDrone.CurrentLocation.Latitude}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
-                <Grid Grid.Column="2" Grid.Row="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock x:Name="parcelView" />
-                </Grid>
+                <TextBlock x:Name="parcelView" Text="{Binding SelectedDrone.ParcelInDelivery.ToString}" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}"/>
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <Button x:Name="updateModelBtn" Content="Update" Width="100" Click="UpdateModelBtn_Click"/>
                 <Button x:Name="closeWindowBtn" Content="Close" Width="100" Click="CloseWindowBtn_Click"/>
                 <Button x:Name="sendToChargeBtn" Content="Charge Drone" Width="100" IsEnabled="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverter}}" Click="sendToChargeBtn_Click"/>
-                <Button x:Name="releaseDroneBtn" Content="Release Drone" Width="100" Click="releaseDroneBtn_Click"/>
-                <Button x:Name="sendDroneToDeliverBtn" Content="Send To Delivery" Width="100"/>
-                <Button x:Name="dronePickUpBtn" Content="Pick Up" Width="100"/>
-                <Button x:Name="deliverParcelBtn" Content="Deliver Parcel" Width="100"/>
+                <Button x:Name="releaseDroneBtn" Content="Release Drone" Width="100" IsEnabled="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForRelease}}" Click="releaseDroneBtn_Click"/>
+                <Button x:Name="sendDroneToDeliverBtn" Content="Send To Delivery" Width="100" IsEnabled="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverter}}" Click="sendDroneToDeliverBtn_Click"/>
+                <Button x:Name="dronePickUpBtn" Content="Pick Up" Width="100" IsEnabled="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" Click="dronePickUpBtn_Click"/>
+                <Button x:Name="deliverParcelBtn" Content="Deliver Parcel" Width="100" Click="deliverParcelBtn_Click"/>
             </StackPanel>
         </Grid>
     </Grid>

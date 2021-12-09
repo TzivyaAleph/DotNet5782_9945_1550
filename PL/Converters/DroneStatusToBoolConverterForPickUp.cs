@@ -9,12 +9,12 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
-    public class DroneStatusToBoolConverter : IValueConverter
+    class DroneStatusToBoolConverterForPickUp : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DroneStatuses status = (DroneStatuses)value;         
-            return status == DroneStatuses.Available;
+            DroneStatuses status = (DroneStatuses)value;
+            return status == DroneStatuses.Delivered;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
