@@ -491,7 +491,7 @@ namespace BL
                 throw new InputDoesNotExist("the drone does not exist !!");
             }
             if (d.DroneStatuses != DroneStatuses.Maintenance)
-                throw new FailedToUpdateException($"Cant realese drone frome charge if its not charging");
+                throw new FailedToUpdateException($"cant realese drone from charge if its not charging");
             IDAL.DO.Station dalStation = new IDAL.DO.Station();
             try
             {

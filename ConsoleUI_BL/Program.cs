@@ -56,15 +56,6 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 4 digit station ID:");
                                             }
-                                            while (ID < 1000 || ID > 10000)
-                                            {
-                                                Console.WriteLine($"id {ID} is not valid !!");
-                                                Console.WriteLine("Enter a 4 digit station ID:");
-                                                while (!(int.TryParse(Console.ReadLine(), out ID)))
-                                                {
-                                                    Console.WriteLine("Enter a 4 digit station ID:");
-                                                }
-                                            }
                                             Console.WriteLine("Enter station's name:");
                                             name = Console.ReadLine();
                                             while (String.IsNullOrEmpty(name))
@@ -76,41 +67,17 @@ namespace ConsoleUI_BL
                                             while (!(int.TryParse(Console.ReadLine(), out numOfSlots)))
                                             {
                                                 Console.WriteLine("Enter number of available charging slots between 0 and 50:");
-                                            }
-                                            while (numOfSlots < 0 || numOfSlots > 50)
-                                            {
-                                                Console.WriteLine($"number of slots {numOfSlots} is not valid !!");
-                                                Console.WriteLine("Enter number of available charging slots between 0 and 50:");
-                                                int.TryParse(Console.ReadLine(), out numOfSlots);
-                                            }
+                                            }                                          
                                             Console.WriteLine("Enter station's Longitude between -5000 and 5000:");
                                             while (!(long.TryParse(Console.ReadLine(), out longitude)))
                                             {
                                                 Console.WriteLine("Enter station's Longitude between -5000 and 5000:");
-                                            }
-                                            while (longitude < -5000 || longitude > 5000)
-                                            {
-                                                Console.WriteLine($"Longitude {longitude} is not valid !!");
-                                                Console.WriteLine("Enter station's Longitude between -5000 and 5000:");
-                                                while (!(long.TryParse(Console.ReadLine(), out longitude)))
-                                                {
-                                                    Console.WriteLine("Enter station's Longitude between -5000 and 5000:");
-                                                }
-                                            }
+                                            }                                            
                                             Console.WriteLine("Enter station's Lattitude between -5000 and 5000:");
                                             while (!(long.TryParse(Console.ReadLine(), out lattitude)))
                                             {
                                                 Console.WriteLine("Enter station's Lattitude between -5000 and 5000:");
-                                            }
-                                            while (lattitude < -5000 || lattitude > 5000)
-                                            {
-                                                Console.WriteLine($"Lattitude {lattitude} is not valid !!");
-                                                Console.WriteLine("Enter station's Lattitude between -5000 and 5000:");
-                                                while (!(long.TryParse(Console.ReadLine(), out lattitude)))
-                                                {
-                                                    Console.WriteLine("Enter station's Lattitude between -5000 and 5000:");
-                                                }
-                                            }
+                                            }                                           
                                             Station s = new Station();
                                             s = createObjectStation(ID, name, numOfSlots, longitude, lattitude);
                                             if (bO != null) bO.AddStation(s);
@@ -128,37 +95,14 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 4 digit drone ID:");
                                             }
-                                            while (ID < 1000 || ID > 10000)
-                                            {
-                                                Console.WriteLine($"id {ID} is not valid !!");
-                                                Console.WriteLine("Enter a 4 digit drone ID:");
-                                                while (!(int.TryParse(Console.ReadLine(), out ID)))
-                                                {
-                                                    Console.WriteLine("Enter a 4 digit drone ID:");
-                                                }
-                                            }
                                             Console.WriteLine("Enter drone's model:");
-                                            model = Console.ReadLine();
-                                            while (String.IsNullOrEmpty(model))
-                                            {
-                                                Console.WriteLine("Enter drone's model");
-                                                model = Console.ReadLine();
-                                            }
+                                            model = Console.ReadLine();                                           
                                             Console.WriteLine("Enter drone's  maximum weight:\n1: light, 2: standard, 3: heavy:");
                                             maxWeight = (Weight)int.Parse(Console.ReadLine());
                                             Console.WriteLine("Enter a 4 digit station Id to charge the drone in:");
                                             while (!(int.TryParse(Console.ReadLine(), out stationId)))
                                             {
                                                 Console.WriteLine("Enter a 4 digit station Id to charge the drone in:");
-                                            }
-                                            while (stationId < 1000 || stationId > 10000)
-                                            {
-                                                Console.WriteLine($"id {stationId} is not valid !!");
-                                                Console.WriteLine("Enter a 4 digit station Id to charge the drone in:");
-                                                while (!(int.TryParse(Console.ReadLine(), out stationId)))
-                                                {
-                                                    Console.WriteLine("Enter a 4 digit station Id to charge the drone in:");
-                                                }
                                             }
                                             DroneForList d = new DroneForList();
                                             d = createObjectDrone(ID, model, maxWeight);
@@ -177,67 +121,19 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 9 digit customer ID:");
                                             }
-                                            while (ID < 100000000 || ID > 999999999)
-                                            {
-                                                Console.WriteLine($"id {ID} is not valid !!");
-                                                Console.WriteLine("Enter a 9 digit customer ID:");
-                                                while (!(int.TryParse(Console.ReadLine(), out ID)))
-                                                {
-                                                    Console.WriteLine("Enter a 9 digit customer ID:");
-                                                }
-                                            }
                                             Console.WriteLine("Enter customer's name:");
                                             name = Console.ReadLine();
-                                            while (String.IsNullOrEmpty(name))
-                                            {
-                                                Console.WriteLine("Enter customer's name:");
-                                                name = Console.ReadLine();
-                                            }
                                             Console.WriteLine("Enter customer's phone number:");
                                             phoneNumber = Console.ReadLine();
-                                            while (String.IsNullOrEmpty(phoneNumber))
-                                            {
-                                                Console.WriteLine("Enter customer's phone number:");
-                                                phoneNumber = Console.ReadLine();
-                                            }
-                                            while (phoneNumber.Length != 10)
-                                            {
-                                                Console.WriteLine($"phone number {phoneNumber} is not valid !!");
-                                                Console.WriteLine("Enter customer's phone number:");
-                                                phoneNumber = Console.ReadLine();
-                                                while (String.IsNullOrEmpty(phoneNumber))
-                                                {
-                                                    Console.WriteLine("Enter customer's phone number:");
-                                                    phoneNumber = Console.ReadLine();
-                                                }
-                                            }
                                             Console.WriteLine("Enter customer's Longitude between -5000 and 5000:");
                                             while (!(double.TryParse(Console.ReadLine(), out longitude)))
                                             {
                                                 Console.WriteLine("Enter customer's Longitude between -5000 and 5000:");
                                             }
-                                            while (longitude < -5000 || longitude > 5000)
-                                            {
-                                                Console.WriteLine($"Longitude {longitude} is not valid !!");
-                                                Console.WriteLine("Enter customer's Longitude between -5000 and 5000:");
-                                                while (!(double.TryParse(Console.ReadLine(), out longitude)))
-                                                {
-                                                    Console.WriteLine("Enter customer's Longitude between -5000 and 5000:");
-                                                }
-                                            }
                                             Console.WriteLine("Enter customer's Lattitude between -5000 and 5000:");
                                             while (!(double.TryParse(Console.ReadLine(), out lattitude)))
                                             {
                                                 Console.WriteLine("Enter customer's Lattitude between -5000 and 5000:");
-                                            }
-                                            while (lattitude < -5000 || lattitude > 5000)
-                                            {
-                                                Console.WriteLine($"Lattitude {lattitude} is not valid !!");
-                                                Console.WriteLine("Enter customer's Lattitude between -5000 and 5000:");
-                                                while (!(double.TryParse(Console.ReadLine(), out lattitude)))
-                                                {
-                                                    Console.WriteLine("Enter customer's Lattitude between -5000 and 5000:");
-                                                }
                                             }
                                             Customer c = new Customer();
                                             c = createObjectCustomer(ID, name, phoneNumber, longitude, lattitude);
@@ -256,28 +152,10 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 9 digit sender ID:");
                                             }
-                                            while (senderID < 100000000 || senderID > 999999999)
-                                            {
-                                                Console.WriteLine($"id {senderID} is not valid !!");
-                                                Console.WriteLine("Enter a 9 digit sender ID:");
-                                                while (!(int.TryParse(Console.ReadLine(), out senderID)))
-                                                {
-                                                    Console.WriteLine("Enter a 9 digit sender ID:");
-                                                }
-                                            }
                                             Console.WriteLine("Enter a 9 digit target ID:");
                                             while (!(int.TryParse(Console.ReadLine(), out targetID)))
                                             {
                                                 Console.WriteLine("Enter a 9 digit target ID:");
-                                            }
-                                            while (targetID < 100000000 || targetID > 999999999)
-                                            {
-                                                Console.WriteLine($"id {targetID} is not valid !!");
-                                                Console.WriteLine("Enter a 9 digit target ID:");
-                                                while (!(int.TryParse(Console.ReadLine(), out targetID)))
-                                                {
-                                                    Console.WriteLine("Enter a 9 digit target ID:");
-                                                }
                                             }
                                             Console.WriteLine("Enter parcel's weight:\n 0: light, 1: standard, 2: heavy ");
                                             weight = (Weight)int.Parse(Console.ReadLine());

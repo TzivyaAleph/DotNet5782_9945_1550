@@ -20,6 +20,16 @@ namespace BL
         /// <param name="location">station's location</param>
         public void AddStation(Station s)
         {
+            if (s.Id < 1000 || s.Id > 10000)
+                throw new InvalidInputException($"id {s.Id} is not valid !!");
+            if(string.IsNullOrEmpty(s.Name))
+                throw new InvalidInputException($"name is not valid !!");
+            if(s.ChargeSlots<0||s.ChargeSlots>50)
+                throw new InvalidInputException($"number of slots {s.DroneCharges} is not valid !!");
+            if(s.StationLocation.Longitude>5000||s.StationLocation.Longitude<-5000)
+                throw new InvalidInputException($"Longitude {s.StationLocation.Longitude} is not valid !!");
+            if (s.StationLocation.Latitude > 5000 || s.StationLocation.Latitude < -5000)
+                throw new InvalidInputException($"Lattitude {s.StationLocation.Latitude} is not valid !!");
             s.DroneCharges = null;
             IDAL.DO.Station tmp = new IDAL.DO.Station
             {
@@ -46,9 +56,15 @@ namespace BL
         /// <param name="stationId">station number to put the drone in</param>
         public void AddDrone(DroneForList d, int stationId)
         {
+            if(d.Id < 1000 ||d.Id > 10000)
+                throw new InvalidInputException($"id {d.Id} is not valid !!");
+            if (string.IsNullOrEmpty(d.Model))
+                throw new InvalidInputException($"model is not valid !!");
+            if (stationId < 1000 || stationId > 10000)
+                throw new InvalidInputException($"station Id {stationId} is not valid !!");
             List<IDAL.DO.Station> stations = (List<IDAL.DO.Station>)myDal.CopyStationArray();
             //checks if the station exists
-            if (!(stations.Exists(station => station.Id == stationId)))
+            if (!stations.Exists(station => station.Id == stationId))
             {
                 throw new InputDoesNotExist($"station {stationId} does not exists !!");
             }
@@ -89,7 +105,19 @@ namespace BL
         /// </summary>
         /// <param name="customer"></param>
         public void AddCustomer(Customer customer)
-        {          
+        {
+            if (customer.Id < 100000000 || customer.Id > 1000000000)
+                throw new InvalidInputException($"id {customer.Id} is not valid !!");
+            if (String.IsNullOrEmpty(customer.Name))
+                throw new InvalidInputException($"name is not valid !!");
+            if (String.IsNullOrEmpty(customer.PhoneNumber))
+                throw new InvalidInputException($"phone number is not valid !!");
+            if (customer.PhoneNumber.Length!=10)
+                throw new InvalidInputException($"phone number {customer.PhoneNumber} is not valid !!");
+            if (customer.Location.Longitude > 5000 || customer.Location.Longitude < -5000)
+                throw new InvalidInputException($"Longitude {customer.Location.Longitude} is not valid !!");
+            if (customer.Location.Latitude > 5000 || customer.Location.Latitude < -5000)
+                throw new InvalidInputException($"Lattitude {customer.Location.Latitude} is not valid !!");
             IDAL.DO.Customer newCustomer = new();
             object obj = newCustomer;
             customer.CopyPropertiesTo(obj);
@@ -114,6 +142,10 @@ namespace BL
         /// <param name="parcel"></param>
         public int AddParcel(Parcel parcel)
         {
+            if (parcel.Sender.Id < 100000000 || parcel.Sender.Id > 1000000000)
+                throw new InvalidInputException($"sender id {parcel.Sender.Id} is not valid !!");
+            if (parcel.Recipient.Id < 100000000 || parcel.Recipient.Id > 1000000000)
+                throw new InvalidInputException($"recipient id {parcel.Recipient.Id} is not valid !!");
             parcel.DroneInParcel = default;
             //the parcel has been made.
             parcel.Requested = DateTime.Now;
@@ -141,9 +173,6 @@ namespace BL
         }
 
     }
-
-
-
 }
 
 

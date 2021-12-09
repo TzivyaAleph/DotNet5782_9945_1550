@@ -98,9 +98,8 @@ namespace PL
             SelectedDrone = dr;
             originalDroneModel = dr.Model;
             myBl = bl;
-            IsUpdateMode = true;
-            if (SelectedDrone.ParcelInDelivery != null) 
-                parcelView.Text = SelectedDrone.ParcelInDelivery.ToString();
+            IsUpdateMode = true;             
+            InitializeComponent();
         }
 
         /// <summary>
@@ -160,6 +159,7 @@ namespace PL
             /// <param name="e"></param>
             private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
+
             Close();
         }
 
@@ -183,20 +183,24 @@ namespace PL
             //checkes if the model was updated by the user
             if (originalDroneModel != SelectedDrone.Model)
             {
-                try
+                var result = MessageBox.Show("Save updates to current drone?", "myApp", MessageBoxButton.YesNo);
+                if (result==MessageBoxResult.Yes)
                 {
-                    myBl.UpdateDrone(SelectedDrone.Id, SelectedDrone.Model);
-                    var res = MessageBox.Show("success");
-                    if (res != MessageBoxResult.None)
+                    try
                     {
-                        SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
-                        OnUpdate();
+                        myBl.UpdateDrone(SelectedDrone.Id, SelectedDrone.Model);
+                        var res = MessageBox.Show("success");
+                        if (res != MessageBoxResult.None)
+                        {
+                            SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                            OnUpdate();
+                        }
                     }
-                }
-                catch (FailedToUpdateException)
-                {
-                    MessageBox.Show("failed");
-                }
+                    catch (FailedToUpdateException ex)
+                    {
+                        MessageBox.Show("Failed to update - "+ ex.ToString());
+                    }
+                } 
             }
         }
 
@@ -207,40 +211,131 @@ namespace PL
         /// <param name="e"></param>
         private void sendToChargeBtn_Click(object sender, RoutedEventArgs e)
         {
-            try
+            var result = MessageBox.Show("Send drone to charge?", "myApp", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
             {
-                myBl.SendDroneToChargeSlot(SelectedDrone);
-                var res = MessageBox.Show("success");
-                if (res != MessageBoxResult.None)
+                try
                 {
-                    SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
-                    OnUpdate();
+                    myBl.SendDroneToChargeSlot(SelectedDrone);
+                    var res = MessageBox.Show("Success");
+                    if (res != MessageBoxResult.None)
+                    {
+                        SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                        OnUpdate();
+                    }
                 }
-            }
-            catch (IBL.BO.FailedToUpdateException)
-            {
-                MessageBox.Show("failed");
-            }
-
-            //Close();
+                catch (IBL.BO.FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
+                }
+            }             
         }
 
+        /// <summary>
+        /// button to release drone from charging
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void releaseDroneBtn_Click(object sender, RoutedEventArgs e)
         {
-
-            try
+            var result = MessageBox.Show("Release drone from charge?", "myApp", MessageBoxButton.YesNo);//gets the users choice (yes or no)
+            if (result == MessageBoxResult.Yes)
             {
-                myBl.ReleasedroneFromeChargeSlot(SelectedDrone);
-                var res = MessageBox.Show("success");
-                if (res != MessageBoxResult.None)
+                try
                 {
-                    SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
-                    OnUpdate();
+                    myBl.ReleasedroneFromeChargeSlot(SelectedDrone);
+                    var res = MessageBox.Show("Success");
+                    if (res != MessageBoxResult.None)
+                    {
+                        SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                        OnUpdate();
+                    }
+                }
+                catch (IBL.BO.FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed releasing drone - " + ex.ToString());
                 }
             }
-            catch (IBL.BO.FailedToUpdateException)
+        }
+
+        /// <summary>
+        /// button to send drone to delivery
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void sendDroneToDeliverBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Send drone to delivery?", "myApp", MessageBoxButton.YesNo);//gets the users choice (yes or no)
+            if (result == MessageBoxResult.Yes)
             {
-                MessageBox.Show("failed");
+                try
+                {
+                    myBl.AttributingParcelToDrone(SelectedDrone.Id);
+                    var res = MessageBox.Show("Success");
+                    if (res != MessageBoxResult.None)
+                    {
+                        SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                        OnUpdate();
+                    }
+                }
+                catch (IBL.BO.FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to attribute - " + ex.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// button to pickup a package
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dronePickUpBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Send drone to pick-up?", "myApp", MessageBoxButton.YesNo);//gets the users choice (yes or no)
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    myBl.pickedUp(SelectedDrone.Id);
+                    var res = MessageBox.Show("Success");
+                    if (res != MessageBoxResult.None)
+                    {
+                        SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                        OnUpdate();
+                    }
+                }
+                catch (IBL.BO.FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to pick up - " + ex.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// button to deliver a parcel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void deliverParcelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Deliver parcel?", "myApp", MessageBoxButton.YesNo);//gets the users choice (yes or no)
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    myBl.Delivered(SelectedDrone.Id);
+                    var res = MessageBox.Show("Success");
+                    if (res != MessageBoxResult.None)
+                    {
+                        SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                        OnUpdate();
+                    }
+                }
+                catch (IBL.BO.FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to pick up - " + ex.ToString());
+                }
             }
         }
 
