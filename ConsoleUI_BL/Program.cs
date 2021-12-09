@@ -5,10 +5,10 @@ using IBL.BO;
 namespace ConsoleUI_BL
 {
     class Program
-    {/*
+    {
         static void Main(string[] args)
         {
-            BL.IBL bO=null;
+            BL.IBL bO = null;
             bool unSuccess;
             do
             {
@@ -26,7 +26,7 @@ namespace ConsoleUI_BL
                     unSuccess = true;
                 }
             } while (unSuccess == true);
-            MenuOptions menuOption=default;
+            MenuOptions menuOption = default;
             EntitiesOptions entitiesOptions;
             ArrayPresentationOptions arrayOption;
             UpdateEntitiesOptions updateEntitiesOption;
@@ -113,7 +113,7 @@ namespace ConsoleUI_BL
                                             }
                                             Station s = new Station();
                                             s = createObjectStation(ID, name, numOfSlots, longitude, lattitude);
-                                            if(bO !=null) bO.AddStation(s);
+                                            if (bO != null) bO.AddStation(s);
                                             Console.WriteLine("Station added successfully");
                                             break;
                                         }
@@ -297,8 +297,8 @@ namespace ConsoleUI_BL
                             {
                                 Console.WriteLine("Choose an update option:\n1: Update Drone, 2: Update Station, 3: Update customer, 4: Charge drone, 5: Release drone, 6: Attribute parcel, , 7: Pick-up, 8: Delivery");
                                 updateEntitiesOption = (UpdateEntitiesOptions)int.Parse(Console.ReadLine());
-                                switch (updateEntitiesOption)
-                                {
+                            switch (updateEntitiesOption)
+                            {
                                     case UpdateEntitiesOptions.DroneUpdate:
                                         {
                                             int droneID;
@@ -309,29 +309,21 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                             }
-                                            while (droneID < 1000 || droneID > 10000)
+                                            Console.WriteLine("Enter a 4 digit drone's ID:");
+                                            input = Console.ReadLine();
+                                            while (!int.TryParse(input, out droneID))
                                             {
-                                                Console.WriteLine($"id {droneID} is not valid !!");
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
-                                                while (!int.TryParse(input, out droneID))
-                                                {
-                                                    Console.WriteLine("Enter a 4 digit drone's ID:");
-                                                    input = Console.ReadLine();
-                                                }
                                             }
                                             Console.WriteLine("Enter drone's model:");
                                             model = Console.ReadLine();
-                                            while (String.IsNullOrEmpty(model))
-                                            {
-                                                Console.WriteLine($"Drone model {model} is not valid\n");
-                                                Console.WriteLine("Enter drone's model:");
-                                                model = Console.ReadLine();
-                                            }
+                                            Console.WriteLine("Enter drone's model:");
+                                            model = Console.ReadLine();
                                             bO.UpdateDrone(droneID, model);
                                             Console.WriteLine("Drone updated successfully");
                                             break;
-                                        }
+                                        }    
                                     case UpdateEntitiesOptions.StationUpdate:
                                         {
                                             int stationID;
@@ -343,9 +335,6 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 4 digit station's ID:");
                                             }
-                                            while (stationID < 1000 || stationID > 10000)
-                                            {
-                                                Console.WriteLine($"Station ID {stationID} is not valid\n");
                                                 Console.WriteLine("Enter a 4 digit station's ID:");
                                                 input = Console.ReadLine();
                                                 while (!(int.TryParse(input, out stationID)))
@@ -353,7 +342,6 @@ namespace ConsoleUI_BL
                                                     Console.WriteLine("Enter a 4 digit station's ID:");
                                                     input = Console.ReadLine();
                                                 }
-                                            }
                                             Console.WriteLine("Enter the station's name:");
                                             stationName = Console.ReadLine();
                                             Console.WriteLine("Enter number of charging slots:");
@@ -390,26 +378,18 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 9 digit customer's ID:");
                                             }
-                                            while (customerID < 100000000 || customerID > 1000000000)
-                                            {
-                                                Console.WriteLine($"Customer ID {customerID} is not valid\n");
                                                 Console.WriteLine("Enter a 9 digit customer's ID:");
                                                 while (!int.TryParse(input, out customerID))
                                                 {
                                                     Console.WriteLine("Enter a 9 digit customer's ID:");
                                                     input = Console.ReadLine();
-                                                }
                                             }
                                             Console.WriteLine("Enter the customer's name:");
                                             customerName = Console.ReadLine();
                                             Console.WriteLine("Enter the customer's phone number:");
                                             customerPhone = Console.ReadLine();
-                                            while (customerPhone.Length != 10)
-                                            {
-                                                Console.WriteLine("Invalid phone number!!\n");
                                                 Console.WriteLine("Enter the customer's phone number:");
                                                 customerPhone = Console.ReadLine();
-                                            }
                                             bO.UpdateCustomer(customerID, customerName, customerPhone);
                                             Console.WriteLine("Customer updated successfully");
                                             break;
@@ -424,9 +404,7 @@ namespace ConsoleUI_BL
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
                                             }
-                                            while (droneID < 1000 || droneID > 10000)
-                                            {
-                                                Console.WriteLine($"id {droneID} is not valid !!");
+
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
                                                 while (!(int.TryParse(input, out droneID)))
@@ -434,7 +412,6 @@ namespace ConsoleUI_BL
                                                     Console.WriteLine("Enter a 4 digit drone's ID:");
                                                     input = Console.ReadLine();
                                                 }
-                                            }
                                             Drone d = bO.GetDrone(droneID);
                                             bO.SendDroneToChargeSlot(d);
                                             Console.WriteLine("Drone sent to charge successfully");
@@ -443,17 +420,12 @@ namespace ConsoleUI_BL
                                     case UpdateEntitiesOptions.ReleaseDrone:
                                         {
                                             int droneID;
-                                            int amountOfHours;
                                             Console.WriteLine("Enter a 4 digit drone's ID:");
                                             string input = Console.ReadLine();
                                             while (!(int.TryParse(input, out droneID)))
                                             {
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
-                                            }
-                                            while (droneID < 1000 || droneID > 10000)
-                                            {
-                                                Console.WriteLine($"id {droneID} is not valid !!");
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
                                                 while (!(int.TryParse(input, out droneID)))
@@ -462,25 +434,8 @@ namespace ConsoleUI_BL
                                                     input = Console.ReadLine();
                                                 }
                                             }
-                                            Console.WriteLine("Enter the amount of hour the drone was charging:");
-                                            input = Console.ReadLine();
-                                            while (!(int.TryParse(input, out amountOfHours)))
-                                            {
-                                                Console.WriteLine("Enter the amount of hour the drone was charging:");
-                                            }
-                                            while (amountOfHours < 0)
-                                            {
-                                                Console.WriteLine($"Invalid hours");
-                                                Console.WriteLine("Enter the amount of hour the drone was charging:");
-                                                input = Console.ReadLine();
-                                                while (!(int.TryParse(input, out droneID)))
-                                                {
-                                                    Console.WriteLine("Enter the amount of hour the drone was charging:");
-                                                    input = Console.ReadLine();
-                                                }
-                                            }
                                             Drone d = bO.GetDrone(droneID);
-                                            bO.ReleasedroneFromeChargeSlot(d, amountOfHours);
+                                            bO.ReleasedroneFromeChargeSlot(d);
                                             Console.WriteLine("Drone released from charging successfully");
                                             break;
                                         }
@@ -494,16 +449,12 @@ namespace ConsoleUI_BL
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
                                             }
-                                            while (droneID < 1000 || droneID > 10000)
-                                            {
-                                                Console.WriteLine($"id {droneID} is not valid !!");
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
-                                                while (!(int.TryParse(input, out droneID)))
-                                                {
-                                                    Console.WriteLine("Enter a 4 digit drone's ID:");
-                                                    input = Console.ReadLine();
-                                                }
+                                            while (!(int.TryParse(input, out droneID)))
+                                            {
+                                                Console.WriteLine("Enter a 4 digit drone's ID:");
+                                                input = Console.ReadLine();
                                             }
                                             bO.AttributingParcelToDrone(droneID);
                                             Console.WriteLine("Parcel attributed to drone successfully");
@@ -519,9 +470,6 @@ namespace ConsoleUI_BL
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
                                             }
-                                            while (droneID < 1000 || droneID > 10000)
-                                            {
-                                                Console.WriteLine($"id {droneID} is not valid !!");
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
                                                 while (!(int.TryParse(input, out droneID)))
@@ -529,7 +477,6 @@ namespace ConsoleUI_BL
                                                     Console.WriteLine("Enter a 4 digit drone's ID:");
                                                     input = Console.ReadLine();
                                                 }
-                                            }
                                             bO.pickedUp(droneID);
                                             Console.WriteLine("Parcel pick up succeeded");
                                             break;
@@ -543,9 +490,6 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                             }
-                                            while (droneID < 1000 || droneID > 10000)
-                                            {
-                                                Console.WriteLine($"id {droneID} is not valid !!");
                                                 Console.WriteLine("Enter a 4 digit drone's ID:");
                                                 input = Console.ReadLine();
                                                 while (!(int.TryParse(input, out droneID)))
@@ -553,7 +497,6 @@ namespace ConsoleUI_BL
                                                     Console.WriteLine("Enter a 4 digit drone's ID:");
                                                     input = Console.ReadLine();
                                                 }
-                                            }
                                             bO.Delivered(droneID);
                                             Console.WriteLine("Parcel delivery succeeded");
                                             break;
@@ -575,15 +518,11 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 4 digit station ID:");
                                             }
-                                            while (stationID < 1000 || stationID > 10000)
-                                            {
-                                                Console.WriteLine($"id {stationID} is not valid !!");
                                                 Console.WriteLine("Enter a 4 digit station ID:");
                                                 while (!(int.TryParse(Console.ReadLine(), out stationID)))
                                                 {
                                                     Console.WriteLine("Enter a 4 digit station ID:");
                                                 }
-                                            }
                                             Station s = bO.GetStation(stationID);
                                             Console.WriteLine(s);
                                             break;
@@ -596,15 +535,11 @@ namespace ConsoleUI_BL
                                             {
                                                 Console.WriteLine("Enter a 4 digit drone ID:");
                                             }
-                                            while (droneID < 1000 || droneID > 10000)
-                                            {
-                                                Console.WriteLine($"id {droneID} is not valid !!");
                                                 Console.WriteLine("Enter a 4 digit drone ID:");
                                                 while (!(int.TryParse(Console.ReadLine(), out droneID)))
                                                 {
                                                     Console.WriteLine("Enter a 4 digit drone ID:");
                                                 }
-                                            }
                                             Drone d = bO.GetDrone(droneID);
                                             Console.WriteLine(d);
                                             break;
@@ -906,6 +841,6 @@ namespace ConsoleUI_BL
             foreach (var s in temp)
                 Console.WriteLine(s);
 
-        }*/
+        }
     }
 }

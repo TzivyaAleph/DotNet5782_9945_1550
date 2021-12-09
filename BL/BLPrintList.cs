@@ -182,11 +182,11 @@ namespace BL
         /// <returns>the status of the parcel</returns>
         private Status getStatus(IDAL.DO.Parcel par)
         {
-            if (par.Delivered != DateTime.MinValue)
+            if (par.Delivered != null)
                 return Status.Delivered;
-            else if (par.PickedUp != DateTime.MinValue)
+            else if (par.PickedUp !=null)
                 return Status.Picked;
-            else if (par.Scheduled != DateTime.MinValue)
+            else if (par.Scheduled != null)
                 return Status.Assigned;
             else
                 return Status.Created;

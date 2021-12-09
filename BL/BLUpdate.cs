@@ -18,6 +18,14 @@ namespace BL
         /// <param name="drone">the drone to update</param>
         public void UpdateDrone(int droneId, string newModel)
         {
+            if (droneId < 1000 || droneId > 10000)
+            {
+                throw new InputDoesNotExist($"id {droneId} is not valid !!");
+            }
+            if(String.IsNullOrEmpty(newModel))
+            {
+                throw new InputDoesNotExist($"model {newModel} is not valid !!");
+            }
             IDAL.DO.Drone droneTemp = new IDAL.DO.Drone();
             try
             {
@@ -46,6 +54,14 @@ namespace BL
         /// <param name="stationToUpdate">station with the values to update</param>
         public void UpdateStation(int stationId, string stationName, int numOfChargingSlots)
         {
+            if (stationId < 1000 || stationId > 10000)
+            {
+                throw new InputDoesNotExist($"Station ID {stationId} is not valid\n");
+            }
+            if (String.IsNullOrEmpty(stationName))
+            {
+                throw new InputDoesNotExist($"model {stationName} is not valid !!");
+            }
             IDAL.DO.Station stationTemp = new IDAL.DO.Station();
             try
             {
@@ -89,6 +105,18 @@ namespace BL
         /// <param name="customer">customer to update</param>
         public void UpdateCustomer(int customerId, string customerName, string customerPhone)
         {
+            if (customerId < 100000000 || customerId > 1000000000)
+            {
+                throw new InputDoesNotExist($"Customer ID {customerId} is not valid\n");
+            }
+            if (String.IsNullOrEmpty(customerName))
+            {
+                throw new InputDoesNotExist($"model {customerName} is not valid !!");
+            }
+            if (customerPhone.Length != 10)
+            {
+                throw new InputDoesNotExist("Invalid phone number!!\n");
+            }
             IDAL.DO.Customer customerTemp = new IDAL.DO.Customer();
             try
             {
@@ -118,6 +146,10 @@ namespace BL
         /// <param name="d"></param>
         public void SendDroneToChargeSlot(Drone d)
         {
+            if (d.Id < 1000 || d.Id > 10000)
+            {
+                throw new InputDoesNotExist($"id {d.Id} is not valid !!");
+            }
             DroneForList droneForList = new();
             try
             {
@@ -168,6 +200,10 @@ namespace BL
         /// <param name="droneId">id of the drone we are attributing to the parcel</param>
         public void AttributingParcelToDrone(int droneId)
         {
+            while (droneId < 1000 || droneId > 10000)
+            {
+                throw new InputDoesNotExist($"id {droneId} is not valid !!");
+            }
             List<IDAL.DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
             List<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray(par=>par.DroneID==0).ToList();//gets the non attributed parcels list
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
@@ -270,6 +306,10 @@ namespace BL
         /// <param name="droneId">id of the pickup drone</param>
         public void pickedUp(int droneId)
         {
+            if (droneId < 1000 || droneId > 10000)
+            {
+                throw new InputDoesNotExist($"id {droneId} is not valid !!");
+            }
             IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
             IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
             IDAL.DO.Parcel parcelToPickUp = new IDAL.DO.Parcel();
@@ -290,7 +330,7 @@ namespace BL
             {
                 throw new InputDoesNotExist("the drone does not exist !!");
             }
-            if (parcelToPickUp.PickedUp != DateTime.MinValue)//checkes if the parcel was already picked up
+            if (parcelToPickUp.PickedUp !=null)//checkes if the parcel was already picked up
             {
                 throw new InvalidInputException($"parcel {parcelToPickUp.Id} was already picked up !!");
             }
@@ -330,6 +370,10 @@ namespace BL
         /// <param name="droneId">id of the drone who picked up the parcel</param>
         public void Delivered(int droneId)
         {
+            if (droneId < 1000 || droneId > 10000)
+            {
+                throw new InputDoesNotExist($"id {droneId} is not valid !!");
+            }
             IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
             IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
             IDAL.DO.Parcel parcelToDeliver = new IDAL.DO.Parcel();
@@ -352,7 +396,7 @@ namespace BL
             }
             DroneForList blDeliveryDrone = new();
             blDeliveryDrone = drones.Find(drone => drone.Id == droneId);//finds the drone thats picking up the parcel in the bl drones list
-            if (parcelToDeliver.PickedUp == DateTime.MinValue)//checkes if the parcel wasnt picked up yet
+            if (parcelToDeliver.PickedUp == null)//checkes if the parcel wasnt picked up yet
             {
                 throw new FailedToUpdateException($"parcel {parcelToDeliver.Id} wasn't picked up yet !!");
             }
@@ -433,6 +477,10 @@ namespace BL
         /// <param name="timeInCharge">for the hour its been charging</param>
         public void ReleasedroneFromeChargeSlot(Drone d)
         {
+            if (d.Id < 1000 || d.Id > 10000)
+            {
+                throw new InputDoesNotExist($"id {d.Id} is not valid !!");
+            }
             DroneForList droneForList = new();
             try
             {

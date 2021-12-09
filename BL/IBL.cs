@@ -56,7 +56,6 @@ namespace BL
         /// </summary>
         /// <returns>the created list</returns>
         IEnumerable<CustomerForList> GetCustomerList();
-        public DroneForList GetDroneForList(int droneID);
 
         /// <summary>
         /// return drone in the list by its recieved id.

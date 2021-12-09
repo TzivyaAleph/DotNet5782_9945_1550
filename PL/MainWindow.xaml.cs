@@ -24,6 +24,9 @@ namespace PL
         public MainWindow()
         {
             InitializeComponent();
+            ImageBrush b = new ImageBrush();
+            b.ImageSource = new BitmapImage(new Uri("c:\\temp\\x.jpg"));
+            mainGrid.Background = b;
         }
 
         private void droneListViewBtn_Click(object sender, RoutedEventArgs e)

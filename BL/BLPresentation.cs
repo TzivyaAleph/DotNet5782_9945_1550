@@ -78,14 +78,6 @@ namespace BL
             return parcel;
         }
 
-        public DroneForList GetDroneForList(int droneID)
-        {
-            DroneForList droneForList = drones.Find(item => item.Id == droneID);
-            if (droneForList == default)
-                throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
-            return droneForList;
-        }
-
         /// <summary>
         /// return drone in the list by its recieved id.
         /// </summary>
@@ -93,6 +85,10 @@ namespace BL
         /// <returns>the drone from the list</returns>
         public Drone GetDrone(int droneID)
         {
+            if (droneID < 1000 || droneID > 10000)
+            {
+                throw new InvalidInputException($"drone id {droneID} is not valid !!");
+            }
             DroneForList droneForList = drones.Find(item => item.Id == droneID);
             if (droneForList == default)
                 throw new InputDoesNotExist($"ID {droneID} does not exist in the drone list");
@@ -117,7 +113,7 @@ namespace BL
                     returningDrone.ParcelInDelivery = new();
                     returningDrone.ParcelInDelivery.Id = parcel.Id;
                     //checks if the parcel wasnt picked up
-                    if (parcel.PickedUp == DateTime.MinValue)
+                    if (parcel.PickedUp ==null)
                         returningDrone.ParcelInDelivery.OnTheWay = false;
                     else
                         returningDrone.ParcelInDelivery.OnTheWay = true;
@@ -151,6 +147,10 @@ namespace BL
         /// <returns>the customer</returns>
         public Customer GetCustomer(int customerId)
         {
+            if (customerId < 100000000 || customerId > 999999999)
+            {
+                throw new InvalidInputException($"id {customerId} is not valid !!");
+            }
             Customer returningCustomer = new();
             try
             {
@@ -234,11 +234,11 @@ namespace BL
                     parcelToAdd.Weight =(Weight) par.Weight;
                     parcelToAdd.Priority =(Priority) par.Priority;
                     //checks the parcel status and updates the field.
-                    if (par.Delivered != DateTime.MinValue)
+                    if (par.Delivered != null)
                         parcelToAdd.Status = Status.Delivered;
-                    else if (par.PickedUp != DateTime.MinValue)
+                    else if (par.PickedUp !=null)
                         parcelToAdd.Status = Status.Picked;
-                    else if (par.Scheduled != DateTime.MinValue)
+                    else if (par.Scheduled != null)
                         parcelToAdd.Status = Status.Assigned;
                     else
                         parcelToAdd.Status = Status.Created;
@@ -269,6 +269,8 @@ namespace BL
         /// <returns>the object</returns>
         public Station GetStation(int stationId)
         {
+            if (stationId < 1000 || stationId > 10000)
+                 throw new InvalidInputException($"id {stationId} is not valid !!");
             Station returningStation = new();
             IDAL.DO.Station dalStation = new IDAL.DO.Station();
             try

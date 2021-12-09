@@ -53,23 +53,37 @@ namespace PL
             }
         }
 
-
         public List<Weight> WeightOptions { get; set; } //list to hold weight options
         public List<DroneStatuses> Statuses { get; set; } //list to hold Drone Status options
+        public List<string> Names { get; set; }//list of stations name
         public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
         public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         /// <summary>
-        /// a ctor foe adding new drone
+        /// a ctor for adding new drone
         /// </summary>
         /// <param name="bl"></param>
         public DroneView(BL.IBL bl)
         {
-            Initialize();
-            droneToAdd = new DroneForList();
-            myBl = bl;
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+                myBl = bl;
+                Initialize();
+                Names = new List<string>();
+                List<StationForList> stations = bl.GetStationList().ToList();
+                //create list of stations name
+                foreach (var st in stations)
+                {
+                    Names.Add(st.Name);
+                }
+                droneToAdd = new DroneForList();
+            }
+            catch (FailedToGetException ex)
+            {
+                MessageBox.Show("Failed to add!!" + ex.ToString());
+            }
         }
 
         /// <summary>
@@ -79,6 +93,7 @@ namespace PL
         /// <param name="dr">the selected drone</param>
         public DroneView(BL.IBL bl, Drone dr)
         {
+            InitializeComponent();
             Initialize();
             SelectedDrone = dr;
             originalDroneModel = dr.Model;
@@ -86,14 +101,19 @@ namespace PL
             IsUpdateMode = true;
             if (SelectedDrone.ParcelInDelivery != null) 
                 parcelView.Text = SelectedDrone.ParcelInDelivery.ToString();
-            InitializeComponent();
         }
 
+        /// <summary>
+    /// inisialize for both add and update
+    /// </summary>
         private void Initialize()
         {
             WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
             DataContext = this;// לדעת איפה לחפש את הפרופרטיז ששמנו בביינדינג
+            ImageBrush b = new ImageBrush();
+            b.ImageSource = new BitmapImage(new Uri("c:\\temp\\y.jpg"));
+            grMain.Background = b;
         }
 
         /// <summary>
@@ -105,39 +125,40 @@ namespace PL
         {
             try
             {
-                DroneForList newDr = AddNewDronFromPage();
-                int stationId = 1234;
-                myBl.AddDrone(newDr, stationId);
-                MessageBox.Show("Added succecfully!!");
-                OnUpdate();//updates the list of drones in the previous window.
-                Close();
+                //finds the station with the input name and sends the station id to bl add
+                List<StationForList> stations = myBl.GetStationList().ToList();
+                StationForList stationForList = stations.FirstOrDefault(x => x.Name ==cbxStations.Text);
+                int stationId = stationForList.Id;
+                //asks the user if hes sure 
+                var res = MessageBox.Show("Are you sure you want to add?", "myApp", MessageBoxButton.YesNoCancel);
+                if(res==MessageBoxResult.Yes)
+                {
+                    myBl.AddDrone(DroneToAdd, stationId);
+                    res = MessageBox.Show("Added succecfully!!");
+                    if(res!=MessageBoxResult.None)
+                       OnUpdate();//updates the list of drones in the previous window.
+                    Close();
+                }
             }
             catch (FailedToAddException ex)
             {
-                MessageBox.Show("Failed to add!!");
+                MessageBox.Show("Failed to add -" + ex.ToString());
+            }
+            catch (FailedToGetException ex)
+            {
+                MessageBox.Show("Failed to add!!" + ex.ToString());
             }
 
         }
 
-        /// <summary>
-        /// creates new drone with data from user
-        /// </summary>
-        /// <returns>the created drone</returns>
-        private DroneForList AddNewDronFromPage()
-        {
-            DroneForList newDrone = new DroneForList();
-            newDrone.Id = int.Parse(txtID.Text);
-            newDrone.Model = txtModel.Text;
-            newDrone.Weight = (Weight)int.Parse(CBXWeight.Text);
-            return newDrone;
-        }
 
-        /// <summary>
-        /// for closing the window 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+
+            /// <summary>
+            /// for closing the window 
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }

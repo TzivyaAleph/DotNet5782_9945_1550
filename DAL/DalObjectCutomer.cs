@@ -53,34 +53,6 @@ namespace DalObject
             return newList.Where(predicate);
         }
 
-        /// <summary>
-        /// return new list with customers who have parcel that has been delieverd.
-        /// </summary>
-        /// <returns>the new list</returns>
-        //public IEnumerable<Customer> ListOfCustomerWithDelieverdParcel()
-        //{
-        //    List<Customer> customerWithUnDelieverdParcel = new List<Customer>();
-        //    //add to new list the customer who has parcel that have been delieverd
-        //    foreach (var cust in DataSource.Customers)
-        //    {
-        //        //foreach (var par in DataSource.Parcels)
-        //        //{
-        //        //    //the parcel has been attributed to the customer and has been delieverd
-        //        //        if (par.TargetID == cust.Id && par.Delivered != DateTime.MinValue)
-        //        //    {
-        //        //        customerWithUnDelieverdParcel.Add(cust);
-        //        //        break;
-        //        //    }
-        //        //}
-
-        //    }
-        //    return customerWithUnDelieverdParcel;
-        //}
-
-        /// <summary>
-        /// puts a updated customer in the customers list
-        /// </summary>
-        /// <param name="customer"></param>
         public void UpdateCustomer(Customer customer)
         {
             if (!(DataSource.Customers.Exists(c => c.Id == customer.Id)))

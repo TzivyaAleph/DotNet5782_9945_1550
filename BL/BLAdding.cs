@@ -48,10 +48,10 @@ namespace BL
         {
             List<IDAL.DO.Station> stations = (List<IDAL.DO.Station>)myDal.CopyStationArray();
             //checks if the station exists
-            //if (!(stations.Exists(station => station.Id == stationId)))
-            //{
-            //    throw new InputDoesNotExist($"station {stationId} does not exists !!");
-            //}
+            if (!(stations.Exists(station => station.Id == stationId)))
+            {
+                throw new InputDoesNotExist($"station {stationId} does not exists !!");
+            }
             int index = stations.FindIndex(item => item.Id == stationId);//finds the station that the drone in it.
             IDAL.DO.Station s = new IDAL.DO.Station();
             s = stations[index];
@@ -117,9 +117,9 @@ namespace BL
             parcel.DroneInParcel = default;
             //the parcel has been made.
             parcel.Requested = DateTime.Now;
-            parcel.Scheduled = DateTime.MinValue;
-            parcel.Delivered = DateTime.MinValue;
-            parcel.PickedUp = DateTime.MinValue;
+            parcel.Scheduled = null;
+            parcel.Delivered = null;
+            parcel.PickedUp = null;
             IDAL.DO.Parcel newParcel = new();
             object obj = newParcel;
             parcel.CopyPropertiesTo(obj);

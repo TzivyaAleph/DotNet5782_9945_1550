@@ -81,7 +81,8 @@ namespace PL
         private void droneAdd_Click(object sender, RoutedEventArgs e)
         {
             DroneView droneWindow = new DroneView(myBl);
-            droneWindow.ShowDialog();
+            droneWindow.OnUpdate += DroneWindow_onUpdate;
+            droneWindow.Show();
         }
 
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)

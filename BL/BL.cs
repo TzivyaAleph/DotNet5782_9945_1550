@@ -53,7 +53,7 @@ namespace BL
                 }
                 IDAL.DO.Station clossestStation = new IDAL.DO.Station();
                 // the drone has been attributted but the parcel has not delievred.
-                if (par.Delivered == DateTime.MinValue)
+                if (par.Delivered == null)
                 {
                     droneToAdd.DroneStatuses = DroneStatuses.Delivered;
                     //finds the customer who send the parcel.
@@ -74,7 +74,7 @@ namespace BL
                     clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, myDal.CopyStationArray().ToList());//finds the clossest station to the target.
                     double batteryUseFromTargetrToStation = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, clossestStation.Lattitude, clossestStation.Longitude) * availableElectricityUse;
                     //the drone has been attributted but wasnt picked up
-                    if (par.PickedUp == DateTime.MinValue)
+                    if (par.PickedUp == null)
                     {
                         //the current location is the clossest station to the sender
                         droneToAdd.CurrentLocation.Latitude = clossestStation.Lattitude;
