@@ -50,13 +50,13 @@
                 <Label Content="Longitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
                 <Label Content="Lattitude:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
                 <TextBox x:Name="txtID" Text="{Binding DroneToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox x:Name="txtBattery"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <TextBox x:Name="txtBattery" Text="0"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
                 <ComboBox Name="CBXWeight" ItemsSource="{Binding WeightOptions}" SelectedItem="{Binding DroneToAdd.Weight}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"></ComboBox>
                 <TextBox x:Name="txtModel" Text="{Binding DroneToAdd.Model}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <ComboBox x:Name="CBXStatus" ItemsSource="{Binding Statuses}" SelectedItem="{Binding DroneToAdd.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" IsEnabled="False" />
-                <TextBox x:Name="txtDelievery"  Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
-                <TextBox x:Name="txtLongitude" Text="{Binding DroneToAdd.CurrentLocation.Longitude}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
-                <TextBox x:Name="txtLatitude" Text="{Binding DroneToAdd.CurrentLocation.Latitude}" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <TextBox x:Name="txtDelievery" Text="0"  Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <TextBox x:Name="txtLongitude" Text="0" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <TextBox x:Name="txtLatitude" Text="0" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
                 <Label x:Name="txtStationName" Content="Choose station to put the drone in it: " Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <ComboBox Name="cbxStations" ItemsSource="{Binding Names}" SelectedItem="{Binding Names}" VerticalAlignment="Center"  Grid.Row="4" Grid.Column="2" Margin="110,0,106,0" />
                 <Button x:Name="addButton" Content="Add"  FontSize="30" Click="addButton_Click" Grid.Column="3" Grid.Row="6"/>
@@ -98,7 +98,7 @@
                 <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedDrone.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" IsEnabled="False"/>
                 <TextBox Text="{Binding SelectedDrone.CurrentLocation.Longitude}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <TextBox Text="{Binding SelectedDrone.CurrentLocation.Latitude}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
-                <TextBlock x:Name="parcelView" Text="{Binding SelectedDrone.ParcelInDelivery.ToString}" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}"/>
+                <TextBlock x:Name="parcelView" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}"/>
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <Button x:Name="updateModelBtn" Content="Update" Width="100" Click="UpdateModelBtn_Click"/>

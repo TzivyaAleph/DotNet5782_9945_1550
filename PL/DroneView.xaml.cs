@@ -98,13 +98,18 @@ namespace PL
             SelectedDrone = dr;
             originalDroneModel = dr.Model;
             myBl = bl;
-            IsUpdateMode = true;             
-            InitializeComponent();
+            IsUpdateMode = true;
+            ParcelInDelivery parcel = new ParcelInDelivery();
+            if(SelectedDrone.ParcelInDelivery!= null)
+            {
+                parcel = SelectedDrone.ParcelInDelivery;
+                this.parcelView.Text = parcel.ToString();
+            }
         }
 
         /// <summary>
-    /// inisialize for both add and update
-    /// </summary>
+        /// inisialize for both add and update
+        /// </summary>
         private void Initialize()
         {
             WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
@@ -126,16 +131,16 @@ namespace PL
             {
                 //finds the station with the input name and sends the station id to bl add
                 List<StationForList> stations = myBl.GetStationList().ToList();
-                StationForList stationForList = stations.FirstOrDefault(x => x.Name ==cbxStations.Text);
+                StationForList stationForList = stations.FirstOrDefault(x => x.Name == cbxStations.Text);
                 int stationId = stationForList.Id;
                 //asks the user if hes sure 
                 var res = MessageBox.Show("Are you sure you want to add?", "myApp", MessageBoxButton.YesNoCancel);
-                if(res==MessageBoxResult.Yes)
+                if (res == MessageBoxResult.Yes)
                 {
                     myBl.AddDrone(DroneToAdd, stationId);
                     res = MessageBox.Show("Added succecfully!!");
-                    if(res!=MessageBoxResult.None)
-                       OnUpdate();//updates the list of drones in the previous window.
+                    if (res != MessageBoxResult.None)
+                        OnUpdate();//updates the list of drones in the previous window.
                     Close();
                 }
             }
@@ -145,19 +150,20 @@ namespace PL
             }
             catch (FailedToGetException ex)
             {
-                MessageBox.Show("Failed to add!!" + ex.ToString());
+                MessageBox.Show("Failed to add -" + ex.ToString());
             }
-
+            catch (InvalidInputException ex)
+            {
+                MessageBox.Show("Failed to add -" + ex.ToString());
+            }
         }
 
-
-
-            /// <summary>
-            /// for closing the window 
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-            private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// for closing the window 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
 
             Close();
@@ -184,7 +190,7 @@ namespace PL
             if (originalDroneModel != SelectedDrone.Model)
             {
                 var result = MessageBox.Show("Save updates to current drone?", "myApp", MessageBoxButton.YesNo);
-                if (result==MessageBoxResult.Yes)
+                if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
@@ -198,9 +204,9 @@ namespace PL
                     }
                     catch (FailedToUpdateException ex)
                     {
-                        MessageBox.Show("Failed to update - "+ ex.ToString());
+                        MessageBox.Show("Failed to update - " + ex.ToString());
                     }
-                } 
+                }
             }
         }
 
@@ -228,7 +234,7 @@ namespace PL
                 {
                     MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
                 }
-            }             
+            }
         }
 
         /// <summary>

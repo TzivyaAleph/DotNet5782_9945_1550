@@ -112,6 +112,18 @@ namespace BL
                     droneToAdd.CurrentLocation.Latitude = randomStation.Lattitude;
                     droneToAdd.CurrentLocation.Longitude = randomStation.Longitude;
                     droneToAdd.Battery = rand.Next(0, 21);
+                    IDAL.DO.Drone dalDrone = new IDAL.DO.Drone();
+                    dalDrone.Id = droneToAdd.Id;
+                    dalDrone.Model = droneToAdd.Model;
+                    dalDrone.MaxWeight = (IDAL.DO.Weight)droneToAdd.Weight;
+                    try
+                    {
+                        myDal.SendDroneToChargeSlot(dalDrone, randomStation);
+                    }
+                    catch (IDAL.DO.ExistingObjectException custEx)
+                    {
+                        throw new FailedToUpdateException("ERROR", custEx);
+                    }
                 }
                 //the drone is available.
                 if (droneToAdd.DroneStatuses == DroneStatuses.Available)

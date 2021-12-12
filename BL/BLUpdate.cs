@@ -20,11 +20,7 @@ namespace BL
         {
             if (droneId < 1000 || droneId > 10000)
             {
-                throw new InputDoesNotExist($"id {droneId} is not valid !!");
-            }
-            if(String.IsNullOrEmpty(newModel))
-            {
-                throw new InputDoesNotExist($"model {newModel} is not valid !!");
+                throw new InvalidInputException($"id {droneId} is not valid !!");
             }
             IDAL.DO.Drone droneTemp = new IDAL.DO.Drone();
             try
@@ -56,11 +52,11 @@ namespace BL
         {
             if (stationId < 1000 || stationId > 10000)
             {
-                throw new InputDoesNotExist($"Station ID {stationId} is not valid\n");
+                throw new InvalidInputException($"Station ID {stationId} is not valid\n");
             }
             if (String.IsNullOrEmpty(stationName))
             {
-                throw new InputDoesNotExist($"model {stationName} is not valid !!");
+                throw new InvalidInputException($"model {stationName} is not valid !!");
             }
             IDAL.DO.Station stationTemp = new IDAL.DO.Station();
             try
@@ -107,15 +103,15 @@ namespace BL
         {
             if (customerId < 100000000 || customerId > 1000000000)
             {
-                throw new InputDoesNotExist($"Customer ID {customerId} is not valid\n");
+                throw new InvalidInputException($"Customer ID {customerId} is not valid\n");
             }
             if (String.IsNullOrEmpty(customerName))
             {
-                throw new InputDoesNotExist($"model {customerName} is not valid !!");
+                throw new InvalidInputException($"model {customerName} is not valid !!");
             }
             if (customerPhone.Length != 10)
             {
-                throw new InputDoesNotExist("Invalid phone number!!\n");
+                throw new InvalidInputException("Invalid phone number!!\n");
             }
             IDAL.DO.Customer customerTemp = new IDAL.DO.Customer();
             try
@@ -148,7 +144,7 @@ namespace BL
         {
             if (d.Id < 1000 || d.Id > 10000)
             {
-                throw new InputDoesNotExist($"id {d.Id} is not valid !!");
+                throw new InvalidInputException($"id {d.Id} is not valid !!");
             }
             DroneForList droneForList = new();
             try
@@ -202,7 +198,7 @@ namespace BL
         {
             while (droneId < 1000 || droneId > 10000)
             {
-                throw new InputDoesNotExist($"id {droneId} is not valid !!");
+                throw new InvalidInputException($"id {droneId} is not valid !!");
             }
             List<IDAL.DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
             List<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray(par=>par.DroneID==0).ToList();//gets the non attributed parcels list
@@ -308,7 +304,7 @@ namespace BL
         {
             if (droneId < 1000 || droneId > 10000)
             {
-                throw new InputDoesNotExist($"id {droneId} is not valid !!");
+                throw new InvalidInputException($"id {droneId} is not valid !!");
             }
             IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
             IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
@@ -372,7 +368,7 @@ namespace BL
         {
             if (droneId < 1000 || droneId > 10000)
             {
-                throw new InputDoesNotExist($"id {droneId} is not valid !!");
+                throw new InvalidInputException($"id {droneId} is not valid !!");
             }
             IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
             IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
@@ -479,7 +475,7 @@ namespace BL
         {
             if (d.Id < 1000 || d.Id > 10000)
             {
-                throw new InputDoesNotExist($"id {d.Id} is not valid !!");
+                throw new InvalidInputException($"id {d.Id} is not valid !!");
             }
             DroneForList droneForList = new();
             try
@@ -501,16 +497,16 @@ namespace BL
             {
                 throw new InputDoesNotExist("the station does not exist !!");
             }
-
             TimeSpan timeInCharging = (TimeSpan)(DateTime.Now - myDal.GetDroneCharge(dalStation.Id, d.Id).SentToCharge);
             double batteryCharge = timeInCharging.TotalHours * myDal.GetElectricityUse()[4];
             //cant charge more than 100
-            if ((d.Battery + batteryCharge) > 100)
-                d.Battery = 100;
+            if ((droneForList.Battery + batteryCharge) > 100)
+                droneForList.Battery = 100;
             else
-                d.Battery += batteryCharge;
-            d.DroneStatuses = DroneStatuses.Available;
-
+                droneForList.Battery += batteryCharge;
+            droneForList.DroneStatuses = DroneStatuses.Available;
+            int droneBlIndex = drones.FindIndex(item => item.Id == droneForList.Id);//finds the index of the charging drone in the bl drones list
+            drones[droneBlIndex] = droneForList;//puts the updated drone into the bl drones list
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
                 Id = d.Id,
