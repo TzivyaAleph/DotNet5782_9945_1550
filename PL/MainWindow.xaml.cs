@@ -25,7 +25,7 @@ namespace PL
         {
             InitializeComponent();
             ImageBrush b = new ImageBrush();
-            b.ImageSource = new BitmapImage(new Uri("c:\\temp\\x.jpg"));
+            b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\main.jpg", UriKind.Relative));
             mainGrid.Background = b;
         }
 

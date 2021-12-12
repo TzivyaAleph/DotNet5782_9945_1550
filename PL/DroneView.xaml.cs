@@ -111,7 +111,7 @@ namespace PL
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
             DataContext = this;// לדעת איפה לחפש את הפרופרטיז ששמנו בביינדינג
             ImageBrush b = new ImageBrush();
-            b.ImageSource = new BitmapImage(new Uri("c:\\temp\\y.jpg"));
+            b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\droneBackground.jpg", UriKind.Relative));
             grMain.Background = b;
         }
 
@@ -135,7 +135,7 @@ namespace PL
                     myBl.AddDrone(DroneToAdd, stationId);
                     res = MessageBox.Show("Added succecfully!!");
                     if(res!=MessageBoxResult.None)
-                       OnUpdate();//updates the list of drones in the previous window.
+                    OnUpdate();//updates the list of drones in the previous window.
                     Close();
                 }
             }
