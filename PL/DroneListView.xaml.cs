@@ -56,6 +56,9 @@ namespace PL
             GetDroneListFromBL();
             StatusSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatuses));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.Weight));
+            ImageBrush b = new ImageBrush();
+            b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\drone.jpg", UriKind.Relative));
+            imageGrid.Background = b;
         }
 
         private void FilterList()
