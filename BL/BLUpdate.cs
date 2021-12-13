@@ -170,7 +170,10 @@ namespace BL
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
             double[] electricity = myDal.GetElectricityUse();
             droneForList.CurrentLocation = new();
-            droneForList.Battery -= batteryUse;
+            if (droneForList.Battery - batteryUse >= 0)
+                droneForList.Battery -= batteryUse;
+            else
+                droneForList.Battery = 0;
             droneForList.CurrentLocation.Latitude = clossestStation.Lattitude;
             droneForList.CurrentLocation.Longitude = clossestStation.Longitude;
             droneForList.DroneStatuses = DroneStatuses.Maintenance;
@@ -345,7 +348,10 @@ namespace BL
             }
             double electricityForPickUp = electricity[0] * myDal.getDistanceFromLatLonInKm(pickUpDrone.CurrentLocation.Latitude, pickUpDrone.CurrentLocation.Longitude, parcelSender.Lattitude, parcelSender.Longtitude);//calculates the battery use from drones current location to the parcel 
             pickUpDrone.CurrentLocation = new();
-            pickUpDrone.Battery = pickUpDrone.Battery - electricityForPickUp;//updates the drones battery 
+            if ((pickUpDrone.Battery - electricityForPickUp) >= 0)
+                pickUpDrone.Battery -= electricityForPickUp;//updates the drones battery 
+            else
+                pickUpDrone.Battery = 0;
             pickUpDrone.CurrentLocation.Latitude = parcelSender.Lattitude;//updates the drones location to where he picked up the parcel 
             pickUpDrone.CurrentLocation.Longitude = parcelSender.Longtitude;
             int droneBlIndex = drones.FindIndex(item => item.Id == droneId);//finds the index of the pickup drone in the bl drones list
@@ -358,6 +364,7 @@ namespace BL
             {
                 throw new FailedToUpdateException("ERROR", exc);
             }
+
         }
 
         /// <summary>
@@ -396,7 +403,7 @@ namespace BL
             {
                 throw new FailedToUpdateException($"parcel {parcelToDeliver.Id} wasn't picked up yet !!");
             }
-            if (parcelToDeliver.Delivered != DateTime.MinValue)//checkes if the parcel has been delivered 
+            if (parcelToDeliver.Delivered != null)//checkes if the parcel has been delivered 
             {
                 throw new FailedToUpdateException($"parcel {parcelToDeliver.Id} was already delivered !!");
             }
@@ -413,7 +420,10 @@ namespace BL
             }
             double electricityForDelivery = electricityByWeight((Weight)parcelToDeliver.Weight) * myDal.getDistanceFromLatLonInKm(blDeliveryDrone.CurrentLocation.Latitude, blDeliveryDrone.CurrentLocation.Longitude, parcelReciever.Lattitude, parcelReciever.Longtitude);
             blDeliveryDrone.CurrentLocation = new();
-            blDeliveryDrone.Battery = blDeliveryDrone.Battery - electricityForDelivery;//updates the drones battery 
+            if ((blDeliveryDrone.Battery - electricityForDelivery) >= 0)
+                blDeliveryDrone.Battery = blDeliveryDrone.Battery - electricityForDelivery;//updates the drones battery 
+            else
+                blDeliveryDrone.Battery = 0;
             blDeliveryDrone.CurrentLocation.Latitude = parcelReciever.Lattitude;//updates the drones location to where he picked up the parcel 
             blDeliveryDrone.CurrentLocation.Longitude = parcelReciever.Longtitude;
             blDeliveryDrone.DroneStatuses = DroneStatuses.Available;//update the delivery drone status to available

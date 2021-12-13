@@ -15,9 +15,6 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid.Background>
-            <ImageBrush x:Name="myImage"  ></ImageBrush>
-        </Grid.Background>
         <Button  Content="View Drone List" Grid.Column="1" Grid.Row="1" FontSize="30"  Click="droneListViewBtn_Click" Background="Orange"  />
     </Grid>
 </Window>

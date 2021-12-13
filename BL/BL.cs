@@ -52,10 +52,11 @@ namespace BL
                     throw new InputDoesNotExist("the parcel does not exist!!");
                 }
                 IDAL.DO.Station clossestStation = new IDAL.DO.Station();
-                // the drone has been attributted but the parcel has not delievred.
+                // the drone has been attributted but the parcel was not delievred.
                 if (par.Delivered == null)
                 {
                     droneToAdd.DroneStatuses = DroneStatuses.Delivered;
+                    droneToAdd.ParcelId=par.Id;
                     //finds the customer who send the parcel.
                     IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
                     IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
@@ -71,8 +72,9 @@ namespace BL
                     }
                     clossestStation = myDal.GetClossestStation(dalSender.Lattitude, dalSender.Longtitude, myDal.CopyStationArray().ToList());
                     double batteryUseFromSenderToTarget = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, dalSender.Lattitude, dalSender.Longtitude) * batteryByWeight(droneToAdd.Weight);
-                    clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, myDal.CopyStationArray().ToList());//finds the clossest station to the target.
-                    double batteryUseFromTargetrToStation = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, clossestStation.Lattitude, clossestStation.Longitude) * availableElectricityUse;
+                    IDAL.DO.Station clossestStationToTarget = new IDAL.DO.Station();
+                    clossestStationToTarget = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, myDal.CopyStationArray().ToList());//finds the clossest station to the target.
+                    double batteryUseFromTargetrToStation = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, clossestStationToTarget.Lattitude, clossestStationToTarget.Longitude) * availableElectricityUse;
                     //the drone has been attributted but wasnt picked up
                     if (par.PickedUp == null)
                     {
@@ -81,6 +83,8 @@ namespace BL
                         droneToAdd.CurrentLocation.Longitude = clossestStation.Longitude;
                         double batteryUseFromStationToSender = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, dalSender.Lattitude, dalSender.Longtitude) * availableElectricityUse;
                         double minBatteryForUnpickUp = batteryUseFromStationToSender + batteryUseFromSenderToTarget + batteryUseFromTargetrToStation;
+                        if (minBatteryForUnpickUp > 100)
+                            minBatteryForUnpickUp = 100;
                         droneToAdd.Battery = getRandomDoubleNumber(minBatteryForUnpickUp, 100);
                     }
                     //the parcel has been picked up
@@ -93,10 +97,10 @@ namespace BL
                     }
 
                 }
-                //the drone has been attributted but does not executing a delievery.
+                //the drone has been attributted but is not executing a delievery.
                 else
                 {
-                    int num = (rand.Next(0, 2) * 2);
+                    int num = rand.Next(0, 2) * 2;
                     if (num == 0)
                         droneToAdd.DroneStatuses = DroneStatuses.Available;
                     else if (num == 2)
@@ -131,7 +135,7 @@ namespace BL
                     //the cuurent location of the drone is the location of a random
                     //customer who has attributted parcel who hasnt been delieverd yet.
                     List<IDAL.DO.Customer> CustomersWithDelieverdParcel = new List<IDAL.DO.Customer>();
-                    CustomersWithDelieverdParcel = myDal.CopyCustomerArray(x => myDal.CopyParcelArray().ToList().FindIndex(par => par.TargetID == x.Id && par.Delivered != DateTime.MinValue) == -1).ToList();
+                    CustomersWithDelieverdParcel = myDal.CopyCustomerArray(x => myDal.CopyParcelArray().ToList().FindIndex(par => par.TargetID == x.Id && par.Delivered != null) == -1).ToList();
                     int num = rand.Next(0, CustomersWithDelieverdParcel.Count());
                     IDAL.DO.Customer randomCustomer = new IDAL.DO.Customer();
                     randomCustomer = CustomersWithDelieverdParcel.ElementAt(num);//finds the customer by the random number

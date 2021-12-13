@@ -61,16 +61,16 @@ namespace BL
                 customerToAdd.Name = cust.Name;
                 customerToAdd.Phone = cust.PhoneNumber;
                 //counts all the parcel which he sends and been delievered.
-                int count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered != DateTime.MinValue);
+                int count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered != null);
                 customerToAdd.ParcelProvided = count;
                 //counts all the parcel which he sends and not been delievered.
-                count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered == DateTime.MinValue);
+                count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered == null);
                 customerToAdd.ParcelNotProvided = count;
                 //counts all the parcel which he gets.
-                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered != DateTime.MinValue);
+                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered != null);
                 customerToAdd.ParcelRecieved = count;
                 //counts all the parcel that on the way to him.
-                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered == DateTime.MinValue && item.PickedUp != DateTime.MinValue);
+                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered == null && item.PickedUp != null);
                 customerToAdd.ParcelOnTheWay = count;
                 customersForList.Add(customerToAdd);
             }

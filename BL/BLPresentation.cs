@@ -31,6 +31,9 @@ namespace BL
                 throw new FailedToGetException("ERROR", custEx);
             }
             Parcel parcel = new();//the parcel to return
+            parcel.Recipient = new();
+            parcel.Sender = new();
+            parcel.DroneInParcel = new();
             dalParcel.CopyPropertiesTo(parcel);
             IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
             dalSender = new IDAL.DO.Customer();
@@ -129,6 +132,7 @@ namespace BL
                     returningDrone.ParcelInDelivery.Collection = new();
                     returningDrone.ParcelInDelivery.Collection = sender.Location;
                     returningDrone.ParcelInDelivery.Transportation=new();
+                    returningDrone.ParcelInDelivery.Transportation = (int)myDal.getDistanceFromLatLonInKm(sender.Location.Latitude, sender.Location.Longitude, reciever.Location.Latitude, reciever.Location.Longitude)*1000;
                     returningDrone.ParcelInDelivery.Destination = reciever.Location;
                 }
                 catch (IDAL.DO.UnvalidIDException DroneEx)

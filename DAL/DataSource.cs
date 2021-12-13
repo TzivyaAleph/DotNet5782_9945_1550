@@ -161,13 +161,13 @@ namespace DalObject
                         numDrone = 0;
                 }
                 toAdd.DroneID = Drones[numDrone].Id;
-                if (m ==4)
+                if (m == 4)
                     m = -1;
                 if (i<2)
                 {
-                    toAdd.Scheduled = DateTime.MinValue;
-                    toAdd.PickedUp = DateTime.MinValue;
-                    toAdd.Delivered = DateTime.MinValue;
+                    toAdd.Scheduled = null;
+                    toAdd.PickedUp = null;
+                    toAdd.Delivered = null;
                 }
                 else
                 {

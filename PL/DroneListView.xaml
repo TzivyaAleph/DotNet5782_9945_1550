@@ -6,31 +6,65 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="DroneListView" Height="640" Width="800">
-    <Grid x:Name="MainGrid">
+    <Grid x:Name="MainGrid" >
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFFAF1E7"/>
+                <GradientStop Color="#FFE0A582" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
-        <Grid  x:Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid  x:Name="UpGrid"   HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ComboBox   Name="StatusSelector" Grid.Column="1" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding SelectedStatus, Mode=TwoWay}">
-            </ComboBox>
-            <ComboBox Name="WeightSelector" Grid.Column="3" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding SelectedWeight, Mode=TwoWay}"/>
-            <Label Content="Select Status:" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Label Content="Select Weight:" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <ComboBox   Name="StatusSelector"  Background="Beige" VerticalAlignment="Center"  Grid.Column="1"  Grid.Row="1"  SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"/>
+            <ComboBox Name="WeightSelector" Background="Beige" VerticalAlignment="Center"   Grid.Column="3" Grid.Row="3" SelectedItem="{Binding SelectedWeight, Mode=TwoWay}"/>
+            <Label Content="Select Status:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17" FontStyle="Italic"  />
+            <Label Content="Select Weight:" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17" FontStyle="Italic"   />
         </Grid>
-        <ListView Grid.Row="1" x:Name="DronesListView" MouseDoubleClick="DronesListView_MouseDoubleClick" SelectionChanged="DronesListView_SelectionChanged">
+        <ListView Grid.Row="1" Grid.Column="0" Background="LightGray" FontStyle="Italic" x:Name="DronesListView" MouseDoubleClick="DronesListView_MouseDoubleClick" SelectionChanged="DronesListView_SelectionChanged" Foreground="#FF090A0D">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="droneAdd" Content="add drone" Height="115" VerticalAlignment="Bottom" RenderTransformOrigin="1.596,5.374" Margin="560,0,33,27" Grid.Row="1" Click="droneAdd_Click" />
+        <Grid x:Name="bottomGrid" Grid.Row="2" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="droneAdd"  FontWeight="Bold" Grid.Column="1"   Grid.Row="5" Content="add drone"    Click="droneAdd_Click" Grid.ColumnSpan="2" />
+            <Button x:Name="cancelAdd"  FontWeight="Bold"   Grid.Column="1" Grid.Row="6"   Content="Close"   Click="droneAdd_Click"  Grid.ColumnSpan="2"  />
+            <Grid  Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="imageGrid"  Grid.Row="0"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

@@ -10,8 +10,8 @@
             public override string ToString()
             {
                 string result = "";
-                result += $"id is {Id}\n";
                 result += $"name is {Name}\n";
+                result += $"id is {Id}\n";
                 return result;
             }
         }

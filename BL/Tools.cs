@@ -24,7 +24,7 @@ namespace IBL.BO
                 {
                     propTo.SetValue(to, value);
                 }
-                else if (!(value is IEnumerable))
+                else if (!(value is IEnumerable || value is null))
                 {
                     object target = propTo.GetValue(to, null);
                     value.CopyPropertiesTo(target);

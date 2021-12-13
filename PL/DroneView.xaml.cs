@@ -53,12 +53,47 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// prop for a bool parameter that checkes if the drone has been attributed but didnt pickup the parcel 
+        /// </summary>
+        public bool IsPickUpEnabled
+        {
+            get
+            {
+                return selectedDrone != null && selectedDrone.DroneStatuses == DroneStatuses.Delivered &&
+                    selectedDrone.ParcelInDelivery.OnTheWay == false;
+            }
+        }
+
+        /// <summary>
+        /// prop for a bool parameter that checkes if the drone has picked up the parcel
+        /// </summary>
+        public bool IsDeliverParcelEnabled
+        {
+            get
+            {
+                return selectedDrone != null && selectedDrone.DroneStatuses == DroneStatuses.Delivered &&
+                    selectedDrone.ParcelInDelivery.OnTheWay == true;              
+            }
+        }
+
+        /// <summary>
+        /// prop for a bool parameter that checkes if the drone is Maintenance
+        /// </summary>
+        public bool IsReleaseDroneEnabled
+        {
+            get
+            {
+                return selectedDrone != null && selectedDrone.DroneStatuses == DroneStatuses.Maintenance;
+            }
+        }
+
         public List<Weight> WeightOptions { get; set; } //list to hold weight options
         public List<DroneStatuses> Statuses { get; set; } //list to hold Drone Status options
         public List<string> Names { get; set; }//list of stations name
         public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
         public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
 
         /// <summary>
         /// a ctor for adding new drone
@@ -100,23 +135,19 @@ namespace PL
             myBl = bl;
             IsUpdateMode = true;
             ParcelInDelivery parcel = new ParcelInDelivery();
-            if(SelectedDrone.ParcelInDelivery!= null)
-            {
-                parcel = SelectedDrone.ParcelInDelivery;
-                this.parcelView.Text = parcel.ToString();
-            }
         }
 
         /// <summary>
-        /// inisialize for both add and update
+        /// inisializer for both grids: add and update
         /// </summary>
         private void Initialize()
         {
             WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
-            DataContext = this;// לדעת איפה לחפש את הפרופרטיז ששמנו בביינדינג
+            DataContext = this;
             ImageBrush b = new ImageBrush();
             b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\droneBackground.jpg", UriKind.Relative));
+            b.Opacity = 0.65; //sets the lightness of the background
             grMain.Background = b;
         }
 
@@ -215,7 +246,7 @@ namespace PL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void sendToChargeBtn_Click(object sender, RoutedEventArgs e)
+        private void sendToCharge()
         {
             var result = MessageBox.Show("Send drone to charge?", "myApp", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
@@ -229,6 +260,7 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    RefreshProperties();
                 }
                 catch (IBL.BO.FailedToUpdateException ex)
                 {
@@ -242,7 +274,7 @@ namespace PL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void releaseDroneBtn_Click(object sender, RoutedEventArgs e)
+        private void releaseDrone()
         {
             var result = MessageBox.Show("Release drone from charge?", "myApp", MessageBoxButton.YesNo);//gets the users choice (yes or no)
             if (result == MessageBoxResult.Yes)
@@ -256,6 +288,7 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    RefreshProperties();
                 }
                 catch (IBL.BO.FailedToUpdateException ex)
                 {
@@ -269,7 +302,7 @@ namespace PL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void sendDroneToDeliverBtn_Click(object sender, RoutedEventArgs e)
+        private void sendDroneToDeliver()
         {
             var result = MessageBox.Show("Send drone to delivery?", "myApp", MessageBoxButton.YesNo);//gets the users choice (yes or no)
             if (result == MessageBoxResult.Yes)
@@ -283,6 +316,8 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    RefreshProperties();
+
                 }
                 catch (IBL.BO.FailedToUpdateException ex)
                 {
@@ -292,11 +327,9 @@ namespace PL
         }
 
         /// <summary>
-        /// button to pickup a package
+        /// func for the pickup button
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dronePickUpBtn_Click(object sender, RoutedEventArgs e)
+        private void dronePickUp()
         {
             var result = MessageBox.Show("Send drone to pick-up?", "myApp", MessageBoxButton.YesNo);//gets the users choice (yes or no)
             if (result == MessageBoxResult.Yes)
@@ -310,6 +343,7 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    RefreshProperties();
                 }
                 catch (IBL.BO.FailedToUpdateException ex)
                 {
@@ -319,11 +353,9 @@ namespace PL
         }
 
         /// <summary>
-        /// button to deliver a parcel
+        /// func for the delivery button
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void deliverParcelBtn_Click(object sender, RoutedEventArgs e)
+        private void deliverParcel()
         {
             var result = MessageBox.Show("Deliver parcel?", "myApp", MessageBoxButton.YesNo);//gets the users choice (yes or no)
             if (result == MessageBoxResult.Yes)
@@ -337,6 +369,7 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    RefreshProperties();
                 }
                 catch (IBL.BO.FailedToUpdateException ex)
                 {
@@ -345,14 +378,45 @@ namespace PL
             }
         }
 
-        //private DroneForList converteDroneToDroneForList(Drone drone)
-        //{
-        //    DroneForList droneToC = new DroneForList();
-        //    drone.CopyPropertiesTo(droneToC);
-        //    droneToC.CurrentLocation.Longitude = drone.CurrentLocation.Longitude;
-        //    droneToC.CurrentLocation.Latitude = drone.CurrentLocation.Latitude;
-        //    droneToC.ParcelId = drone.ParcelInDelivery.Id;
-        //    return droneToC;
-        //}
+        /// <summary>
+        /// button for the attributing, pickup, and delivery actions 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DroneActions_Click(object sender, RoutedEventArgs e)
+        {
+            //if the drone's status is avalable the button will show the attributing option
+            if (SelectedDrone.DroneStatuses == DroneStatuses.Available)
+                sendDroneToDeliver();
+            //if the drone didnt pick up the parcel the button will show the pickup option
+            else if (IsPickUpEnabled)
+                dronePickUp();
+            //if the drone picked up the parcel the button will show the delivery option
+            else
+                deliverParcel();
+        }
+
+        /// <summary>
+        /// refreshes the binding
+        /// </summary>
+        private void RefreshProperties()
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs("IsPickUpEnabled"));
+            PropertyChanged(this, new PropertyChangedEventArgs("IsDeliverParcelEnabled"));
+            PropertyChanged(this, new PropertyChangedEventArgs("IsReleaseDroneEnabled"));
+        }
+
+        /// <summary>
+        /// button for charging and release drone 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DroneCharging_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedDrone.DroneStatuses == DroneStatuses.Available)
+                sendToCharge();
+            else if (IsReleaseDroneEnabled)
+                releaseDrone();
+        }
     }
 }
