@@ -116,7 +116,7 @@ namespace PL
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
             DataContext = this;// לדעת איפה לחפש את הפרופרטיז ששמנו בביינדינג
             ImageBrush b = new ImageBrush();
-            b.ImageSource = new BitmapImage(new Uri("c:\\temp\\y.jpg"));
+            b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\droneBackground.jpg", UriKind.Relative));
             grMain.Background = b;
         }
 
