@@ -110,9 +110,13 @@ namespace PL
             WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
             DataContext = this;// לדעת איפה לחפש את הפרופרטיז ששמנו בביינדינג
-            ImageBrush b = new ImageBrush();
-            b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\droneBackground.jpg", UriKind.Relative));
-            grMain.Background = b;
+            try
+            {
+                ImageBrush b = new ImageBrush();
+                b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\main.jpg", UriKind.Relative));
+                grMain.Background = b;
+            }
+            catch { };
         }
 
         /// <summary>
@@ -339,14 +343,12 @@ namespace PL
             }
         }
 
-        //private DroneForList converteDroneToDroneForList(Drone drone)
-        //{
-        //    DroneForList droneToC = new DroneForList();
-        //    drone.CopyPropertiesTo(droneToC);
-        //    droneToC.CurrentLocation.Longitude = drone.CurrentLocation.Longitude;
-        //    droneToC.CurrentLocation.Latitude = drone.CurrentLocation.Latitude;
-        //    droneToC.ParcelId = drone.ParcelInDelivery.Id;
-        //    return droneToC;
-        //}
+        private void txtID_TextChanged(object sender, TextChangedEventArgs e)
+       {
+            var bc = new BrushConverter();
+             if(txtID.Text.First()=='-' || txtID.Text.Length!=4||!txtID.Text.All(char.IsDigit))
+                txtID.BorderBrush=(Brush)bc.ConvertFrom("#FFABADB3");
+        }
+
     }
 }
