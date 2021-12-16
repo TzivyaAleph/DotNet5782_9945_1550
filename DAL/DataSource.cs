@@ -5,7 +5,7 @@ using IDAL.DO;
 
 namespace DalObject
 {
-    public class DataSource
+    internal class DataSource
     {
         internal static List<Drone> Drones = new List<Drone>();
         internal static List<Parcel> Parcels = new List<Parcel>();

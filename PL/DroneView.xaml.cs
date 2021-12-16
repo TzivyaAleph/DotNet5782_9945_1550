@@ -1,4 +1,4 @@
-﻿using IBL.BO;
+﻿using BO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -262,7 +262,7 @@ namespace PL
                     }
                     RefreshProperties();
                 }
-                catch (IBL.BO.FailedToUpdateException ex)
+                catch (BO.FailedToUpdateException ex)
                 {
                     MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
                 }
@@ -290,7 +290,7 @@ namespace PL
                     }
                     RefreshProperties();
                 }
-                catch (IBL.BO.FailedToUpdateException ex)
+                catch (BO.FailedToUpdateException ex)
                 {
                     MessageBox.Show("Failed releasing drone - " + ex.ToString());
                 }
@@ -319,7 +319,7 @@ namespace PL
                     RefreshProperties();
 
                 }
-                catch (IBL.BO.FailedToUpdateException ex)
+                catch (BO.FailedToUpdateException ex)
                 {
                     MessageBox.Show("Failed to attribute - " + ex.ToString());
                 }
@@ -345,7 +345,7 @@ namespace PL
                     }
                     RefreshProperties();
                 }
-                catch (IBL.BO.FailedToUpdateException ex)
+                catch (BO.FailedToUpdateException ex)
                 {
                     MessageBox.Show("Failed to pick up - " + ex.ToString());
                 }
@@ -371,7 +371,7 @@ namespace PL
                     }
                     RefreshProperties();
                 }
-                catch (IBL.BO.FailedToUpdateException ex)
+                catch (BO.FailedToUpdateException ex)
                 {
                     MessageBox.Show("Failed to pick up - " + ex.ToString());
                 }

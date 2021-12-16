@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using IBL.BO;
+using BO;
 
 namespace ConsoleUI_BL
 {

@@ -1,70 +1,67 @@
 ﻿using System;
 using System.Runtime.Serialization;
-
-namespace IBL
+namespace BO
 {
-    namespace BO
+    [Serializable]
+    public class InvalidInputException : Exception
     {
-        [Serializable]
-        public class InvalidInputException : Exception
+        public InvalidInputException() : base() { }
+        public InvalidInputException(string message) : base(message) { }
+        public InvalidInputException(string message, Exception innerException) : base(message, innerException) { }
+        public override string ToString()
         {
-            public InvalidInputException() : base() { }
-            public InvalidInputException(string message) : base(message) { }
-            public InvalidInputException(string message, Exception innerException) : base(message, innerException) { }
-            public override string ToString()
-            {
-                return Message;
-            }
+            return Message;
         }
+    }
 
-        [Serializable]
-        public class FailedToAddException : Exception
+    [Serializable]
+    public class FailedToAddException : Exception
+    {
+        public FailedToAddException() : base() { }
+        public FailedToAddException(string message) : base(message) { }
+        public FailedToAddException(string message, Exception innerException) : base(message, innerException) { }
+        public override string ToString()
         {
-            public FailedToAddException() : base() { }
-            public FailedToAddException(string message) : base(message) { }
-            public FailedToAddException(string message, Exception innerException) : base(message, innerException) { }
-            public override string ToString()
-            {
-                return Message;
-            }
+            return Message;
         }
+    }
 
-        [Serializable]
-        public class FailedToGetException : Exception
+    [Serializable]
+    public class FailedToGetException : Exception
+    {
+        public FailedToGetException() : base() { }
+        public FailedToGetException(string message) : base(message) { }
+        public FailedToGetException(string message, Exception innerException) : base(message, innerException) { }
+        public override string ToString()
         {
-            public FailedToGetException() : base() { }
-            public FailedToGetException(string message) : base(message) { }
-            public FailedToGetException(string message, Exception innerException) : base(message, innerException) { }
-            public override string ToString()
-            {
-                return Message;
-            }
+            return Message;
         }
+    }
 
-        [Serializable]
-        public class InputDoesNotExist : Exception
+    [Serializable]
+    public class InputDoesNotExist : Exception
+    {
+        public InputDoesNotExist() : base() { }
+        public InputDoesNotExist(string message) : base(message) { }
+        public InputDoesNotExist(string message, Exception innerException) : base(message, innerException) { }
+        public override string ToString()
         {
-            public InputDoesNotExist() : base() { }
-            public InputDoesNotExist(string message) : base(message) { }
-            public InputDoesNotExist(string message, Exception innerException) : base(message, innerException) { }
-            public override string ToString()
-            {
-                return Message;
-            }
+            return Message;
         }
+    }
 
-        [Serializable]
-        public class FailedToUpdateException : Exception
+    [Serializable]
+    public class FailedToUpdateException : Exception
+    {
+        public FailedToUpdateException() : base() { }
+        public FailedToUpdateException(string message) : base(message) { }
+        public FailedToUpdateException(string message, Exception innerException) : base(message, innerException) { }
+        public override string ToString()
         {
-            public FailedToUpdateException() : base() { }
-            public FailedToUpdateException(string message) : base(message) { }
-            public FailedToUpdateException(string message, Exception innerException) : base(message, innerException) { }
-            public override string ToString()
-            {
-                return Message;
-            }
+            return Message;
         }
     }
 }
+
 
 

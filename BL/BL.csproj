@@ -2,10 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>BlApi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Customer.cs">
+      <CustomToolNamespace></CustomToolNamespace>
+    </Compile>
   </ItemGroup>
 
 </Project>

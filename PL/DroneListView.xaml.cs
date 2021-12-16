@@ -12,8 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using IBL;
-using IBL.BO;
+using BO;
 
 namespace PL
 {
@@ -54,8 +53,8 @@ namespace PL
             DataContext = this;
             InitializeComponent();
             GetDroneListFromBL();
-            StatusSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatuses));
-            WeightSelector.ItemsSource = Enum.GetValues(typeof(IBL.BO.Weight));
+            StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
+            WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.Weight));
             ImageBrush b = new ImageBrush();
             b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\drone.jpg", UriKind.Relative));
             imageGrid.Background = b;
