@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BO;
+using BL;
 
 namespace BlApi
 {

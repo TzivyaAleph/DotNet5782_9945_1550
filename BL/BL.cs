@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
-using IDAL;
+using BlApi;
 
 
-namespace BlApi
+namespace BL
 {
     public partial class BL : IBL
     {

@@ -5,9 +5,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
-using IDAL;
 
-namespace BlApi
+
+namespace BL
 {
     public partial class BL
     {
