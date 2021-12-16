@@ -28,6 +28,7 @@ namespace DalObject
         public void Delivered(Parcel p)
         {
             p.Delivered = DateTime.Now;
+            p.DroneID = 0;
             UpdateParcel(p);
         }
 

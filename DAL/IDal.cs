@@ -56,16 +56,6 @@ namespace IDAL.DO
         /// <returns></returns the coppied array>
         IEnumerable<Station> CopyStationArray(Func<Station,bool> predicate=null);
         /// <summary>
-        /// creates an array by searching for available charge slots in the station list.
-        /// </summary>
-        /// <returns></returns the new list>
-        //IEnumerable<Station> FindAvailableStations();
-        /// <summary>
-        /// searches for the non atributted parcels and coppies them into a new list.
-        /// </summary>
-        /// <returns></returns the new array>
-        //IEnumerable<Parcel> FindNotAttributedParcels();
-        /// <summary>
         /// searches for the customer in the array by the Id
         /// </summary>
         /// <param Name="customerID"></param>
