@@ -22,7 +22,7 @@ namespace PL
     public partial class DroneView : Window, INotifyPropertyChanged
     {
 
-        private BL.IBL myBl;
+        private BlApi.IBL myBl;
         private string originalDroneModel; //temp drone to hold the drone from the drone list view window (this drone will not be used for items source)
         private Drone selectedDrone;
         private DroneForList droneToAdd;
@@ -99,7 +99,7 @@ namespace PL
         /// a ctor for adding new drone
         /// </summary>
         /// <param name="bl"></param>
-        public DroneView(BL.IBL bl)
+        public DroneView(BlApi.IBL bl)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace PL
         /// </summary>
         /// <param name="bl">bl object</param>
         /// <param name="dr">the selected drone</param>
-        public DroneView(BL.IBL bl, Drone dr)
+        public DroneView(BlApi.IBL bl, Drone dr)
         {
             InitializeComponent();
             Initialize();

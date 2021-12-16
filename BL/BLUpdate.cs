@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using IBL.BO;
 using IDAL;
 
-namespace BL
+namespace BlApi
 {
 
     public partial class BL

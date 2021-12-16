@@ -22,7 +22,7 @@ namespace PL
     /// </summary>
     public partial class DroneListView : Window
     {
-        private BL.IBL myBl;
+        private BlApi.IBL myBl;
         private Weight? selectedWeight = null;
         private List<DroneForList> drones;
 
@@ -48,7 +48,7 @@ namespace PL
             }
         }
 
-        public DroneListView(BL.IBL Bl)
+        public DroneListView(BlApi.IBL Bl)
         {
             myBl = Bl;
             DataContext = this;

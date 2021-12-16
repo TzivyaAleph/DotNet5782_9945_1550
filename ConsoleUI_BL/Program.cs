@@ -8,13 +8,13 @@ namespace ConsoleUI_BL
     {
         static void Main(string[] args)
         {
-            BL.IBL bO = null;
+            BlApi.IBL bO = null;
             bool unSuccess;
             do
             {
                 try
                 {
-                    bO = new BL.BL();
+                    bO = new BlApi.BL();
                     unSuccess = false;
                 }
                 catch (InputDoesNotExist ex)
@@ -645,7 +645,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of stations
         /// </summary>
-        static void printListOfStations(BL.IBL bO)
+        static void printListOfStations(BlApi.IBL bO)
         {
             IEnumerable<StationForList> newList = new List<StationForList>();
             newList = bO.GetStationList();
@@ -659,7 +659,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of drones
         /// </summary>
-        static void printListOfDrones(BL.IBL bO)
+        static void printListOfDrones(BlApi.IBL bO)
         {
             IEnumerable<DroneForList> newList = new List<DroneForList>();
             newList = bO.GetDroneList();
@@ -673,7 +673,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of customers
         /// </summary>
-        static void printListOfCustomers(BL.IBL bO)
+        static void printListOfCustomers(BlApi.IBL bO)
         {
             IEnumerable<CustomerForList> newList = new List<CustomerForList>();
             newList = bO.GetCustomerList();
@@ -687,7 +687,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of parcels
         /// </summary>
-        static void printListOfParcels(BL.IBL bO)
+        static void printListOfParcels(BlApi.IBL bO)
         {
             IEnumerable<ParcelForList> newList = new List<ParcelForList>();
             newList = bO.GetParcelList();
@@ -701,7 +701,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints the list of Non Attributed Parcels
         /// </summary>
-        static void printNonAttributedParcels(BL.IBL bO)
+        static void printNonAttributedParcels(BlApi.IBL bO)
         {
             IEnumerable<ParcelForList> newList = new List<ParcelForList>();
             newList = bO.GetUnAtributtedParcels();
@@ -712,7 +712,7 @@ namespace ConsoleUI_BL
         /// <summary>
         /// prints a list with all the available stations in it
         /// </summary>
-        static void printAvailableStations(BL.IBL bO)
+        static void printAvailableStations(BlApi.IBL bO)
         {
             IEnumerable<StationForList> temp = new List<StationForList>();
             temp = bO.GetAvailableChargingSlotsStations();
