@@ -8,9 +8,26 @@ using IDAL.DO;
 
 namespace DalObject
 {
-    public partial class DalObject : IDal
+     partial class DalObject : IDal
     {
+        internal static DalObject singleInstance = null;
+        private static object lockObject = new object();//thread safe
 
+        public static DalObject SingleInstance
+        {
+            get
+            {
+                lock (lockObject)
+                {
+                    //lazy initialazation
+                    if (singleInstance == null)
+                    {
+                        singleInstance = new DalObject();
+                    }
+                }
+                return singleInstance;
+            }
+        }
         /// <summary>
         /// constructor
         /// </summary>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DalObject
 {
-    public partial class DalObject
+     partial class DalObject
     {
         /// <summary>
         /// coppies the parcel array

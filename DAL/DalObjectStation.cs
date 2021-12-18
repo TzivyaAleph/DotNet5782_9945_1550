@@ -7,7 +7,7 @@ using IDAL.DO;
 
 namespace DalObject
 {
-    public partial class DalObject
+     partial class DalObject
     {
         /// <summary>
         /// gets a station and adds it to the array

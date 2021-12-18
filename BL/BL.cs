@@ -14,6 +14,24 @@ namespace BL
     {
 
         IDAL.DO.IDal myDal;
+        internal static BL singleInstance=null;
+        private static object lockObject = new object();//thread safe
+
+        public static BL SingleInstance
+        {
+            get {
+                lock(lockObject)
+                {
+                    //lazy initialazation
+                    if (singleInstance==null)
+                    {
+                        singleInstance = new BL();
+                    }
+                }
+                return singleInstance;
+            }
+        }
+            
         internal static Random rand = new Random();
         internal List<DroneForList> drones;
 

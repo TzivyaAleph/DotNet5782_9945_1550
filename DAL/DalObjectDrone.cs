@@ -7,7 +7,7 @@ using IDAL.DO;
 
 namespace DalObject
 {
-    public partial class DalObject
+     partial class DalObject
     {
         /// <addDrone>
         /// add new drone and updates 

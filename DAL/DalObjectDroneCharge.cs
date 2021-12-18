@@ -7,7 +7,7 @@ using IDAL.DO;
 
 namespace DalObject
 {
-    public partial class DalObject
+     partial class DalObject
     {
         /// <summary>
         /// recieves a drone and a station and sends the drone to a chargeSlot in that station
