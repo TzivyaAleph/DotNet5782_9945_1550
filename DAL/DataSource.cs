@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DO;
 
-namespace DalObject
+namespace Dal
 {
     internal class DataSource
     {
