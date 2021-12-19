@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DO;
 
-namespace DalObject
+namespace Dal
 {
      partial class DalObject : IDal
     {
