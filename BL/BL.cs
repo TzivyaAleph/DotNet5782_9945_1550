@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BO;
 using BlApi;
 using DO;
+using DalApi;
 
 
 
@@ -15,7 +16,7 @@ namespace BL
     public partial class BL : IBL
     {
 
-        DalApi.DalFactory myDal;
+        private static readonly IDal myDal = DalFactory.GetDal();
         //lazt<T> is doing a lazy initialzation and hi sdefualt is thread safe
         internal static readonly Lazy<BL> singleInstance=new Lazy<BL>(()=>new BL());
         public static BL SingleInstance
@@ -33,7 +34,6 @@ namespace BL
         /// </summary>
         public BL()
         {
-            myDal = new DalApi.DalFactory();
             drones = new List<DroneForList>();
             double[] electricityUse = myDal.GetElectricityUse();
             double availableElectricityUse = electricityUse[0];
@@ -61,15 +61,15 @@ namespace BL
                 {
                     throw new InputDoesNotExist("the parcel does not exist!!");
                 }
-                IDAL.DO.Station clossestStation = new DO.Station();
+                DO.Station clossestStation = new DO.Station();
                 // the drone has been attributted but the parcel was not delievred.
                 if (par.Delivered == null)
                 {
                     droneToAdd.DroneStatuses = DroneStatuses.Delivered;
                     droneToAdd.ParcelId=par.Id;
                     //finds the customer who send the parcel.
-                    IDAL.DO.Customer dalSender = new DO.Customer();
-                    IDAL.DO.Customer dalTarget = new DO.Customer();
+                    DO.Customer dalSender = new DO.Customer();
+                    DO.Customer dalTarget = new DO.Customer();
 
                     try
                     {
@@ -82,7 +82,7 @@ namespace BL
                     }
                     clossestStation = myDal.GetClossestStation(dalSender.Lattitude, dalSender.Longtitude, myDal.CopyStationArray().ToList());
                     double batteryUseFromSenderToTarget = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, dalSender.Lattitude, dalSender.Longtitude) * batteryByWeight(droneToAdd.Weight);
-                    IDAL.DO.Station clossestStationToTarget = new IDAL.DO.Station();
+                    DO.Station clossestStationToTarget = new DO.Station();
                     clossestStationToTarget = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, myDal.CopyStationArray().ToList());//finds the clossest station to the target.
                     double batteryUseFromTargetrToStation = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, clossestStationToTarget.Lattitude, clossestStationToTarget.Longitude) * availableElectricityUse;
                     //the drone has been attributted but wasnt picked up
@@ -121,20 +121,20 @@ namespace BL
                 {
                     //the location is the location of a random station.
                     int num = rand.Next(0, myDal.CopyStationArray().Count());
-                    IDAL.DO.Station randomStation = new IDAL.DO.Station();
+                    DO.Station randomStation = new DO.Station();
                     randomStation = myDal.CopyStationArray().ElementAt(num);//finds the station by the random number
                     droneToAdd.CurrentLocation.Latitude = randomStation.Lattitude;
                     droneToAdd.CurrentLocation.Longitude = randomStation.Longitude;
                     droneToAdd.Battery = rand.Next(0, 21);
-                    IDAL.DO.Drone dalDrone = new IDAL.DO.Drone();
+                    DO.Drone dalDrone = new DO.Drone();
                     dalDrone.Id = droneToAdd.Id;
                     dalDrone.Model = droneToAdd.Model;
-                    dalDrone.MaxWeight = (IDAL.DO.Weight)droneToAdd.Weight;
+                    dalDrone.MaxWeight = (DO.Weight)droneToAdd.Weight;
                     try
                     {
                         myDal.SendDroneToChargeSlot(dalDrone, randomStation);
                     }
-                    catch (IDAL.DO.ExistingObjectException custEx)
+                    catch (DO.ExistingObjectException custEx)
                     {
                         throw new FailedToUpdateException("ERROR", custEx);
                     }
@@ -144,15 +144,15 @@ namespace BL
                 {
                     //the cuurent location of the drone is the location of a random
                     //customer who has attributted parcel who hasnt been delieverd yet.
-                    List<IDAL.DO.Customer> CustomersWithDelieverdParcel = new List<IDAL.DO.Customer>();
+                    List<DO.Customer> CustomersWithDelieverdParcel = new List<DO.Customer>();
                     CustomersWithDelieverdParcel = myDal.CopyCustomerArray(x => myDal.CopyParcelArray().ToList().FindIndex(par => par.TargetID == x.Id && par.Delivered != null) == -1).ToList();
                     int num = rand.Next(0, CustomersWithDelieverdParcel.Count());
-                    IDAL.DO.Customer randomCustomer = new IDAL.DO.Customer();
+                    DO.Customer randomCustomer = new DO.Customer();
                     randomCustomer = CustomersWithDelieverdParcel.ElementAt(num);//finds the customer by the random number
                     droneToAdd.CurrentLocation.Latitude = randomCustomer.Lattitude;
                     droneToAdd.CurrentLocation.Longitude = randomCustomer.Longtitude;
                     //battery status will be a random number between the min battery to 100.
-                    clossestStation = myDal.GetClossestStation(droneToAdd.CurrentLocation.Latitude, droneToAdd.CurrentLocation.Longitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());
+                    clossestStation = myDal.GetClossestStation(droneToAdd.CurrentLocation.Latitude, droneToAdd.CurrentLocation.Longitude, (List<DO.Station>)myDal.CopyStationArray());
                     double minBatteryUseForAvailable = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, droneToAdd.CurrentLocation.Latitude, droneToAdd.CurrentLocation.Longitude) * availableElectricityUse;
                     droneToAdd.Battery = getRandomDoubleNumber(minBatteryUseForAvailable, 101);
                 }
