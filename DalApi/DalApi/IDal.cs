@@ -1,9 +1,8 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using DO;
 
-namespace IDAL.DO
+namespace DalApi
 {
     public interface IDal
     {

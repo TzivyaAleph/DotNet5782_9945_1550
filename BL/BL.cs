@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BO;
 using BlApi;
+using DO;
+
 
 
 namespace BL
@@ -13,7 +15,7 @@ namespace BL
     public partial class BL : IBL
     {
 
-        IDAL.DO.IDal myDal;
+        DalApi.DalFactory myDal;
         internal static BL singleInstance=null;
         private static object lockObject = new object();//thread safe
 
@@ -40,7 +42,7 @@ namespace BL
         /// </summary>
         public BL()
         {
-            myDal = new DalObject.DalObject();
+            myDal = new DalApi.DalFactory();
             drones = new List<DroneForList>();
             double[] electricityUse = myDal.GetElectricityUse();
             double availableElectricityUse = electricityUse[0];
@@ -49,7 +51,7 @@ namespace BL
             double heavyElectricityUse = electricityUse[3];
             double chargePerHour = electricityUse[4];
             //goes throuhgh the da list drones
-            List<IDAL.DO.Parcel> dalParcels = myDal.CopyParcelArray().ToList();
+            List<DO.Parcel> dalParcels = myDal.CopyParcelArray().ToList();
             foreach (var item in myDal.CopyDroneArray())
             {
                 DroneForList droneToAdd = new DroneForList();//to add to the list
@@ -59,7 +61,7 @@ namespace BL
                 droneToAdd.Weight = (Weight)item.MaxWeight;
                 droneToAdd.CurrentLocation = new Location();
                 //goes through the parcels list in dal for the exstract fields from drone for list
-                IDAL.DO.Parcel par = new IDAL.DO.Parcel();
+                DO.Parcel par = new DO.Parcel();
                 try
                 {
                     par = myDal.CopyParcelArray().First(parcel => parcel.DroneID == item.Id);
@@ -68,15 +70,15 @@ namespace BL
                 {
                     throw new InputDoesNotExist("the parcel does not exist!!");
                 }
-                IDAL.DO.Station clossestStation = new IDAL.DO.Station();
+                IDAL.DO.Station clossestStation = new DO.Station();
                 // the drone has been attributted but the parcel was not delievred.
                 if (par.Delivered == null)
                 {
                     droneToAdd.DroneStatuses = DroneStatuses.Delivered;
                     droneToAdd.ParcelId=par.Id;
                     //finds the customer who send the parcel.
-                    IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
-                    IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+                    IDAL.DO.Customer dalSender = new DO.Customer();
+                    IDAL.DO.Customer dalTarget = new DO.Customer();
 
                     try
                     {

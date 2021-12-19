@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{B9B54233-4D69-411E-82B2-BBC39AD97BA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalObject", "DAL\DalObject.csproj", "{B9B54233-4D69-411E-82B2-BBC39AD97BA6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{13FB8B5D-11FD-4CA7-81D6-A1C5F3A431D4}"
 EndProject
@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL", "BL\BL.csproj", "{89FD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI_BL", "ConsoleUI_BL\ConsoleUI_BL.csproj", "{800BCDAD-F44E-4AAD-AA32-60A6BBD3A3FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL", "PL\PL.csproj", "{933FFA85-7186-4D48-9FD9-652358EA0009}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{933FFA85-7186-4D48-9FD9-652358EA0009}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalApi", "DalApi\DalApi.csproj", "{D4D9A9F5-511F-43C3-B7ED-983A77C526D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{933FFA85-7186-4D48-9FD9-652358EA0009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{933FFA85-7186-4D48-9FD9-652358EA0009}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{933FFA85-7186-4D48-9FD9-652358EA0009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4D9A9F5-511F-43C3-B7ED-983A77C526D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4D9A9F5-511F-43C3-B7ED-983A77C526D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4D9A9F5-511F-43C3-B7ED-983A77C526D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4D9A9F5-511F-43C3-B7ED-983A77C526D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
