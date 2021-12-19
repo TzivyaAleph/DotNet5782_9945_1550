@@ -16,24 +16,15 @@ namespace BL
     {
 
         DalApi.DalFactory myDal;
-        internal static BL singleInstance=null;
-        private static object lockObject = new object();//thread safe
-
+        //lazt<T> is doing a lazy initialzation and hi sdefualt is thread safe
+        internal static readonly Lazy<BL> singleInstance=new Lazy<BL>(()=>new BL());
         public static BL SingleInstance
         {
             get {
-                lock(lockObject)
-                {
-                    //lazy initialazation
-                    if (singleInstance==null)
-                    {
-                        singleInstance = new BL();
-                    }
-                }
-                return singleInstance;
+                    return singleInstance.Value;
             }
         }
-            
+
         internal static Random rand = new Random();
         internal List<DroneForList> drones;
 

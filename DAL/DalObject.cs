@@ -10,24 +10,16 @@ namespace DalObject
 {
      partial class DalObject : IDal
     {
-        internal static DalObject singleInstance = null;
-        private static object lockObject = new object();//thread safe
-
+        //lazt<T> is doing a lazy initialzation and hi sdefualt is thread safe
+        internal static readonly Lazy<DalObject> singleInstance = new Lazy<DalObject>(() => new DalObject());
         public static DalObject SingleInstance
         {
             get
             {
-                lock (lockObject)
-                {
-                    //lazy initialazation
-                    if (singleInstance == null)
-                    {
-                        singleInstance = new DalObject();
-                    }
-                }
-                return singleInstance;
+                return singleInstance.Value;
             }
         }
+
         /// <summary>
         /// constructor
         /// </summary>
