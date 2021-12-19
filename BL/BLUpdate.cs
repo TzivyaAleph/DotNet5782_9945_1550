@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
-using DO;
 
 namespace BL
 {
@@ -72,7 +71,7 @@ namespace BL
             //updates the number of charging slots if the func recieved user's input
             if (numOfChargingSlots != -1)
             {
-                List<IDAL.DO.DroneCharge> droneCharges = new List<IDAL.DO.DroneCharge>();//recieves the dal droneCharge list
+                List<DO.DroneCharge> droneCharges = new List<DO.DroneCharge>();//recieves the dal droneCharge list
                 droneCharges = myDal.GetDroneChargeList().ToList();
                 // counts the drones that are charging in the current station                                                                                              
                 int countNumOfDronesInStation = 0;
@@ -89,7 +88,7 @@ namespace BL
             {
                 myDal.UpdateStation(stationTemp);//update station in dal stations list 
             }
-            catch (IDAL.DO.ExistingObjectException stEx)
+            catch (DO.ExistingObjectException stEx)
             {
                 throw new FailedToUpdateException("ERROR", stEx);
             }
@@ -113,7 +112,7 @@ namespace BL
             {
                 throw new InvalidInputException("Invalid phone number!!\n");
             }
-            IDAL.DO.Customer customerTemp = new IDAL.DO.Customer();
+            DO.Customer customerTemp = new DO.Customer();
             try
             {
                 customerTemp = myDal.CopyCustomerArray().First(customer => customer.Id == customer.Id);//finds the customer to update in the dal customers list
@@ -130,7 +129,7 @@ namespace BL
             {
                 myDal.UpdateCustomer(customerTemp);//update the customer in the dal customers list
             }
-            catch (IDAL.DO.ExistingObjectException cusEx)
+            catch (DO.ExistingObjectException cusEx)
             {
                 throw new FailedToUpdateException("ERROR", cusEx);
             }
@@ -159,8 +158,8 @@ namespace BL
             if (droneForList.DroneStatuses != DroneStatuses.Available)
                 throw new FailedToUpdateException($"Drone {droneForList.Id} is not available");
             //finding all the available charging slots in station.
-            List<IDAL.DO.Station> stations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
-            IDAL.DO.Station clossestStation = new IDAL.DO.Station();
+            List<DO.Station> stations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
+            DO.Station clossestStation = new DO.Station();
             //finds the clossest station to the current location of the drone
             clossestStation = myDal.GetClossestStation(droneForList.CurrentLocation.Latitude, droneForList.CurrentLocation.Longitude, stations);
             //finds the battery use for sending the drone to the clossest station
@@ -177,17 +176,17 @@ namespace BL
             droneForList.CurrentLocation.Latitude = clossestStation.Lattitude;
             droneForList.CurrentLocation.Longitude = clossestStation.Longitude;
             droneForList.DroneStatuses = DroneStatuses.Maintenance;
-            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
+            DO.Drone dalDrone = new DO.Drone()
             {
                 Id = droneForList.Id,
                 Model = droneForList.Model,
-                MaxWeight = (IDAL.DO.Weight)droneForList.Weight,
+                MaxWeight = (DO.Weight)droneForList.Weight,
             };
             try
             {
                 myDal.SendDroneToChargeSlot(dalDrone, clossestStation);
             }
-            catch (IDAL.DO.ExistingObjectException custEx)
+            catch (DO.ExistingObjectException custEx)
             {
                 throw new FailedToUpdateException("ERROR", custEx);
             }
@@ -203,8 +202,8 @@ namespace BL
             {
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
-            List<IDAL.DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
-            List<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray(par=>par.DroneID==0).ToList();//gets the non attributed parcels list
+            List<DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
+            List<DO.Parcel> parcels = myDal.CopyParcelArray(par=>par.DroneID==0).ToList();//gets the non attributed parcels list
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = new();
             droneToAttribute = drones[index];
@@ -213,9 +212,9 @@ namespace BL
                 throw new InvalidInputException($"drone {droneId} is not available !!");
             }
             parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));//sorts the non attributed parcels list by the priority 
-            parcels.Where(p => p.Priority == IDAL.DO.Priority.emergency).OrderBy(p => (int)p.Weight); //sorts the emergency parcels by their weight
-            parcels.Where(p => p.Priority == IDAL.DO.Priority.fast).OrderBy(p => (int)p.Weight); //sorts the fast parcels by their weight
-            parcels.Where(p => p.Priority == IDAL.DO.Priority.normal).OrderBy(p => (int)p.Weight); //sorts the normal parcels by their weight
+            parcels.Where(p => p.Priority == DO.Priority.emergency).OrderBy(p => (int)p.Weight); //sorts the emergency parcels by their weight
+            parcels.Where(p => p.Priority == DO.Priority.fast).OrderBy(p => (int)p.Weight); //sorts the fast parcels by their weight
+            parcels.Where(p => p.Priority == DO.Priority.normal).OrderBy(p => (int)p.Weight); //sorts the normal parcels by their weight
             parcels.Reverse();
             parcels.RemoveAll(p => (int)p.Weight > (int)droneToAttribute.Weight);
             if (parcels.Count == 0)
@@ -225,7 +224,7 @@ namespace BL
             if (parcels.Count == 0)
                 throw new FailedToUpdateException("there is no parcel to attribute !!");
             double minDistance = getDroneParcelDistance(droneToAttribute, parcels[0]);
-            IDAL.DO.Parcel minParcel = parcels[0];
+            DO.Parcel minParcel = parcels[0];
             double distance;
             //finds the parcel thats clossest to the drone
             foreach (var p in parcels)
@@ -239,7 +238,7 @@ namespace BL
             }
             drones[index].DroneStatuses = DroneStatuses.Delivered;
             drones[index].ParcelId = minParcel.Id;
-            IDAL.DO.Parcel dalParcel = new();
+            DO.Parcel dalParcel = new();
             try
             {
                 dalParcel = myDal.CopyParcelArray(par=>par.DroneID==0).First(par => par.Id == minParcel.Id);
@@ -254,7 +253,7 @@ namespace BL
             {
                 myDal.UpdateParcel(dalParcel);
             }
-            catch (IDAL.DO.ExistingObjectException parEx)
+            catch (DO.ExistingObjectException parEx)
             {
                 throw new FailedToUpdateException("ERROR", parEx);
             }
@@ -267,12 +266,12 @@ namespace BL
         /// <param name="p"></param>
         /// <param name="droneToAttribute"></param>
         /// <returns></returns>
-        private bool enoughBattery(IDAL.DO.Parcel p, DroneForList droneToAttribute)
+        private bool enoughBattery(DO.Parcel p, DroneForList droneToAttribute)
         {
             double minDistance = getDroneParcelDistance(droneToAttribute, p);
-            IDAL.DO.Parcel minParcel = p;
+            DO.Parcel minParcel = p;
             double batteryUseForPickUp = minDistance * myDal.GetElectricityUse()[0];
-            IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
+            DO.Customer dalSender = new DO.Customer();
             try
             {
                 dalSender = myDal.CopyCustomerArray().First(customer => customer.Id == minParcel.SenderID);//finds the parcel's sender
@@ -281,7 +280,7 @@ namespace BL
             {
                 throw new InputDoesNotExist("Can not attribute-the sender does not exist !!");
             }
-            IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+            DO.Customer dalTarget = new DO.Customer();
             try
             {
                 dalTarget = myDal.CopyCustomerArray().First(customer => customer.Id == minParcel.TargetID);//finds the target
@@ -291,8 +290,8 @@ namespace BL
                 throw new InputDoesNotExist("Can not attribute-the reciepient does not exist !!");
             }
             double batteryUseForDelivery = myDal.getDistanceFromLatLonInKm(dalSender.Lattitude, dalSender.Longtitude, dalTarget.Lattitude, dalTarget.Longtitude) * electricityByWeight((Weight)minParcel.Weight);
-            IDAL.DO.Station clossestStation = new IDAL.DO.Station();
-            clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, (List<IDAL.DO.Station>)myDal.CopyStationArray());
+            DO.Station clossestStation = new DO.Station();
+            clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, (List<DO.Station>)myDal.CopyStationArray());
             double batteryUseForCharging = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, dalTarget.Lattitude, dalTarget.Longtitude) * myDal.GetElectricityUse()[0];
             if ((droneToAttribute.Battery - (batteryUseForPickUp + batteryUseForDelivery + batteryUseForCharging)) < 0)
                 return true;
@@ -309,9 +308,9 @@ namespace BL
             {
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
-            IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
-            IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
-            IDAL.DO.Parcel parcelToPickUp = new IDAL.DO.Parcel();
+            IEnumerable<DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
+            IEnumerable<DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
+            DO.Parcel parcelToPickUp = new DO.Parcel();
             try
             {
                 parcelToPickUp = parcels.First(parcel => parcel.DroneID == droneId);//finds the parcel thats attributed to the drone
@@ -320,7 +319,7 @@ namespace BL
             {
                 throw new InputDoesNotExist("the parcel does not exist !!");
             }
-            IDAL.DO.Drone idalPickUpDrone = new IDAL.DO.Drone();
+            DO.Drone idalPickUpDrone = new DO.Drone();
             try
             {
                 idalPickUpDrone = idalDrones.First(drone => drone.Id == droneId);//finds the pick up drone in idal drones list
@@ -335,9 +334,9 @@ namespace BL
             }
             DroneForList pickUpDrone = new();
             pickUpDrone = drones.Find(drone => drone.Id == droneId);//finds the drone thats picking up the parcel in the bl drones list
-            IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
+            IEnumerable<DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
             double[] electricity = myDal.GetElectricityUse();
-            IDAL.DO.Customer parcelSender = new IDAL.DO.Customer();
+            DO.Customer parcelSender = new DO.Customer();
             try
             {
                 parcelSender = customers.First(customer => customer.Id == parcelToPickUp.SenderID);//finds the parcels sender (for finding the parcels location)
@@ -360,7 +359,7 @@ namespace BL
             {
                 myDal.PickedUp(parcelToPickUp, idalPickUpDrone);//updates the parcel in the idal parcels list
             }
-            catch (IDAL.DO.UnvalidIDException exc)
+            catch (DO.UnvalidIDException exc)
             {
                 throw new FailedToUpdateException("ERROR", exc);
             }
@@ -377,9 +376,9 @@ namespace BL
             {
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
-            IEnumerable<IDAL.DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
-            IEnumerable<IDAL.DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
-            IDAL.DO.Parcel parcelToDeliver = new IDAL.DO.Parcel();
+            IEnumerable<DO.Parcel> parcels = myDal.CopyParcelArray();//gets the non attributed parcels list
+            IEnumerable<DO.Drone> idalDrones = myDal.CopyDroneArray();//gets the drones list
+            DO.Parcel parcelToDeliver = new DO.Parcel();
             try
             {
                 parcelToDeliver = parcels.First(parcel => parcel.DroneID == droneId);//finds the parcel thats attributed to the drone
@@ -388,7 +387,7 @@ namespace BL
             {
                 throw new InputDoesNotExist("the parcel does not exist !!");
             }
-            IDAL.DO.Drone idalDeliveryDrone = new IDAL.DO.Drone();
+            DO.Drone idalDeliveryDrone = new DO.Drone();
             try
             {
                 idalDeliveryDrone = idalDrones.First(drone => drone.Id == droneId);//finds the pick up drone in idal drones list
@@ -408,8 +407,8 @@ namespace BL
                 throw new FailedToUpdateException($"parcel {parcelToDeliver.Id} was already delivered !!");
             }
             double[] electricity = myDal.GetElectricityUse();
-            IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
-            IDAL.DO.Customer parcelReciever = new IDAL.DO.Customer();
+            IEnumerable<DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
+            DO.Customer parcelReciever = new DO.Customer();
             try
             {
                 parcelReciever = customers.First(customer => customer.Id == parcelToDeliver.TargetID);//finds the parcels target customer (for finding the parcels location)
@@ -434,7 +433,7 @@ namespace BL
             {
                 myDal.Delivered(parcelToDeliver);
             }
-            catch (IDAL.DO.UnvalidIDException exc)
+            catch (DO.UnvalidIDException exc)
             {
                 throw new FailedToUpdateException("ERROR", exc);
             }
@@ -446,10 +445,10 @@ namespace BL
         /// <param name="d"></param>
         /// <param name="p"></param>
         /// <returns>the distance</returns>
-        private double getDroneParcelDistance(DroneForList d, IDAL.DO.Parcel p)
+        private double getDroneParcelDistance(DroneForList d, DO.Parcel p)
         {
-            IEnumerable<IDAL.DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
-            IDAL.DO.Customer parcelSender = new IDAL.DO.Customer();
+            IEnumerable<DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
+            DO.Customer parcelSender = new DO.Customer();
             try
             {
                 parcelSender = customers.First(customer => customer.Id == p.SenderID);//finds the parcels sender
@@ -498,7 +497,7 @@ namespace BL
             }
             if (d.DroneStatuses != DroneStatuses.Maintenance)
                 throw new FailedToUpdateException($"cant realese drone from charge if its not charging");
-            IDAL.DO.Station dalStation = new IDAL.DO.Station();
+            DO.Station dalStation = new DO.Station();
             try
             {
                 dalStation = myDal.CopyStationArray().First(item => item.Lattitude == d.CurrentLocation.Latitude && item.Longitude == d.CurrentLocation.Longitude);
@@ -517,17 +516,17 @@ namespace BL
             droneForList.DroneStatuses = DroneStatuses.Available;
             int droneBlIndex = drones.FindIndex(item => item.Id == droneForList.Id);//finds the index of the charging drone in the bl drones list
             drones[droneBlIndex] = droneForList;//puts the updated drone into the bl drones list
-            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
+            DO.Drone dalDrone = new DO.Drone()
             {
                 Id = d.Id,
                 Model = d.Model,
-                MaxWeight = (IDAL.DO.Weight)d.Weight,
+                MaxWeight = (DO.Weight)d.Weight,
             };
             try
             {
                 myDal.ReleaseDrone(dalDrone, dalStation);
             }
-            catch (IDAL.DO.UnvalidIDException exc)
+            catch (DO.UnvalidIDException exc)
             {
                 throw new FailedToUpdateException("ERROR", exc);
             }

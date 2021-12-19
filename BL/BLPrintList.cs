@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
-using IDAL;
+
 
 namespace BL
 {
@@ -17,7 +17,7 @@ namespace BL
         public IEnumerable<StationForList> GetStationList()
         {
             List<StationForList> stationsToReturn = new List<StationForList>();
-            List<IDAL.DO.DroneCharge> droneCharges = new();
+            List<DO.DroneCharge> droneCharges = new();
             droneCharges = myDal.GetDroneChargeList().ToList();
             foreach (var stat in myDal.CopyStationArray())
             {
@@ -89,7 +89,7 @@ namespace BL
             {
                 ParcelForList parcelToAdd = new();
                 parcelToAdd.Id = par.Id;
-                IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
+                DO.Customer dalCustomer = new DO.Customer();
                 //finds the sender in customer list for getting his name
                 try
                 {
@@ -125,13 +125,13 @@ namespace BL
         public IEnumerable<ParcelForList> GetUnAtributtedParcels()
         {
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
-            List<IDAL.DO.Parcel> unAttributed = new List<IDAL.DO.Parcel>();
+            List<DO.Parcel> unAttributed = new List<DO.Parcel>();
             unAttributed = myDal.CopyParcelArray(par => par.DroneID == 0).ToList();
             foreach (var par in unAttributed)
             {
                 ParcelForList parcelToAdd = new();
                 parcelToAdd.Id = par.Id;
-                IDAL.DO.Customer dalCustomer = new IDAL.DO.Customer();
+                DO.Customer dalCustomer = new DO.Customer();
                 //finds the sender in customer list for getting his name
                 dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
                 parcelToAdd.Sender = dalCustomer.Name;
@@ -153,7 +153,7 @@ namespace BL
         public IEnumerable<StationForList> GetAvailableChargingSlotsStations()
         {
             List<StationForList> stationsToReturn = new List<StationForList>();
-            List<IDAL.DO.Station> dalStations = new List<IDAL.DO.Station>();
+            List<DO.Station> dalStations = new List<DO.Station>();
             dalStations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
             foreach (var stat in dalStations)
             {
@@ -180,7 +180,7 @@ namespace BL
         /// </summary>
         /// <param name="par"></param>
         /// <returns>the status of the parcel</returns>
-        private Status getStatus(IDAL.DO.Parcel par)
+        private Status getStatus(DO.Parcel par)
         {
             if (par.Delivered != null)
                 return Status.Delivered;
