@@ -87,7 +87,7 @@ namespace DalObject
         /// <returns></returns>
         public Station GetClossestStation(double lattitude, double longtitude, List<Station> stations)
         {
-            IDAL.DO.Station minStation = new IDAL.DO.Station();
+            DO.Station minStation = new Station();
             double minDistance = Math.Sqrt(Math.Pow(lattitude -stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2));
             minStation = stations.First();
             foreach (var st in DataSource.Stations)

@@ -249,7 +249,7 @@ namespace BL
                     //update the fields in customerParcel=the target of the parcel data
                     parcelToAdd.CustomerParcel = new();
                     parcelToAdd.CustomerParcel.Id = par.TargetID;
-                    IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+                    DO.Customer dalTarget = new DO.Customer();
                     try
                     {
                         dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
@@ -276,12 +276,12 @@ namespace BL
             if (stationId < 1000 || stationId > 10000)
                  throw new InvalidInputException($"id {stationId} is not valid !!");
             Station returningStation = new();
-            IDAL.DO.Station dalStation = new IDAL.DO.Station();
+            DO.Station dalStation = new DO.Station();
             try
             {
                 dalStation = myDal.GetStation(stationId);
             }
-            catch (IDAL.DO.UnvalidIDException stationEx)
+            catch (DO.UnvalidIDException stationEx)
             {
                 throw new FailedToGetException("ERROR", stationEx);
             }
