@@ -12,7 +12,7 @@ using DalApi;
 
 namespace BL
 {
-    public partial class BL : IBL
+     partial class BL : IBL
     {
 
         private static readonly IDal myDal = DalFactory.GetDal();

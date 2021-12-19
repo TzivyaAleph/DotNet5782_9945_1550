@@ -9,7 +9,7 @@ using DalApi;
 
 namespace BL
 {
-    public partial class BL
+    partial class BL
     {
         /// <summary>
         /// createse list of stations and update each fields by dal data.

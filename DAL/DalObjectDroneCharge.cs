@@ -7,7 +7,7 @@ using DO;
 
 namespace Dal
 {
-     partial class DalObject
+    partial class DalObject
     {
         /// <summary>
         /// recieves a drone and a station and sends the drone to a chargeSlot in that station
@@ -70,7 +70,7 @@ namespace Dal
         /// <returns>list of drone charges</returns>
         public IEnumerable<DroneCharge> GetDroneChargeList()
         {
-            List<DroneCharge> newList =new List<DroneCharge>(DataSource.DroneCharges);
+            List<DroneCharge> newList = new List<DroneCharge>(DataSource.DroneCharges);
             return newList;
         }
     }

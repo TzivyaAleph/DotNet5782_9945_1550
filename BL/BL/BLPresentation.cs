@@ -9,7 +9,7 @@ using BO;
 
 namespace BL
 {
-    public partial class BL
+    partial class BL
     {
         /// <summary>
         /// return parcel in the list by its recieved id.

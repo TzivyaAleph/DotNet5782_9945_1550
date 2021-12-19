@@ -7,7 +7,7 @@ using DO;
 
 namespace Dal
 {
-     partial class DalObject
+    partial class DalObject
     {
 
         /// <summary>

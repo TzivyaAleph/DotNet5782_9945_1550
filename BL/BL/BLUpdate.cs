@@ -9,7 +9,7 @@ using BO;
 namespace BL
 {
 
-    public partial class BL
+    partial class BL
     {
         /// <summary>
         /// updates a drones name

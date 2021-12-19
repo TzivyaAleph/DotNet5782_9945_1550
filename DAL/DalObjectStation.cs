@@ -7,7 +7,7 @@ using DO;
 
 namespace Dal
 {
-     partial class DalObject
+    partial class DalObject
     {
         /// <summary>
         /// gets a station and adds it to the array
@@ -29,8 +29,8 @@ namespace Dal
         public IEnumerable<Station> CopyStationArray(Func<Station, bool> predicate = null)
         {
             List<Station> newList = new List<Station>(DataSource.Stations);
-            if(predicate==null)
-                 return newList;
+            if (predicate == null)
+                return newList;
             return newList.Where(predicate);
         }
 
@@ -88,7 +88,7 @@ namespace Dal
         public Station GetClossestStation(double lattitude, double longtitude, List<Station> stations)
         {
             DO.Station minStation = new Station();
-            double minDistance = Math.Sqrt(Math.Pow(lattitude -stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2));
+            double minDistance = Math.Sqrt(Math.Pow(lattitude - stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2));
             minStation = stations.First();
             foreach (var st in DataSource.Stations)
             {

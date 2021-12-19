@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BlApi;
 using BO;
 
 namespace PL
@@ -21,7 +22,7 @@ namespace PL
     /// </summary>
     public partial class DroneListView : Window
     {
-        private BlApi.IBL myBl;
+        private IBL myBl = BlFactory.GetBl();
         private Weight? selectedWeight = null;
         private List<DroneForList> drones;
 
@@ -47,7 +48,7 @@ namespace PL
             }
         }
 
-        public DroneListView(BlApi.IBL Bl)
+        public DroneListView(IBL Bl)
         {
             myBl = Bl;
             DataContext = this;

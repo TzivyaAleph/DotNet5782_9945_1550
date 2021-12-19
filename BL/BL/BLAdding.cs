@@ -9,7 +9,7 @@ using BO;
 
 namespace BL
 {
-    public partial class BL
+     partial class BL
     {
         /// <summary>
         /// adds a new station to the station list

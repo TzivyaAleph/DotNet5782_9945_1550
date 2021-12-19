@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dal
 {
-     partial class DalObject
+    partial class DalObject
     {
         /// <summary>
         /// coppies the parcel array
@@ -16,7 +16,7 @@ namespace Dal
         public IEnumerable<Parcel> CopyParcelArray(Func<Parcel, bool> predicate = null)
         {
             List<Parcel> newLIst = new List<Parcel>(DataSource.Parcels);
-            if (predicate==null)
+            if (predicate == null)
                 return newLIst;
             return newLIst.Where(predicate);
         }
