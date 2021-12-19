@@ -20,13 +20,13 @@ namespace BL
         {
             if (parcelId < 200)
                 throw new InvalidInputException($"parcel id {parcelId} is not valid !!");
-            IDAL.DO.Parcel dalParcel = new IDAL.DO.Parcel();
+            DO.Parcel dalParcel = new DO.Parcel();
             //gets parcel from dal
             try
             {
                dalParcel = myDal.GetParcel(parcelId);
             }
-            catch (IDAL.DO.UnvalidIDException custEx)
+            catch (DO.UnvalidIDException custEx)
             {
                 throw new FailedToGetException("ERROR", custEx);
             }
@@ -35,24 +35,24 @@ namespace BL
             parcel.Sender = new();
             parcel.DroneInParcel = new();
             dalParcel.CopyPropertiesTo(parcel);
-            IDAL.DO.Customer dalSender = new IDAL.DO.Customer();
-            dalSender = new IDAL.DO.Customer();
+            DO.Customer dalSender = new DO.Customer();
+            dalSender = new DO.Customer();
             try
             {
                  dalSender = myDal.GetCustomer(dalParcel.SenderID);
             }
-            catch (IDAL.DO.UnvalidIDException custEx)
+            catch (DO.UnvalidIDException custEx)
             {
                 throw new FailedToGetException("ERROR", custEx);
             }
             parcel.Sender = new();
             dalSender.CopyPropertiesTo(parcel.Sender);
-            IDAL.DO.Customer dalRecipient = new IDAL.DO.Customer();
+            DO.Customer dalRecipient = new DO.Customer();
             try
             {
               dalRecipient = myDal.GetCustomer(dalParcel.TargetID);
             }
-            catch (IDAL.DO.UnvalidIDException custEx)
+            catch (DO.UnvalidIDException custEx)
             {
                 throw new FailedToGetException("ERROR", custEx);
             }
@@ -106,7 +106,7 @@ namespace BL
                 returningDrone.ParcelInDelivery = default;
             else
             {
-                IDAL.DO.Parcel dalParcel = new IDAL.DO.Parcel();
+                DO.Parcel dalParcel = new DO.Parcel();
                 try
                 {
                     dalParcel = myDal.GetParcel(droneForList.ParcelId);
@@ -135,7 +135,7 @@ namespace BL
                     returningDrone.ParcelInDelivery.Transportation = (int)myDal.getDistanceFromLatLonInKm(sender.Location.Latitude, sender.Location.Longitude, reciever.Location.Latitude, reciever.Location.Longitude)*1000;
                     returningDrone.ParcelInDelivery.Destination = reciever.Location;
                 }
-                catch (IDAL.DO.UnvalidIDException DroneEx)
+                catch (DO.UnvalidIDException DroneEx)
                 {
                     throw new FailedToGetException("ERROR", DroneEx);
                 }
@@ -158,7 +158,7 @@ namespace BL
             Customer returningCustomer = new();
             try
             {
-                IDAL.DO.Customer dalCustomer = myDal.GetCustomer(customerId);
+                DO.Customer dalCustomer = myDal.GetCustomer(customerId);
                 dalCustomer.CopyPropertiesTo(returningCustomer);
                 returningCustomer.Location = new();
                 returningCustomer.Location.Latitude = dalCustomer.Lattitude;
@@ -171,7 +171,7 @@ namespace BL
                 returningCustomer.ReceiveParcels = new();
                 returningCustomer.ReceiveParcels = Parcels;
             }
-            catch (IDAL.DO.UnvalidIDException custEx)
+            catch (DO.UnvalidIDException custEx)
             {
                 throw new FailedToGetException("ERROR", custEx);
             }
@@ -202,7 +202,7 @@ namespace BL
                     //update the fields in customerParcel=the taget of the parcel data
                     parcelToAdd.CustomerParcel = new();
                     parcelToAdd.CustomerParcel.Id = par.TargetID;
-                    IDAL.DO.Customer dalTarget = new IDAL.DO.Customer();
+                    DO.Customer dalTarget = new DO.Customer();
                     try
                     {
                         dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);

@@ -31,7 +31,7 @@ namespace BL
             if (s.StationLocation.Latitude > 5000 || s.StationLocation.Latitude < -5000)
                 throw new InvalidInputException($"Lattitude {s.StationLocation.Latitude} is not valid !!");
             s.DroneCharges = null;
-            IDAL.DO.Station tmp = new IDAL.DO.Station
+            DO.Station tmp = new DO.Station
             {
                 Id = s.Id,
                 Name = s.Name,
@@ -43,7 +43,7 @@ namespace BL
             {
                 myDal.AddStation(tmp);
             }
-            catch (IDAL.DO.ExistingObjectException stationExc)
+            catch (DO.ExistingObjectException stationExc)
             {
                 throw new FailedToAddException("ERROR", stationExc);
             }
@@ -62,14 +62,14 @@ namespace BL
                 throw new InvalidInputException($"model is not valid !!");
             if (stationId < 1000 || stationId > 10000)
                 throw new InvalidInputException($"station Id {stationId} is not valid !!");
-            List<IDAL.DO.Station> stations = (List<IDAL.DO.Station>)myDal.CopyStationArray();
+            List<DO.Station> stations = (List<DO.Station>)myDal.CopyStationArray();
             //checks if the station exists
             if (!stations.Exists(station => station.Id == stationId))
             {
                 throw new InputDoesNotExist($"station {stationId} does not exists !!");
             }
             int index = stations.FindIndex(item => item.Id == stationId);//finds the station that the drone in it.
-            IDAL.DO.Station s = new IDAL.DO.Station();
+            DO.Station s = new DO.Station();
             s = stations[index];
             d.CurrentLocation = new();
             d.Battery = rand.Next(20, 40);
@@ -83,18 +83,18 @@ namespace BL
             blStation = GetStation(stationId);
             blStation.DroneCharges.Add(droneCharge);
             drones.Add(d);
-            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone
+            DO.Drone dalDrone = new DO.Drone
             {
                 Id = d.Id,
                 Model = d.Model,
-                MaxWeight = (IDAL.DO.Weight)d.Weight
+                MaxWeight = (DO.Weight)d.Weight
             };
             myDal.SendDroneToChargeSlot(dalDrone, s);
             try
             {
                 myDal.AddDrone(dalDrone);
             }
-            catch (IDAL.DO.ExistingObjectException droneExc)
+            catch (DO.ExistingObjectException droneExc)
             {
                 throw new FailedToAddException("ERROR", droneExc);
             }
@@ -118,10 +118,10 @@ namespace BL
                 throw new InvalidInputException($"Longitude {customer.Location.Longitude} is not valid !!");
             if (customer.Location.Latitude > 5000 || customer.Location.Latitude < -5000)
                 throw new InvalidInputException($"Lattitude {customer.Location.Latitude} is not valid !!");
-            IDAL.DO.Customer newCustomer = new();
+            DO.Customer newCustomer = new();
             object obj = newCustomer;
             customer.CopyPropertiesTo(obj);
-            newCustomer = (IDAL.DO.Customer)obj;
+            newCustomer = (DO.Customer)obj;
             customer.CopyPropertiesTo(newCustomer);
             newCustomer.Lattitude = customer.Location.Latitude;
             newCustomer.Longtitude = customer.Location.Longitude;
@@ -129,7 +129,7 @@ namespace BL
             {
                 myDal.AddCustomer(newCustomer);
             }
-            catch (IDAL.DO.ExistingObjectException custEx)
+            catch (DO.ExistingObjectException custEx)
             {
                 throw new FailedToAddException("ERROR", custEx);
             }
@@ -152,10 +152,10 @@ namespace BL
             parcel.Scheduled = null;
             parcel.Delivered = null;
             parcel.PickedUp = null;
-            IDAL.DO.Parcel newParcel = new();
+            DO.Parcel newParcel = new();
             object obj = newParcel;
             parcel.CopyPropertiesTo(obj);
-            newParcel = (IDAL.DO.Parcel)obj;
+            newParcel = (DO.Parcel)obj;
             parcel.CopyPropertiesTo(newParcel);
             newParcel.DroneID = 0;
             newParcel.SenderID = parcel.Sender.Id;
@@ -165,7 +165,7 @@ namespace BL
             {
                 runningNumber=myDal.AddParcel(newParcel);
             }
-            catch (IDAL.DO.ExistingObjectException parEx)
+            catch (DO.ExistingObjectException parEx)
             {
                 throw new FailedToAddException("ERROR", parEx);
             }
