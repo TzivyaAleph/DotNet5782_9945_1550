@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
-using IDAL;
+using DO;
 
 namespace BL
 {
@@ -22,7 +22,7 @@ namespace BL
             {
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
-            IDAL.DO.Drone droneTemp = new IDAL.DO.Drone();
+            DO.Drone droneTemp = new DO.Drone();
             try
             {
                 droneTemp = myDal.CopyDroneArray().First(drone => drone.Id == droneId);//finds the drone to update in the dal drones list
@@ -36,7 +36,7 @@ namespace BL
             {
                 myDal.UpdateDrone(droneTemp);//updates the drone in idal drones list
             }
-            catch (IDAL.DO.ExistingObjectException custEx)
+            catch (DO.ExistingObjectException custEx)
             {
                 throw new FailedToUpdateException("ERROR", custEx);
             }
@@ -58,7 +58,7 @@ namespace BL
             {
                 throw new InvalidInputException($"model {stationName} is not valid !!");
             }
-            IDAL.DO.Station stationTemp = new IDAL.DO.Station();
+            DO.Station stationTemp = new DO.Station();
             try
             {
                 stationTemp = myDal.CopyStationArray().First(station => station.Id == stationId);//finds the station to update in the dal station list
