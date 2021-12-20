@@ -145,10 +145,6 @@ namespace PL
             WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
             DataContext = this;
-            ImageBrush b = new ImageBrush();
-            b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\droneBackground.jpg", UriKind.Relative));
-            b.Opacity = 0.65; //sets the lightness of the background
-            grMain.Background = b;
         }
 
         /// <summary>
