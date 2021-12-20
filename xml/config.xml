@@ -4,5 +4,5 @@
 	<dal-packages>
 		<Xml class="DalObject" namespace="Dal">DalObject</Xml>
 		<xml>DalXml</xml>
-	</dal-packages>
+</dal-packages>
 </config>

@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="DroneListView" Height="640" Width="800">
+    <Window.Background>
+        <ImageBrush ImageSource="Images/drone.jpg"></ImageBrush>
+    </Window.Background>
     <Grid x:Name="MainGrid" >
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

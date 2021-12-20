@@ -13,6 +13,9 @@
         <Converters:DroneStatusToBoolConverterForRelease x:Key="DroneStatusToBoolConverterForRelease"/>
         <Converters:DroneStatusToBoolConverterForPickUp x:Key="DroneStatusToBoolConverterForPickUp"/>
     </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="Images/droneBackground.jpg"></ImageBrush>
+    </Window.Background>
     <Grid x:Name="grMain">
         <Grid.Background>
             <ImageBrush x:Name="myImage"  ></ImageBrush>

@@ -22,7 +22,7 @@ namespace PL
     /// </summary>
     public partial class DroneListView : Window
     {
-        private IBL myBl = BlFactory.GetBl();
+        private  IBL myBl = BlFactory.GetBl();
         private Weight? selectedWeight = null;
         private List<DroneForList> drones;
 
@@ -56,9 +56,6 @@ namespace PL
             GetDroneListFromBL();
             StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.Weight));
-            ImageBrush b = new ImageBrush();
-            b.ImageSource = new BitmapImage(new Uri("..\\..\\..\\images\\drone.jpg", UriKind.Relative));
-            imageGrid.Background = b;
         }
 
         private void FilterList()
