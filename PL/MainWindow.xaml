@@ -11,13 +11,19 @@
     </Window.Background>
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="4*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
+        <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Button  Content="View Drone List" Grid.Column="1" Grid.Row="1" FontSize="30"  Click="droneListViewBtn_Click" Background="Orange"  />
+        </Grid.ColumnDefinitions>-->
+        <StackPanel Orientation="Horizontal" Grid.Row="1" x:Name="listsView">
+            <Button  Content="View Drone List" FontSize="20" Click="droneListViewBtn_Click" Background="Orange" FontFamily="Britannic Bold" Width="165"  />
+            <Button  Content="View Customer List" FontSize="20" Click="customerListViewBtn_Click" Background="Orange" FontFamily="Britannic Bold" Width="175"  />
+            <Button x:Name="StationsListView"  Content="View Station List" FontSize="20" Click="stationListViewBtn_Click" Background="Orange" FontFamily="Britannic Bold" Width="165"  />
+            <Button  Content="View Parcel List" FontSize="20" Click="parcelListViewBtn_Click" Background="Orange"  FontFamily="Britannic Bold" Width="165"  />
+            <Button  Content="Exit" FontSize="20" Click="exit_Click" Background="Orange" FontStretch="UltraExpanded" FontFamily="Britannic Bold" Width="132"  />
+        </StackPanel>
     </Grid>
 </Window>

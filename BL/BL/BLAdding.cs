@@ -26,7 +26,7 @@ namespace BL
                 throw new InvalidInputException($"name is not valid !!");
             if(s.ChargeSlots<0||s.ChargeSlots>50)
                 throw new InvalidInputException($"number of slots {s.DroneCharges} is not valid !!");
-            if(s.StationLocation.Longitude>5000||s.StationLocation.Longitude<-5000)
+            if (s.StationLocation.Longitude > 5000 || s.StationLocation.Longitude < -5000)
                 throw new InvalidInputException($"Longitude {s.StationLocation.Longitude} is not valid !!");
             if (s.StationLocation.Latitude > 5000 || s.StationLocation.Latitude < -5000)
                 throw new InvalidInputException($"Lattitude {s.StationLocation.Latitude} is not valid !!");

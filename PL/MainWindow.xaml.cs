@@ -33,5 +33,27 @@ namespace PL
             DroneListView droneListWindow = new DroneListView(myBl);
             droneListWindow.Show();
         }
+
+        private void parcelListViewBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ParcelListView parcelListView = new ParcelListView();
+            parcelListView.Show();
+        }
+
+        private void customerListViewBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void stationListViewBtn_Click(object sender, RoutedEventArgs e)
+        {
+            StationListView stationListView = new StationListView(myBl);
+            stationListView.Show();
+        }
     }
 }
