@@ -103,5 +103,10 @@ namespace PL
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
+
+        private void cancelAdd_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

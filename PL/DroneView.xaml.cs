@@ -154,34 +154,43 @@ namespace PL
         /// <param name="e"></param>
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (txtID.Text != "0" && txtModel.Text.Length!=0 && cbxStations.SelectedIndex>-1)
             {
-                //finds the station with the input name and sends the station id to bl add
-                List<StationForList> stations = myBl.GetStationList().ToList();
-                StationForList stationForList = stations.FirstOrDefault(x => x.Name == cbxStations.Text);
-                int stationId = stationForList.Id;
-                //asks the user if hes sure 
-                var res = MessageBox.Show("Are you sure you want to add?", "myApp", MessageBoxButton.YesNoCancel);
-                if (res == MessageBoxResult.Yes)
+                try
                 {
-                    myBl.AddDrone(DroneToAdd, stationId);
-                    res = MessageBox.Show("Added succecfully!!");
-                    if (res != MessageBoxResult.None)
-                        OnUpdate();//updates the list of drones in the previous window.
-                    Close();
+
+                    //finds the station with the input name and sends the station id to bl add
+                    List<StationForList> stations = myBl.GetStationList().ToList();
+                    StationForList stationForList = stations.FirstOrDefault(x => x.Name == cbxStations.Text);
+                    int stationId = stationForList.Id;
+                    //asks the user if hes sure 
+                    var res = MessageBox.Show("Are you sure you want to add?", "myApp", MessageBoxButton.YesNoCancel);
+                    if (res == MessageBoxResult.Yes)
+                    {
+                        myBl.AddDrone(DroneToAdd, stationId);
+                        res = MessageBox.Show("Added succecfully!!");
+                        if (res != MessageBoxResult.None)
+                            OnUpdate();//updates the list of drones in the previous window.
+                        Close();
+                    }
                 }
+                catch (FailedToAddException ex)
+                {
+                    MessageBox.Show("Failed to add -" + ex.ToString());
+                }
+                catch (FailedToGetException ex)
+                {
+                    MessageBox.Show("Failed to add -" + ex.ToString());
+                }
+                catch (InvalidInputException ex)
+                {
+                    MessageBox.Show("Failed to add -" + ex.ToString());
+                }
+
             }
-            catch (FailedToAddException ex)
+            else
             {
-                MessageBox.Show("Failed to add -" + ex.ToString());
-            }
-            catch (FailedToGetException ex)
-            {
-                MessageBox.Show("Failed to add -" + ex.ToString());
-            }
-            catch (InvalidInputException ex)
-            {
-                MessageBox.Show("Failed to add -" + ex.ToString());
+                MessageBox.Show("It is mandatory to enter all the relevant details");
             }
         }
 
