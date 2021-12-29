@@ -1,4 +1,4 @@
-﻿<Window x:Class="PL.StationView"
+﻿<Window x:Class="PL.CustomerView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,23 +6,23 @@
         xmlns:local="clr-namespace:PL"
         xmlns:Converters="clr-namespace:PL.Converters"
         mc:Ignorable="d"
-        Title="StationView" Height="450" Width="800">
+        Title="CustomerView" Height="450" Width="800">
     <Window.Resources>
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="Images/droneBackground.jpg"></ImageBrush>
     </Window.Background>
-    <Grid x:Name="grMain">
+    <Grid x:Name="gridCust">
         <Grid.Background>
             <ImageBrush x:Name="myImage"  ></ImageBrush>
         </Grid.Background>
-        <Grid x:Name="GridNewStation" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True" d:IsHidden="True">
+        <Grid x:Name="GDAdd" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True" d:IsHidden="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="gridForLayout" d:IsHidden="True">
+            <Grid x:Name="gridForLayout">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -40,24 +40,24 @@
                     <ColumnDefinition Width="4*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label x:Name="labelAdd" FontWeight="Bold" Content="Add New Station" FontSize="25" HorizontalContentAlignment="Left" Grid.Column="2" />
+                <Label x:Name="labelAdd" FontWeight="Bold" Content="Add New Customer" FontSize="25" HorizontalContentAlignment="Left" Grid.Column="2" />
                 <Label Content="ID:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
                 <Label Content="Name:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
-                <Label Content="Available Charging Slots:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
+                <Label Content="Phone number:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
                 <Label Content="Longitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
                 <Label Content="Lattitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
-                <TextBox x:Name="txtID" Text="{Binding StationToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox x:Name="txtName" Text="{Binding StationToAdd.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtAvailable" Text="{Binding StationToAdd.ChargeSlots}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtLongitude" Text="{Binding StationToAdd.StationLocation.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtLattitude" Text="{Binding StationToAdd.StationLocation.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <Button x:Name="addButton" Content="Add"  FontSize="30" Click="addButton_Click" Grid.Column="3" Grid.Row="6"/>
-                <Button x:Name="ButtonCancel" Content="cancel" FontSize="30" Click="ButtonCancel_Click" Grid.Column="3" Grid.Row="7"/>
+                <TextBox x:Name="txtID" Text="{Binding CustomerToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtName" Text="{Binding CustomerToAdd.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtPhoneNumber" Text="{Binding CustomerToAdd.PhoneNumber}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtLongitude" Text="{Binding CustomerToAdd.Location.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtLattitude" Text="{Binding CustomerToAdd.Location.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <Button x:Name="addButton" Content="Add"  FontSize="30"  Grid.Column="3" Grid.Row="6" Click="addButton_Click"/>
+                <Button x:Name="CancelButton" Content="cancel" FontSize="30" Grid.Column="3" Grid.Row="7" Click="CancelButton_Click"/>
             </Grid>
         </Grid>
 
 
-        <Grid x:Name="GridUpdateStation" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}" AllowDrop="True">
+        <Grid x:Name="UpdateGD" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}" AllowDrop="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -82,22 +82,13 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="ID:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
                 <Label Content="Name:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
-                <Label Content="Available Charging Slots:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
+                <Label Content="Phone number:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
                 <Label Content="Longitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
                 <Label Content="Lattitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
-                <TextBox Text="{Binding SelectedStation.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
-                <TextBox Text="{Binding SelectedStation.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox Text="{Binding SelectedStation.ChargeSlots}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox Text="{Binding SelectedStation.StationLocation.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox Text="{Binding SelectedStation.StationLocation.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <StackPanel Grid.Row="8" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Update" Click="updateButton_Click" Width="150"/>
-                    <Button Content="cancel" Click="ButtonCancel_Click" Width="150"/>
-                </StackPanel>
+                <Label Content="Sent parcels's ID:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
+                <Label Content="Recieved parcels's ID:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
+                
             </Grid>
         </Grid>
-
-
-
     </Grid>
 </Window>

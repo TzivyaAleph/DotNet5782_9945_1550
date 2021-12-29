@@ -38,7 +38,7 @@
                 </GroupStyle>
             </ListView.GroupStyle>
         </ListView>
-        <Grid x:Name="bottomGrid" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Bottom" Height="100">
+        <Grid x:Name="bottomGrid"  Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Bottom" Height="100">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
