@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -74,10 +75,6 @@ namespace PL
             DronesListView.ItemsSource = drones;
         }
 
-
-
-
-
         private void droneAdd_Click(object sender, RoutedEventArgs e)
         {
             DroneView droneWindow = new DroneView(myBl);
@@ -107,6 +104,11 @@ namespace PL
         private void cancelAdd_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

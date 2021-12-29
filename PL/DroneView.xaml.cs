@@ -54,7 +54,7 @@ namespace PL
         }
 
         /// <summary>
-        /// prop for a bool parameter that checkes if the drone has been attributed but didnt pickup the parcel 
+        /// prop for a bool parameter that checkes if the drone was attributed but didnt pick-up the parcel (for the triggers binding) 
         /// </summary>
         public bool IsPickUpEnabled
         {
@@ -66,7 +66,7 @@ namespace PL
         }
 
         /// <summary>
-        /// prop for a bool parameter that checkes if the drone has picked up the parcel
+        /// prop for a bool parameter that checkes if the drone has picked up the parcel (for the triggers binding)
         /// </summary>
         public bool IsDeliverParcelEnabled
         {
@@ -78,7 +78,7 @@ namespace PL
         }
 
         /// <summary>
-        /// prop for a bool parameter that checkes if the drone is Maintenance
+        /// prop for a bool parameter that checkes if the drone is Maintenance (for the triggers binding)
         /// </summary>
         public bool IsReleaseDroneEnabled
         {
@@ -148,7 +148,7 @@ namespace PL
         }
 
         /// <summary>
-        /// bottom click for add will send a new drone and station id to bl add drone function
+        /// button for add, will send a new drone and station id to the bl add drone function
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

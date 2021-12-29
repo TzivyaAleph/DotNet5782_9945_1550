@@ -66,8 +66,8 @@ namespace BL
             {
                 throw new InputDoesNotExist("the station does not exist !!");
             }
-            if (!(string.IsNullOrEmpty(stationName)))//checkes if the function recieved a station name
-                stationTemp.Name = stationName;
+            if (!string.IsNullOrEmpty(stationName))//checkes if the function recieved a station name
+                stationTemp.Name = stationName;//updates the stations name
             //updates the number of charging slots if the func recieved user's input
             if (numOfChargingSlots != -1)
             {

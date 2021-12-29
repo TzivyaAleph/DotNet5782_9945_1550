@@ -39,4 +39,9 @@
     {
         Station = 1, Drone, Customer, Parcel, NonAttributedParcels, AvalableChargeSlots
     };
+
+    public enum UserTipe
+    {
+        Manager=1, Employee, Customer
+    }
 }
