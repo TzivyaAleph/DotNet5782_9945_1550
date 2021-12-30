@@ -42,7 +42,8 @@ namespace PL
 
         private void customerListViewBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            CustomerListView customerListView = new CustomerListView(myBl);
+            customerListView.Show();
         }
 
         private void exit_Click(object sender, RoutedEventArgs e)

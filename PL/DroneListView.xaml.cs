@@ -23,7 +23,7 @@ namespace PL
     /// </summary>
     public partial class DroneListView : Window
     {
-        private IBL myBl = BlFactory.GetBl();
+        private  IBL myBl = BlFactory.GetBl();
         private Weight? selectedWeight = null;
         private List<DroneForList> drones;
 

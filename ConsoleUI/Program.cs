@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using DO;
-using DalApi;
 
 namespace ConsoleUI
 {
     class Program
     {
         // an object for initialize and for reaching the function in dalObject.
-        private static readonly IDal data = DalFactory.GetDal();
-        //static DO.IDal data = new DalObject.DalObject();
+        static DO.IDal data = new DalObject.DalObject();
         static void Main(string[] args)
         {
             MenuOptions menuOption;

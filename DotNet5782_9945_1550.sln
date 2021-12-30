@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalApi", "DalApi\DalApi.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{9332EDB4-4747-44E8-95F6-76326F4DDD33}"
 	ProjectSection(SolutionItems) = preProject
-		xml\config.xml = xml\config.xml
+		config.xml = config.xml
 	EndProjectSection
 EndProject
 Global

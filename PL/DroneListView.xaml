@@ -58,7 +58,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Button x:Name="droneAdd"  FontWeight="Bold" Grid.Column="1"   Grid.Row="5" Content="add drone"    Click="droneAdd_Click" Grid.ColumnSpan="2" />
-            <Button x:Name="cancelAdd"  FontWeight="Bold"   Grid.Column="1" Grid.Row="6"   Content="Close"   Grid.ColumnSpan="2" Click="cancelAdd_Click"  />
+            <Button x:Name="cancelAdd"  FontWeight="Bold"   Grid.Column="1" Grid.Row="6"   Content="Close"    Grid.ColumnSpan="2" Click="cancelAdd_Click"  />
             <Grid  Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

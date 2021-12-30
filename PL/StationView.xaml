@@ -22,7 +22,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="gridForLayout">
+            <Grid x:Name="gridForLayout" d:IsHidden="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
