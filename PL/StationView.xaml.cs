@@ -30,6 +30,19 @@ namespace PL
         private string originalStationName; //temp to hold the station's name of the station from the list view window (this will not be used for items source)
         private int originalNumOfSlots; //temp to hold the station's Num Of Slots of the station from the list view window (this will not be used for items source)
         public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
+        public int TotalNumOfSlots { get; set; }
+        private List<DroneCharge> droneCharges;
+
+        public List<DroneCharge> DroneCharges
+        {
+            get { return droneCharges; }
+            set
+            {
+                droneCharges = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("DroneCharges"));
+            }
+        }
+
 
         /// <summary>
         /// a station for putting the input data we recieve in it.
@@ -87,6 +100,7 @@ namespace PL
             InitializeComponent();
             DataContext = this;//binding the data
             SelectedStation = st;
+            DroneCharges = SelectedStation.DroneCharges;
             originalStationName = st.Name;
             originalNumOfSlots = st.ChargeSlots;
             myBl = bl;
@@ -138,15 +152,15 @@ namespace PL
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void updateButton_Click(object sender, RoutedEventArgs e)
-        {   
-            if (originalStationName != SelectedStation.Name || originalNumOfSlots != SelectedStation.ChargeSlots)
+        {
+            if (originalStationName != SelectedStation.Name)
             {
                 var result = MessageBox.Show("Save updates to current station?", "myApp", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        myBl.UpdateStation(SelectedStation.Id, SelectedStation.Name, SelectedStation.ChargeSlots);
+                        myBl.UpdateStation(SelectedStation.Id, SelectedStation.Name, TotalNumOfSlots);
                         var res = MessageBox.Show("success");
                         if (res != MessageBoxResult.None)
                         {
@@ -155,6 +169,10 @@ namespace PL
                         }
                     }
                     catch (FailedToUpdateException ex)
+                    {
+                        MessageBox.Show("Failed to update - " + ex.ToString());
+                    }
+                    catch (InvalidInputException ex)
                     {
                         MessageBox.Show("Failed to update - " + ex.ToString());
                     }

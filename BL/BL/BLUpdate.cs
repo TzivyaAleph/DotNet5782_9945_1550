@@ -69,7 +69,7 @@ namespace BL
             if (!string.IsNullOrEmpty(stationName))//checkes if the function recieved a station name
                 stationTemp.Name = stationName;//updates the stations name
             //updates the number of charging slots if the func recieved user's input
-            if (numOfChargingSlots != -1)
+            if (numOfChargingSlots != 0)
             {
                 List<DO.DroneCharge> droneCharges = new List<DO.DroneCharge>();//recieves the dal droneCharge list
                 droneCharges = myDal.GetDroneChargeList().ToList();
