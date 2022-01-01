@@ -40,6 +40,15 @@
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold"  Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
         </ListView>
         <StackPanel  x:Name="buttons" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Width="250" >
             <Button x:Name="undoFilter"  FontWeight="Bold" Height="40" Content="undo filter" Click="undoFilter_Click" />

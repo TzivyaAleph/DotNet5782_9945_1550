@@ -212,5 +212,17 @@ namespace PL
         {
             GetParcelListFromBL();
         }
+
+        /// <summary>
+        /// button for adding a parcel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+            ParcelView parcelWindow = new ParcelView(myBl);
+            parcelWindow.OnUpdate += ParcelView_onUpdate;//registers to event that is announced when a station was added or updated 
+            parcelWindow.Show();
+        }
     }
 }
