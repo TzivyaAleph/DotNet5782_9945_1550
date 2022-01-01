@@ -20,21 +20,62 @@ namespace PL
     /// <summary>
     /// Interaction logic for CustomerView.xaml
     /// </summary>
-    public partial class CustomerView : Window,INotifyPropertyChanged
+    public partial class CustomerView : Window, INotifyPropertyChanged
     {
         public event Action OnUpdate = delegate { }; //event that will refresh the station list every time we update a Customer
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged=delegate { };
         public bool IsUpdateMode { get; set; } //to know which window to open: update or add
-        Customer customerToAdd = new Customer();
+        Customer customerToAdd;
+        private string originalCustomerName; //temp to hold the customer's name of the customer from the list view window (this will not be used for items source)
+        private string originalPhoneNumber; //temp to hold the customers phone number from the list view window (this will not be used for items source)
+        List<int> sentIdList;
+
+        //property for the parcels id list - for binding to the items source in the xaml
+        public List<int> SentIdList
+        {
+            get { return sentIdList; }
+            set
+            {
+                sentIdList = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("SentIdList"));
+            }
+        }
+
+        List<int> recievedIdList;
+
+        //property for the parcels id list - for binding to the items source in the xaml
+        public List<int> RecievedIdList
+        {
+            get { return recievedIdList; }
+            set { recievedIdList = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("RecievedIdList"));
+            }
+        }
+
+
         /// <summary>
         /// the customer for binding in adding
         /// </summary>
         public Customer CustomerToAdd
         {
             get { return customerToAdd; }
-            set {
+            set
+            {
                 customerToAdd = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("CustomerToAdd"));
+            }
+        }
+        Customer custForUpdate;
+        /// <summary>
+        /// customer property for update a customer from the list
+        /// </summary>
+        public Customer CustForUpdate
+        {
+            get { return custForUpdate; }
+            set
+            {
+                custForUpdate = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("CustForUpdate"));
             }
         }
 
@@ -47,8 +88,15 @@ namespace PL
         /// <param name="customer"></param>
         public CustomerView(IBL myBl, Customer customer)
         {
+            InitializeComponent();
+            DataContext = this;//binding the data
+            CustForUpdate = customer;
+            originalCustomerName = customer.Name;
+            originalPhoneNumber = customer.PhoneNumber;
             this.myBl = myBl;
-
+            sentIdList = customer.SentParcels.Select(item => item.Id).ToList();
+            recievedIdList= customer.ReceiveParcels.Select(item => item.Id).ToList();
+            IsUpdateMode = true;
         }
 
         /// <summary>
@@ -102,9 +150,81 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// close window in adding grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        /// <summary>
+        /// closing window in update grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        /// <summary>
+        /// updates the data of a custumer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (originalCustomerName == CustForUpdate.Name && originalPhoneNumber == CustForUpdate.PhoneNumber)
+                MessageBox.Show("Fill in the following details to update");
+            else
+            {
+                var result = MessageBox.Show("Save updates to current customer?", "myApp", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        myBl.UpdateCustomer(CustForUpdate.Id, CustForUpdate.Name, CustForUpdate.PhoneNumber);
+                        var res = MessageBox.Show("success");
+                        if (res != MessageBoxResult.None)
+                        {
+                            CustForUpdate = myBl.GetCustomer(CustForUpdate.Id);
+                            OnUpdate();//refresh the customer list
+                            originalCustomerName = CustForUpdate.Name;
+                            originalPhoneNumber = CustForUpdate.PhoneNumber;
+                        }
+                    }
+                    catch (FailedToUpdateException ex)
+                    {
+                        MessageBox.Show("Failed to update - " + ex.ToString());
+                    }
+                    catch(InvalidInputException ex)
+                    {
+                        MessageBox.Show("Failed to update - " + ex.ToString());
+                    }
+                    catch(FailedToGetException ex)
+                    {
+                        if (ex.InnerException!=null)
+                            MessageBox.Show("Failed to update - " + ex.ToString()+" "+ex.InnerException.ToString());
+                        else
+                            MessageBox.Show("Failed to update - " + ex.ToString());
+                    }
+                }
+            }
+
+        }
+
+
+        private void listBoxSent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void listBoxRecieved_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

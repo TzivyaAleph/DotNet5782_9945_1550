@@ -21,7 +21,7 @@ namespace Dal
             //searches the customer by the id
             if (!(DataSource.Customers.Exists(client => client.Id == customerID)))
             {
-                throw new UnvalidIDException($"id {customerID} is not valid !!");
+                throw new UnvalidIDException($"id {customerID} does not exist !!");
             };
             customerToReturn = DataSource.Customers.Find(c => c.Id == customerID);
             return customerToReturn;

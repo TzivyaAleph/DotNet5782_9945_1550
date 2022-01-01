@@ -87,7 +87,17 @@
                 <Label Content="Lattitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
                 <Label Content="Sent parcels's ID:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
                 <Label Content="Recieved parcels's ID:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
-                
+                <TextBox Text="{Binding CustForUpdate.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox Text="{Binding CustForUpdate.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CustForUpdate.PhoneNumber}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CustForUpdate.Location.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False" />
+                <TextBox Text="{Binding CustForUpdate.Location.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <ListBox x:Name="listBoxSent" ItemsSource='{Binding SentIdList}' Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" MouseDoubleClick="listBoxSent_MouseDoubleClick"/>
+                <ListBox x:Name="listBoxRecieved" ItemsSource='{Binding RecievedIdList}' Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" MouseDoubleClick="listBoxRecieved_MouseDoubleClick"/>
+                <StackPanel Grid.Row="8" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Update" Width="150" Click="Button_Click_1"/>
+                    <Button Content="cancel"  Width="150" Click="Button_Click"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

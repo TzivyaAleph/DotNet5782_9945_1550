@@ -108,7 +108,7 @@ namespace BL
             {
                 throw new InvalidInputException($"model {customerName} is not valid !!");
             }
-            if (customerPhone.Length != 10)
+            if (customerPhone.Length != 11&&customerPhone.Length!=10)
             {
                 throw new InvalidInputException("Invalid phone number!!\n");
             }

@@ -22,8 +22,8 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <ListView ItemsSource='{Binding Customers}' MouseDoubleClick="customersList_MouseDoubleClick" SelectionChanged="customersList_SelectionChanged"  Grid.Column="0"  Background="LightGray" FontStyle="Italic" x:Name="customersList" Foreground="#FF090A0D" >
+
+        <ListView x:Name="customersList" ItemsSource='{Binding Customers}' MouseDoubleClick="customersList_MouseDoubleClick" SelectionChanged="customersList_SelectionChanged"  Grid.Column="0"  Background="LightGray" FontStyle="Italic"  Foreground="#FF090A0D" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

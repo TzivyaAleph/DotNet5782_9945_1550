@@ -71,7 +71,7 @@ namespace PL
         {
             CustomerForList c = customersList.SelectedItem as CustomerForList;
             Customer customer = new Customer();
-            customer = myBl.GetCustomer(customer.Id);//gets the selected customer as customer instead of customer for list 
+            customer = myBl.GetCustomer(c.Id);//gets the selected customer as customer instead of customer for list 
             CustomerView customerWindow = new CustomerView(myBl, customer);
             customerWindow.OnUpdate += StationWindow_onUpdate;//registers to event that is announced when a station was added or updated 
             customerWindow.Show();
