@@ -98,7 +98,7 @@ namespace BL
                 }
                 catch (InvalidOperationException)
                 {
-                    throw new InputDoesNotExist("cant print the parcel-sender id is missing!!");
+                    throw new InputDoesNotExist("sender id is missing!!");
                 }
                 parcelToAdd.Sender = dalCustomer.Name;
                 //finds the reciepient in customer list for getting his name

@@ -34,6 +34,8 @@ namespace PL
         public event Action OnUpdate = delegate { }; //event that will refresh the parcels list every time we update a parcel
         public List<Weight> WeightOptions { get; set; } //list to hold weight options
         public List<Priority> Priorities { get; set; } //list to hold priority options
+        public List<int> SenderIDs { get; set; }//list of senders ids.
+        public List<int> RecieverIDs { get; set; }//list of reciever ids.
         public event PropertyChangedEventHandler PropertyChanged = delegate { };//an event for binding property who changes
         public bool IsUpdateMode { get; set; } //to know which window to open: update or add
         private IBL myBl;
@@ -93,6 +95,9 @@ namespace PL
                 parcelToAdd.Sender = new CustomerParcel();
                 WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
                 Priorities = Enum.GetValues(typeof(Priority)).Cast<Priority>().ToList();
+                List<CustomerForList> Custumers = myBl.GetCustomerList().ToList();
+                SenderIDs = Custumers.Select(item => item.Id).ToList();
+                RecieverIDs = Custumers.Select(item => item.Id).ToList();
                 DataContext = this;//binding the data
             }
             catch (FailedToGetException ex)
@@ -125,6 +130,10 @@ namespace PL
                 MessageBox.Show("Failed to add -" + ex.ToString());
             }
             catch (InvalidInputException ex)
+            {
+                MessageBox.Show("Failed to add -" + ex.ToString());
+            }
+            catch(InputDoesNotExist ex)
             {
                 MessageBox.Show("Failed to add -" + ex.ToString());
             }
