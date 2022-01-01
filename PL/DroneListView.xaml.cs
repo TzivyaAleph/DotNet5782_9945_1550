@@ -25,8 +25,12 @@ namespace PL
     {
         private  IBL myBl = BlFactory.GetBl();
         private Weight? selectedWeight = null;
+        private DroneStatuses? selectedStatus = null;
         private List<DroneForList> drones;
 
+        /// <summary>
+        /// prop to bind to for filtering list by weight of drone
+        /// </summary>
         public Weight? SelectedWeight
         {
             get { return selectedWeight; }
@@ -37,8 +41,9 @@ namespace PL
             }
         }
 
-        private DroneStatuses? selectedStatus = null;
-
+        /// <summary>
+        /// prop to bind to for filtering list by status of drone
+        /// </summary>
         public DroneStatuses? SelectedStatus
         {
             get { return selectedStatus; }
@@ -49,6 +54,10 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// constractor
+        /// </summary>
+        /// <param name="Bl"></param>
         public DroneListView(IBL Bl)
         {
             myBl = Bl;
@@ -59,6 +68,9 @@ namespace PL
             WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.Weight));
         }
 
+        /// <summary>
+        /// filters the drones list by status and by weight
+        /// </summary>
         private void FilterList()
         {
             if (SelectedWeight != null && SelectedStatus != null)
@@ -68,13 +80,23 @@ namespace PL
             else
                 DronesListView.ItemsSource = drones.Where(dr => dr.DroneStatuses == SelectedStatus);
         }
-
+        
+        /// <summary>
+        /// gets the drones list from bl
+        /// </summary>
         private void GetDroneListFromBL()
         {
             drones = myBl.GetDroneList().ToList();
             DronesListView.ItemsSource = drones;
+            if (SelectedWeight != null || SelectedStatus != null)
+                FilterList();
         }
 
+        /// <summary>
+        /// button that opens a adding drone window 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void droneAdd_Click(object sender, RoutedEventArgs e)
         {
             DroneView droneWindow = new DroneView(myBl);
@@ -82,6 +104,11 @@ namespace PL
             droneWindow.Show();
         }
 
+        /// <summary>
+        /// event that opens a drones window by a mouse double click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             DroneForList d = DronesListView.SelectedItem as DroneForList;
@@ -92,6 +119,9 @@ namespace PL
             droneWindow.Show();
         }
 
+        /// <summary>
+        /// function that updates the drone list window every time a drone was updated or added
+        /// </summary>
         private void DroneWindow_onUpdate()
         {
             GetDroneListFromBL();
@@ -101,6 +131,11 @@ namespace PL
         {
         }
 
+        /// <summary>
+        /// button to close the drone list view window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cancelAdd_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -109,6 +144,16 @@ namespace PL
         private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// button to undo the filter on the drones list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void undoFilter_Click(object sender, RoutedEventArgs e)
+        {
+            drones = myBl.GetDroneList().ToList();
         }
     }
 }
