@@ -22,13 +22,14 @@ namespace PL
     /// </summary>
     public partial class CustomerView : Window, INotifyPropertyChanged
     {
-        public event Action OnUpdate = delegate { }; //event that will refresh the station list every time we update a Customer
+        public event Action OnUpdate = delegate { }; //event that will refresh the customer list every time we update a Customer
         public event PropertyChangedEventHandler PropertyChanged=delegate { };
         public bool IsUpdateMode { get; set; } //to know which window to open: update or add
         Customer customerToAdd;
         private string originalCustomerName; //temp to hold the customer's name of the customer from the list view window (this will not be used for items source)
         private string originalPhoneNumber; //temp to hold the customers phone number from the list view window (this will not be used for items source)
         List<int> sentIdList;
+        private IBL myBl;
 
         //property for the parcels id list - for binding to the items source in the xaml
         public List<int> SentIdList
@@ -79,7 +80,6 @@ namespace PL
             }
         }
 
-        private IBL myBl;
 
         /// <summary>
         /// ctor for the customers update 
@@ -216,15 +216,32 @@ namespace PL
 
         }
 
-
+        /// <summary>
+        /// a mouse double click on id will open the ids  parcel view 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listBoxSent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            int id =(int)listBoxSent.SelectedItem;
+            Parcel parcel = new Parcel();
+            parcel = myBl.GetParcel(id);//gets the selected item as parcel.
+            ParcelView parcelView = new ParcelView(myBl,parcel);
+            parcelView.Show();
         }
 
+        /// <summary>
+        /// a mouse double click on id will open the ids  parcel view
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listBoxRecieved_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            int id =(int) listBoxRecieved.SelectedItem;
+            Parcel parcel = new Parcel();
+            parcel = myBl.GetParcel(id);//gets the selected item as parcel.
+            ParcelView parcelView = new ParcelView(myBl, parcel);
+            parcelView.Show();
         }
     }
 }
