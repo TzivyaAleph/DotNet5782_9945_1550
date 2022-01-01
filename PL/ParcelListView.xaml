@@ -56,7 +56,7 @@
             </ListView>
             <StackPanel x:Name="buttons" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Width="250" >
                 <Button x:Name="undoFilterButton" Content="undo filter" FontWeight="Bold" Height="40" Click="undoFilterButton_Click"/>
-                <Button x:Name="addButton" Content="add parcel" FontWeight="Bold" Height="40"/>
+                <Button x:Name="addButton" Content="add parcel" FontWeight="Bold" Height="40" Click="addButton_Click"/>
                 <Button x:Name="closeButton" Content="close" FontWeight="Bold" Height="40" Click="closeButton_Click"/>
                 <ToggleButton x:Name="groupingButton" Content="group list by parcel sender" FontWeight="Bold" Height="40" IsChecked="{Binding IsGroupingMode, Mode=TwoWay}"/>
             </StackPanel>
