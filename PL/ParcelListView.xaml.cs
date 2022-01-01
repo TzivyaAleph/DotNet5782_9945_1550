@@ -200,9 +200,9 @@ namespace PL
             ParcelForList p = parcelsList.SelectedItem as ParcelForList;
             Parcel par = new Parcel();
             par = myBl.GetParcel(p.Id);//gets the selected station as station instead of station for list 
-            ParcelView parcelWindow = new ParcelView(myBl, par);
-            parcelWindow.OnUpdate += ParcelView_onUpdate;//registers to event that is announced when a station was added or updated 
-            parcelWindow.Show();
+            //ParcelView parcelWindow = new ParcelView(myBl, par);
+            //parcelWindow.OnUpdate += ParcelView_onUpdate;//registers to event that is announced when a station was added or updated 
+            //parcelWindow.Show();
         }
 
         /// <summary>
