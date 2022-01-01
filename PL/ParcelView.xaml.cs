@@ -32,6 +32,8 @@ namespace PL
     public partial class ParcelView : Window, INotifyPropertyChanged
     {
         public event Action OnUpdate = delegate { }; //event that will refresh the parcels list every time we update a parcel
+        public List<Weight> WeightOptions { get; set; } //list to hold weight options
+        public List<Priority> Priorities { get; set; } //list to hold priority options
         public event PropertyChangedEventHandler PropertyChanged = delegate { };//an event for binding property who changes
         public bool IsUpdateMode { get; set; } //to know which window to open: update or add
         private IBL myBl;
@@ -85,11 +87,13 @@ namespace PL
             {
                 InitializeComponent();
                 this.myBl = myBl;
-                DataContext = this;//binding the data
                 parcelToAdd = new Parcel();
                 parcelToAdd.DroneInParcel = new DroneParcel();
                 parcelToAdd.Recipient = new CustomerParcel();
                 parcelToAdd.Sender = new CustomerParcel();
+                WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
+                Priorities = Enum.GetValues(typeof(Priority)).Cast<Priority>().ToList();
+                DataContext = this;//binding the data
             }
             catch (FailedToGetException ex)
             {
