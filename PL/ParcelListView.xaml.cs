@@ -176,6 +176,8 @@ namespace PL
                 parcelsList.ItemsSource = parcels.Where(p => p.Priority == SelectedPriority);
             else
                 parcelsList.ItemsSource = parcels.Where(p => p.Status == SelectedStatus);
+            if (IsGroupingMode)
+                GroupList();
         }
 
         /// <summary>
