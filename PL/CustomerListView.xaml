@@ -14,10 +14,6 @@
                 <GradientStop Color="#FFE0A582" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>

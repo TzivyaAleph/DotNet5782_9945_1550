@@ -289,7 +289,7 @@ namespace BL
             returningStation.StationLocation = new();
             returningStation.StationLocation.Latitude = dalStation.Lattitude;
             returningStation.StationLocation.Longitude = dalStation.Longitude;
-            List<DroneCharge> droneCharges = FindListOfDroneLIstForStation(stationId);
+            List<DroneCharge> droneCharges = FindListOfDronesInStation(stationId);
             returningStation.DroneCharges = new();
             returningStation.DroneCharges = droneCharges;
             return returningStation;
@@ -300,22 +300,22 @@ namespace BL
         /// </summary>
         /// <param name="stationId"></param>
         /// <returns>th ecreated station </returns>
-        private List<DroneCharge> FindListOfDroneLIstForStation(int stationId)
+        private List<DroneCharge> FindListOfDronesInStation(int stationId)
         {
             List<DroneCharge> droneChargesToReturn = new List<DroneCharge>();
             //goes through the drone charges
-            foreach (var droneList in myDal.GetDroneChargeList())
+            foreach (var droneCharge in myDal.GetDroneChargeList())
             {
                 DroneCharge droneToAdd = new DroneCharge();
                 //if the drone charge is in the station
-                if (droneList.StationID== stationId)
+                if (droneCharge.StationID== stationId)
                 {
                     //updates his fields and add to returning list
-                    droneToAdd.Id = droneList.DroneID;
+                    droneToAdd.Id = droneCharge.DroneID;
                     DroneForList drone = new();
                     try
                     {
-                      drone = drones.First(item => item.Id == droneList.DroneID);
+                      drone = drones.First(item => item.Id == droneCharge.DroneID);
                     }
                     catch (InvalidOperationException)
                     {

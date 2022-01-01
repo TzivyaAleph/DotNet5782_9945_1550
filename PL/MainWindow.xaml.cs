@@ -36,7 +36,7 @@ namespace PL
 
         private void parcelListViewBtn_Click(object sender, RoutedEventArgs e)
         {
-            ParcelListView parcelListView = new ParcelListView();
+            ParcelListView parcelListView = new ParcelListView(myBl);
             parcelListView.Show();
         }
 
