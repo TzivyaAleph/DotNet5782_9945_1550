@@ -87,7 +87,7 @@
                 <Label Content="Longitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
                 <Label Content="Lattitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
                 <Label Content="Drones that are Charging in station:" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" />
-                <ListBox x:Name="dronesInStation" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Grid.ColumnSpan="1" ItemsSource="{Binding DroneCharges}" Width="300" Height="auto"/>
+                <ListBox x:Name="dronesInStation" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Grid.ColumnSpan="1" ItemsSource="{Binding DroneCharges}" Width="300" Height="auto" MouseDoubleClick="dronesInStation_MouseDoubleClick"/>
                 <TextBox Text="{Binding SelectedStation.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <TextBox Text="{Binding SelectedStation.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <TextBox Text="{Binding SelectedStation.ChargeSlots}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>

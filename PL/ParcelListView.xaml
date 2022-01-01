@@ -7,6 +7,50 @@
         mc:Ignorable="d"
         Title="ParcelListView" Height="450" Width="800">
     <Grid>
-        
+        <Grid x:Name="MainGrid" >
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFFAF1E7"/>
+                    <GradientStop Color="#FFE0A582" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100*"/>
+                <RowDefinition Height="350*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="upGrid" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <ListView x:Name="parcelsList" ItemsSource='{Binding Parcels}' Grid.Row="1" Grid.Column="0" Background="LightGray" FontStyle="Italic" Foreground="#FF090A0D">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn/>
+                    </GridView>
+                </ListView.View>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="Bold"  Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+            <StackPanel x:Name="buttons" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Grid.RowSpan="2" Width="250" >
+                <Button x:Name="addButton" Content="add parcel" FontWeight="Bold" Height="40"/>
+                <Button x:Name="closeButton" Content="close" FontWeight="Bold" Height="40"/>
+                <ToggleButton x:Name="groupingButton" Content="group list by parcel sender" FontWeight="Bold" Height="40" IsChecked="{Binding IsGroupingMode, Mode=TwoWay}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

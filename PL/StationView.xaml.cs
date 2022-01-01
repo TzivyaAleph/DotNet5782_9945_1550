@@ -33,6 +33,9 @@ namespace PL
         public int TotalNumOfSlots { get; set; }
         private List<DroneCharge> droneCharges;
 
+        /// <summary>
+        /// drone charges list for the listbox of drone charging in the station
+        /// </summary>
         public List<DroneCharge> DroneCharges
         {
             get { return droneCharges; }
@@ -42,7 +45,6 @@ namespace PL
                 PropertyChanged(this, new PropertyChangedEventArgs("DroneCharges"));
             }
         }
-
 
         /// <summary>
         /// a station for putting the input data we recieve in it.
@@ -178,6 +180,20 @@ namespace PL
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// double click event for opening a drone window of a drone that is charging in station
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dronesInStation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DroneCharge d = dronesInStation.SelectedItem as DroneCharge;
+            Drone dr = new Drone();
+            dr = myBl.GetDrone(d.Id);//gets the selected drone as drone instead of drone for list 
+            DroneView droneWindow = new DroneView(myBl, dr);
+            droneWindow.Show();
         }
     }
 }

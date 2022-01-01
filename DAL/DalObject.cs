@@ -13,7 +13,7 @@ namespace Dal
     {
         //lazt<T> is doing a lazy initialzation and hi sdefualt is thread safe
         internal static readonly Lazy<DalObject> singleInstance = new Lazy<DalObject>(() => new DalObject());
-        public static DalObject SingleInstance
+        public static DalObject Instance
         {
             get
             {

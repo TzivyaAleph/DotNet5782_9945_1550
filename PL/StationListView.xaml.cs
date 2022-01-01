@@ -130,7 +130,7 @@ namespace PL
             //puts the defult value that we choose in the collection view
             collectionView = (CollectionView)CollectionViewSource.GetDefaultView(StationsListView.ItemsSource);
             //describe how we want to make the groups
-            PropertyGroupDescription groupDescription = new PropertyGroupDescription("AvailableChargingSlots");
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("AvailableChargingSlots");//לשאול את בת שבע איך לקשר אותו לID של השולח
             collectionView.GroupDescriptions.Add(groupDescription);
         }
 
