@@ -24,10 +24,51 @@ namespace PL
     {
         private IBL myBl = BlFactory.GetBl();
         private Weight? selectedWeight = null;
+        private Status? selectedStatus = null;
+        private Priority? selectedPriority = null;
         private List<ParcelForList> parcels;
         public event PropertyChangedEventHandler PropertyChanged= delegate { };
         private CollectionView collectionView;//collectionView for the grouping
         private bool isGroupingMode;
+
+        /// <summary>
+        /// prop for filtering list by weight of parcel
+        /// </summary>
+        public Weight? SelectedWeight
+        {
+            get { return selectedWeight; }
+            set
+            {
+                selectedWeight = value;
+                FilterList();
+            }
+        }
+
+        /// <summary>
+        /// prop to bind to for filtering list by status of parcel
+        /// </summary>
+        public Status? SelectedStatus
+        {
+            get { return selectedStatus; }
+            set
+            {
+                selectedStatus = value;
+                FilterList();
+            }
+        }
+
+        /// <summary>
+        /// prop to bind to for filtering list by priority of parcel
+        /// </summary>
+        public Priority? SelectedPriority
+        {
+            get { return selectedPriority; }
+            set
+            {
+                selectedPriority = value;
+                FilterList();
+            }
+        }
 
         /// <summary>
         /// prop for the grouping button binding
@@ -68,8 +109,10 @@ namespace PL
             DataContext = this;
             InitializeComponent();
             GetParcelListFromBL();
+            StatusSelector.ItemsSource = Enum.GetValues(typeof(Status));
+            WeightSelector.ItemsSource = Enum.GetValues(typeof(Weight));
+            PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priority));
         }
-
 
         /// <summary>
         /// func that undoes the grouping of the list view
@@ -97,8 +140,77 @@ namespace PL
         private void GetParcelListFromBL()
         {
             Parcels = myBl.GetParcelList().ToList();
+            if (SelectedWeight != null || SelectedStatus != null || SelectedPriority != null)
+                FilterList();
             if (IsGroupingMode)
                 GroupList();
+        }
+
+        /// <summary>
+        /// button that closses the parcel list view window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        /// <summary>
+        /// filters the list of parcels by the priority, weight and status of the parcels
+        /// </summary>
+        private void FilterList()
+        {
+            //if all three filters are selected
+            if (SelectedWeight != null && SelectedStatus != null && SelectedPriority != null)
+                parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Status == SelectedStatus && p.Priority == SelectedPriority);
+            else if (SelectedWeight != null && SelectedStatus != null)
+                parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Status == SelectedStatus);
+            else if (SelectedWeight != null && SelectedPriority != null)
+                parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Priority == SelectedPriority);
+            else if (SelectedStatus != null && SelectedPriority != null)
+                parcelsList.ItemsSource = parcels.Where(p => p.Status == SelectedStatus && p.Priority == SelectedPriority);
+            else if (selectedWeight != null)
+                parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight);
+            else if (SelectedPriority != null)
+                parcelsList.ItemsSource = parcels.Where(p => p.Priority == SelectedPriority);
+            else
+                parcelsList.ItemsSource = parcels.Where(p => p.Status == SelectedStatus);
+        }
+
+        /// <summary>
+        /// button for undoing the list filter
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void undoFilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            parcelsList.ItemsSource = parcels;
+            if (IsGroupingMode)
+                GroupList();
+        }
+
+        /// <summary>
+        /// event that opens a parcels window by a mouse double click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void parcelsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ParcelForList p = parcelsList.SelectedItem as ParcelForList;
+            Parcel par = new Parcel();
+            par = myBl.GetParcel(p.Id);//gets the selected station as station instead of station for list 
+            ParcelView parcelWindow = new ParcelView(myBl, par);
+            parcelWindow.OnUpdate += ParcelView_onUpdate;//registers to event that is announced when a station was added or updated 
+            parcelWindow.Show();
+        }
+
+        /// <summary>
+        /// func that refreshes the stations list
+        /// </summary>
+        private void ParcelView_onUpdate()
+        {
+            GetParcelListFromBL();
         }
     }
 }

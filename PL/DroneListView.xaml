@@ -41,31 +41,10 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid x:Name="bottomGrid" Grid.Row="2" Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Button x:Name="droneAdd"  FontWeight="Bold" Grid.Column="1"   Grid.Row="5" Content="add drone"    Click="droneAdd_Click" Grid.ColumnSpan="2" />
-            <Button x:Name="cancelAdd"  FontWeight="Bold"   Grid.Column="1" Grid.Row="6"   Content="Close"    Grid.ColumnSpan="2" Click="cancelAdd_Click"  />
-            <Grid  Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="4">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid x:Name="imageGrid"  Grid.Row="0"/>
-            </Grid>
-        </Grid>
+        <StackPanel  x:Name="buttons" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Width="250" >
+            <Button x:Name="undoFilter"  FontWeight="Bold" Height="40" Content="undo filter" Click="undoFilter_Click" />
+            <Button x:Name="droneAdd"  FontWeight="Bold" Height="40" Content="add drone" Click="droneAdd_Click" />
+            <Button x:Name="cancelAdd"  FontWeight="Bold" Height="40" Content="Close" Click="cancelAdd_Click"  />
+        </StackPanel>
     </Grid>
 </Window>
