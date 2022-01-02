@@ -7,17 +7,17 @@
         xmlns:Converters="clr-namespace:PL.Converters"
         mc:Ignorable="d"
         Title="ParcelView" Height="450" Width="800">
-    <!--<Window.Resources>
+    <Window.Resources>
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </Window.Resources>-->
+    </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="Images/droneBackground.jpg"></ImageBrush>
     </Window.Background>
     <Grid>
-        <Grid.Background>
+        <Grid.Background >
             <ImageBrush x:Name="myImage"  ></ImageBrush>
         </Grid.Background>
-        <Grid x:Name="GDAdd">
+        <Grid x:Name="GDAdd" Visibility="{Binding IsDeleteeMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True"  d:IsHidden="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -51,6 +51,55 @@
                 <ComboBox x:Name="CBPriority" ItemsSource="{Binding Priorities}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <Button x:Name="addButton" Content="Add"  FontSize="30"  Grid.Column="3" Grid.Row="6" Click="addButton_Click" />
                 <Button x:Name="CancelButton" Content="cancel" FontSize="30" Grid.Column="3" Grid.Row="7" Click="CancelButton_Click"/>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="GDDelete" Visibility="{Binding IsDeleteeMode, Converter={StaticResource BoolToVisibilityConverter}}" AllowDrop="True" >
+            <Grid x:Name="GDLayout">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="ID:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
+                <Label Content="Reciever:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
+                <Label Content="Sender:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
+                <Label Content="Weight:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
+                <Label Content="Priority:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
+                <Label Content="Atributted Drone:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
+                <Label Content="Requested:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
+                <Label Content="Scheduled:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
+                <Label Content="Picked Up:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9" />
+                <Label Content="Delivered:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10" />
+                <TextBox Text="{Binding ParcelToDelete.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox x:Name="TXBReciever" Text="{Binding ParcelToDelete.Recipient.Id}" Grid.Row="2" IsReadOnly="True" Grid.Column="1" MouseDoubleClick="TextBox_MouseDoubleClick"   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <TextBox x:Name="TXBSender" Text="{Binding ParcelToDelete.Sender.Id}" Grid.Row="3" IsReadOnly="True" Grid.Column="1" MouseDoubleClick="TextBox_MouseDoubleClick_1"  HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding ParcelToDelete.Weight}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox Text="{Binding ParcelToDelete.Priority}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox Text="{Binding ParcelToDelete.DroneInParcel.Id}" Grid.Row="6"  IsReadOnly="True" Grid.Column="1" MouseDoubleClick="TextBox_MouseDoubleClick_2"   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.Requested}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.Scheduled}" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.PickedUp}" Grid.Row="9" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.Delivered}" Grid.Row="10" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <StackPanel Grid.Row="11" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Delete" Width="150" Click="Button_Click" />
+                    <Button Content="cancel"  Width="150" Click="Button_Click_1" />
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>
