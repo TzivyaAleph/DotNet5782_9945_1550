@@ -54,6 +54,7 @@
             <Button x:Name="undoFilter"  FontWeight="Bold" Height="40" Content="undo filter" Click="undoFilter_Click" />
             <Button x:Name="droneAdd"  FontWeight="Bold" Height="40" Content="add drone" Click="droneAdd_Click" />
             <Button x:Name="cancelAdd"  FontWeight="Bold" Height="40" Content="Close" Click="cancelAdd_Click"  />
+            <ToggleButton x:Name="groupingButton" Content="group list by drone status" FontWeight="Bold" Height="40" IsChecked="{Binding IsGroupingMode, Mode=TwoWay}" Checked="groupingButton_Checked"/>
         </StackPanel>
     </Grid>
 </Window>

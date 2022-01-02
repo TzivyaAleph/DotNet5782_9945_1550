@@ -111,6 +111,8 @@ namespace PL
                 DronesListView.ItemsSource = drones.Where(dr => dr.Weight == selectedWeight);
             else
                 DronesListView.ItemsSource = drones.Where(dr => dr.DroneStatuses == SelectedStatus);
+            if (IsGroupingMode)
+                GroupList();
         }
         
         /// <summary>
@@ -118,7 +120,7 @@ namespace PL
         /// </summary>
         private void GetDroneListFromBL()
         {
-            drones = myBl.GetDroneList().ToList();
+            Drones = myBl.GetDroneList().ToList();
             DronesListView.ItemsSource = drones;
             if (SelectedWeight != null || SelectedStatus != null)
                 FilterList();
@@ -187,7 +189,7 @@ namespace PL
         /// <param name="e"></param>
         private void undoFilter_Click(object sender, RoutedEventArgs e)
         {
-            drones = myBl.GetDroneList().ToList();
+            DronesListView.ItemsSource = drones;
             if (IsGroupingMode)
                 GroupList();
         }
@@ -210,6 +212,11 @@ namespace PL
             //describe how we want to make the groups
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("DroneStatuses");
             collectionView.GroupDescriptions.Add(groupDescription);
+        }
+
+        private void groupingButton_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
