@@ -21,12 +21,44 @@ namespace PL
     /// <summary>
     /// Interaction logic for DroneListView.xaml
     /// </summary>
-    public partial class DroneListView : Window
+    public partial class DroneListView : Window, INotifyPropertyChanged
     {
         private  IBL myBl = BlFactory.GetBl();
         private Weight? selectedWeight = null;
         private DroneStatuses? selectedStatus = null;
         private List<DroneForList> drones;
+        private CollectionView collectionView;//collectionView for the grouping
+        private bool isGroupingMode;//to notify if the grouping button in checked
+        public event PropertyChangedEventHandler PropertyChanged= delegate { };
+
+        /// <summary>
+        /// prop for the drones list - for binding to the items source in the xml
+        /// </summary>
+        public List<DroneForList> Drones 
+        {
+            get { return drones; }
+            set
+            {
+                drones = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Drones"));
+            }
+        }
+
+        /// <summary>
+        /// prop for binding to the grouping button
+        /// </summary>
+        public bool IsGroupingMode
+        {
+            get { return isGroupingMode; }
+            set
+            {
+                isGroupingMode = value;
+                if (isGroupingMode)
+                    GroupList();
+                else
+                    UndoGrouping();
+            }
+        }
 
         /// <summary>
         /// prop to bind to for filtering list by weight of drone
@@ -79,6 +111,8 @@ namespace PL
                 DronesListView.ItemsSource = drones.Where(dr => dr.Weight == selectedWeight);
             else
                 DronesListView.ItemsSource = drones.Where(dr => dr.DroneStatuses == SelectedStatus);
+            if (IsGroupingMode)
+                GroupList();
         }
         
         /// <summary>
@@ -86,10 +120,12 @@ namespace PL
         /// </summary>
         private void GetDroneListFromBL()
         {
-            drones = myBl.GetDroneList().ToList();
+            Drones = myBl.GetDroneList().ToList();
             DronesListView.ItemsSource = drones;
             if (SelectedWeight != null || SelectedStatus != null)
                 FilterList();
+            if (IsGroupingMode)
+                GroupList();
         }
 
         /// <summary>
@@ -153,7 +189,34 @@ namespace PL
         /// <param name="e"></param>
         private void undoFilter_Click(object sender, RoutedEventArgs e)
         {
-            drones = myBl.GetDroneList().ToList();
+            DronesListView.ItemsSource = drones;
+            if (IsGroupingMode)
+                GroupList();
+        }
+
+        /// <summary>
+        /// func that undoes the grouping of the list view
+        /// </summary>
+        private void UndoGrouping()
+        {
+            collectionView.GroupDescriptions.Clear();
+        }
+
+        /// <summary>
+        /// func for grouping the stations list view
+        /// </summary>
+        private void GroupList()
+        {
+            //puts the defult value that we choose in the collection view
+            collectionView = (CollectionView)CollectionViewSource.GetDefaultView(DronesListView.ItemsSource);
+            //describe how we want to make the groups
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("DroneStatuses");
+            collectionView.GroupDescriptions.Add(groupDescription);
+        }
+
+        private void groupingButton_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
