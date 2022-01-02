@@ -195,7 +195,16 @@ namespace PL
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            ParcelToDelete.isDeleted = true;
+            try
+            {
+                myBl.DeleteParcel(ParcelToDelete);
+            }
+            catch(FailedToUpdateException ex)
+            {
+                MessageBox.Show("Failed to delete -" + ex.ToString());
+            }
+            Close();
         }
 
         /// <summary>

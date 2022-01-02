@@ -160,6 +160,7 @@ namespace BL
             newParcel.DroneID = 0;
             newParcel.SenderID = parcel.Sender.Id;
             newParcel.TargetID = parcel.Recipient.Id;
+            newParcel.isDeleted = false;
             int runningNumber;
             try
             {
