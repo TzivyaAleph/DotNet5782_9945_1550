@@ -50,31 +50,31 @@ namespace Dal
             {
                 Id = rand.Next(1000, 2000),
                 Model = "maxP",
-                MaxWeight = (Weight)2,
+                Weight = (Weight)2,
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(2001, 3000),
                 Model = "maxG",
-                MaxWeight = (Weight)2,
+                Weight = (Weight)2,
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(3001, 4000),
                 Model = "maxF",
-                MaxWeight = (Weight)2,
+                Weight = (Weight)2,
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(4001, 5000),
                 Model = "maxT",
-                MaxWeight = (Weight)2,
+                Weight = (Weight)2,
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(5001, 10000),
                 Model = "maxD",
-                MaxWeight = (Weight)2,
+                Weight = (Weight)2,
             });
         }
 
@@ -169,7 +169,7 @@ namespace Dal
                 toAdd.Priority = RandomEnumValue<Priority>();
                 toAdd.Requested = dateAndTime;
                 int numDrone = m;
-                while ((int)Drones[numDrone].MaxWeight < (int)toAdd.Weight)
+                while ((int)Drones[numDrone].Weight < (int)toAdd.Weight)
                 {
                     numDrone += 1;
                     if (numDrone == 4)

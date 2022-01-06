@@ -15,6 +15,7 @@ namespace DO
         public double Lattitude { get; set; }
         public double Longtitude { get; set; }
         public string Password { get; set; }
+        public bool IsDeleted { get; set; }
         public CustomersType CustomerType { get; set; }
         public override string ToString()
         {

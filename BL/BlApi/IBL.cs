@@ -132,5 +132,20 @@ namespace BlApi
         /// </summary>
         /// <param name="parcel"></param>
         public void DeleteParcel(Parcel parcel);
+        /// <summary>
+        /// deletes the customer from list
+        /// </summary>
+        /// <param name="customer"></param>
+        public void DeleteCustomer(Customer customer);
+        /// <summary>
+        /// deletes drone from list
+        /// </summary>
+        /// <param name="drone"></param>
+        public void DeleteDrone(Drone drone);
+        /// <summary>
+        /// deletes station from list
+        /// </summary>
+        /// <param name="station"></param>
+        public void DeleteStation(Station station);
     }
 }

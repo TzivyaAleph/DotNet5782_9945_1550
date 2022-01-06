@@ -17,6 +17,7 @@ namespace BO
         public List<ParcelCustomer> ReceiveParcels { get; set; }
         public string Password { get; set; }
         public CustomersType CustomerType { get; set; }
+        public bool IsDeleted { get; set; }
         public override string ToString()
         {
             string result = "";

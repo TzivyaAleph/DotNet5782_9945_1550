@@ -115,8 +115,9 @@
                 <TextBlock x:Name="parcelView" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" Text="{Binding SelectedDrone.ParcelInDelivery}"></TextBlock>
                 <!--<TextBox x:Name="parcelViewInTextBox" Text="{Binding SelectedDrone.ParcelInDelivery}" Width="230" Height="300" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" ></TextBox>-->
             </Grid>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="8" Orientation="Horizontal" HorizontalAlignment="Left">
                 <Button x:Name="updateModelBtn" Content="Update" Width="100" Click="UpdateModelBtn_Click"/>
+                <Button x:Name="deleteDrone" Content="Delete Drone" Width="100"/>
                 <Button x:Name="closeWindowBtn" Content="Close" Width="100" Click="CloseWindowBtn_Click"/>
                 <Button x:Name="DroneCharging" Width="100" Visibility="{Binding SelectedDrone.DroneStatuses,Converter={StaticResource DroneStatusToBoolConverterForRelease}, ConverterParameter=visibilityForCharging}" Click="DroneCharging_Click">
                     <Button.Style>

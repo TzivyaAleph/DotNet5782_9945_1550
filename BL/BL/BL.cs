@@ -48,7 +48,7 @@ namespace BL
                 droneToAdd.Id = item.Id;
                 droneToAdd.Model = item.Model;
                 droneToAdd.Weight = new Weight();
-                droneToAdd.Weight = (Weight)item.MaxWeight;
+                droneToAdd.Weight = (Weight)item.Weight;
                 droneToAdd.CurrentLocation = new Location();
                 //goes through the parcels list in dal for the exstract fields from drone for list
                 DO.Parcel par = new DO.Parcel();
@@ -130,7 +130,7 @@ namespace BL
                     DO.Drone dalDrone = new DO.Drone();
                     dalDrone.Id = droneToAdd.Id;
                     dalDrone.Model = droneToAdd.Model;
-                    dalDrone.MaxWeight = (DO.Weight)droneToAdd.Weight;
+                    dalDrone.Weight = (DO.Weight)droneToAdd.Weight;
                     try
                     {
                         myDal.SendDroneToChargeSlot(dalDrone, randomStation);

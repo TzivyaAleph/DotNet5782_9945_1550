@@ -180,7 +180,7 @@ namespace BL
             {
                 Id = droneForList.Id,
                 Model = droneForList.Model,
-                MaxWeight = (DO.Weight)droneForList.Weight,
+                Weight = (DO.Weight)droneForList.Weight,
             };
             try
             {
@@ -520,7 +520,7 @@ namespace BL
             {
                 Id = d.Id,
                 Model = d.Model,
-                MaxWeight = (DO.Weight)d.Weight,
+                Weight = (DO.Weight)d.Weight,
             };
             try
             {
@@ -551,6 +551,75 @@ namespace BL
                 myDal.UpdateParcel(dalParcel);
             }
             catch(DO.ExistingObjectException ex)
+            {
+                throw new FailedToUpdateException("ERROR", ex);
+            }
+        }
+
+        /// <summary>
+        /// deletes parcel from list
+        /// </summary>
+        /// <param name="parcel"></param>
+        public void DeleteCustomer(Customer customer)
+        {
+            DO.Customer dalCustomer = new DO.Customer();
+            object obj = dalCustomer;
+            customer.CopyPropertiesTo(obj);
+            dalCustomer = (DO.Customer)obj;
+            customer.CopyPropertiesTo(dalCustomer);
+            dalCustomer.Lattitude = customer.Location.Latitude;
+            dalCustomer.Longtitude = customer.Location.Longitude;
+            try
+            {
+                myDal.UpdateCustomer(dalCustomer);
+            }
+            catch (DO.ExistingObjectException ex)
+            {
+                throw new FailedToUpdateException("ERROR", ex);
+            }
+        }
+
+        /// <summary>
+        /// deletes drone from list
+        /// </summary>
+        /// <param name="drone"></param>
+        public void DeleteDrone(Drone drone)
+        {
+            DO.Drone dalDrone = new DO.Drone();
+            object obj = dalDrone;
+            drone.CopyPropertiesTo(obj);
+            dalDrone = (DO.Drone)obj;
+            drone.CopyPropertiesTo(dalDrone);
+            int index = drones.FindIndex(item => item.Id == drone.Id);
+            drones[index].IsDeleted = true;
+            try
+            {
+                myDal.UpdateDrone(dalDrone);
+            }
+            catch (DO.ExistingObjectException ex)
+            {
+                throw new FailedToUpdateException("ERROR", ex);
+            }
+        }
+
+        /// <summary>
+        /// deletes station from list
+        /// </summary>
+        /// <param name="station"></param>
+        public void DeleteStation(Station station)
+        {
+            DO.Station dalStation = new DO.Station();
+            object obj = dalStation;
+            station.CopyPropertiesTo(obj);
+            dalStation = (DO.Station)obj;
+            station.CopyPropertiesTo(dalStation);
+            dalStation.Lattitude =(long) station.StationLocation.Latitude;
+            dalStation.Longitude = (long)station.StationLocation.Longitude;
+            try
+            {
+                myDal.UpdateStation(dalStation);
+            }
+            catch (DO.ExistingObjectException ex)
             {
                 throw new FailedToUpdateException("ERROR", ex);
             }

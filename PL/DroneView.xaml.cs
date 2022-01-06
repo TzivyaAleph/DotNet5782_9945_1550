@@ -422,5 +422,29 @@ namespace PL
             else if (IsReleaseDroneEnabled)
                 releaseDrone();
         }
+
+        /// <summary>
+        /// button to delete drone
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void deleteDrone_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Delete drone?", "myApp", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                SelectedDrone.IsDeleted = true;
+                try
+                {
+                    myBl.DeleteDrone(SelectedDrone);
+                    OnUpdate();
+                }
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to delete -" + ex.ToString());
+                }
+                Close();
+            }
+        }
     }
 }

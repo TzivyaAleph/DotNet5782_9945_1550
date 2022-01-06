@@ -13,7 +13,11 @@ namespace PL.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DroneStatuses status = (DroneStatuses)value;         
+            DroneStatuses status = (DroneStatuses)value;   
+            if(parameter!=null&&parameter.ToString().Equals("isMaintanance"))
+            {
+                return status == DroneStatuses.Maintenance;
+            }
             return status == DroneStatuses.Available;
         }
 

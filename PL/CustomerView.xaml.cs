@@ -23,7 +23,7 @@ namespace PL
     public partial class CustomerView : Window, INotifyPropertyChanged
     {
         public event Action OnUpdate = delegate { }; //event that will refresh the customer list every time we update a Customer
-        public event PropertyChangedEventHandler PropertyChanged=delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public bool IsUpdateMode { get; set; } //to know which window to open: update or add
         Customer customerToAdd;
         private string originalCustomerName; //temp to hold the customer's name of the customer from the list view window (this will not be used for items source)
@@ -48,7 +48,9 @@ namespace PL
         public List<int> RecievedIdList
         {
             get { return recievedIdList; }
-            set { recievedIdList = value;
+            set
+            {
+                recievedIdList = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("RecievedIdList"));
             }
         }
@@ -65,7 +67,7 @@ namespace PL
                 PropertyChanged(this, new PropertyChangedEventArgs("CustomerToAdd"));
             }
         }
-        Customer custForUpdate;
+        private Customer custForUpdate;
         /// <summary>
         /// customer property for update a customer from the list
         /// </summary>
@@ -93,7 +95,7 @@ namespace PL
             originalPhoneNumber = customer.PhoneNumber;
             this.myBl = myBl;
             sentIdList = customer.SentParcels.Select(item => item.Id).ToList();
-            recievedIdList= customer.ReceiveParcels.Select(item => item.Id).ToList();
+            recievedIdList = customer.ReceiveParcels.Select(item => item.Id).ToList();
             IsUpdateMode = true;
         }
 
@@ -199,14 +201,14 @@ namespace PL
                     {
                         MessageBox.Show("Failed to update - " + ex.ToString());
                     }
-                    catch(InvalidInputException ex)
+                    catch (InvalidInputException ex)
                     {
                         MessageBox.Show("Failed to update - " + ex.ToString());
                     }
-                    catch(FailedToGetException ex)
+                    catch (FailedToGetException ex)
                     {
-                        if (ex.InnerException!=null)
-                            MessageBox.Show("Failed to update - " + ex.ToString()+" "+ex.InnerException.ToString());
+                        if (ex.InnerException != null)
+                            MessageBox.Show("Failed to update - " + ex.ToString() + " " + ex.InnerException.ToString());
                         else
                             MessageBox.Show("Failed to update - " + ex.ToString());
                     }
@@ -222,10 +224,10 @@ namespace PL
         /// <param name="e"></param>
         private void listBoxSent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            int id =(int)listBoxSent.SelectedItem;
+            int id = (int)listBoxSent.SelectedItem;
             Parcel parcel = new Parcel();
             parcel = myBl.GetParcel(id);//gets the selected item as parcel.
-            ParcelView parcelView = new ParcelView(myBl,parcel);
+            ParcelView parcelView = new ParcelView(myBl, parcel);
             parcelView.Show();
         }
 
@@ -236,12 +238,31 @@ namespace PL
         /// <param name="e"></param>
         private void listBoxRecieved_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            int id =(int) listBoxRecieved.SelectedItem;
+
+            int id = (int)listBoxRecieved.SelectedItem;
             Parcel parcel = new Parcel();
             parcel = myBl.GetParcel(id);//gets the selected item as parcel.
             ParcelView parcelView = new ParcelView(myBl, parcel);
             parcelView.Show();
         }
 
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Delete customer?", "myApp", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                CustForUpdate.IsDeleted = true;
+                try
+                {
+                    myBl.DeleteCustomer(CustForUpdate);
+                    OnUpdate();
+                }
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to delete -" + ex.ToString());
+                }
+                Close();
+            }
+        }
     }
 }

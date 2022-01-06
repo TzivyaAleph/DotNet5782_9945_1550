@@ -14,6 +14,7 @@ namespace BO
         public double Battery { set; get; }//by precent
         public Location CurrentLocation { get; set; }
         public int ParcelId { get; set; }
+        public bool IsDeleted { get; set; }
 
         public override string ToString()
         {

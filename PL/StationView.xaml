@@ -94,9 +94,10 @@
                 <TextBox Text="{Binding TotalNumOfSlots}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <TextBox Text="{Binding SelectedStation.StationLocation.Longitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <TextBox Text="{Binding SelectedStation.StationLocation.Latitude, Mode=TwoWay}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
-                <StackPanel Grid.Row="8" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Update" Click="updateButton_Click" Width="150"/>
                     <Button Content="Close" Click="ButtonCancel_Click" Width="150"/>
+                    <Button Content="Delete Station" Width="150" Click="Button_Click"/>
                 </StackPanel>
             </Grid>
         </Grid>

@@ -116,6 +116,10 @@ namespace PL
             {
                 MessageBox.Show(ex.ToString());
             }
+            catch(FailedToGetException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         /// <summary>

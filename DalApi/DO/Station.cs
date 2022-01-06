@@ -10,6 +10,7 @@ namespace DO
         public int ChargeSlots { set; get; }//the amout of slots that available
         public long Longitude { set; get; }
         public long Lattitude { set; get; }
+        public bool IsDeleted { get; set; }
 
         public override string ToString()
         {

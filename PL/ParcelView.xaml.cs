@@ -195,16 +195,21 @@ namespace PL
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ParcelToDelete.isDeleted = true;
-            try
+            var result = MessageBox.Show("Delete customer?", "myApp", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
             {
-                myBl.DeleteParcel(ParcelToDelete);
+                ParcelToDelete.IsDeleted = true;
+                try
+                {
+                    myBl.DeleteParcel(ParcelToDelete);
+                    OnUpdate();
+                }
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to delete -" + ex.ToString());
+                }
+                Close();
             }
-            catch(FailedToUpdateException ex)
-            {
-                MessageBox.Show("Failed to delete -" + ex.ToString());
-            }
-            Close();
         }
 
         /// <summary>

@@ -120,7 +120,7 @@ namespace PL
         /// </summary>
         private void GetDroneListFromBL()
         {
-            Drones = myBl.GetDroneList().ToList();
+            Drones = myBl.GetDroneList(item=>item.IsDeleted==false).ToList();
             DronesListView.ItemsSource = drones;
             if (SelectedWeight != null || SelectedStatus != null)
                 FilterList();
