@@ -28,8 +28,10 @@ namespace PL
         Customer customerToAdd;
         private string originalCustomerName; //temp to hold the customer's name of the customer from the list view window (this will not be used for items source)
         private string originalPhoneNumber; //temp to hold the customers phone number from the list view window (this will not be used for items source)
-        List<int> sentIdList;
+        private List<int> sentIdList;
         private IBL myBl;
+        private List<int> recievedIdList;
+        public List<CustomersType> CustomerTypeOptions { get; set; }
 
         //property for the parcels id list - for binding to the items source in the xaml
         public List<int> SentIdList
@@ -42,8 +44,6 @@ namespace PL
             }
         }
 
-        List<int> recievedIdList;
-
         //property for the parcels id list - for binding to the items source in the xaml
         public List<int> RecievedIdList
         {
@@ -52,7 +52,6 @@ namespace PL
                 PropertyChanged(this, new PropertyChangedEventArgs("RecievedIdList"));
             }
         }
-
 
         /// <summary>
         /// the customer for binding in adding
@@ -108,6 +107,7 @@ namespace PL
             {
                 InitializeComponent();
                 myBl = Bl;
+                CustomerTypeOptions = Enum.GetValues(typeof(CustomersType)).Cast<CustomersType>().ToList();
                 DataContext = this;//binding the data
                 customerToAdd = new Customer();
                 customerToAdd.ReceiveParcels = new List<ParcelCustomer>();
@@ -242,5 +242,6 @@ namespace PL
             ParcelView parcelView = new ParcelView(myBl, parcel);
             parcelView.Show();
         }
+
     }
 }

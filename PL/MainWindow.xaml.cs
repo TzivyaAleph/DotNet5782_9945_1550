@@ -22,9 +22,10 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static readonly  IBL myBl = BlFactory.GetBl();
-        public MainWindow()
+        private BlApi.IBL myBl = BlFactory.GetBl();
+        public MainWindow(BlApi.IBL bl)
         {
+            myBl = bl;
             InitializeComponent();
         }
 

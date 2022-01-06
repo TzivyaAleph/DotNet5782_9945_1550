@@ -26,6 +26,12 @@ namespace PL
         private string originalDroneModel; //temp drone to hold the drone from the drone list view window (this drone will not be used for items source)
         private Drone selectedDrone;
         private DroneForList droneToAdd;
+        public List<Weight> WeightOptions { get; set; } //list to hold weight options
+        public List<DroneStatuses> Statuses { get; set; } //list to hold Drone Status options
+        public List<string> Names { get; set; }//list of stations name
+        public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
+        public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
 
         /// <summary>
         /// a drone for putting the input data in it.
@@ -87,13 +93,6 @@ namespace PL
                 return selectedDrone != null && selectedDrone.DroneStatuses == DroneStatuses.Maintenance;
             }
         }
-
-        public List<Weight> WeightOptions { get; set; } //list to hold weight options
-        public List<DroneStatuses> Statuses { get; set; } //list to hold Drone Status options
-        public List<string> Names { get; set; }//list of stations name
-        public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
-        public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
 
         /// <summary>
         /// a ctor for adding new drone

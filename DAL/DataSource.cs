@@ -102,7 +102,7 @@ namespace Dal
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
             });
-            Stations.Add( new Station
+            Stations.Add(new Station
             {
                 Id = rand.Next(5001, 10000),
                 Name = "Bait Vagan",
@@ -122,14 +122,29 @@ namespace Dal
             for (int i = 0; i < NumberOfCustumers; i++)//add new customers to the array
             {
                 //update their values.
-                Customer toAdd=new Customer
-                    {
-                        Id = rand.Next(100000000, 1000000000),
-                        Name = $"{(CustomersName)rand.Next(10)}",
-                        PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
-                        Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                        Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
-                    };
+                Customer toAdd = new Customer
+                {
+                    Id = rand.Next(100000000, 1000000000),
+                    Name = $"{(CustomersName)rand.Next(10)}",
+                    PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
+                    Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
+                    Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
+                    
+                };
+                if (i % 2 == 0)
+                    toAdd.CustomerType = CustomersType.Customer; 
+                else
+                    toAdd.CustomerType = CustomersType.Manager;
+                toAdd.Password = toAdd.Id.ToString();
+                //customer is a manager
+                //if (toAdd.CustomerType == (CustomersType)0)
+                //    toAdd.Password = "123456";
+                ////customer is an employee
+                //else if (toAdd.CustomerType == (CustomersType)1)
+                //    toAdd.Password = "1234";
+                ////customer is a customer
+                //else
+                //    toAdd.Password = toAdd.Id.ToString();
                 if (Customers.Exists(item => item.Id == toAdd.Id || item.PhoneNumber == toAdd.PhoneNumber))
                     i--;
                 else
@@ -144,7 +159,7 @@ namespace Dal
         private static void createParcels(int NumberOfParcels)
         {
             DateTime dateAndTime = new DateTime(2021, 1, 1);
-            for (int i = 0, j = 9,m=0; i < NumberOfParcels; i++, j--,m++)//add new Parcels to the array
+            for (int i = 0, j = 9, m = 0; i < NumberOfParcels; i++, j--, m++)//add new Parcels to the array
             {
                 Parcel toAdd = new Parcel();
                 toAdd.Id = ++Config.RunningParcelID;
@@ -153,8 +168,8 @@ namespace Dal
                 toAdd.Weight = RandomEnumValue<Weight>();
                 toAdd.Priority = RandomEnumValue<Priority>();
                 toAdd.Requested = dateAndTime;
-                int numDrone =m;
-                while((int)Drones[numDrone].MaxWeight<(int)toAdd.Weight)
+                int numDrone = m;
+                while ((int)Drones[numDrone].MaxWeight < (int)toAdd.Weight)
                 {
                     numDrone += 1;
                     if (numDrone == 4)
@@ -163,7 +178,7 @@ namespace Dal
                 toAdd.DroneID = Drones[numDrone].Id;
                 if (m == 4)
                     m = -1;
-                if (i<2)
+                if (i < 2)
                 {
                     toAdd.Scheduled = null;
                     toAdd.PickedUp = null;
