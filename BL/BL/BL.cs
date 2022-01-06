@@ -66,6 +66,8 @@ namespace BL
                 {
                     droneToAdd.DroneStatuses = DroneStatuses.Delivered;
                     droneToAdd.ParcelId=par.Id;
+                    par.DroneID = droneToAdd.Id;
+                    myDal.UpdateParcel(par);
                     //finds the customer who send the parcel.
                     DO.Customer dalSender = new DO.Customer();
                     DO.Customer dalTarget = new DO.Customer();

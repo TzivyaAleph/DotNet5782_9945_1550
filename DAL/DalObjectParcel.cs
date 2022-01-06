@@ -93,10 +93,11 @@ namespace Dal
         {
             if (!(DataSource.Parcels.Exists(p => p.Id == parcel.Id)))
             {
-                throw new UnvalidIDException($"id { parcel.Id}  is not valid !!");
+                throw new ExistingObjectException($"id { parcel.Id}  does not exist!!");
             }
             int index = DataSource.Parcels.FindIndex(item => item.Id == parcel.Id);
             DataSource.Parcels[index] = parcel;
         }
+
     }
 }

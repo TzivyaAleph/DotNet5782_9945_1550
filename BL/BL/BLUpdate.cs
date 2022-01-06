@@ -531,6 +531,30 @@ namespace BL
                 throw new FailedToUpdateException("ERROR", exc);
             }
         }
+
+        /// <summary>
+        /// deletes parcel from list
+        /// </summary>
+        /// <param name="parcel"></param>
+        public void DeleteParcel(Parcel parcel)
+        {
+            DO.Parcel dalParcel = new DO.Parcel();
+            object obj = dalParcel;
+            parcel.CopyPropertiesTo(obj);
+            dalParcel = (DO.Parcel)obj;
+            parcel.CopyPropertiesTo(dalParcel);
+            dalParcel.DroneID = parcel.DroneInParcel.Id;
+            dalParcel.SenderID = parcel.Sender.Id;
+            dalParcel.TargetID = parcel.Recipient.Id;
+            try
+            {
+                myDal.UpdateParcel(dalParcel);
+            }
+            catch(DO.ExistingObjectException ex)
+            {
+                throw new FailedToUpdateException("ERROR", ex);
+            }
+        }
     }
 
 

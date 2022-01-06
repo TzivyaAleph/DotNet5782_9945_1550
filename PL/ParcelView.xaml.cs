@@ -37,7 +37,7 @@ namespace PL
         public List<int> SenderIDs { get; set; }//list of senders ids.
         public List<int> RecieverIDs { get; set; }//list of reciever ids.
         public event PropertyChangedEventHandler PropertyChanged = delegate { };//an event for binding property who changes
-        public bool IsUpdateMode { get; set; } //to know which window to open: update or add
+        public bool IsDeleteeMode { get; set; } //to know which window to open: update or add
         private IBL myBl;
         Parcel parcelToDelete;
 
@@ -76,7 +76,7 @@ namespace PL
             DataContext = this;//binding the data
             ParcelToDelete = parcel;
             this.myBl = myBl;
-            IsUpdateMode = true;
+            IsDeleteeMode = true;
         }
 
         /// <summary>
@@ -145,6 +145,74 @@ namespace PL
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        /// <summary>
+        /// opens the window of reciever-custumerView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Customer customer = new Customer();
+            customer = myBl.GetCustomer(ParcelToDelete.Recipient.Id);//finds the custumer that we will open the window for
+            CustomerView customerView = new CustomerView(myBl, customer);
+            customerView.Show();
+        }
+
+        /// <summary>
+        /// opens custumerView window for the sender 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBox_MouseDoubleClick_1(object sender, MouseButtonEventArgs e)
+        {
+            Customer customer = new Customer();
+            customer = myBl.GetCustomer(ParcelToDelete.Sender.Id);//finds the custumer that we will open the window for
+            CustomerView customerView = new CustomerView(myBl, customer);
+            customerView.Show();
+        }
+
+        /// <summary>
+        /// opens the DroneView window for the attributted drone in parcel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBox_MouseDoubleClick_2(object sender, MouseButtonEventArgs e)
+        {
+            Drone drone = new Drone();
+            drone = myBl.GetDrone(ParcelToDelete.DroneInParcel.Id);//finds the drone that attributted to the parcel
+            DroneView droneView = new DroneView(myBl, drone);
+            droneView.Show();
+        }
+
+        /// <summary>
+        /// deleting the parcel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ParcelToDelete.isDeleted = true;
+            try
+            {
+                myBl.DeleteParcel(ParcelToDelete);
+            }
+            catch(FailedToUpdateException ex)
+            {
+                MessageBox.Show("Failed to delete -" + ex.ToString());
+            }
+            Close();
+        }
+
+        /// <summary>
+        /// closing window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Close();
         }

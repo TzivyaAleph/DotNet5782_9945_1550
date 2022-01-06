@@ -127,5 +127,10 @@ namespace BlApi
         /// </summary>
         /// <param name="stationToUpdate">station with the values to update</param>
         public void UpdateStation(int stationId, string stationName, int numOfChargingSlots);
+        /// <summary>
+        /// deletes cthe parcel from list
+        /// </summary>
+        /// <param name="parcel"></param>
+        public void DeleteParcel(Parcel parcel);
     }
 }
