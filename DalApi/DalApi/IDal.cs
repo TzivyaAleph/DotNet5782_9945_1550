@@ -43,7 +43,7 @@ namespace DalApi
         /// coppies the drone array
         /// </summary>
         /// <returns></returns the coppied array>
-        IEnumerable<Drone> CopyDroneArray();
+        IEnumerable<Drone> CopyDroneArray(Predicate<Drone> predicate = null);
         /// <summary>
         /// coppies the parcel array
         /// </summary>

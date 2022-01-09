@@ -23,9 +23,9 @@ namespace PL
     public partial class MainWindow : Window
     {
         private static readonly  IBL myBl = BlFactory.GetBl();
+        
         public MainWindow()
         {
-            InitializeComponent();
         }
 
         private void droneListViewBtn_Click(object sender, RoutedEventArgs e)

@@ -9,8 +9,12 @@ using DO;
 
 namespace Dal
 {
-     partial class DalObject : IDal
+    /// <summary>
+    /// 
+    /// </summary>
+     sealed partial class DalObject : IDal
     {
+        #region singleton
         //lazt<T> is doing a lazy initialzation and hi sdefualt is thread safe
         internal static readonly Lazy<DalObject> singleInstance = new Lazy<DalObject>(() => new DalObject());
         public static DalObject Instance
@@ -24,10 +28,12 @@ namespace Dal
         /// <summary>
         /// constructor
         /// </summary>
-        public DalObject()
+        private DalObject()
         {
             DataSource.Initialize();
         }
+        #endregion singleton
+
         /// <summary>
         /// calculate the distance between two points specified by latitude and longitude.
         /// https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula

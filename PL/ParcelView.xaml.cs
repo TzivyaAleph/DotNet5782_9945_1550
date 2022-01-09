@@ -204,6 +204,7 @@ namespace PL
             {
                 MessageBox.Show("Failed to delete -" + ex.ToString());
             }
+            OnUpdate();//updates the parcel list that a parcel been deleted.
             Close();
         }
 

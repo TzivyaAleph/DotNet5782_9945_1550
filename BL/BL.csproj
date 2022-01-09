@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DalApi\DalApi.csproj" />
-    <ProjectReference Include="..\DAL\DalObject.csproj" />
+    <ProjectReference Include="..\DalXml\DalXml.csproj" />
   </ItemGroup>
 
   <ItemGroup>

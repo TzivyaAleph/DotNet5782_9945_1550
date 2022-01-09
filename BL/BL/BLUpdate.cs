@@ -115,7 +115,7 @@ namespace BL
             DO.Customer customerTemp = new DO.Customer();
             try
             {
-                customerTemp = myDal.CopyCustomerArray().First(customer => customer.Id == customer.Id);//finds the customer to update in the dal customers list
+                customerTemp = myDal.CopyCustomerArray().First(customer => customer.Id == customerId);//finds the customer to update in the dal customers list
             }
             catch (InvalidOperationException)
             {

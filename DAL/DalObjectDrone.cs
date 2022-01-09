@@ -26,7 +26,7 @@ namespace Dal
         /// coppies the drone array
         /// </summary>
         /// <returns></returns the coppied array>
-        public IEnumerable<Drone> CopyDroneArray()
+        public IEnumerable<Drone> CopyDroneArray(Predicate<Drone> predicate = null)
         {
             List<Drone> newList = new List<Drone>(DataSource.Drones);
             return newList;
@@ -70,7 +70,7 @@ namespace Dal
         {
             if (!(DataSource.Drones.Exists(d => d.Id == drone.Id)))
             {
-                throw new UnvalidIDException("id { d.Id}  is not valid !!");
+                throw new UnvalidIDException($"id { drone.Id}  is not valid !!");
             }
             int index = DataSource.Drones.FindIndex(item => item.Id == drone.Id);
             DataSource.Drones[index] = drone;

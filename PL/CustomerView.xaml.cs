@@ -133,6 +133,7 @@ namespace PL
                 if (res == MessageBoxResult.Yes)
                 {
                     myBl.AddCustomer(CustomerToAdd);
+
                     res = MessageBox.Show("Added succecfully!!");
                     if (res != MessageBoxResult.None)
                         OnUpdate();//updates the list of stations in the previous window.

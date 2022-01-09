@@ -22,7 +22,7 @@ namespace PL
     /// </summary>
     public partial class ParcelListView : Window, INotifyPropertyChanged
     {
-        private IBL myBl = BlFactory.GetBl();
+        private IBL myBl;
         private Weight? selectedWeight = null;
         private Status? selectedStatus = null;
         private Priority? selectedPriority = null;

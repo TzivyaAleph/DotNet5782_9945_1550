@@ -1,31 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 using DO;
 
 namespace Dal
 {
-    internal class DataSource
+    /// <summary>
+    /// class for intialization
+    /// </summary>
+    internal static class DataSource
     {
+        #region FilePathes
+        private const string DroneXml = @"drones.xml";
+        private const string StationXml = @"stations.xml";
+        private const string ParcelXml = @"parcels.xml";
+        private const string CustomerXml = @"customers.xml";
+        private const string DroneChargeXml = @"DroneCharge.xml";
+        private const string ConfigXml = @"ConfigXml.xml";
+        private const string DataDirectory = "PL\\Data\\";
+        #endregion
+
+        #region Lists
         internal static List<Drone> Drones = new List<Drone>();
         internal static List<Parcel> Parcels = new List<Parcel>();
         internal static List<Station> Stations = new List<Station>();
         internal static List<Customer> Customers = new List<Customer>();
         internal static List<DroneCharge> DroneCharges = new List<DroneCharge>();
-
-        /// <summary>
-        /// class for static variables for each array.
-        /// </summary>
-        internal class Config
-        {
-            internal static int RunningParcelID = 200;
-
-            internal static double Light { get => 0.01; }
-            internal static double Avalaible { get => 0.001; }
-            internal static double Heavy { get => 0.04; }
-            internal static double Medium { get => 0.02; }
-            internal static double ChargingRate { get => 30; }//per hour
-        }
+        #endregion
 
         static Random rand = new Random();
 
@@ -39,9 +43,14 @@ namespace Dal
             createCustomer(10);
             createParcels(10);
 
-            
-        }
 
+
+            XmlHelper.SerializeData(Drones, DataDirectory +  DroneXml);
+            XmlHelper.SerializeData(Parcels, DataDirectory + ParcelXml);
+            XmlHelper.SerializeData(Stations, DataDirectory + StationXml);
+            XmlHelper.SerializeData(Customers, DataDirectory + CustomerXml);
+            XmlHelper.SerializeData(DroneCharges, DataDirectory + DroneChargeXml);
+        }
 
         /// <summary>
         /// /creates 5 drones with random datas
@@ -105,7 +114,7 @@ namespace Dal
                 Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
                 Longitude = (long)getRandomDoubleNumber(-5000, 5000)
             });
-            Stations.Add( new Station
+            Stations.Add(new Station
             {
                 Id = rand.Next(5001, 10000),
                 Name = "Bait Vagan",
@@ -125,14 +134,14 @@ namespace Dal
             for (int i = 0; i < NumberOfCustumers; i++)//add new customers to the array
             {
                 //update their values.
-                Customer toAdd=new Customer
-                    {
-                        Id = rand.Next(100000000, 1000000000),
-                        Name = $"{(CustomersName)rand.Next(10)}",
-                        PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
-                        Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                        Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
-                    };
+                Customer toAdd = new Customer
+                {
+                    Id = rand.Next(100000000, 1000000000),
+                    Name = $"{(CustomersName)rand.Next(10)}",
+                    PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
+                    Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
+                    Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
+                };
                 if (Customers.Exists(item => item.Id == toAdd.Id || item.PhoneNumber == toAdd.PhoneNumber))
                     i--;
                 else
@@ -147,17 +156,20 @@ namespace Dal
         private static void createParcels(int NumberOfParcels)
         {
             DateTime dateAndTime = new DateTime(2021, 1, 1);
-            for (int i = 0, j = 9,m=0; i < NumberOfParcels; i++, j--,m++)//add new Parcels to the array
+            XElement configXml = XmlHelper.LoadListFromXMLElement(DataDirectory+ConfigXml);
+            int parcId = int.Parse(configXml.Element("RunningParcelId").Value);
+            for (int i = 0, j = 9, m = 0; i < NumberOfParcels; i++, j--, m++)//add new Parcels to the array
             {
                 Parcel toAdd = new Parcel();
-                toAdd.Id = ++Config.RunningParcelID;
+                parcId++;
+                toAdd.Id = parcId; 
                 toAdd.SenderID = Customers[i].Id;
                 toAdd.TargetID = Customers[j].Id;
                 toAdd.Weight = RandomEnumValue<Weight>();
                 toAdd.Priority = RandomEnumValue<Priority>();
                 toAdd.Requested = dateAndTime;
-                int numDrone =m;
-                while((int)Drones[numDrone].MaxWeight<(int)toAdd.Weight)
+                int numDrone = m;
+                while ((int)Drones[numDrone].MaxWeight < (int)toAdd.Weight)
                 {
                     numDrone += 1;
                     if (numDrone == 4)
@@ -166,7 +178,7 @@ namespace Dal
                 toAdd.DroneID = Drones[numDrone].Id;
                 if (m == 4)
                     m = -1;
-                if (i<2)
+                if (i < 2)
                 {
                     toAdd.Scheduled = null;
                     toAdd.PickedUp = null;
@@ -180,6 +192,8 @@ namespace Dal
                 }
                 Parcels.Add(toAdd);
             }
+            configXml.Element("RunningParcelId").Value = parcId.ToString();
+            XmlHelper.SaveListToXMLElement(configXml, DataDirectory + ConfigXml);
         }
 
         /// <summary>
@@ -195,5 +209,4 @@ namespace Dal
         }
 
     }
-
 }

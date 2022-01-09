@@ -23,7 +23,7 @@ namespace PL
     /// </summary>
     public partial class StationListView : Window, INotifyPropertyChanged
     {
-        private IBL myBl = BlFactory.GetBl();
+        private IBL myBl;
         private List<StationForList> stations;
         private CollectionView collectionView;//collectionView for the grouping
         private bool isGroupingMode;//to notify if the grouping button in checked

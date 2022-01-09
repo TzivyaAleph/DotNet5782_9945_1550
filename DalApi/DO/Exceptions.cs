@@ -26,4 +26,17 @@ namespace DO
             return Message;
         }
     }
+
+    [Serializable]
+    public class XMLFileLoadCreateException : Exception
+    {
+        public XMLFileLoadCreateException(string filePath) : base() { }
+        public XMLFileLoadCreateException(string message, string v, Exception ex) : base(message) { }
+        public XMLFileLoadCreateException(string message, Exception innerException, Exception ex) : base(message, innerException) { }
+        public override string ToString()
+        {
+            return Message;
+        }
+    }
+
 }

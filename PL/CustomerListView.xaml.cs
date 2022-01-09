@@ -34,7 +34,7 @@ namespace PL
     /// </summary>
     public partial class CustomerListView : Window, INotifyPropertyChanged
     {
-        private IBL myBl = BlFactory.GetBl();
+        private IBL myBl;
         private List<CustomerForList> customers;
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };

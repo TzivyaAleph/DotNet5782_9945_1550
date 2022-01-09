@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ArrayOfStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Station>
+    <Id>4034</Id>
+    <Name>Ramot</Name>
+    <ChargeSlots>11</ChargeSlots>
+    <Longitude>-4070</Longitude>
+    <Lattitude>1033</Lattitude>
+  </Station>
+  <Station>
+    <Id>5689</Id>
+    <Name>Bait Vagan</Name>
+    <ChargeSlots>-8</ChargeSlots>
+    <Longitude>2054</Longitude>
+    <Lattitude>1306</Lattitude>
+  </Station>
+</ArrayOfStation>

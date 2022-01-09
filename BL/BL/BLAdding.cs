@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -128,6 +129,10 @@ namespace BL
             try
             {
                 myDal.AddCustomer(newCustomer);
+                string dirName = AppDomain.CurrentDomain.BaseDirectory; // Starting Dir
+                FileInfo fileInfo = new FileInfo(dirName);
+                DirectoryInfo parentDir = fileInfo.Directory.Parent.Parent.Parent;
+                string parentDirName = parentDir.FullName;
             }
             catch (DO.ExistingObjectException custEx)
             {

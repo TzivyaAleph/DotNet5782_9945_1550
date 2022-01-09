@@ -23,7 +23,7 @@ namespace PL
     /// </summary>
     public partial class DroneListView : Window, INotifyPropertyChanged
     {
-        private  IBL myBl = BlFactory.GetBl();
+        private  IBL myBl;
         private Weight? selectedWeight = null;
         private DroneStatuses? selectedStatus = null;
         private List<DroneForList> drones;

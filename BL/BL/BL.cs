@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
+using System.IO;
 using BlApi;
 using DalApi;
 
@@ -16,6 +17,7 @@ namespace BL
     {
 
         private static readonly IDal myDal = DalFactory.GetDal();
+        #region singleton
         //lazt<T> is doing a lazy initialzation and hi sdefualt is thread safe
         internal static readonly Lazy<BL> singleInstance=new Lazy<BL>(()=>new BL());
         public static BL SingleInstance
@@ -24,15 +26,18 @@ namespace BL
                     return singleInstance.Value;
             }
         }
+        #endregion
 
         internal static Random rand = new Random();
         internal List<DroneForList> drones;
+
 
         /// <summary>
         /// initializing list of drones.
         /// </summary>
         public BL()
         {
+
             drones = new List<DroneForList>();
             double[] electricityUse = myDal.GetElectricityUse();
             double availableElectricityUse = electricityUse[0];
@@ -54,7 +59,8 @@ namespace BL
                 DO.Parcel par = new DO.Parcel();
                 try
                 {
-                    par = myDal.CopyParcelArray().First(parcel => parcel.DroneID == item.Id);
+                    var pars = myDal.CopyParcelArray();
+                    par = pars.First(parcel => parcel.DroneID == item.Id);
                 }
                 catch (InvalidOperationException)
                 {
@@ -65,7 +71,7 @@ namespace BL
                 if (par.Delivered == null)
                 {
                     droneToAdd.DroneStatuses = DroneStatuses.Delivered;
-                    droneToAdd.ParcelId=par.Id;
+                    droneToAdd.ParcelId = par.Id;
                     par.DroneID = droneToAdd.Id;
                     myDal.UpdateParcel(par);
                     //finds the customer who send the parcel.
@@ -74,12 +80,13 @@ namespace BL
 
                     try
                     {
-                        dalSender = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);//finds the parcels sender
+                        List<DO.Customer> customers = myDal.CopyCustomerArray().ToList();
+                        dalSender = customers.First(item => item.Id == par.SenderID);//finds the parcels sender
                         dalTarget = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);//finds the parcels target
                     }
                     catch (InvalidOperationException)
                     {
-                        throw new InputDoesNotExist("the customer does not exist!!");
+                        throw new InputDoesNotExist("the sender does not exist!!");
                     }
                     clossestStation = myDal.GetClossestStation(dalSender.Lattitude, dalSender.Longtitude, myDal.CopyStationArray().ToList());
                     double batteryUseFromSenderToTarget = myDal.getDistanceFromLatLonInKm(dalTarget.Lattitude, dalTarget.Longtitude, dalSender.Lattitude, dalSender.Longtitude) * batteryByWeight(droneToAdd.Weight);
@@ -169,6 +176,7 @@ namespace BL
                     return standardElectricityUse;
                 return heavyElectricityUse;
             }
+
             /// <summary>
             /// gets a maximum and minimum numbers and returns a random double number 
             /// </summary>

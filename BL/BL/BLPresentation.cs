@@ -24,7 +24,7 @@ namespace BL
             //gets parcel from dal
             try
             {
-               dalParcel = myDal.GetParcel(parcelId);
+                dalParcel = myDal.GetParcel(parcelId);
             }
             catch (DO.UnvalidIDException custEx)
             {
@@ -39,7 +39,7 @@ namespace BL
             dalSender = new DO.Customer();
             try
             {
-                 dalSender = myDal.GetCustomer(dalParcel.SenderID);
+                dalSender = myDal.GetCustomer(dalParcel.SenderID);
             }
             catch (DO.UnvalidIDException custEx)
             {
@@ -50,7 +50,7 @@ namespace BL
             DO.Customer dalRecipient = new DO.Customer();
             try
             {
-              dalRecipient = myDal.GetCustomer(dalParcel.TargetID);
+                dalRecipient = myDal.GetCustomer(dalParcel.TargetID);
             }
             catch (DO.UnvalidIDException custEx)
             {
@@ -64,19 +64,16 @@ namespace BL
             else
             {
                 DroneForList droneInParcel = new();
-                try
+                droneInParcel = drones.FirstOrDefault(item => item.ParcelId == dalParcel.Id);
+                if (droneInParcel != null)
                 {
-                  droneInParcel =drones.First(item=>item.ParcelId==dalParcel.Id);
+                    parcel.DroneInParcel = new();
+                    droneInParcel.CopyPropertiesTo(parcel.DroneInParcel);
+                    parcel.DroneInParcel.Location = new();
+                    parcel.DroneInParcel.Location.Latitude = droneInParcel.CurrentLocation.Latitude;
+                    parcel.DroneInParcel.Location.Longitude = droneInParcel.CurrentLocation.Longitude;
+
                 }
-                catch (InvalidOperationException)
-                {
-                    throw new InputDoesNotExist("the drone does not exist !!");
-                }
-                parcel.DroneInParcel = new();
-                droneInParcel.CopyPropertiesTo(parcel.DroneInParcel);
-                parcel.DroneInParcel.Location = new();
-                parcel.DroneInParcel.Location.Latitude = droneInParcel.CurrentLocation.Latitude;
-                parcel.DroneInParcel.Location.Longitude = droneInParcel.CurrentLocation.Longitude;
             }
             return parcel;
         }
@@ -116,7 +113,7 @@ namespace BL
                     returningDrone.ParcelInDelivery = new();
                     returningDrone.ParcelInDelivery.Id = parcel.Id;
                     //checks if the parcel wasnt picked up
-                    if (parcel.PickedUp ==null)
+                    if (parcel.PickedUp == null)
                         returningDrone.ParcelInDelivery.OnTheWay = false;
                     else
                         returningDrone.ParcelInDelivery.OnTheWay = true;
@@ -131,8 +128,8 @@ namespace BL
                     returningDrone.ParcelInDelivery.CustomerReciever.Id = parcel.Recipient.Id;
                     returningDrone.ParcelInDelivery.Collection = new();
                     returningDrone.ParcelInDelivery.Collection = sender.Location;
-                    returningDrone.ParcelInDelivery.Transportation=new();
-                    returningDrone.ParcelInDelivery.Transportation = (int)myDal.getDistanceFromLatLonInKm(sender.Location.Latitude, sender.Location.Longitude, reciever.Location.Latitude, reciever.Location.Longitude)*1000;
+                    returningDrone.ParcelInDelivery.Transportation = new();
+                    returningDrone.ParcelInDelivery.Transportation = (int)myDal.getDistanceFromLatLonInKm(sender.Location.Latitude, sender.Location.Longitude, reciever.Location.Latitude, reciever.Location.Longitude) * 1000;
                     returningDrone.ParcelInDelivery.Destination = reciever.Location;
                 }
                 catch (DO.UnvalidIDException DroneEx)
@@ -141,7 +138,7 @@ namespace BL
                 }
             }
             return returningDrone;
-            
+
         }
 
         /// <summary>
@@ -232,15 +229,15 @@ namespace BL
             {
                 ParcelCustomer parcelToAdd = new();
                 //checks if its  the senders parcel 
-                if (par.SenderID== customer.Id)
+                if (par.SenderID == customer.Id)
                 {
                     parcelToAdd.Id = par.Id;
-                    parcelToAdd.Weight =(Weight) par.Weight;
-                    parcelToAdd.Priority =(Priority) par.Priority;
+                    parcelToAdd.Weight = (Weight)par.Weight;
+                    parcelToAdd.Priority = (Priority)par.Priority;
                     //checks the parcel status and updates the field.
                     if (par.Delivered != null)
                         parcelToAdd.Status = Status.Delivered;
-                    else if (par.PickedUp !=null)
+                    else if (par.PickedUp != null)
                         parcelToAdd.Status = Status.Picked;
                     else if (par.Scheduled != null)
                         parcelToAdd.Status = Status.Assigned;
@@ -274,7 +271,7 @@ namespace BL
         public Station GetStation(int stationId)
         {
             if (stationId < 1000 || stationId > 10000)
-                 throw new InvalidInputException($"id {stationId} is not valid !!");
+                throw new InvalidInputException($"id {stationId} is not valid !!");
             Station returningStation = new();
             DO.Station dalStation = new DO.Station();
             try
@@ -308,14 +305,14 @@ namespace BL
             {
                 DroneCharge droneToAdd = new DroneCharge();
                 //if the drone charge is in the station
-                if (droneCharge.StationID== stationId)
+                if (droneCharge.StationID == stationId)
                 {
                     //updates his fields and add to returning list
                     droneToAdd.Id = droneCharge.DroneID;
                     DroneForList drone = new();
                     try
                     {
-                      drone = drones.First(item => item.Id == droneCharge.DroneID);
+                        drone = drones.First(item => item.Id == droneCharge.DroneID);
                     }
                     catch (InvalidOperationException)
                     {
