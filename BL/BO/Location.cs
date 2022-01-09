@@ -13,10 +13,21 @@ namespace BO
 
         public override string ToString()
         {
-            string result = "";
-            result += $"longtitude is: {Longitude}\n";
-            result += $"lattitude is: {Latitude}\n";
-            return result;
+            return string.Format("\n{0}\n{1}\n", longSexagesimal(Longitude), latSexagesimal(Latitude));
+        }
+
+        public string longSexagesimal(double longitude)
+        {
+            double absValOfDegree = Math.Abs(longitude);
+            double minute = (absValOfDegree - (int)absValOfDegree) * 60;
+            return string.Format("{0}°{1}\' {2}\"{3}", (int)longitude, (int)(minute), Math.Round((minute - (int)minute) * 60), longitude < 0 ? "S" : "N");
+        }
+
+        public string latSexagesimal(double latitude)
+        {
+            double absValOfDegree = Math.Abs(latitude);
+            double minute = (absValOfDegree - (int)absValOfDegree) * 60;
+            return string.Format("{0}°{1}\' {2}\"{3}", (int)latitude, (int)(minute), Math.Round((minute - (int)minute) * 60), latitude < 0 ? "W" : "E");
         }
     }
 

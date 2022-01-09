@@ -195,5 +195,29 @@ namespace PL
             DroneView droneWindow = new DroneView(myBl, dr);
             droneWindow.Show();
         }
+
+        /// <summary>
+        /// button to delete station
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Delete station?", "myApp", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                SelectedStation.IsDeleted = true;
+                try
+                {
+                    myBl.DeleteStation(SelectedStation);
+                    OnUpdate();
+                }
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to delete -" + ex.ToString());
+                }
+                Close();
+            }
+        }
     }
 }

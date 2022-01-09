@@ -15,7 +15,7 @@ namespace BO
         public double Battery { set; get; }
         public ParcelInDelivery ParcelInDelivery { get; set; }
         public Location CurrentLocation { get; set; }
-
+        public bool IsDeleted { get; set; }
         public override string ToString()
         {
             string result = "";

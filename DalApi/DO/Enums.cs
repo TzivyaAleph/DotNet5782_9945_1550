@@ -22,6 +22,11 @@ namespace DO
         Dan, Tony, Caleb, Gorge, Alis, Bob, Aria, Kally, Katy, Ariana
     };
 
+    public enum CustomersType
+    {
+        Manager, Employee, Customer
+    };
+
     public enum MenuOptions
     {
         Add = 1, Update, Presentation, ArrayPresentation, Exit

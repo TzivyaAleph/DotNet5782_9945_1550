@@ -40,8 +40,8 @@
         Station = 1, Drone, Customer, Parcel, NonAttributedParcels, AvalableChargeSlots
     };
 
-    public enum UserTipe
+    public enum CustomersType
     {
-        Manager=1, Employee, Customer
-    }
+        Manager, Customer
+    };
 }

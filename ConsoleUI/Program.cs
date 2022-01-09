@@ -321,7 +321,7 @@
 //            {
 //                Id = myID,
 //                Model = myModel,
-//                MaxWeight = myMaxWeight,
+//                Weight = myMaxWeight,
 //            };
 //            return d;
 //        }

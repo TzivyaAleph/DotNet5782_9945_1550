@@ -15,6 +15,9 @@ namespace BO
         public Location Location { get; set; }
         public List<ParcelCustomer> SentParcels { get; set; }
         public List<ParcelCustomer> ReceiveParcels { get; set; }
+        public string Password { get; set; }
+        public CustomersType CustomerType { get; set; }
+        public bool IsDeleted { get; set; }
         public override string ToString()
         {
             string result = "";
@@ -22,6 +25,7 @@ namespace BO
             result += $"cosumer's name is: {Name}\n";
             result += $"phoneNumber is {PhoneNumber},\n";
             result += $"location is:\n{Location}";
+            result += $"customer type is {CustomerType},\n";
             result += $"sent parcels are:\n";
             foreach (var pc in SentParcels)
             {

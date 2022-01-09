@@ -1,4 +1,4 @@
-﻿<Window x:Class="PL.DroneView"
+﻿<Window x:Class="PL.DroneView" WindowStartupLocation="CenterScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -52,13 +52,13 @@
                 <Label x:Name="labelDelievery" FontWeight="Bold" Content="Delievery:" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
                 <Label Content="Longitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
                 <Label Content="Lattitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
-                <TextBox x:Name="txtID" Text="{Binding DroneToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtID" MaxLength="4" Text="{Binding DroneToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <TextBox x:Name="txtBattery" Text="0"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
                 <ComboBox Name="CBXWeight" ItemsSource="{Binding WeightOptions}" SelectedItem="{Binding DroneToAdd.Weight}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"></ComboBox>
                 <TextBox x:Name="txtModel" Text="{Binding DroneToAdd.Model}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <ComboBox x:Name="CBXStatus" ItemsSource="{Binding Statuses}" SelectedItem="{Binding DroneToAdd.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" IsEnabled="False" />
                 <TextBox x:Name="txtDelievery" Text="0"  Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
-                <TextBox x:Name="txtLongitude" Text="0" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
+                <TextBox x:Name="txtLongitude"  Text="0" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
                 <TextBox x:Name="txtLatitude" Text="0" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
                 <Label x:Name="txtStationName" FontWeight="Bold" Content="Choose station to put the drone in it: " Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <ComboBox Name="cbxStations" ItemsSource="{Binding Names}" SelectedItem="{Binding Names}" VerticalAlignment="Center"  Grid.Row="4" Grid.Column="2" Margin="110,0,106,0" />
@@ -112,10 +112,12 @@
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
                 <Label Content="Parcel In Delivery:" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontWeight="Bold" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}"/>
-                <TextBlock x:Name="parcelView" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" Text="{Binding SelectedDrone.ParcelInDelivery}"></TextBlock>
+                <ListBox x:Name="parcelView" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" ItemsSource="{Binding ParcelsInDrone}" MouseDoubleClick="parcelView_MouseDoubleClick"></ListBox>
+                <!--<TextBox x:Name="parcelViewInTextBox" Text="{Binding SelectedDrone.ParcelInDelivery}" Width="230" Height="300" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" ></TextBox>-->
             </Grid>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button x:Name="updateModelBtn" Content="Update" Width="100" Click="UpdateModelBtn_Click"/>
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="8" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button x:Name="updateModelBtn" Content="Update" Width="100" Click="UpdateModelBtn_Click" Visibility="{Binding SelectedDrone.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                <Button x:Name="deleteDrone" Content="Delete Drone" Width="100" Click="deleteDrone_Click" Visibility="{Binding SelectedDrone.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                 <Button x:Name="closeWindowBtn" Content="Close" Width="100" Click="CloseWindowBtn_Click"/>
                 <Button x:Name="DroneCharging" Width="100" Visibility="{Binding SelectedDrone.DroneStatuses,Converter={StaticResource DroneStatusToBoolConverterForRelease}, ConverterParameter=visibilityForCharging}" Click="DroneCharging_Click">
                     <Button.Style>

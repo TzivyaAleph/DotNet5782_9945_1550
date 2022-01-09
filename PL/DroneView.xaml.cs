@@ -26,6 +26,23 @@ namespace PL
         private string originalDroneModel; //temp drone to hold the drone from the drone list view window (this drone will not be used for items source)
         private Drone selectedDrone;
         private DroneForList droneToAdd;
+        public List<Weight> WeightOptions { get; set; } //list to hold weight options
+        public List<DroneStatuses> Statuses { get; set; } //list to hold Drone Status options
+        public List<string> Names { get; set; }//list of stations name
+        public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
+        public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
+        private List <ParcelInDelivery> parcelsInDrone;
+
+        public List <ParcelInDelivery> ParcelsInDrone
+        {
+            get { return parcelsInDrone; }
+            set
+            { 
+                parcelsInDrone = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("ParcelsInDrone"));
+            }
+        }
 
         /// <summary>
         /// a drone for putting the input data in it.
@@ -88,13 +105,6 @@ namespace PL
             }
         }
 
-        public List<Weight> WeightOptions { get; set; } //list to hold weight options
-        public List<DroneStatuses> Statuses { get; set; } //list to hold Drone Status options
-        public List<string> Names { get; set; }//list of stations name
-        public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
-        public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
-
         /// <summary>
         /// a ctor for adding new drone
         /// </summary>
@@ -129,12 +139,11 @@ namespace PL
         public DroneView(BlApi.IBL bl, Drone dr)
         {
             InitializeComponent();
-            Initialize();
             SelectedDrone = dr;
+            Initialize();
             originalDroneModel = dr.Model;
             myBl = bl;
             IsUpdateMode = true;
-            ParcelInDelivery parcel = new ParcelInDelivery();
         }
 
         /// <summary>
@@ -144,6 +153,8 @@ namespace PL
         {
             WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
+            ParcelsInDrone = new List<ParcelInDelivery>();
+            ParcelsInDrone.Add(SelectedDrone.ParcelInDelivery);
             DataContext = this;
         }
 
@@ -375,6 +386,8 @@ namespace PL
                         OnUpdate();
                     }
                     RefreshProperties();
+                    if (SelectedDrone.ParcelInDelivery == null && SelectedDrone.IsDeleted)
+                        Close();
                 }
                 catch (BO.FailedToUpdateException ex)
                 {
@@ -422,6 +435,39 @@ namespace PL
                 sendToCharge();
             else if (IsReleaseDroneEnabled)
                 releaseDrone();
+        }
+
+        /// <summary>
+        /// button to delete drone
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void deleteDrone_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Delete drone?", "myApp", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                SelectedDrone.IsDeleted = true;
+                try
+                {
+                    myBl.DeleteDrone(SelectedDrone);
+                    OnUpdate();
+                }
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to delete -" + ex.ToString());
+                }
+                Close();
+            }
+        }
+
+        private void parcelView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ParcelInDelivery p = parcelView.SelectedItem as ParcelInDelivery;
+            Parcel par = new Parcel();
+            par = myBl.GetParcel(p.Id);//gets the selected station as station instead of station for list 
+            ParcelView parcelWindow = new ParcelView(myBl, par);
+            parcelWindow.Show();
         }
     }
 }

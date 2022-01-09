@@ -22,10 +22,11 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static readonly  IBL myBl = BlFactory.GetBl();
-        
-        public MainWindow()
+        private BlApi.IBL myBl;
+        public MainWindow(BlApi.IBL bl)
         {
+            myBl = bl;
+            InitializeComponent();
         }
 
         private void droneListViewBtn_Click(object sender, RoutedEventArgs e)

@@ -22,6 +22,8 @@ namespace BL
             droneCharges = myDal.GetDroneChargeList().ToList();
             foreach (var stat in myDal.CopyStationArray())
             {
+
+
                 StationForList stationToAdd = new();
                 stationToAdd.Id = stat.Id;
                 stationToAdd.Name = stat.Name;
@@ -29,7 +31,9 @@ namespace BL
                 Station station = new();
                 stationToAdd.AvailableChargingSlots = stat.ChargeSlots - countNumOfDronesInStation;
                 stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
-                stationsToReturn.Add(stationToAdd);
+                if (!stat.IsDeleted || countNumOfDronesInStation > 0)
+                    stationsToReturn.Add(stationToAdd);
+
             }
             return stationsToReturn;
         }
@@ -38,12 +42,12 @@ namespace BL
         /// creates new list and copies all the fields from the drone list in bl
         /// </summary>
         /// <returns>the created list</returns>
-        public IEnumerable<DroneForList> GetDroneList(Func<DroneForList,bool> predicate=null)
+        public IEnumerable<DroneForList> GetDroneList(Func<DroneForList, bool> predicate = null)
         {
             List<DroneForList> dronesForList = new List<DroneForList>(drones);
             if (predicate == null)
             {
-                return dronesForList;
+                return dronesForList.Where(d => !d.IsDeleted || d.ParcelId != 0);
             }
             return dronesForList.Where(predicate);
         }
@@ -57,23 +61,26 @@ namespace BL
             List<CustomerForList> customersForList = new List<CustomerForList>();
             foreach (var cust in myDal.CopyCustomerArray())
             {
-                CustomerForList customerToAdd = new();
-                customerToAdd.Id = cust.Id;
-                customerToAdd.Name = cust.Name;
-                customerToAdd.Phone = cust.PhoneNumber;
-                //counts all the parcel which he sends and been delievered.
-                int count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered != null);
-                customerToAdd.ParcelProvided = count;
-                //counts all the parcel which he sends and not been delievered.
-                count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered == null);
-                customerToAdd.ParcelNotProvided = count;
-                //counts all the parcel which he gets.
-                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered != null);
-                customerToAdd.ParcelRecieved = count;
-                //counts all the parcel that on the way to him.
-                count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered == null && item.PickedUp != null);
-                customerToAdd.ParcelOnTheWay = count;
-                customersForList.Add(customerToAdd);
+                if (cust.IsDeleted == false)
+                {
+                    CustomerForList customerToAdd = new();
+                    customerToAdd.Id = cust.Id;
+                    customerToAdd.Name = cust.Name;
+                    customerToAdd.Phone = cust.PhoneNumber;
+                    //counts all the parcel which he sends and been delievered.
+                    int count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered != null);
+                    customerToAdd.ParcelProvided = count;
+                    //counts all the parcel which he sends and not been delievered.
+                    count = myDal.CopyParcelArray().Count(item => item.SenderID == cust.Id && item.Delivered == null);
+                    customerToAdd.ParcelNotProvided = count;
+                    //counts all the parcel which he gets.
+                    count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered != null);
+                    customerToAdd.ParcelRecieved = count;
+                    //counts all the parcel that on the way to him.
+                    count = myDal.CopyParcelArray().Count(item => item.TargetID == cust.Id && item.Delivered == null && item.PickedUp != null);
+                    customerToAdd.ParcelOnTheWay = count;
+                    customersForList.Add(customerToAdd);
+                }
             }
             return customersForList;
         }
@@ -84,37 +91,40 @@ namespace BL
         /// <returns>the created parcel</returns>
         public IEnumerable<ParcelForList> GetParcelList()
         {
-            
+
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
             foreach (var par in myDal.CopyParcelArray())
             {
-                ParcelForList parcelToAdd = new();
-                parcelToAdd.Id = par.Id;
-                DO.Customer dalCustomer = new DO.Customer();
-                //finds the sender in customer list for getting his name
-                try
+                if (par.IsDeleted == false)
                 {
-                    dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
+                    ParcelForList parcelToAdd = new();
+                    parcelToAdd.Id = par.Id;
+                    DO.Customer dalCustomer = new DO.Customer();
+                    //finds the sender in customer list for getting his name
+                    try
+                    {
+                        dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.SenderID);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new InputDoesNotExist("sender id is missing!!");
+                    }
+                    parcelToAdd.Sender = dalCustomer.Name;
+                    //finds the reciepient in customer list for getting his name
+                    try
+                    {
+                        dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new InputDoesNotExist("cant print the parcel-reciepient id is missing!!");
+                    }
+                    parcelToAdd.Reciever = dalCustomer.Name;
+                    parcelToAdd.Weight = (Weight)par.Weight;
+                    parcelToAdd.Priority = (Priority)par.Priority;
+                    parcelToAdd.Status = getStatus(par);
+                    parcelsForList.Add(parcelToAdd);
                 }
-                catch (InvalidOperationException)
-                {
-                    throw new InputDoesNotExist("sender id is missing!!");
-                }
-                parcelToAdd.Sender = dalCustomer.Name;
-                //finds the reciepient in customer list for getting his name
-                try
-                {
-                    dalCustomer = myDal.CopyCustomerArray().First(item => item.Id == par.TargetID);
-                }
-                catch (InvalidOperationException)
-                {
-                    throw new InputDoesNotExist("cant print the parcel-reciepient id is missing!!");
-                }
-                parcelToAdd.Reciever = dalCustomer.Name;
-                parcelToAdd.Weight = (Weight)par.Weight;
-                parcelToAdd.Priority = (Priority)par.Priority;
-                parcelToAdd.Status = getStatus(par);
-                parcelsForList.Add(parcelToAdd);
             }
             return parcelsForList;
         }
@@ -185,7 +195,7 @@ namespace BL
         {
             if (par.Delivered != null)
                 return Status.Delivered;
-            else if (par.PickedUp !=null)
+            else if (par.PickedUp != null)
                 return Status.Picked;
             else if (par.Scheduled != null)
                 return Status.Assigned;

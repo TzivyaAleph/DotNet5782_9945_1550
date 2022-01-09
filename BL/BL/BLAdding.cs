@@ -88,7 +88,7 @@ namespace BL
             {
                 Id = d.Id,
                 Model = d.Model,
-                MaxWeight = (DO.Weight)d.Weight
+                Weight = (DO.Weight)d.Weight
             };
             myDal.SendDroneToChargeSlot(dalDrone, s);
             try
@@ -165,7 +165,7 @@ namespace BL
             newParcel.DroneID = 0;
             newParcel.SenderID = parcel.Sender.Id;
             newParcel.TargetID = parcel.Recipient.Id;
-            newParcel.isDeleted = false;
+            newParcel.IsDeleted = false;
             int runningNumber;
             try
             {

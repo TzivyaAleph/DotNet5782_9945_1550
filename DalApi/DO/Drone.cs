@@ -11,14 +11,15 @@ namespace DO
     {
         public int Id { set; get; }
         public string Model { set; get; }
-        public Weight MaxWeight { set; get; }
+        public Weight Weight { set; get; }
+        public bool IsDeleted { get; set; }
 
         public override string ToString()
         {
             string result = " ";
             result += $"ID is {Id},\n";
             result += $"model is {Model},\n";
-            result += $"the maximum weight is {MaxWeight},\n";
+            result += $"the maximum weight is {Weight},\n";
             return result;
         }
     }

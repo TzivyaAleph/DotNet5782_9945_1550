@@ -55,7 +55,7 @@ namespace Dal
 
         public void UpdateCustomer(Customer customer)
         {
-            if (!(DataSource.Customers.Exists(c => c.Id == customer.Id)))
+            if (!DataSource.Customers.Exists(c => c.Id == customer.Id))
             {
                 throw new UnvalidIDException($"id {customer.Id}  is not valid !!");
             }

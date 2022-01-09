@@ -1,5 +1,4 @@
-﻿using BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,23 +8,16 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
-    public class DroneStatusToBoolConverter : IValueConverter
+    public class InvertBoolValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DroneStatuses status = (DroneStatuses)value;   
-            if(parameter!=null&&parameter.ToString().Equals("isMaintanance"))
-            {
-                return status == DroneStatuses.Maintenance;
-            }
-            return status == DroneStatuses.Available;
+            return !(bool)value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return !(bool)value;
         }
-
-
     }
 }

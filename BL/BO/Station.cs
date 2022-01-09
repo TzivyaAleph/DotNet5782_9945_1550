@@ -12,6 +12,7 @@ namespace BO
         public Location StationLocation { get; set; }
         public int ChargeSlots { get; set; }
         public List<DroneCharge> DroneCharges { get; set; }
+        public bool IsDeleted { get; set; }
 
         public override string ToString()
         {
