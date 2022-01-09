@@ -63,30 +63,35 @@ namespace Dal
                 Id = rand.Next(1000, 2000),
                 Model = "maxP",
                 Weight = (Weight)2,
+                IsDeleted=false
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(2001, 3000),
                 Model = "maxG",
                 Weight = (Weight)2,
+                IsDeleted = false
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(3001, 4000),
                 Model = "maxF",
                 Weight = (Weight)2,
+                IsDeleted = false
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(4001, 5000),
                 Model = "maxT",
                 Weight = (Weight)2,
+                IsDeleted = false
             });
             Drones.Add(new Drone
             {
                 Id = rand.Next(5001, 10000),
                 Model = "maxD",
                 Weight = (Weight)2,
+                IsDeleted = false
             });
         }
 
@@ -111,16 +116,18 @@ namespace Dal
                 Id = rand.Next(1000, 5000),
                 Name = "Ramot",
                 ChargeSlots = rand.Next(0, 51),
-                Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                Longitude = (long)getRandomDoubleNumber(-5000, 5000)
+                Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
+                Longitude = (long)getRandomDoubleNumber(35.195, 35.2),
+                IsDeleted = false
             });
             Stations.Add(new Station
             {
                 Id = rand.Next(5001, 10000),
                 Name = "Bait Vagan",
                 ChargeSlots = rand.Next(0, 50),
-                Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                Longitude = (long)getRandomDoubleNumber(-5000, 5000)
+                Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
+                Longitude = (long)getRandomDoubleNumber(35.195, 35.2),
+                IsDeleted = false
             });
 
         }
@@ -139,9 +146,15 @@ namespace Dal
                     Id = rand.Next(100000000, 1000000000),
                     Name = $"{(CustomersName)rand.Next(10)}",
                     PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
-                    Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                    Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
+                    Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
+                    Longtitude = (long)getRandomDoubleNumber(35.195, 35.2),
+                    IsDeleted = false
                 };
+                if (i % 2 == 0)
+                    toAdd.CustomerType = CustomersType.Customer;
+                else
+                    toAdd.CustomerType = CustomersType.Manager;
+                toAdd.Password = toAdd.Id.ToString();
                 if (Customers.Exists(item => item.Id == toAdd.Id || item.PhoneNumber == toAdd.PhoneNumber))
                     i--;
                 else
@@ -168,7 +181,9 @@ namespace Dal
                 toAdd.Weight = RandomEnumValue<Weight>();
                 toAdd.Priority = RandomEnumValue<Priority>();
                 toAdd.Requested = dateAndTime;
+                toAdd.IsDeleted = false;
                 int numDrone = m;
+                //checkes if the max weight of the drone is smaller than the parcels weight
                 while ((int)Drones[numDrone].Weight < (int)toAdd.Weight)
                 {
                     numDrone += 1;

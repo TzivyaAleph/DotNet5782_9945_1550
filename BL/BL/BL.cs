@@ -159,7 +159,8 @@ namespace BL
                     droneToAdd.CurrentLocation.Latitude = randomCustomer.Lattitude;
                     droneToAdd.CurrentLocation.Longitude = randomCustomer.Longtitude;
                     //battery status will be a random number between the min battery to 100.
-                    clossestStation = myDal.GetClossestStation(droneToAdd.CurrentLocation.Latitude, droneToAdd.CurrentLocation.Longitude, (List<DO.Station>)myDal.CopyStationArray());
+                    List<DO.Station> stations = myDal.CopyStationArray().ToList();
+                    clossestStation = myDal.GetClossestStation(droneToAdd.CurrentLocation.Latitude, droneToAdd.CurrentLocation.Longitude, stations);
                     double minBatteryUseForAvailable = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, droneToAdd.CurrentLocation.Latitude, droneToAdd.CurrentLocation.Longitude) * availableElectricityUse;
                     droneToAdd.Battery = getRandomDoubleNumber(minBatteryUseForAvailable, 101);
                 }

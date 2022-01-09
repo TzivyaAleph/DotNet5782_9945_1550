@@ -102,16 +102,16 @@ namespace Dal
                 Id = rand.Next(1000, 5000),
                 Name = "Ramot",
                 ChargeSlots = rand.Next(0, 51),
-                Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                Longitude = (long)getRandomDoubleNumber(-5000, 5000)
+                Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
+                Longitude = (long)getRandomDoubleNumber(35.195, 35.2)
             });
             Stations.Add(new Station
             {
                 Id = rand.Next(5001, 10000),
                 Name = "Bait Vagan",
                 ChargeSlots = rand.Next(0, 50),
-                Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                Longitude = (long)getRandomDoubleNumber(-5000, 5000)
+                Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
+                Longitude = (long)getRandomDoubleNumber(35.195, 35.2)
             });
 
         }
@@ -130,8 +130,8 @@ namespace Dal
                     Id = rand.Next(100000000, 1000000000),
                     Name = $"{(CustomersName)rand.Next(10)}",
                     PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
-                    Lattitude = (long)getRandomDoubleNumber(-5000, 5000),
-                    Longtitude = (long)getRandomDoubleNumber(-5000, 5000),
+                    Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
+                    Longtitude = (long)getRandomDoubleNumber(35.195, 35.2),
                     
                 };
                 if (i % 2 == 0)

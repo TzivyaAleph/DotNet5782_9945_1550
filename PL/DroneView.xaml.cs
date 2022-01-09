@@ -144,6 +144,8 @@ namespace PL
             originalDroneModel = dr.Model;
             myBl = bl;
             IsUpdateMode = true;
+            ParcelsInDrone = new List<ParcelInDelivery>();
+            ParcelsInDrone.Add(SelectedDrone.ParcelInDelivery);
         }
 
         /// <summary>
@@ -153,8 +155,6 @@ namespace PL
         {
             WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
-            ParcelsInDrone = new List<ParcelInDelivery>();
-            ParcelsInDrone.Add(SelectedDrone.ParcelInDelivery);
             DataContext = this;
         }
 

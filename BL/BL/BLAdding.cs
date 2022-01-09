@@ -27,9 +27,9 @@ namespace BL
                 throw new InvalidInputException($"name is not valid !!");
             if(s.ChargeSlots<0||s.ChargeSlots>50)
                 throw new InvalidInputException($"number of slots {s.DroneCharges} is not valid !!");
-            if (s.StationLocation.Longitude > 5000 || s.StationLocation.Longitude < -5000)
+            if (s.StationLocation.Longitude > 35.195 || s.StationLocation.Longitude < 35.2)
                 throw new InvalidInputException($"Longitude {s.StationLocation.Longitude} is not valid !!");
-            if (s.StationLocation.Latitude > 5000 || s.StationLocation.Latitude < -5000)
+            if (s.StationLocation.Latitude > 31.75 || s.StationLocation.Latitude < 31.9)
                 throw new InvalidInputException($"Lattitude {s.StationLocation.Latitude} is not valid !!");
             s.DroneCharges = null;
             DO.Station tmp = new DO.Station
@@ -63,7 +63,7 @@ namespace BL
                 throw new InvalidInputException($"model is not valid !!");
             if (stationId < 1000 || stationId > 10000)
                 throw new InvalidInputException($"station Id {stationId} is not valid !!");
-            List<DO.Station> stations = (List<DO.Station>)myDal.CopyStationArray();
+            List<DO.Station> stations = myDal.CopyStationArray().ToList();
             //checks if the station exists
             if (!stations.Exists(station => station.Id == stationId))
             {

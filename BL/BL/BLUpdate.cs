@@ -291,7 +291,8 @@ namespace BL
             }
             double batteryUseForDelivery = myDal.getDistanceFromLatLonInKm(dalSender.Lattitude, dalSender.Longtitude, dalTarget.Lattitude, dalTarget.Longtitude) * electricityByWeight((Weight)minParcel.Weight);
             DO.Station clossestStation = new DO.Station();
-            clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, (List<DO.Station>)myDal.CopyStationArray());
+            List<DO.Station> stations = myDal.CopyStationArray().ToList();
+            clossestStation = myDal.GetClossestStation(dalTarget.Lattitude, dalTarget.Longtitude, stations);
             double batteryUseForCharging = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, dalTarget.Lattitude, dalTarget.Longtitude) * myDal.GetElectricityUse()[0];
             if ((droneToAttribute.Battery - (batteryUseForPickUp + batteryUseForDelivery + batteryUseForCharging)) < 0)
                 return true;

@@ -86,7 +86,10 @@ namespace Dal
                                  new XElement("Name", c.Name),
                                  new XElement("PhoneNumber", c.PhoneNumber),
                                  new XElement("Lattitude", c.Lattitude),
-                                 new XElement("Longtitude", c.Longtitude));
+                                 new XElement("Longtitude", c.Longtitude),
+                                 new XElement("CustomerType", c.CustomerType),
+                                 new XElement("Password", c.Password),
+                                 new XElement("IsDeleted", c.IsDeleted));
 
             customerXml.Add(CustomerElem);
             XmlHelper.SaveListToXMLElement(customerXml, DataDirectory + CustomerXml);
@@ -123,7 +126,7 @@ namespace Dal
             p.Delivered = null;
             p.PickedUp = null;
             p.Scheduled = null;
-            p.isDeleted = false;
+            p.IsDeleted = false;
             parcels.Add(p);
             XmlHelper.SerializeData(parcels, DataDirectory + ParcelXml);
             configXml.Element("RunningParcelId").Value = parcId.ToString();
@@ -164,7 +167,10 @@ namespace Dal
                                                  Name = cus.Element("Name").Value,
                                                  PhoneNumber = cus.Element("PhoneNumber").Value,
                                                  Longtitude = double.Parse(cus.Element("Longtitude").Value),
-                                                 Lattitude = double.Parse(cus.Element("Lattitude").Value)
+                                                 Lattitude = double.Parse(cus.Element("Lattitude").Value),
+                                                 IsDeleted=false,
+                                                 Password=cus.Element("Password").Value,
+                                                 CustomerType=(CustomersType) Enum.Parse(typeof(CustomersType), cus.Element("CustomerType").Value)
                                              };
 
             if (predicate == null)
@@ -194,9 +200,9 @@ namespace Dal
         public IEnumerable<Parcel> CopyParcelArray(Func<Parcel, bool> predicate = null)
         {
             List<Parcel> parcels = XmlHelper.DeserializeData<Parcel>(DataDirectory + ParcelXml);
-            if (predicate == null)
-                return parcels;
-            return parcels.Where(predicate);
+            return from item in parcels
+                   where predicate == null ? true : predicate(item)
+                   select item;
         }
 
         /// <summary>
@@ -206,10 +212,10 @@ namespace Dal
         /// <returns></returns>
         public IEnumerable<Station> CopyStationArray(Func<Station, bool> predicate = null)
         {
-            List<Station> newList = XmlHelper.DeserializeData<Station>(DataDirectory + StationXml);
-            if (predicate == null)
-                return newList;
-            return newList.Where(predicate);
+            List<Station> stations = XmlHelper.DeserializeData<Station>(DataDirectory + StationXml);
+            return from item in stations
+                   where predicate == null ? true : predicate(item)
+                   select item;
         }
 
         /// <summary>
@@ -238,12 +244,15 @@ namespace Dal
                         where int.Parse(per.Element("Id").Value) == customerID
                           select new Customer()
                         {
-                            Id = Int32.Parse(per.Element("Id").Value),
+                            Id = int.Parse(per.Element("Id").Value),
                             Name = per.Element("Name").Value,
                             PhoneNumber = per.Element("PhoneNumber").Value,
-                            Longtitude= Int32.Parse(per.Element("Longtitude").Value),
-                            Lattitude= Int32.Parse(per.Element("Lattitude").Value),
-                        }
+                            Longtitude= int.Parse(per.Element("Longtitude").Value),
+                            Lattitude= int.Parse(per.Element("Lattitude").Value),
+                            IsDeleted=false,
+                            Password=per.Element("Password").Value,
+                            CustomerType= (CustomersType)Enum.Parse(typeof(CustomersType), per.Element("CustomerType").Value)
+                          }
                         ).FirstOrDefault();
             if (c.Id != 0)
             {
