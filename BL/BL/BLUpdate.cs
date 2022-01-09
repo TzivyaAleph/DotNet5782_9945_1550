@@ -108,7 +108,7 @@ namespace BL
             {
                 throw new InvalidInputException($"model {customerName} is not valid !!");
             }
-            if (customerPhone.Length != 11&&customerPhone.Length!=10)
+            if (customerPhone.Length != 11 && customerPhone.Length != 10)
             {
                 throw new InvalidInputException("Invalid phone number!!\n");
             }
@@ -203,7 +203,7 @@ namespace BL
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
             List<DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
-            List<DO.Parcel> parcels = myDal.CopyParcelArray(par=>par.DroneID==0).ToList();//gets the non attributed parcels list
+            List<DO.Parcel> parcels = myDal.CopyParcelArray(par => par.DroneID == 0).ToList();//gets the non attributed parcels list
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = new();
             droneToAttribute = drones[index];
@@ -241,7 +241,7 @@ namespace BL
             DO.Parcel dalParcel = new();
             try
             {
-                dalParcel = myDal.CopyParcelArray(par=>par.DroneID==0).First(par => par.Id == minParcel.Id);
+                dalParcel = myDal.CopyParcelArray(par => par.DroneID == 0).First(par => par.Id == minParcel.Id);
             }
             catch (InvalidOperationException)
             {
@@ -328,7 +328,7 @@ namespace BL
             {
                 throw new InputDoesNotExist("the drone does not exist !!");
             }
-            if (parcelToPickUp.PickedUp !=null)//checkes if the parcel was already picked up
+            if (parcelToPickUp.PickedUp != null)//checkes if the parcel was already picked up
             {
                 throw new InvalidInputException($"parcel {parcelToPickUp.Id} was already picked up !!");
             }
@@ -550,7 +550,7 @@ namespace BL
             {
                 myDal.UpdateParcel(dalParcel);
             }
-            catch(DO.ExistingObjectException ex)
+            catch (DO.ExistingObjectException ex)
             {
                 throw new FailedToUpdateException("ERROR", ex);
             }
@@ -613,7 +613,7 @@ namespace BL
             station.CopyPropertiesTo(obj);
             dalStation = (DO.Station)obj;
             station.CopyPropertiesTo(dalStation);
-            dalStation.Lattitude =(long) station.StationLocation.Latitude;
+            dalStation.Lattitude = (long)station.StationLocation.Latitude;
             dalStation.Longitude = (long)station.StationLocation.Longitude;
             try
             {

@@ -48,11 +48,11 @@
                 <Label Content="Lattitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
                 <Label Content="Password:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
                 <Label Content="Customer Type:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
-                <TextBox x:Name="txtID" Text="{Binding CustomerToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtID" MaxLength="9" Text="{Binding CustomerToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <TextBox x:Name="txtName" Text="{Binding CustomerToAdd.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtPhoneNumber" Text="{Binding CustomerToAdd.PhoneNumber}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtLongitude" Text="{Binding CustomerToAdd.Location.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtLattitude" Text="{Binding CustomerToAdd.Location.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtPhoneNumber" MaxLength="10" Text="{Binding CustomerToAdd.PhoneNumber}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtLongitude" MaxLength="4" Text="{Binding CustomerToAdd.Location.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtLattitude" MaxLength="4" Text="{Binding CustomerToAdd.Location.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <TextBox x:Name="password" Text="{Binding CustomerToAdd.Password, Mode=TwoWay}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <ComboBox x:Name="customerType" Grid.Column="1" Grid.Row="7" Height="22" ItemsSource="{Binding CustomerTypeOptions}" SelectedItem="{Binding CustomerToAdd.CustomerType}" />
                 <Button x:Name="addButton" Content="Add"  FontSize="30"  Grid.Column="3" Grid.Row="6" Click="addButton_Click"/>

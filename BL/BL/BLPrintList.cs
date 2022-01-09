@@ -22,17 +22,18 @@ namespace BL
             droneCharges = myDal.GetDroneChargeList().ToList();
             foreach (var stat in myDal.CopyStationArray())
             {
-                if (stat.IsDeleted == false)
-                {
-                    StationForList stationToAdd = new();
-                    stationToAdd.Id = stat.Id;
-                    stationToAdd.Name = stat.Name;
-                    int countNumOfDronesInStation = droneCharges.Count(item => item.StationID == stat.Id);
-                    Station station = new();
-                    stationToAdd.AvailableChargingSlots = stat.ChargeSlots - countNumOfDronesInStation;
-                    stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
+
+
+                StationForList stationToAdd = new();
+                stationToAdd.Id = stat.Id;
+                stationToAdd.Name = stat.Name;
+                int countNumOfDronesInStation = droneCharges.Count(item => item.StationID == stat.Id);
+                Station station = new();
+                stationToAdd.AvailableChargingSlots = stat.ChargeSlots - countNumOfDronesInStation;
+                stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
+                if (!stat.IsDeleted || countNumOfDronesInStation > 0)
                     stationsToReturn.Add(stationToAdd);
-                }
+
             }
             return stationsToReturn;
         }
@@ -41,12 +42,12 @@ namespace BL
         /// creates new list and copies all the fields from the drone list in bl
         /// </summary>
         /// <returns>the created list</returns>
-        public IEnumerable<DroneForList> GetDroneList(Func<DroneForList,bool> predicate=null)
+        public IEnumerable<DroneForList> GetDroneList(Func<DroneForList, bool> predicate = null)
         {
             List<DroneForList> dronesForList = new List<DroneForList>(drones);
             if (predicate == null)
             {
-                return dronesForList.Where(d=>d.IsDeleted==false);
+                return dronesForList.Where(d => !d.IsDeleted || d.ParcelId != 0);
             }
             return dronesForList.Where(predicate);
         }
@@ -90,7 +91,7 @@ namespace BL
         /// <returns>the created parcel</returns>
         public IEnumerable<ParcelForList> GetParcelList()
         {
-            
+
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
             foreach (var par in myDal.CopyParcelArray())
             {
@@ -194,7 +195,7 @@ namespace BL
         {
             if (par.Delivered != null)
                 return Status.Delivered;
-            else if (par.PickedUp !=null)
+            else if (par.PickedUp != null)
                 return Status.Picked;
             else if (par.Scheduled != null)
                 return Status.Assigned;

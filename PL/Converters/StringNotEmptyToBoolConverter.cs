@@ -12,7 +12,8 @@ namespace PL.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return !string.IsNullOrEmpty((string)value);
+            if (value == null) return false;
+            return !string.IsNullOrEmpty(value.ToString());
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

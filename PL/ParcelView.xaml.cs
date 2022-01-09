@@ -195,7 +195,7 @@ namespace PL
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show("Delete customer?", "myApp", MessageBoxButton.YesNo);
+            var result = MessageBox.Show("Delete parcel?", "myApp", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 ParcelToDelete.IsDeleted = true;

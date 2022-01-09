@@ -32,6 +32,17 @@ namespace PL
         public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
         public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
         public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
+        private List <ParcelInDelivery> parcelsInDrone;
+
+        public List <ParcelInDelivery> ParcelsInDrone
+        {
+            get { return parcelsInDrone; }
+            set
+            { 
+                parcelsInDrone = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("ParcelsInDrone"));
+            }
+        }
 
         /// <summary>
         /// a drone for putting the input data in it.
@@ -128,12 +139,11 @@ namespace PL
         public DroneView(BlApi.IBL bl, Drone dr)
         {
             InitializeComponent();
-            Initialize();
             SelectedDrone = dr;
+            Initialize();
             originalDroneModel = dr.Model;
             myBl = bl;
             IsUpdateMode = true;
-            ParcelInDelivery parcel = new ParcelInDelivery();
         }
 
         /// <summary>
@@ -143,6 +153,8 @@ namespace PL
         {
             WeightOptions = Enum.GetValues(typeof(Weight)).Cast<Weight>().ToList();
             Statuses = Enum.GetValues(typeof(DroneStatuses)).Cast<DroneStatuses>().ToList();
+            ParcelsInDrone = new List<ParcelInDelivery>();
+            ParcelsInDrone.Add(SelectedDrone.ParcelInDelivery);
             DataContext = this;
         }
 
@@ -374,6 +386,8 @@ namespace PL
                         OnUpdate();
                     }
                     RefreshProperties();
+                    if (SelectedDrone.ParcelInDelivery == null && SelectedDrone.IsDeleted)
+                        Close();
                 }
                 catch (BO.FailedToUpdateException ex)
                 {
@@ -445,6 +459,15 @@ namespace PL
                 }
                 Close();
             }
+        }
+
+        private void parcelView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ParcelInDelivery p = parcelView.SelectedItem as ParcelInDelivery;
+            Parcel par = new Parcel();
+            par = myBl.GetParcel(p.Id);//gets the selected station as station instead of station for list 
+            ParcelView parcelWindow = new ParcelView(myBl, par);
+            parcelWindow.Show();
         }
     }
 }

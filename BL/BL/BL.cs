@@ -40,7 +40,7 @@ namespace BL
             double standardElectricityUse = electricityUse[2];
             double heavyElectricityUse = electricityUse[3];
             double chargePerHour = electricityUse[4];
-            //goes throuhgh the da list drones
+            //goes throuhgh the dal list drones
             List<DO.Parcel> dalParcels = myDal.CopyParcelArray().ToList();
             foreach (var item in myDal.CopyDroneArray())
             {
@@ -106,7 +106,6 @@ namespace BL
                         double minBatteryForPickUp = batteryUseFromSenderToTarget + batteryUseFromTargetrToStation;
                         droneToAdd.Battery = getRandomDoubleNumber(minBatteryForPickUp, 100);
                     }
-
                 }
                 //the drone has been attributted but is not executing a delievery.
                 else
@@ -144,7 +143,7 @@ namespace BL
                 if (droneToAdd.DroneStatuses == DroneStatuses.Available)
                 {
                     //the cuurent location of the drone is the location of a random
-                    //customer who has attributted parcel who hasnt been delieverd yet.
+                    //customer who has an attributted parcel that wasnt delieverd yet.
                     List<DO.Customer> CustomersWithDelieverdParcel = new List<DO.Customer>();
                     CustomersWithDelieverdParcel = myDal.CopyCustomerArray(x => myDal.CopyParcelArray().ToList().FindIndex(par => par.TargetID == x.Id && par.Delivered != null) == -1).ToList();
                     int num = rand.Next(0, CustomersWithDelieverdParcel.Count());

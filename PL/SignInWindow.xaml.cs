@@ -27,7 +27,18 @@ namespace PL
         private bool isCustomerChecked;
         public CustomersType CustomerType { get; set; }
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-        public int IdForSignIn { get; set; }
+        private int? idForSignIn;
+
+        public int? IdForSignIn
+        {
+            get { return idForSignIn; }
+            set
+            { 
+                idForSignIn = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("IdForSignIn"));
+            }
+        }
+
         public string Password { get; set; }
         public bool IsUserTypeChosen { get; set; }
 
@@ -87,10 +98,9 @@ namespace PL
 
         private void signIn_Click(object sender, RoutedEventArgs e)
         {
-            Password=password.Password;
             try
             {
-                var signedIn = myBl.GetCustomer(IdForSignIn);
+                var signedIn = myBl.GetCustomer((int)IdForSignIn);
                 if (CustomerType != signedIn.CustomerType)
                 {
                     MessageBox.Show("ERROR! USER TYPE IS NOT VALID");
@@ -130,6 +140,12 @@ namespace PL
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void password_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            Password = password.Password;
+            PropertyChanged(this,new PropertyChangedEventArgs("Password"));
         }
     }
 }
