@@ -115,4 +115,9 @@
     <StationID>2427</StationID>
     <SentToCharge>2022-01-09T22:50:08.9469257+02:00</SentToCharge>
   </DroneCharge>
+  <DroneCharge>
+    <DroneID>4091</DroneID>
+    <StationID>5607</StationID>
+    <SentToCharge>2022-01-10T00:53:41.6628285+02:00</SentToCharge>
+  </DroneCharge>
 </ArrayOfDroneCharge>

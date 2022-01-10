@@ -8,7 +8,6 @@ using BO;
 
 namespace BL
 {
-
     partial class BL
     {
         /// <summary>
