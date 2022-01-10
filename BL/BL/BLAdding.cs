@@ -115,9 +115,9 @@ namespace BL
                 throw new InvalidInputException($"phone number is not valid !!");
             if (customer.PhoneNumber.Length!=10)
                 throw new InvalidInputException($"phone number {customer.PhoneNumber} is not valid !!");
-            if (customer.Location.Longitude > 5000 || customer.Location.Longitude < -5000)
+            if (customer.Location.Longitude > 35.195 || customer.Location.Longitude < 35.2)
                 throw new InvalidInputException($"Longitude {customer.Location.Longitude} is not valid !!");
-            if (customer.Location.Latitude > 5000 || customer.Location.Latitude < -5000)
+            if (customer.Location.Latitude > 31.75 || customer.Location.Latitude < 31.9)
                 throw new InvalidInputException($"Lattitude {customer.Location.Latitude} is not valid !!");
             DO.Customer newCustomer = new();
             object obj = newCustomer;

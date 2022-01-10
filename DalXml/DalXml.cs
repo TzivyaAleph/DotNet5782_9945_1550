@@ -40,7 +40,7 @@ namespace Dal
         /// </summary>
         private DalXml()
         {       
-          // DataSource.Initialize();
+           DataSource.Initialize();
         }
 
         /// <summary>
