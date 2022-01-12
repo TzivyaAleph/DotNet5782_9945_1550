@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -13,6 +14,7 @@ namespace Dal
         /// add new drone and updates 
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(Drone d)
         {
             if (DataSource.Drones.Exists(drone => drone.Id == d.Id))
@@ -26,6 +28,7 @@ namespace Dal
         /// coppies the drone array
         /// </summary>
         /// <returns></returns the coppied array>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Drone> CopyDroneArray(Predicate<Drone> predicate = null)
         {
             List<Drone> newList = new List<Drone>(DataSource.Drones);
@@ -37,6 +40,7 @@ namespace Dal
         /// </summary>
         /// <param Name="droneID"></param>
         /// <returns></returnsthe drone were looking for>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int droneID)
         {
             if (!(DataSource.Drones.Exists(d => d.Id == droneID)))
@@ -51,6 +55,7 @@ namespace Dal
         /// creates a new array with the drone's electricity use  
         /// </summary>
         /// <returns>the new array</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double[] GetElectricityUse()
         {
             double[] electricityUse = new double[5];
@@ -66,6 +71,7 @@ namespace Dal
         /// updates the drone in the list
         /// </summary>
         /// <param name="drone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDrone(Drone drone)
         {
             if (!(DataSource.Drones.Exists(d => d.Id == drone.Id)))

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -13,6 +14,7 @@ namespace Dal
         /// gets a station and adds it to the array
         /// </summary>
         /// <param Name="s">Station to add</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(Station s)
         {
             if (DataSource.Stations.Exists(station => station.Id == s.Id))
@@ -26,6 +28,7 @@ namespace Dal
         /// coppies the station array
         /// </summary>
         /// <returns></returns the coppied array>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> CopyStationArray(Func<Station, bool> predicate = null)
         {
             List<Station> newList = new List<Station>(DataSource.Stations);
@@ -35,24 +38,10 @@ namespace Dal
         }
 
         /// <summary>
-        /// creates an array by searching for available charge slots in the station list.
-        /// </summary>
-        /// <returns></returns the new list>
-        //public IEnumerable<Station> FindAvailableStations()
-        //{
-        //    List<Station> availableStations = new List<Station>();//new list to hold Available Stations
-        //    for (int i = 0; i < DataSource.Stations.Count; i++)
-        //        if (DataSource.Stations[i].ChargeSlots > 0)
-        //        {
-        //            availableStations.Add(DataSource.Stations[i]);
-        //        }
-        //    return availableStations;
-        //}
-
-        /// <summary>
         /// puts a updated station in the stations list
         /// </summary>
         /// <param name="station">updated station to add</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStation(Station station)
         {
             if (!(DataSource.Stations.Exists(s => s.Id == station.Id)))
@@ -68,6 +57,7 @@ namespace Dal
         /// </summary>
         /// <param Name="stationID"></param>
         /// <returns></returs the station were looking for>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int stationID)
         {
             if (!(DataSource.Stations.Exists(s => s.Id == stationID)))
@@ -85,6 +75,7 @@ namespace Dal
         /// <param name="longtitude"></param>
         /// <param name="lattitude"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetClossestStation(double lattitude, double longtitude, List<Station> stations)
         {
             DO.Station minStation = new Station();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -14,6 +15,7 @@ namespace Dal
         /// </summary>
         /// <param Name="d"></param>
         /// <param Name="s"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SendDroneToChargeSlot(Drone d, Station s)
         {
             s.ChargeSlots--;
@@ -30,6 +32,7 @@ namespace Dal
         /// <param Name="d"></param>
         /// <param Name="s"></param>
         /// <param Name="dc"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void ReleaseDrone(Drone d, Station s)
         {
             s.ChargeSlots++;
@@ -51,6 +54,7 @@ namespace Dal
         /// </summary>
         /// <param Name="stationID"></param>
         /// <returns></returs the drone charge object were looking for>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DroneCharge GetDroneCharge(int stationID, int droneID)
         {
             DroneCharge droneChargeToReturn = new DroneCharge();
@@ -67,6 +71,7 @@ namespace Dal
         /// returns the list of drone charges
         /// </summary>
         /// <returns>list of drone charges</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneCharge> GetDroneChargeList()
         {
             List<DroneCharge> newList = new List<DroneCharge>(DataSource.DroneCharges);

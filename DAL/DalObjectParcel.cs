@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -13,6 +14,7 @@ namespace Dal
         /// coppies the parcel array
         /// </summary>
         /// <returns></returns the coppied array>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Parcel> CopyParcelArray(Func<Parcel, bool> predicate = null)
         {
             List<Parcel> newLIst = new List<Parcel>(DataSource.Parcels);
@@ -25,6 +27,7 @@ namespace Dal
         /// recieves a parcel and updates the parcels delivery time
         /// </summary>
         /// <param name="p"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Delivered(Parcel p)
         {
             p.Delivered = DateTime.Now;
@@ -37,6 +40,7 @@ namespace Dal
         /// </summary>
         /// <param Name="parcelID"></param>
         /// <returns></returns parcel were looking for>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Parcel GetParcel(int id)
         {
             Parcel parcelToReturn = default;
@@ -54,6 +58,7 @@ namespace Dal
         /// </summary>
         /// <param Name="p"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddParcel(Parcel p)
         {
             int id = ++DataSource.Config.RunningParcelID;
@@ -67,6 +72,7 @@ namespace Dal
         /// </summary>
         /// <param Name="p"></param>
         /// <param Name="d"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AttributingParcelToDrone(Parcel p, Drone d)//targil1
         {
             p.DroneID = d.Id;
@@ -79,6 +85,7 @@ namespace Dal
         /// recieves a parcel and updates the parcels picked up time
         /// </summary>
         /// <param Name="p"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void PickedUp(Parcel p, Drone d)
         {
             p.PickedUp = DateTime.Now;//updates the parcels pickedUp time
@@ -89,6 +96,7 @@ namespace Dal
         /// updates a parcel in the list
         /// </summary>
         /// <param name="parcel"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateParcel(Parcel parcel)
         {
             if (!(DataSource.Parcels.Exists(p => p.Id == parcel.Id)))

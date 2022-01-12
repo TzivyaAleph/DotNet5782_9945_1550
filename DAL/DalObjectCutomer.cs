@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -15,6 +16,7 @@ namespace Dal
         /// </summary>
         /// <param Name="customerID"></param>
         /// <returns></returnsthe customer were looking for>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int customerID)
         {
             Customer customerToReturn = default;
@@ -32,6 +34,7 @@ namespace Dal
         /// </summary>
         /// <param Name="c"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(Customer c)
         {
             if (DataSource.Customers.Exists(client => client.Id == c.Id))
@@ -45,6 +48,7 @@ namespace Dal
         /// coppies the customer array
         /// </summary>
         /// <returns></returns the coppied array>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Customer> CopyCustomerArray(Func<Customer, bool> predicate = null)
         {
             List<Customer> newList = new List<Customer>(DataSource.Customers);
@@ -53,6 +57,11 @@ namespace Dal
             return newList.Where(predicate);
         }
 
+        /// <summary>
+        /// updates the customer in the customers list
+        /// </summary>
+        /// <param name="customer"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomer(Customer customer)
         {
             if (!DataSource.Customers.Exists(c => c.Id == customer.Id))

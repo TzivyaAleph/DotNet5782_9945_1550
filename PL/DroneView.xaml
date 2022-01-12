@@ -115,7 +115,7 @@
                 <ListBox x:Name="parcelView" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" ItemsSource="{Binding ParcelsInDrone}" MouseDoubleClick="parcelView_MouseDoubleClick"></ListBox>
                 <!--<TextBox x:Name="parcelViewInTextBox" Text="{Binding SelectedDrone.ParcelInDelivery}" Width="230" Height="300" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" ></TextBox>-->
             </Grid>
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="8" Orientation="Horizontal" HorizontalAlignment="Left">
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Width="600">
                 <Button x:Name="updateModelBtn" Content="Update" Width="100" Click="UpdateModelBtn_Click" Visibility="{Binding SelectedDrone.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                 <Button x:Name="deleteDrone" Content="Delete Drone" Width="100" Click="deleteDrone_Click" Visibility="{Binding SelectedDrone.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                 <Button x:Name="closeWindowBtn" Content="Close" Width="100" Click="CloseWindowBtn_Click"/>
@@ -146,6 +146,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
+                <Button x:Name="automatic" Content="Automatic" Click="automatic_Click"/>
             </StackPanel>
         </Grid>
     </Grid>

@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -43,6 +44,7 @@ namespace Dal
         /// <param name="lat2"></param>
         /// <param name="lon2"></param>
         /// <returns>the distance</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2)
         {
             var R = 6371; // Radius of the earth in km
@@ -63,6 +65,7 @@ namespace Dal
         /// </summary>
         /// <param name="deg"></param>
         /// <returns>the radians</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double deg2rad(double deg)
         {
             return deg * (Math.PI / 180);

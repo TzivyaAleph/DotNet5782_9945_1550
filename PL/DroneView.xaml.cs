@@ -469,5 +469,10 @@ namespace PL
             ParcelView parcelWindow = new ParcelView(myBl, par);
             parcelWindow.Show();
         }
+
+        private void automatic_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
