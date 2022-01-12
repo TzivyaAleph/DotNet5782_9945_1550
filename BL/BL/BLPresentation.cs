@@ -300,28 +300,29 @@ namespace BL
         private List<DroneCharge> FindListOfDronesInStation(int stationId)
         {
             List<DroneCharge> droneChargesToReturn = new List<DroneCharge>();
+            foreach (var (droneCharge, droneToAdd) in
             //goes through the drone charges
-            foreach (var droneCharge in myDal.GetDroneChargeList())
+            from droneCharge in myDal.GetDroneChargeList()
+            let droneToAdd = new DroneCharge()//if the drone charge is in the station
+            where droneCharge.StationID == stationId
+            select (droneCharge, droneToAdd))
             {
-                DroneCharge droneToAdd = new DroneCharge();
-                //if the drone charge is in the station
-                if (droneCharge.StationID == stationId)
+                //updates his fields and add to returning list
+                droneToAdd.Id = droneCharge.DroneID;
+                DroneForList drone = new();
+                try
                 {
-                    //updates his fields and add to returning list
-                    droneToAdd.Id = droneCharge.DroneID;
-                    DroneForList drone = new();
-                    try
-                    {
-                        drone = drones.First(item => item.Id == droneCharge.DroneID);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        throw new InputDoesNotExist("the drone does not exist!!");
-                    }
-                    droneToAdd.Battery = drone.Battery;
-                    droneChargesToReturn.Add(droneToAdd);
+                    drone = drones.First(item => item.Id == droneCharge.DroneID);
                 }
+                catch (InvalidOperationException)
+                {
+                    throw new InputDoesNotExist("the drone does not exist!!");
+                }
+
+                droneToAdd.Battery = drone.Battery;
+                droneChargesToReturn.Add(droneToAdd);
             }
+
             return droneChargesToReturn;
         }
     }
