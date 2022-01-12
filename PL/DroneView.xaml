@@ -100,6 +100,7 @@
                 <Label Content="Lattitude:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
                 <TextBox Text="{Binding SelectedDrone.Id}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <TextBox Text="{Binding SelectedDrone.Battery}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
+                <ProgressBar Value="{Binding SelectedDrone.Battery}" Grid.Row="1" Grid.Column="2" Width="100" Height="18"/>
                 <ComboBox ItemsSource="{Binding WeightOptions}" SelectedItem="{Binding SelectedDrone.Weight}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"  IsEnabled="False"/>
                 <TextBox Text="{Binding SelectedDrone.Model}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="False"/>
                 <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedDrone.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" IsEnabled="False"/>

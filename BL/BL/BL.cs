@@ -37,6 +37,7 @@ namespace BL
         /// <summary>
         /// initializing list of drones.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public BL()
         {
 
