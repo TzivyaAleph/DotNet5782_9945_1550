@@ -202,7 +202,7 @@ namespace BL
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
             List<DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
-            List<DO.Parcel> parcels = myDal.CopyParcelArray(par => par.DroneID == 0).ToList();//gets the non attributed parcels list
+            List<DO.Parcel> parcels = myDal.CopyParcelArray(par =>par.IsDeleted==false&& par.DroneID == 0&& par.Delivered==null).ToList();//gets the non attributed parcels list that aren't deleted and weren't delivered yet
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = new();
             droneToAttribute = drones[index];
