@@ -55,6 +55,7 @@ namespace BL
         /// updates a stations name and number of available charging slots
         /// </summary>
         /// <param name="stationToUpdate">station with the values to update</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStation(int stationId, string stationName, int numOfChargingSlots)
         {
             if (stationId < 1000 || stationId > 10000)
@@ -106,6 +107,7 @@ namespace BL
         /// updates a customer's id, phone number and name
         /// </summary>
         /// <param name="customer">customer to update</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomer(int customerId, string customerName, string customerPhone)
         {
             if (customerId < 100000000 || customerId > 1000000000)
@@ -147,6 +149,7 @@ namespace BL
         /// send drone to chargh slots by updating fields.
         /// </summary>
         /// <param name="d"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SendDroneToChargeSlot(Drone d)
         {
             if (d.Id < 1000 || d.Id > 10000)
@@ -204,6 +207,7 @@ namespace BL
         /// recieves a drone ID and attributes a parcel to the drone
         /// </summary>
         /// <param name="droneId">id of the drone we are attributing to the parcel</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AttributingParcelToDrone(int droneId)
         {
             while (droneId < 1000 || droneId > 10000)
@@ -311,6 +315,7 @@ namespace BL
         /// finds the drone thats attributed to a parcel and updates him and the parcel to be picked up
         /// </summary>
         /// <param name="droneId">id of the pickup drone</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void pickedUp(int droneId)
         {
             if (droneId < 1000 || droneId > 10000)
@@ -379,6 +384,7 @@ namespace BL
         /// updates a parcel to be delivered and the drone that delivered the parcel to be available 
         /// </summary>
         /// <param name="droneId">id of the drone who picked up the parcel</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Delivered(int droneId)
         {
             if (droneId < 1000 || droneId > 10000)
@@ -489,6 +495,7 @@ namespace BL
         /// </summary>
         /// <param name="d">the dron to release</param>
         /// <param name="timeInCharge">for the hour its been charging</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void ReleasedroneFromeChargeSlot(Drone d)
         {
             if (d.Id < 1000 || d.Id > 10000)
@@ -545,6 +552,7 @@ namespace BL
         /// deletes parcel from list
         /// </summary>
         /// <param name="parcel"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteParcel(Parcel parcel)
         {
             DO.Parcel dalParcel = new DO.Parcel();
@@ -569,6 +577,7 @@ namespace BL
         /// deletes parcel from list
         /// </summary>
         /// <param name="parcel"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteCustomer(Customer customer)
         {
             DO.Customer dalCustomer = new DO.Customer();
@@ -592,6 +601,7 @@ namespace BL
         /// deletes drone from list
         /// </summary>
         /// <param name="drone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteDrone(Drone drone)
         {
             DO.Drone dalDrone = new DO.Drone();
@@ -615,6 +625,7 @@ namespace BL
         /// deletes station from list
         /// </summary>
         /// <param name="station"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteStation(Station station)
         {
             DO.Station dalStation = new DO.Station();

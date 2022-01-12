@@ -18,7 +18,7 @@ namespace BL
      partial class BL : IBL
     {
 
-        private static readonly IDal myDal = DalFactory.GetDal();
+        internal static readonly IDal myDal = DalFactory.GetDal();
         #region singleton
         //lazt<T> is doing a lazy initialzation and hi sdefualt is thread safe
         internal static readonly Lazy<BL> singleInstance=new Lazy<BL>(()=>new BL());
@@ -40,7 +40,6 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public BL()
         {
-
             drones = new List<DroneForList>();
             double[] electricityUse = myDal.GetElectricityUse();
             double availableElectricityUse = electricityUse[0];
