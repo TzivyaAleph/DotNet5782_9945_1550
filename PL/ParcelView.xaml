@@ -9,6 +9,7 @@
         Title="ParcelView" Height="450" Width="800">
     <Window.Resources>
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <Converters:StringNotEmptyToBoolConverter x:Key="StringNotEmptyToBoolConverter"/>
     </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="Images/droneBackground.jpg"></ImageBrush>
@@ -86,19 +87,19 @@
                 <Label Content="Scheduled:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
                 <Label Content="Picked Up:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9" />
                 <Label Content="Delivered:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10" />
-                <TextBox Text="{Binding ParcelToDelete.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox Text="{Binding ParcelToDelete.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <TextBox x:Name="TXBReciever" Text="{Binding ParcelToDelete.Recipient.Id}" Grid.Row="2" IsReadOnly="True" Grid.Column="1" MouseDoubleClick="TextBox_MouseDoubleClick"   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <TextBox x:Name="TXBSender" Text="{Binding ParcelToDelete.Sender.Id}" Grid.Row="3" IsReadOnly="True" Grid.Column="1" MouseDoubleClick="TextBox_MouseDoubleClick_1"  HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding ParcelToDelete.Weight}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Text="{Binding ParcelToDelete.Priority}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox Text="{Binding ParcelToDelete.Weight}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox Text="{Binding ParcelToDelete.Priority}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True"/>
                 <TextBox Text="{Binding ParcelToDelete.DroneInParcel.Id}" Grid.Row="6"  IsReadOnly="True" Grid.Column="1" MouseDoubleClick="TextBox_MouseDoubleClick_2"   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.Requested}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
                 <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.Scheduled}" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
                 <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.PickedUp}" Grid.Row="9" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
                 <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.Delivered}" Grid.Row="10" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
                 <StackPanel Grid.Row="11" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Delete" Width="150" Click="Button_Click" />
-                    <Button Content="cancel"  Width="150" Click="Button_Click_1" />
+                    <Button Content="Delete" Width="150" Click="Button_Click" IsEnabled="{Binding ParcelToDelete.DroneInParcel.Id, Converter={StaticResource StringNotEmptyToBoolConverter}, ConverterParameter=delete}" />
+                    <Button Content="Cancel"  Width="150" Click="Button_Click_1" />
                 </StackPanel>
             </Grid>
         </Grid>
