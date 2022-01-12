@@ -5,15 +5,20 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
+using System.Runtime.CompilerServices;
 
 namespace BL
 {
+    /// <summary>
+    /// bl operation
+    /// </summary>
     partial class BL
     {
         /// <summary>
         /// updates a drones name
         /// </summary>
         /// <param name="drone">the drone to update</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDrone(int droneId, string newModel)
         {
             if (droneId < 1000 || droneId > 10000)
