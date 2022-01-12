@@ -39,8 +39,8 @@ namespace Dal
         /// private constructor
         /// </summary>
         private DalXml()
-        {       
-           DataSource.Initialize();
+        {
+            //DataSource.Initialize();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Dal
         /// <param name="c"></param>
         public void AddCustomer(Customer c)
         {
-            XElement customerXml = XmlHelper.LoadListFromXMLElement(DataDirectory+CustomerXml);
+            XElement customerXml = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
 
             XElement customer = (from cus in customerXml.Elements()
                                  where cus.Element("Id").Value == c.Id.ToString()
@@ -107,7 +107,7 @@ namespace Dal
                 throw new ExistingObjectException($"drone {d.Id} allready exists !!");
             }
             drones.Add(d);
-            XmlHelper.SerializeData(drones, DataDirectory+ DroneXml);
+            XmlHelper.SerializeData(drones, DataDirectory + DroneXml);
         }
 
         /// <summary>
@@ -161,23 +161,23 @@ namespace Dal
             XElement customerXml = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
 
             IEnumerable<Customer> customers = from cus in customerXml.Elements()
-                                             select new Customer()
-                                             {
-                                                 Id = int.Parse(cus.Element("Id").Value),
-                                                 Name = cus.Element("Name").Value,
-                                                 PhoneNumber = cus.Element("PhoneNumber").Value,
-                                                 Longtitude = double.Parse(cus.Element("Longtitude").Value),
-                                                 Lattitude = double.Parse(cus.Element("Lattitude").Value),
-                                                 IsDeleted=false,
-                                                 Password=cus.Element("Password").Value,
-                                                 CustomerType=(CustomersType) Enum.Parse(typeof(CustomersType), cus.Element("CustomerType").Value)
-                                             };
+                                              select new Customer()
+                                              {
+                                                  Id = int.Parse(cus.Element("Id").Value),
+                                                  Name = cus.Element("Name").Value,
+                                                  PhoneNumber = cus.Element("PhoneNumber").Value,
+                                                  Longtitude = double.Parse(cus.Element("Longtitude").Value),
+                                                  Lattitude = double.Parse(cus.Element("Lattitude").Value),
+                                                  IsDeleted = false,
+                                                  Password = cus.Element("Password").Value,
+                                                  CustomerType = (CustomersType)Enum.Parse(typeof(CustomersType), cus.Element("CustomerType").Value)
+                                              };
 
             if (predicate == null)
                 return customers;//customers.Select(item => item);
 
             return customers.Where(predicate);
-            
+
         }
 
         /// <summary>
@@ -241,17 +241,17 @@ namespace Dal
             XElement customersRootElem = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
 
             Customer c = (from per in customersRootElem.Elements()
-                        where int.Parse(per.Element("Id").Value) == customerID
+                          where int.Parse(per.Element("Id").Value) == customerID
                           select new Customer()
-                        {
-                            Id = int.Parse(per.Element("Id").Value),
-                            Name = per.Element("Name").Value,
-                            PhoneNumber = per.Element("PhoneNumber").Value,
-                            Longtitude= int.Parse(per.Element("Longtitude").Value),
-                            Lattitude= int.Parse(per.Element("Lattitude").Value),
-                            IsDeleted=false,
-                            Password=per.Element("Password").Value,
-                            CustomerType= (CustomersType)Enum.Parse(typeof(CustomersType), per.Element("CustomerType").Value)
+                          {
+                              Id = int.Parse(per.Element("Id").Value),
+                              Name = per.Element("Name").Value,
+                              PhoneNumber = per.Element("PhoneNumber").Value,
+                              Longtitude = int.Parse(per.Element("Longtitude").Value),
+                              Lattitude = int.Parse(per.Element("Lattitude").Value),
+                              IsDeleted = false,
+                              Password = per.Element("Password").Value,
+                              CustomerType = (CustomersType)Enum.Parse(typeof(CustomersType), per.Element("CustomerType").Value)
                           }
                         ).FirstOrDefault();
             if (c.Id != 0)
@@ -381,7 +381,7 @@ namespace Dal
             }
             int index = stations.FindIndex(item => item.Id == station.Id);
             stations[index] = station;
-            XmlHelper.SerializeData<Station>(stations,DataDirectory + StationXml);
+            XmlHelper.SerializeData<Station>(stations, DataDirectory + StationXml);
         }
 
         /// <summary>
@@ -392,18 +392,18 @@ namespace Dal
         {
             XElement customerXml = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
 
-            bool custFound=false;
-            foreach(var cust in  customerXml.Elements())
+            bool custFound = false;
+            foreach (var cust in customerXml.Elements())
             {
-                int id  = int.Parse(cust.Element("Id").Value);
-                if(id==customer.Id)
+                int id = int.Parse(cust.Element("Id").Value);
+                if (id == customer.Id)
                 {
                     custFound = true;
                     cust.Element("Name").Value = customer.Name;
                     cust.Element("PhoneNumber").Value = customer.PhoneNumber;
                 }
             }
-            if (custFound==false)
+            if (custFound == false)
                 throw new UnvalidIDException($"id {customer.Id}  is not valid !!");
 
             XmlHelper.SaveListToXMLElement(customerXml, DataDirectory + CustomerXml);
@@ -480,7 +480,7 @@ namespace Dal
             dc.DroneID = d.Id;
             dc.StationID = s.Id;
             dc.SentToCharge = DateTime.Now;
-            List < DroneCharge > droneCharges= XmlHelper.DeserializeData<DroneCharge>(DataDirectory + DroneChargeXml);
+            List<DroneCharge> droneCharges = XmlHelper.DeserializeData<DroneCharge>(DataDirectory + DroneChargeXml);
             droneCharges.Add(dc);
             XmlHelper.SerializeData<DroneCharge>(droneCharges, DataDirectory + DroneChargeXml);
         }
