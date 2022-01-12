@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using DO;
+using System.Runtime.CompilerServices;
+
 
 namespace DalApi
 {

@@ -22,7 +22,7 @@ namespace BO
             result += $"sender is: {Sender}\n";
             result += $"weight is: {Weight}\n";
             result += $"priority is: {Priority}\n";
-            result += $"the drone is: {Status}\n";
+            result += $"the parcel is: {Status}\n";
             return result;
         }
     }

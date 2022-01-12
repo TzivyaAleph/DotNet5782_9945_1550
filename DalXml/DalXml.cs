@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using DalApi;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -40,7 +41,7 @@ namespace Dal
         /// </summary>
         private DalXml()
         {       
-          DataSource.Initialize();
+          //DataSource.Initialize();
         }
 
         /// <summary>
@@ -51,6 +52,7 @@ namespace Dal
         #endregion singleton
 
         #region AskForBattery
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double[] GetElectricityUse()
         {
             XElement configXml = XmlHelper.LoadListFromXMLElement(DataDirectory + ConfigXml);
@@ -69,6 +71,7 @@ namespace Dal
         /// gets a customer and adds it to the list.
         /// </summary>
         /// <param name="c"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(Customer c)
         {
             XElement customerXml = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
@@ -99,6 +102,7 @@ namespace Dal
         /// add new drone and updates 
         /// </summary>
         /// <param name="d"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(DO.Drone d)
         {
             List<Drone> drones = XmlHelper.DeserializeData<Drone>(DataDirectory + DroneXml);
@@ -110,11 +114,13 @@ namespace Dal
             XmlHelper.SerializeData(drones, DataDirectory + DroneXml);
         }
 
+
         /// <summary>
         /// gets a parcel and adds it to the list
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddParcel(Parcel p)
         {
             List<Parcel> parcels = XmlHelper.DeserializeData<Parcel>(DataDirectory + ParcelXml);
@@ -138,6 +144,7 @@ namespace Dal
         ///  adds a station and adds it to the array
         /// </summary>
         /// <param name="s"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(Station s)
         {
             List<Station> stations = XmlHelper.DeserializeData<Station>(DataDirectory + StationXml);
@@ -156,6 +163,7 @@ namespace Dal
         /// coppies the customer list
         /// </summary>
         /// <returns></returns the coppied list>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Customer> CopyCustomerArray(Func<Customer, bool> predicate = null)
         {
             XElement customerXml = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
@@ -184,6 +192,7 @@ namespace Dal
         /// coppies the drone list
         /// </summary>
         /// <returns></returns the coppied list>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DO.Drone> CopyDroneArray(Predicate<Drone> predicate = null)
         {
             List<Drone> drones = XmlHelper.DeserializeData<Drone>(DataDirectory + DroneXml);
@@ -197,6 +206,7 @@ namespace Dal
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Parcel> CopyParcelArray(Func<Parcel, bool> predicate = null)
         {
             List<Parcel> parcels = XmlHelper.DeserializeData<Parcel>(DataDirectory + ParcelXml);
@@ -210,6 +220,7 @@ namespace Dal
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> CopyStationArray(Func<Station, bool> predicate = null)
         {
             List<Station> stations = XmlHelper.DeserializeData<Station>(DataDirectory + StationXml);
@@ -222,6 +233,7 @@ namespace Dal
         /// returns the list of drone charges
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneCharge> GetDroneChargeList()
         {
             List<DroneCharge> newList = XmlHelper.DeserializeData<DroneCharge>(DataDirectory + DroneChargeXml);
@@ -236,6 +248,7 @@ namespace Dal
         /// </summary>
         /// <param name="customerID"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int customerID)
         {
             XElement customersRootElem = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
@@ -269,6 +282,7 @@ namespace Dal
         /// </summary>
         /// <param name="droneID"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DO.Drone GetDrone(int droneID)
         {
             List<Drone> drones = XmlHelper.DeserializeData<Drone>(DataDirectory + DroneXml);
@@ -286,6 +300,7 @@ namespace Dal
         /// <param name="stationID"></param>
         /// <param name="droneID"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DroneCharge GetDroneCharge(int stationID, int droneID)
         {
             List<DroneCharge> droneCharges = XmlHelper.DeserializeData<DroneCharge>(DataDirectory + DroneChargeXml);
@@ -307,6 +322,7 @@ namespace Dal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Parcel GetParcel(int id)
         {
             Parcel parcelToReturn = default;
@@ -325,6 +341,7 @@ namespace Dal
         /// </summary>
         /// <param name="stationID"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int stationID)
         {
             List<Station> stations = XmlHelper.DeserializeData<Station>(DataDirectory + StationXml);
@@ -343,6 +360,7 @@ namespace Dal
         /// updates a parcel in the list
         /// </summary>
         /// <param name="parcel"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateParcel(Parcel parcel)
         {
             List<Parcel> parcels = XmlHelper.DeserializeData<Parcel>(DataDirectory + ParcelXml);
@@ -359,6 +377,7 @@ namespace Dal
         /// updates the drone in the list
         /// </summary>
         /// <param name="drone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDrone(DO.Drone drone)
         {
             List<Drone> drones = XmlHelper.DeserializeData<Drone>(DataDirectory + DroneXml);
@@ -375,6 +394,7 @@ namespace Dal
         /// puts a updated station in the stations list
         /// </summary>
         /// <param name="station"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStation(Station station)
         {
             List<Station> stations = XmlHelper.DeserializeData<Station>(DataDirectory + StationXml);
@@ -391,6 +411,7 @@ namespace Dal
         /// updates a customer in the list
         /// </summary>
         /// <param name="customer"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomer(Customer customer)
         {
             XElement customerXml = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
@@ -418,6 +439,7 @@ namespace Dal
         /// </summary>
         /// <param Name="p"></param>
         /// <param Name="d"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AttributingParcelToDrone(Parcel p, DO.Drone d)
         {
             p.DroneID = d.Id;
@@ -429,6 +451,7 @@ namespace Dal
         /// recieves a parcel and updates the parcels picked up time
         /// </summary>
         /// <param Name="p"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void PickedUp(Parcel p, DO.Drone d)
         {
             p.PickedUp = DateTime.Now;//updates the parcels pickedUp time
@@ -439,6 +462,7 @@ namespace Dal
         /// recieves a parcel and updates the parcels delivery time
         /// </summary>
         /// <param name="p"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Delivered(Parcel p)
         {
             p.Delivered = DateTime.Now;
@@ -452,6 +476,7 @@ namespace Dal
         /// <param Name="d"></param>
         /// <param Name="s"></param>
         /// <param Name="dc"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void ReleaseDrone(DO.Drone d, Station s)
         {
             s.ChargeSlots++;
@@ -475,6 +500,7 @@ namespace Dal
         /// </summary>
         /// <param Name="d"></param>
         /// <param Name="s"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SendDroneToChargeSlot(DO.Drone d, Station s)
         {
             s.ChargeSlots--;
@@ -495,6 +521,7 @@ namespace Dal
         /// <param name="longtitude"></param>
         /// <param name="lattitude"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetClossestStation(double lattitude, double longtitude, List<Station> stations)
         {
             DO.Station minStation = new Station();
@@ -522,6 +549,7 @@ namespace Dal
         /// <param name="lat2"></param>
         /// <param name="lon2"></param>
         /// <returns>the distance</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2)
         {
             var R = 6371; // Radius of the earth in km
@@ -543,6 +571,7 @@ namespace Dal
         /// </summary>
         /// <param name="deg"></param>
         /// <returns>the radians</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double deg2rad(double deg)
         {
             return deg * (Math.PI / 180);
