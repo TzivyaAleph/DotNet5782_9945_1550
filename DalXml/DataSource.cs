@@ -116,8 +116,8 @@ namespace Dal
                 Id = rand.Next(1000, 5000),
                 Name = "Ramot",
                 ChargeSlots = rand.Next(0, 51),
-                Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
-                Longitude = (long)getRandomDoubleNumber(35.195, 35.2),
+                Lattitude = (double)getRandomDoubleNumber(31.75, 31.9),
+                Longitude = (double)getRandomDoubleNumber(35.195, 35.2),
                 IsDeleted = false
             });
             Stations.Add(new Station
@@ -125,8 +125,8 @@ namespace Dal
                 Id = rand.Next(5001, 10000),
                 Name = "Bait Vagan",
                 ChargeSlots = rand.Next(0, 50),
-                Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
-                Longitude = (long)getRandomDoubleNumber(35.195, 35.2),
+                Lattitude = (double)getRandomDoubleNumber(31.75, 31.9),
+                Longitude = (double)getRandomDoubleNumber(35.195, 35.2),
                 IsDeleted = false
             });
 
@@ -146,8 +146,8 @@ namespace Dal
                     Id = rand.Next(100000000, 1000000000),
                     Name = $"{(CustomersName)rand.Next(10)}",
                     PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
-                    Lattitude = (long)getRandomDoubleNumber(31.75, 31.9),
-                    Longtitude = (long)getRandomDoubleNumber(35.195, 35.2),
+                    Lattitude = (double)getRandomDoubleNumber(31.75, 31.9),
+                    Longtitude = (double)getRandomDoubleNumber(35.195, 35.2),
                     IsDeleted = false
                 };
                 if (i % 2 == 0)

@@ -8,8 +8,8 @@ namespace DO
         public int Id { set; get; }
         public string Name { set; get; }
         public int ChargeSlots { set; get; }//the amout of slots that available
-        public long Longitude { set; get; }
-        public long Lattitude { set; get; }
+        public double Longitude { set; get; }
+        public double Lattitude { set; get; }
         public bool IsDeleted { get; set; }
 
         public override string ToString()
