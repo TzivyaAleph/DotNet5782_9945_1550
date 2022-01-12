@@ -40,7 +40,7 @@ namespace Dal
         /// </summary>
         private DalXml()
         {       
-           DataSource.Initialize();
+          DataSource.Initialize();
         }
 
         /// <summary>
@@ -247,8 +247,8 @@ namespace Dal
                             Id = int.Parse(per.Element("Id").Value),
                             Name = per.Element("Name").Value,
                             PhoneNumber = per.Element("PhoneNumber").Value,
-                            Longtitude= int.Parse(per.Element("Longtitude").Value),
-                            Lattitude= int.Parse(per.Element("Lattitude").Value),
+                            Longtitude= double.Parse(per.Element("Longtitude").Value),
+                            Lattitude= double.Parse(per.Element("Lattitude").Value),
                             IsDeleted=false,
                             Password=per.Element("Password").Value,
                             CustomerType= (CustomersType)Enum.Parse(typeof(CustomersType), per.Element("CustomerType").Value)
@@ -290,12 +290,15 @@ namespace Dal
         {
             List<DroneCharge> droneCharges = XmlHelper.DeserializeData<DroneCharge>(DataDirectory + DroneChargeXml);
             DroneCharge droneChargeToReturn = new DroneCharge();
+            foreach (var dc in
             //searches the station with the recieved id.
-            foreach (DroneCharge dc in droneCharges)
-                if (dc.StationID == stationID && dc.DroneID == droneID)
-                {
-                    droneChargeToReturn = dc;
-                }
+            from DroneCharge dc in droneCharges
+            where dc.StationID == stationID && dc.DroneID == droneID
+            select dc)
+            {
+                droneChargeToReturn = dc;
+            }
+
             return droneChargeToReturn;
         }
 
@@ -393,16 +396,16 @@ namespace Dal
             XElement customerXml = XmlHelper.LoadListFromXMLElement(DataDirectory + CustomerXml);
 
             bool custFound=false;
-            foreach(var cust in  customerXml.Elements())
+            foreach (var cust in from cust in customerXml.Elements()
+                                 let id = int.Parse(cust.Element("Id").Value)
+                                 where id == customer.Id
+                                 select cust)
             {
-                int id  = int.Parse(cust.Element("Id").Value);
-                if(id==customer.Id)
-                {
-                    custFound = true;
-                    cust.Element("Name").Value = customer.Name;
-                    cust.Element("PhoneNumber").Value = customer.PhoneNumber;
-                }
+                custFound = true;
+                cust.Element("Name").Value = customer.Name;
+                cust.Element("PhoneNumber").Value = customer.PhoneNumber;
             }
+
             if (custFound==false)
                 throw new UnvalidIDException($"id {customer.Id}  is not valid !!");
 
@@ -498,15 +501,15 @@ namespace Dal
             double minDistance = Math.Sqrt(Math.Pow(lattitude - stations.First().Lattitude, 2) + Math.Pow(longtitude - stations.First().Longitude, 2));
             minStation = stations.First();
             List<Station> stations1 = XmlHelper.DeserializeData<Station>(DataDirectory + StationXml);
-            foreach (var st in stations1)
+            foreach (var (st, distance) in from st in stations1
+                                           let distance = Math.Sqrt(Math.Pow(lattitude - st.Lattitude, 2) + Math.Pow(longtitude - st.Longitude, 2))
+                                           where minDistance > distance
+                                           select (st, distance))
             {
-                double distance = Math.Sqrt(Math.Pow(lattitude - st.Lattitude, 2) + Math.Pow(longtitude - st.Longitude, 2));
-                if (minDistance > distance)
-                {
-                    minDistance = distance;
-                    minStation = st;
-                }
+                minDistance = distance;
+                minStation = st;
             }
+
             return minStation;
         }
 

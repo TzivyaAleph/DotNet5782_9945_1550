@@ -148,7 +148,8 @@ namespace Dal
                     PhoneNumber = $"0{rand.Next(50, 60)}-{rand.Next(1000000, 10000000)}",//random numbers according to the israeli number
                     Lattitude = (double)getRandomDoubleNumber(31.75, 31.9),
                     Longtitude = (double)getRandomDoubleNumber(35.195, 35.2),
-                    IsDeleted = false
+                    IsDeleted = false,
+                    CustomerType=(CustomersType) rand.Next(1,2)
                 };
                 if (i % 2 == 0)
                     toAdd.CustomerType = CustomersType.Customer;
