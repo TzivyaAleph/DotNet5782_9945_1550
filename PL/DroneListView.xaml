@@ -50,6 +50,73 @@
                 </GroupStyle>
             </ListView.GroupStyle>
         </ListView>
+
+
+
+
+        <!--<ListView ItemsSource="{Binding Drones, Mode=OneWay}" Margin="5" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="Auto" Header="Id">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding Id}" TextAlignment="Right" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="Model">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding Model}" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="MaxWeight">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding Weight}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="Status">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Margin="-5,-1" Text="{Binding DroneStatuses}" HorizontalContentAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100" Header="Battery">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <ProgressBar Name="BatteryProgressBar"  Margin="-5,-1"  Value="{Binding Battery}" Width="Auto"/>
+                                    <TextBlock Text="{Binding Value, ElementName=BatteryProgressBar, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="Location">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding CurrentLocation}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" Header="Parcel">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding ParcelId}" TextAlignment="Right" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+        
+        
+        
+        
         <StackPanel x:Name="buttons" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Width="250" >
             <Button x:Name="undoFilter"  FontWeight="Bold" Height="40" Content="undo filter" Click="undoFilter_Click" />
             <Button x:Name="droneAdd"  FontWeight="Bold" Height="40" Content="add drone" Click="droneAdd_Click" />
