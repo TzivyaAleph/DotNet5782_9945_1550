@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <ArrayOfStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Station>
-    <Id>2063</Id>
+    <Id>3398</Id>
     <Name>Ramot</Name>
-    <ChargeSlots>34</ChargeSlots>
-    <Longitude>35.19953384721397</Longitude>
-    <Lattitude>31.85630603512111</Lattitude>
+    <ChargeSlots>36</ChargeSlots>
+    <Longitude>35.196520961554036</Longitude>
+    <Lattitude>31.832275409219914</Lattitude>
     <IsDeleted>false</IsDeleted>
   </Station>
   <Station>
-    <Id>5818</Id>
+    <Id>5820</Id>
     <Name>Bait Vagan</Name>
-    <ChargeSlots>34</ChargeSlots>
-    <Longitude>35.19988309691422</Longitude>
-    <Lattitude>31.781291095531216</Lattitude>
+    <ChargeSlots>16</ChargeSlots>
+    <Longitude>35.19967073167194</Longitude>
+    <Lattitude>31.83651821789635</Lattitude>
     <IsDeleted>false</IsDeleted>
   </Station>
 </ArrayOfStation>

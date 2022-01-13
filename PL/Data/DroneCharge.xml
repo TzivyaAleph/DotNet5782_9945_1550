@@ -1,28 +1,78 @@
 <?xml version="1.0"?>
 <ArrayOfDroneCharge xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <DroneCharge>
-    <DroneID>4082</DroneID>
-    <StationID>2063</StationID>
-    <SentToCharge>2022-01-12T18:44:47.6039347+02:00</SentToCharge>
+    <DroneID>3757</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:23:37.1892311+02:00</SentToCharge>
   </DroneCharge>
   <DroneCharge>
-    <DroneID>0</DroneID>
-    <StationID>0</StationID>
-    <SentToCharge xsi:nil="true" />
+    <DroneID>4800</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:23:37.2101416+02:00</SentToCharge>
   </DroneCharge>
   <DroneCharge>
-    <DroneID>4082</DroneID>
-    <StationID>5818</StationID>
-    <SentToCharge>2022-01-13T09:01:31.0076089+02:00</SentToCharge>
+    <DroneID>4800</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:31:03.3914826+02:00</SentToCharge>
   </DroneCharge>
   <DroneCharge>
-    <DroneID>1215</DroneID>
-    <StationID>5818</StationID>
-    <SentToCharge>2022-01-13T09:06:01.1849916+02:00</SentToCharge>
+    <DroneID>7872</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:31:03.4757497+02:00</SentToCharge>
   </DroneCharge>
   <DroneCharge>
-    <DroneID>4082</DroneID>
-    <StationID>5818</StationID>
-    <SentToCharge>2022-01-13T09:06:01.3050315+02:00</SentToCharge>
+    <DroneID>3757</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:35:49.5642195+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>4800</DroneID>
+    <StationID>5820</StationID>
+    <SentToCharge>2022-01-12T23:35:49.6311658+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>3757</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:37:27.5537435+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>4800</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:47:25.9098967+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>4800</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:49:07.8149697+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>7872</DroneID>
+    <StationID>5820</StationID>
+    <SentToCharge>2022-01-12T23:49:07.9309016+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>4800</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:53:14.1036865+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>7872</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:53:14.2043132+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>4800</DroneID>
+    <StationID>5820</StationID>
+    <SentToCharge>2022-01-12T23:54:21.023253+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>7872</DroneID>
+    <StationID>3398</StationID>
+    <SentToCharge>2022-01-12T23:54:21.1131672+02:00</SentToCharge>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneID>4800</DroneID>
+    <StationID>5820</StationID>
+    <SentToCharge>2022-01-12T23:59:51.5520322+02:00</SentToCharge>
   </DroneCharge>
 </ArrayOfDroneCharge>
