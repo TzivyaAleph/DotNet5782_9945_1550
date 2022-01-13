@@ -18,6 +18,7 @@ namespace BL
         /// </summary>
         /// <param name="parcelId">for finding the parcel</param>
         /// <returns>the parcel from the list</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Parcel GetParcel(int parcelId)
         {
             if (parcelId < 200)
@@ -85,6 +86,7 @@ namespace BL
         /// </summary>
         /// <param name="droneID">for finding the drone</param>
         /// <returns>the drone from the list</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int droneID)
         {
             if (droneID < 1000 || droneID > 10000)
@@ -148,6 +150,7 @@ namespace BL
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns>the customer</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int customerId)
         {
             if (customerId < 100000000 || customerId > 999999999)
@@ -270,6 +273,7 @@ namespace BL
         /// </summary>
         /// <param name="stationId">for getting the object</param>
         /// <returns>the object</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int stationId)
         {
             if (stationId < 1000 || stationId > 10000)

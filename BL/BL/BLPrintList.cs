@@ -16,6 +16,7 @@ namespace BL
         /// createse list of stations and update each fields by dal data.
         /// </summary>
         /// <returns>the creates list</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationForList> GetStationList()
         {
             List<StationForList> stationsToReturn = new List<StationForList>();
@@ -43,6 +44,7 @@ namespace BL
         /// creates new list and copies all the fields from the drone list in bl
         /// </summary>
         /// <returns>the created list</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneForList> GetDroneList(Func<DroneForList, bool> predicate = null)
         {
             List<DroneForList> dronesForList = new List<DroneForList>(drones);
@@ -57,6 +59,7 @@ namespace BL
         /// creates new list with data frome the customer list and parcels from dal
         /// </summary>
         /// <returns>the created list</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerForList> GetCustomerList()
         {
             List<CustomerForList> customersForList = new List<CustomerForList>();
@@ -90,6 +93,7 @@ namespace BL
         /// creates new list of parcels with data in fields.
         /// </summary>
         /// <returns>the created parcel</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelForList> GetParcelList()
         {
 
@@ -134,6 +138,7 @@ namespace BL
         /// creates list of parcels who  does not attribute to drone
         /// </summary>
         /// <returns>the created list</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelForList> GetUnAtributtedParcels()
         {
             List<ParcelForList> parcelsForList = new List<ParcelForList>();
@@ -162,6 +167,7 @@ namespace BL
         /// creates list with all the station that has available charging slots.
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationForList> GetAvailableChargingSlotsStations()
         {
             List<StationForList> stationsToReturn = new List<StationForList>();

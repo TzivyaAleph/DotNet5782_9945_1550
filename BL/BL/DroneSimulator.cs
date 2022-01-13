@@ -155,8 +155,8 @@ namespace BL
             double droneLatitude = drone.CurrentLocation.Latitude;
             double droneLongitude = drone.CurrentLocation.Longitude;
 
-            double targetLocationLatitude = targetLocation.Latitude;
-            double targetLocationLongitude = targetLocation.Longitude;
+        //    double targetLocationLatitude = targetLocation.Latitude;
+        //    double targetLocationLongitude = targetLocation.Longitude;
 
             double transportDistance = drone.ParcelInDelivery.Transportation;
             if (droneLatitude < targetLocationLatitude)

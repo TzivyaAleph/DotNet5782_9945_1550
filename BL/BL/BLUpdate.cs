@@ -21,6 +21,10 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDrone(int droneId, string newModel)
         {
+            lock (myDal)
+            {
+
+            }
             if (droneId < 1000 || droneId > 10000)
             {
                 throw new InvalidInputException($"id {droneId} is not valid !!");

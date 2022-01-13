@@ -23,6 +23,8 @@ namespace PL
     {
 
         private BlApi.IBL myBl;
+        private bool _close { get; set; }
+        BackgroundWorker worker;
         private string originalDroneModel; //temp drone to hold the drone from the drone list view window (this drone will not be used for items source)
         private Drone selectedDrone;
         private DroneForList droneToAdd;
@@ -33,7 +35,24 @@ namespace PL
         public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
         public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
         private List <ParcelInDelivery> parcelsInDrone;
+        private bool isAutomaticMode;
 
+        /// <summary>
+        /// prop for a bool parameter that checks if the simulator is running
+        /// </summary>
+        public bool IsAutomaticMode
+        {
+            get { return isAutomaticMode; }
+            set 
+            {
+                isAutomaticMode = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("IsAutomaticMode"));
+            }
+        }
+
+        /// <summary>
+        /// a list to put the parcels that the drone is holding
+        /// </summary>
         public List <ParcelInDelivery> ParcelsInDrone
         {
             get { return parcelsInDrone; }
@@ -422,6 +441,7 @@ namespace PL
             PropertyChanged(this, new PropertyChangedEventArgs("IsPickUpEnabled"));
             PropertyChanged(this, new PropertyChangedEventArgs("IsDeliverParcelEnabled"));
             PropertyChanged(this, new PropertyChangedEventArgs("IsReleaseDroneEnabled"));
+            PropertyChanged(this, new PropertyChangedEventArgs("SelectedDrone"));
         }
 
         /// <summary>
@@ -470,9 +490,39 @@ namespace PL
             parcelWindow.Show();
         }
 
+        /// <summary>
+        /// updates the drones window doring and according the simulator's work
+        /// </summary>
+        private void UpdateDroneWindow()
+        {
+            SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+            DataContext = this;
+            RefreshProperties();
+        }
+
+        /// <summary>
+        /// button to start the simulator
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void automatic_Click(object sender, RoutedEventArgs e)
         {
+            IsAutomaticMode = true;
+            worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
+            worker.DoWork += (sender, args) => myBl.StartSimulatur((int)args.Argument, () => worker.ReportProgress(0), () => worker.CancellationPending);
+            worker.ProgressChanged += (sender, args) => UpdateDroneWindow();
+            worker.RunWorkerAsync(SelectedDrone.Id);
+        }
 
+        /// <summary>
+        /// button to stop the simulator
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void stopAutomatic_Click(object sender, RoutedEventArgs e)
+        {
+            IsAutomaticMode = false;
+            worker.CancelAsync();
         }
     }
 }

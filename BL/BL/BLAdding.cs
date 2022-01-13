@@ -21,6 +21,7 @@ namespace BL
         /// <param name="name">station name</param>
         /// <param name="numOfSlots">number of available charge slots in station</param>
         /// <param name="location">station's location</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(Station s)
         {
             if (s.Id < 1000 || s.Id > 10000)
@@ -57,6 +58,7 @@ namespace BL
         /// </summary>
         /// <param name="d">drone to add</param>
         /// <param name="stationId">station number to put the drone in</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(DroneForList d, int stationId)
         {
             if(d.Id < 1000 ||d.Id > 10000)
@@ -107,6 +109,7 @@ namespace BL
         /// adds customer to customers list
         /// </summary>
         /// <param name="customer"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(Customer customer)
         {
             if (customer.Id < 100000000 || customer.Id > 1000000000)
@@ -147,6 +150,7 @@ namespace BL
         /// adds parcel to parcel list
         /// </summary>
         /// <param name="parcel"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddParcel(Parcel parcel)
         {
             if (parcel.Sender.Id < 100000000 || parcel.Sender.Id > 1000000000)
