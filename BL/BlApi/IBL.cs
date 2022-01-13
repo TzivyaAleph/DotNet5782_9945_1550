@@ -147,5 +147,12 @@ namespace BlApi
         /// </summary>
         /// <param name="station"></param>
         public void DeleteStation(Station station);
+        /// <summary>
+        /// func that starts the simulator 
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="action"></param>
+        /// <param name="stop"></param>
+        public void StartSimulatur(int droneId, Action action, Func<bool> stop);
     }
 }

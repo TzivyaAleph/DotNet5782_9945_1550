@@ -15,17 +15,18 @@ using System.Runtime.CompilerServices;
 
 namespace BL
 {
-     partial class BL : IBL
+    partial class BL : IBL
     {
 
         internal static readonly IDal myDal = DalFactory.GetDal();
         #region singleton
         //lazt<T> is doing a lazy initialzation and hi sdefualt is thread safe
-        internal static readonly Lazy<BL> singleInstance=new Lazy<BL>(()=>new BL());
+        internal static readonly Lazy<BL> singleInstance = new Lazy<BL>(() => new BL());
         public static BL SingleInstance
         {
-            get {
-                    return singleInstance.Value;
+            get
+            {
+                return singleInstance.Value;
             }
         }
         #endregion
@@ -191,10 +192,15 @@ namespace BL
             }
         }
 
-
-
-
-
-
+        /// <summary>
+        /// starts the simulator
+        /// </summary>
+        /// <param name="droneId">the drone thats in action</param>
+        /// <param name="action"></param>
+        /// <param name="stop"></param>
+        public void StartSimulatur(int droneId, Action action, Func<bool> stop)
+        {
+            new Simulator(this, droneId, action, stop);
+        }
     }
 }

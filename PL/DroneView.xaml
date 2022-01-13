@@ -147,7 +147,18 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button x:Name="automatic" Content="Automatic" Click="automatic_Click"/>
+                <Button x:Name="automatic" Click="automatic_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Automatic"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsAutomaticMode}" Value="true">
+                                    <Setter Property="Content" Value="Stop Automatic"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>
