@@ -24,7 +24,7 @@ namespace DO
 
     public enum CustomersType
     {
-        Manager, Employee, Customer
+        Manager,Customer
     };
 
     public enum MenuOptions
