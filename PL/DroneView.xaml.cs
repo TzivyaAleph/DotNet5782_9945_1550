@@ -35,7 +35,24 @@ namespace PL
         public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
         public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
         private List <ParcelInDelivery> parcelsInDrone;
+        private bool isAutomaticMode;
 
+        /// <summary>
+        /// prop for a bool parameter that checks if the simulator is running
+        /// </summary>
+        public bool IsAutomaticMode
+        {
+            get { return isAutomaticMode; }
+            set 
+            {
+                isAutomaticMode = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("IsAutomaticMode"));
+            }
+        }
+
+        /// <summary>
+        /// a list to put the parcels that the drone is holding
+        /// </summary>
         public List <ParcelInDelivery> ParcelsInDrone
         {
             get { return parcelsInDrone; }
@@ -490,10 +507,22 @@ namespace PL
         /// <param name="e"></param>
         private void automatic_Click(object sender, RoutedEventArgs e)
         {
+            IsAutomaticMode = true;
             worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
             worker.DoWork += (sender, args) => myBl.StartSimulatur((int)args.Argument, () => worker.ReportProgress(0), () => worker.CancellationPending);
             worker.ProgressChanged += (sender, args) => UpdateDroneWindow();
             worker.RunWorkerAsync(SelectedDrone.Id);
+        }
+
+        /// <summary>
+        /// button to stop the simulator
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void stopAutomatic_Click(object sender, RoutedEventArgs e)
+        {
+            IsAutomaticMode = false;
+            worker.CancelAsync();
         }
     }
 }
