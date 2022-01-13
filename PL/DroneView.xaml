@@ -147,7 +147,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button x:Name="automatic" Content="Automatic" Click="automatic_Click" Width="100" Visibility="{Binding IsAutomaticMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Button x:Name="automatic" Content="Automatic" Click="automatic_Click" Width="100" Visibility="{Binding IsAutomaticMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                 <Button x:Name="stopAutomatic" Content="Stop Automatic" Width="100" Visibility="{Binding IsAutomaticMode, Converter={StaticResource BoolToVisibilityConverter}}" Click="stopAutomatic_Click"/>
             </StackPanel>
         </Grid>

@@ -11,7 +11,7 @@
   <Station>
     <Id>5818</Id>
     <Name>Bait Vagan</Name>
-    <ChargeSlots>37</ChargeSlots>
+    <ChargeSlots>34</ChargeSlots>
     <Longitude>35.19988309691422</Longitude>
     <Lattitude>31.781291095531216</Lattitude>
     <IsDeleted>false</IsDeleted>
