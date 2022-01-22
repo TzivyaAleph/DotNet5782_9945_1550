@@ -23,7 +23,8 @@ namespace Dal
             DroneCharge dc = new DroneCharge();
             dc.DroneID = d.Id;
             dc.StationID = s.Id;
-
+            dc.SentToCharge = DateTime.Now;
+            
         }
 
         /// <summary>
