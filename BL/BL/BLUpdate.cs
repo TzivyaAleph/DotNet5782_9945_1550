@@ -398,7 +398,7 @@ namespace BL
             DO.Parcel parcelToDeliver = new DO.Parcel();
             try
             {
-                parcelToDeliver = parcels.First(parcel => parcel.DroneID == droneId);//finds the parcel thats attributed to the drone
+                parcelToDeliver = parcels.First(parcel => parcel.DroneID == droneId&&parcel.Delivered==null);//finds the parcel thats attributed to the drone
             }
             catch (InvalidOperationException)
             {

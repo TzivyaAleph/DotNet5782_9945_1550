@@ -3,7 +3,7 @@
   <Station>
     <Id>1604</Id>
     <Name>Ramot</Name>
-    <ChargeSlots>43</ChargeSlots>
+    <ChargeSlots>38</ChargeSlots>
     <Longitude>35.19685389116493</Longitude>
     <Lattitude>31.87863805451367</Lattitude>
     <IsDeleted>false</IsDeleted>
@@ -11,7 +11,7 @@
   <Station>
     <Id>9629</Id>
     <Name>Bait Vagan</Name>
-    <ChargeSlots>7</ChargeSlots>
+    <ChargeSlots>4</ChargeSlots>
     <Longitude>35.1969128064564</Longitude>
     <Lattitude>31.84473721976147</Lattitude>
     <IsDeleted>false</IsDeleted>

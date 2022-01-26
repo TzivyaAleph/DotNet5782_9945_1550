@@ -21,10 +21,10 @@ namespace Dal
         {
             internal static int RunningParcelID = 200;
 
-            internal static double Light { get => 0.01; }
-            internal static double Avalaible { get => 0.001; }
-            internal static double Heavy { get => 0.04; }
-            internal static double Medium { get => 0.02; }
+            internal static double Light { get => 0.00001; }
+            internal static double Avalaible { get => 0.00001; }
+            internal static double Heavy { get => 0.00004; }
+            internal static double Medium { get => 0.00002; }
             internal static double ChargingRate { get => 30; }//per hour
         }
 
