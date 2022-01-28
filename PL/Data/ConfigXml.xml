@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Config>
   <Available>0.1</Available>
-  <Light>1</Light>
-  <MediumWeight>2</MediumWeight>
-  <Heavy>4</Heavy>
-  <RunningParcelId>1229</RunningParcelId>
+  <Light>0.2</Light>
+  <MediumWeight>0.3</MediumWeight>
+  <Heavy>0.4</Heavy>
+  <RunningParcelId>1249</RunningParcelId>
   <ChargingRate>30</ChargingRate>
 </Config>

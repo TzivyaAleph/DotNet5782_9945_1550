@@ -23,7 +23,6 @@ namespace PL
     {
 
         private BlApi.IBL myBl;
-        private bool _close { get; set; }
         BackgroundWorker worker;
         private string originalDroneModel; //temp drone to hold the drone from the drone list view window (this drone will not be used for items source)
         private Drone selectedDrone;
@@ -163,6 +162,11 @@ namespace PL
             originalDroneModel = dr.Model;
             myBl = bl;
             IsUpdateMode = true;
+            InitializeParcelInDrone();
+        }
+
+        private void InitializeParcelInDrone()
+        {
             ParcelsInDrone = new List<ParcelInDelivery>();
             ParcelsInDrone.Add(SelectedDrone.ParcelInDelivery);
         }
@@ -441,7 +445,6 @@ namespace PL
             PropertyChanged(this, new PropertyChangedEventArgs("IsPickUpEnabled"));
             PropertyChanged(this, new PropertyChangedEventArgs("IsDeliverParcelEnabled"));
             PropertyChanged(this, new PropertyChangedEventArgs("IsReleaseDroneEnabled"));
-            PropertyChanged(this, new PropertyChangedEventArgs("SelectedDrone"));
         }
 
         /// <summary>
@@ -497,8 +500,8 @@ namespace PL
         {
             OnUpdate();//updates the list of drone
             SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
-            DataContext = this;
             RefreshProperties();
+            InitializeParcelInDrone();
         }
 
 

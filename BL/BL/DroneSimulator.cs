@@ -23,7 +23,7 @@ namespace BL
 
             DroneForList drone = bl.GetDroneList().First(x => x.Id == droneID);
             Drone blDrone;
-            
+
             while (!IsTimeRun())
             {
                 switch (drone.DroneStatuses)
@@ -51,7 +51,7 @@ namespace BL
                                     Thread.Sleep(delay);
                                 }
                                 blDrone = bl.GetDrone(drone.Id);
-                               drone.Battery = battery;//restarting the battery
+                                drone.Battery = battery;//restarting the battery
                                 bl.SendDroneToChargeSlot(blDrone);//here it will change it to the correct battery.
                                 ReportProgressInSimultor();
                             }
@@ -61,7 +61,7 @@ namespace BL
                     case DroneStatuses.Maintenance:
 
                         List<DO.Station> stations = myDal.CopyStationArray().ToList();
-                        DO.Station station = stations.FirstOrDefault(item => item.Lattitude == drone.CurrentLocation.Latitude &&item.Lattitude == drone.CurrentLocation.Longitude);
+                        DO.Station station = stations.FirstOrDefault(item => item.Lattitude == drone.CurrentLocation.Latitude && item.Longitude == drone.CurrentLocation.Longitude);
                         DO.DroneCharge droneCharge = myDal.GetDroneCharge(station.Id, droneID);
                         TimeSpan timeCharge = (TimeSpan)(DateTime.Now - droneCharge.SentToCharge);
                         double hoursnInCahrge = timeCharge.Hours + (((double)timeCharge.Minutes) / 60) + (((double)timeCharge.Seconds) / 3600);
@@ -155,8 +155,8 @@ namespace BL
             double droneLatitude = drone.CurrentLocation.Latitude;
             double droneLongitude = drone.CurrentLocation.Longitude;
 
-        //    double targetLocationLatitude = targetLocation.Latitude;
-        //    double targetLocationLongitude = targetLocation.Longitude;
+            double targetLocationLatitude = targetLocation.Latitude;
+            double targetLocationLongitude = targetLocation.Longitude;
 
             double transportDistance = drone.ParcelInDelivery.Transportation;
             if (droneLatitude < targetLocationLatitude)

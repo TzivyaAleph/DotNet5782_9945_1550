@@ -223,12 +223,14 @@ namespace BL
             {
                 throw new InvalidInputException($"drone {droneId} is not available !!");
             }
-            parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));//sorts the non attributed parcels list by the priority 
-            parcels.Where(p => p.Priority == DO.Priority.emergency).OrderBy(p => (int)p.Weight); //sorts the emergency parcels by their weight
-            parcels.Where(p => p.Priority == DO.Priority.fast).OrderBy(p => (int)p.Weight); //sorts the fast parcels by their weight
-            parcels.Where(p => p.Priority == DO.Priority.normal).OrderBy(p => (int)p.Weight); //sorts the normal parcels by their weight
-            parcels.Reverse();
+            //parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));//sorts the non attributed parcels list by the priority 
             parcels.RemoveAll(p => (int)p.Weight > (int)droneToAttribute.Weight);
+            var emergencyParcels = parcels.Where(p => p.Priority == DO.Priority.emergency).OrderBy(p => (int)p.Weight).ToList(); //sorts the emergency parcels by their weight
+            var fastParcels = parcels.Where(p => p.Priority == DO.Priority.fast).OrderBy(p => (int)p.Weight).ToList(); //sorts the fast parcels by their weight
+            var normalParcels = parcels.Where(p => p.Priority == DO.Priority.normal).OrderBy(p => (int)p.Weight).ToList(); //sorts the normal parcels by their weight
+            parcels = emergencyParcels;
+            parcels.AddRange(fastParcels);
+            parcels.AddRange(normalParcels);
             if (parcels.Count == 0)
                 throw new FailedToUpdateException("there is no parcel to attribute !!");
             //removes all the parcels who the drone doesnt have enough battery to attribute to them
@@ -327,7 +329,7 @@ namespace BL
             DO.Parcel parcelToPickUp = new DO.Parcel();
             try
             {
-                parcelToPickUp = parcels.First(parcel => parcel.DroneID == droneId);//finds the parcel thats attributed to the drone
+                parcelToPickUp = parcels.First(parcel => parcel.DroneID == droneId && parcel.PickedUp == null);//finds the parcel thats attributed to the drone
             }
             catch (InvalidOperationException)
             {
@@ -396,7 +398,7 @@ namespace BL
             DO.Parcel parcelToDeliver = new DO.Parcel();
             try
             {
-                parcelToDeliver = parcels.First(parcel => parcel.DroneID == droneId);//finds the parcel thats attributed to the drone
+                parcelToDeliver = parcels.First(parcel => parcel.DroneID == droneId&&parcel.Delivered==null);//finds the parcel thats attributed to the drone
             }
             catch (InvalidOperationException)
             {
