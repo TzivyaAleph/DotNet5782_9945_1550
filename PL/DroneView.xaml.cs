@@ -495,10 +495,49 @@ namespace PL
         /// </summary>
         private void UpdateDroneWindow()
         {
+            OnUpdate();//updates the list of drone
             SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
             DataContext = this;
             RefreshProperties();
         }
+
+
+
+        //private void WindowUp()
+        //{
+
+        //    if (SelectedDrone.ParcelInDelivery != default)
+        //        parcelView.Visibility = Visibility.Visible;
+        //    if (SelectedDrone.DroneStatuses == DroneStatuses.Available)//if the drone is available
+        //    {
+        //        parcelView.Visibility = Visibility.Collapsed;
+        //        DroneCharging.Visibility = Visibility.Visible;
+        //        DroneActions.Visibility = Visibility.Visible;
+        //        DroneCharging.Content = "Send drone to charging";
+        //        DroneActions.Content = "Send drone to delievery";
+        //    }
+        //    if (SelectedDrone.DroneStatuses == DroneStatuses.Maintenance)//if the drone is in charge
+        //    {
+        //        DroneCharging.Content = "Release drone from charging";
+        //        DroneActions.Visibility = Visibility.Collapsed;
+        //    }
+        //    else//meens the drone is in delivery
+        //    {
+        //        //if the drone is in delivery and the parcel in the drone isnt on the way
+        //        if (SelectedDrone.DroneStatuses == DroneStatuses.Delivered && SelectedDrone.ParcelInDelivery.OnTheWay == false)
+        //        {
+        //            DroneCharging.Visibility = Visibility.Collapsed;
+        //            DroneActions.Content = "Pick up parcel";
+        //        }
+        //        //if the drone is in delivery and the parcel in the drone is on the way
+        //        if (SelectedDrone.DroneStatuses == DroneStatuses.Delivered && SelectedDrone.ParcelInDelivery.OnTheWay == true)
+        //        {
+        //            DroneCharging.Visibility = Visibility.Hidden;
+        //            DroneActions.Content = "Supply parcel";
+        //        }
+        //    }
+        //    OnUpdate();
+        //}
 
         /// <summary>
         /// button to start the simulator

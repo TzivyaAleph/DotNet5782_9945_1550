@@ -7,10 +7,10 @@
     <Weight>standard</Weight>
     <Priority>normal</Priority>
     <Requested>2021-01-01T00:00:00</Requested>
-    <DroneID>1809</DroneID>
+    <DroneID>0</DroneID>
     <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
+    <PickedUp>2022-01-15T20:24:45.5697632+02:00</PickedUp>
+    <Delivered>2022-01-27T07:53:32.6082515+02:00</Delivered>
     <IsDeleted>false</IsDeleted>
   </Parcel>
   <Parcel>
@@ -22,7 +22,7 @@
     <Requested>2021-01-01T00:00:00</Requested>
     <DroneID>2613</DroneID>
     <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
+    <PickedUp>2022-01-15T21:06:31.7491565+02:00</PickedUp>
     <Delivered xsi:nil="true" />
     <IsDeleted>false</IsDeleted>
   </Parcel>

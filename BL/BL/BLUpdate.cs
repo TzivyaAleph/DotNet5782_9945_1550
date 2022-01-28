@@ -472,7 +472,7 @@ namespace BL
             {
                 throw new InputDoesNotExist("the sender does not exist !!");
             }
-            double distance = Math.Sqrt((Math.Pow(d.CurrentLocation.Latitude - parcelSender.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - parcelSender.Longtitude, 2)));//finds the distance between the drone and the parcel
+            double distance = Math.Sqrt(Math.Pow(d.CurrentLocation.Latitude - parcelSender.Lattitude, 2) + Math.Pow(d.CurrentLocation.Longitude - parcelSender.Longtitude, 2));//finds the distance between the drone and the parcel
             return distance;
         }
 
