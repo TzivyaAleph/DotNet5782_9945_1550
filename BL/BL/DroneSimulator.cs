@@ -41,7 +41,7 @@ namespace BL
                                 distance = myDal.getDistanceFromLatLonInKm(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, baseStation.Lattitude, baseStation.Longitude);
                                 while (distance > 0)
                                 {
-                                    drone.Battery -=myDal.GetElectricityUse()[0];//the drone is available
+                                    drone.Battery -= myDal.GetElectricityUse()[0];//the drone is available
                                     ReportProgressInSimultor();
                                     distance -= 1;
                                     Thread.Sleep(delay);
@@ -114,7 +114,10 @@ namespace BL
                         else // PickedUp != null
                         {
                             battery = drone.Battery;
-                            distance = blDrone.ParcelInDelivery.Transportation;//the distance betwwen the sender and the resever
+                            DO.Customer parcelReciever = new DO.Customer();
+                            IEnumerable<DO.Customer> customers = myDal.CopyCustomerArray();//gets the customers list
+                            parcelReciever = customers.FirstOrDefault(customer => customer.Id == blDrone.ParcelInDelivery.CustomerReciever.Id);//finds the parcels target customer (for finding the parcels location)
+                            distance = myDal.getDistanceFromLatLonInKm(blDrone.CurrentLocation.Latitude, blDrone.CurrentLocation.Longitude, parcelReciever.Lattitude, parcelReciever.Longtitude);//the distance between the sender and the resever
                             while (distance > 1)
                             {
                                 switch (blDrone.ParcelInDelivery.Weight)
@@ -131,7 +134,6 @@ namespace BL
                                     default:
                                         break;
                                 }
-
                                 ReportProgressInSimultor();
                                 distance -= 100;
                                 Thread.Sleep(delay);

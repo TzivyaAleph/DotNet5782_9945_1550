@@ -60,18 +60,17 @@ namespace BL
                 droneToAdd.CurrentLocation = new Location();
                 //goes through the parcels list in dal for the exstract fields from drone for list
                 DO.Parcel par = new DO.Parcel();
-                try
-                {
+               
                     var pars = myDal.CopyParcelArray();
-                    par = pars.First(parcel => parcel.DroneID == item.Id);
-                }
-                catch (InvalidOperationException)
-                {
-                    throw new InputDoesNotExist("the parcel does not exist!!");
-                }
+                    par = pars.FirstOrDefault(parcel => parcel.DroneID == item.Id);
+                //}
+                //catch (InvalidOperationException)
+                //{
+                //    throw new InputDoesNotExist("the parcel does not exist!!");
+                //}
                 DO.Station clossestStation = new DO.Station();
                 // the drone has been attributted but the parcel was not delievred.
-                if (par.Delivered == null)
+                if (par.Id!=0&&par.Delivered == null)
                 {
                     droneToAdd.DroneStatuses = DroneStatuses.Delivered;
                     droneToAdd.ParcelId = par.Id;
@@ -130,9 +129,12 @@ namespace BL
                 if (droneToAdd.DroneStatuses == DroneStatuses.Maintenance)
                 {
                     //the location is the location of a random station.
-                    int num = rand.Next(0, myDal.CopyStationArray().Count());
                     DO.Station randomStation = new DO.Station();
-                    randomStation = myDal.CopyStationArray().ElementAt(num);//finds the station by the random number
+                    do
+                    {
+                        int num = rand.Next(0, myDal.CopyStationArray().Count());
+                        randomStation = myDal.CopyStationArray().ElementAt(num);//finds the station by the random number
+                    } while (randomStation.ChargeSlots == 0);
                     droneToAdd.CurrentLocation.Latitude = randomStation.Lattitude;
                     droneToAdd.CurrentLocation.Longitude = randomStation.Longitude;
                     droneToAdd.Battery = rand.Next(0, 21);

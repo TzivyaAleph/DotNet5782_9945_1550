@@ -33,7 +33,7 @@ namespace PL
         {
             get { return idForSignIn; }
             set
-            { 
+            {
                 idForSignIn = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("IdForSignIn"));
             }
@@ -49,7 +49,7 @@ namespace PL
         {
             get { return isCustomerChecked; }
             set
-            { 
+            {
                 isCustomerChecked = value;
                 IsUserTypeChosen = true;
                 if (isCustomerChecked)
@@ -81,8 +81,15 @@ namespace PL
         /// </summary>
         public SighnInWindow()
         {
-            DataContext = this;
-            InitializeComponent();
+            try
+            {
+                DataContext = this;
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -109,9 +116,10 @@ namespace PL
                 if (signedIn.Password != Password)
                 {
                     MessageBox.Show("PASSWORD IS NOT VALID!!");
+                    password.Password = null;
                     return;
                 }
-                if(isManagerChecked)
+                if (isManagerChecked)
                 {
                     MainWindow mainWindow = new MainWindow(myBl);
                     mainWindow.Show();
@@ -125,10 +133,17 @@ namespace PL
             catch (InvalidInputException ex)
             {
                 MessageBox.Show(ex.ToString());
+                id.Text = null;
+                password.Password = null;
             }
-            catch(FailedToGetException ex)
+            catch (FailedToGetException ex)
             {
-                MessageBox.Show(ex.ToString());
+                if (ex.InnerException != null)
+                    MessageBox.Show(ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show(ex.ToString());
+                id.Text = null;
+                password.Password = null;
             }
         }
 
@@ -145,7 +160,7 @@ namespace PL
         private void password_PasswordChanged(object sender, RoutedEventArgs e)
         {
             Password = password.Password;
-            PropertyChanged(this,new PropertyChangedEventArgs("Password"));
+            PropertyChanged(this, new PropertyChangedEventArgs("Password"));
         }
     }
 }

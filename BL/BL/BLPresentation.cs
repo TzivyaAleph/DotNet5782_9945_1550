@@ -177,7 +177,10 @@ namespace BL
             {
                 throw new FailedToGetException("ERROR", custEx);
             }
-
+            catch(DO.ExistingObjectException ex)
+            {
+                throw new FailedToGetException("ERROR", ex);
+            }
             return returningCustomer;
         }
 

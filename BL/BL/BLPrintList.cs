@@ -24,14 +24,12 @@ namespace BL
             droneCharges = myDal.GetDroneChargeList().ToList();
             foreach (var stat in myDal.CopyStationArray())
             {
-
-
                 StationForList stationToAdd = new();
                 stationToAdd.Id = stat.Id;
                 stationToAdd.Name = stat.Name;
                 int countNumOfDronesInStation = droneCharges.Count(item => item.StationID == stat.Id);
                 Station station = new();
-                stationToAdd.AvailableChargingSlots = stat.ChargeSlots - countNumOfDronesInStation;
+                stationToAdd.AvailableChargingSlots = stat.ChargeSlots;
                 stationToAdd.UnAvailableChargingSlots = countNumOfDronesInStation;
                 if (!stat.IsDeleted || countNumOfDronesInStation > 0)
                     stationsToReturn.Add(stationToAdd);
