@@ -275,6 +275,39 @@ namespace BL
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="droneId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public bool ThereAreParcelsToAttribute(int droneId)
+        {
+            int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
+            DroneForList droneToAttribute = new();
+            droneToAttribute = drones[index];
+            if (droneToAttribute.DroneStatuses != DroneStatuses.Available)//checkes if the drone is available
+            {
+                throw new InvalidInputException($"drone {droneId} is not available !!");
+            }
+            List<DO.Parcel> parcels = myDal.CopyParcelArray(par => par.IsDeleted == false && par.DroneID == 0 && par.Delivered == null).ToList();//gets the non attributed parcels list that aren't deleted and weren't delivered yet
+            //parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));//sorts the non attributed parcels list by the priority 
+            parcels.RemoveAll(p => (int)p.Weight > (int)droneToAttribute.Weight);
+            var emergencyParcels = parcels.Where(p => p.Priority == DO.Priority.emergency).OrderBy(p => (int)p.Weight).ToList(); //sorts the emergency parcels by their weight
+            var fastParcels = parcels.Where(p => p.Priority == DO.Priority.fast).OrderBy(p => (int)p.Weight).ToList(); //sorts the fast parcels by their weight
+            var normalParcels = parcels.Where(p => p.Priority == DO.Priority.normal).OrderBy(p => (int)p.Weight).ToList(); //sorts the normal parcels by their weight
+            parcels = emergencyParcels;
+            parcels.AddRange(fastParcels);
+            parcels.AddRange(normalParcels);
+            if (parcels.Count == 0)
+                return false;
+            //removes all the parcels who the drone doesnt have enough battery to attribute to them
+            parcels.RemoveAll(p => enoughBattery(p, droneToAttribute));
+            if (parcels.Count == 0)
+                return false;
+            return true;
+        }
+
+
+        /// <summary>
         /// checks if thre drone has enough battery  to attributted to specific parcel
         /// </summary>
         /// <param name="p"></param>

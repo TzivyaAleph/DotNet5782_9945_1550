@@ -29,12 +29,8 @@ namespace BL
                 switch (drone.DroneStatuses)
                 {
                     case DroneStatuses.Available:
-                        try
-                        {
-                            bl.AttributingParcelToDrone(droneID);
-                            ReportProgressInSimultor();
-                        }
-                        catch
+
+                        if (!bl.ThereAreParcelsToAttribute(droneID))
                         {
                             if (drone.Battery < 100)
                             {
@@ -45,7 +41,7 @@ namespace BL
                                 distance = myDal.getDistanceFromLatLonInKm(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, baseStation.Lattitude, baseStation.Longitude);
                                 while (distance > 0)
                                 {
-                                    drone.Battery -= (int)myDal.GetElectricityUse()[0];//the drone is available
+                                    drone.Battery -=myDal.GetElectricityUse()[0];//the drone is available
                                     ReportProgressInSimultor();
                                     distance -= 1;
                                     Thread.Sleep(delay);
@@ -56,6 +52,12 @@ namespace BL
                                 ReportProgressInSimultor();
                             }
                         }
+                        else
+                        {
+                            bl.AttributingParcelToDrone(droneID);
+                            ReportProgressInSimultor();
+                        }
+
                         break;
 
                     case DroneStatuses.Maintenance:
@@ -65,7 +67,7 @@ namespace BL
                         DO.DroneCharge droneCharge = myDal.GetDroneCharge(station.Id, droneID);
                         TimeSpan timeCharge = (TimeSpan)(DateTime.Now - droneCharge.SentToCharge);
                         double hoursnInCahrge = timeCharge.Hours + (((double)timeCharge.Minutes) / 60) + (((double)timeCharge.Seconds) / 3600);
-                        double batrryCharge = (int)(timeCharge.TotalHours * myDal.GetElectricityUse()[4]) + drone.Battery; //DroneLoadingRate == 10000
+                        double batrryCharge = (timeCharge.TotalHours * myDal.GetElectricityUse()[4]) + drone.Battery; //DroneLoadingRate == 10000
 
                         while (drone.Battery < 100)
                         {
@@ -96,7 +98,7 @@ namespace BL
                             //distance = blDrone.ParcelInDelivery.Transportation;
                             while (distance > 1)
                             {
-                                drone.Battery -= (int)myDal.GetElectricityUse()[0];//the drone is available
+                                drone.Battery -= myDal.GetElectricityUse()[0];//the drone is available
                                 distance -= 1;
                                 UpdateLocationDrone(bl.GetCustomer(blDrone.ParcelInDelivery.CustomerSender.Id).Location, blDrone);
                                 drone.CurrentLocation = blDrone.CurrentLocation;
@@ -118,20 +120,20 @@ namespace BL
                                 switch (blDrone.ParcelInDelivery.Weight)
                                 {
                                     case Weight.Light:
-                                        drone.Battery -= (int)myDal.GetElectricityUse()[1];//light
+                                        drone.Battery -= myDal.GetElectricityUse()[1];//light
                                         break;
                                     case Weight.Medium:
-                                        drone.Battery -= (int)myDal.GetElectricityUse()[2];//medium
+                                        drone.Battery -= myDal.GetElectricityUse()[2];//medium
                                         break;
                                     case Weight.Heavy:
-                                        drone.Battery -= (int)myDal.GetElectricityUse()[3];//heavy
+                                        drone.Battery -= myDal.GetElectricityUse()[3];//heavy
                                         break;
                                     default:
                                         break;
                                 }
 
                                 ReportProgressInSimultor();
-                                distance -= 1;
+                                distance -= 100;
                                 Thread.Sleep(delay);
                             }
                             drone.Battery = battery;//restart battery

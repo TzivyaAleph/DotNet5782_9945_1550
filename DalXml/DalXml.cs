@@ -40,8 +40,12 @@ namespace Dal
         /// private constructor
         /// </summary>
         private DalXml()
-        {       
-          //DataSource.Initialize();
+        {
+            var dirInfo = new System.IO.DirectoryInfo(DataDirectory);
+            if(dirInfo.GetFiles().Count() <=1)
+            {
+                DataSource.Initialize();
+            }
         }
 
         /// <summary>

@@ -147,12 +147,24 @@ namespace PL
         /// <param name="e"></param>
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DroneForList d = DronesListView.SelectedItem as DroneForList;
-            Drone dr = new Drone();
-            dr = myBl.GetDrone(d.Id);//gets the selected drone as drone instead of drone for list 
-            DroneView droneWindow = new DroneView(myBl, dr);
-            droneWindow.OnUpdate += DroneWindow_onUpdate;
-            droneWindow.Show();
+            try
+            {
+                DroneForList d = DronesListView.SelectedItem as DroneForList;
+                Drone dr = new Drone();
+                if (d != null)
+                {
+                    dr = myBl.GetDrone(d.Id);//gets the selected drone as drone instead of drone for list 
+                    DroneView droneWindow = new DroneView(myBl, dr);
+                    droneWindow.OnUpdate += DroneWindow_onUpdate;
+                    droneWindow.Show();
+                }
+                else
+                    MessageBox.Show("Please select a drone!");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error occured");
+            }
         }
 
         /// <summary>

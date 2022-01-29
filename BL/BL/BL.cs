@@ -155,7 +155,8 @@ namespace BL
                     //the cuurent location of the drone is the location of a random
                     //customer who has an attributted parcel that wasnt delieverd yet.
                     List<DO.Customer> CustomersWithDelieverdParcel = new List<DO.Customer>();
-                    CustomersWithDelieverdParcel = myDal.CopyCustomerArray(x => myDal.CopyParcelArray().ToList().FindIndex(par => par.TargetID == x.Id && par.Delivered != null) == -1).ToList();
+                    List<DO.Parcel> parcels = myDal.CopyParcelArray().ToList();
+                    CustomersWithDelieverdParcel = myDal.CopyCustomerArray(x => parcels.FindIndex(par => par.TargetID == x.Id && par.Delivered != null) != -1).ToList();
                     int num = rand.Next(0, CustomersWithDelieverdParcel.Count());
                     DO.Customer randomCustomer = new DO.Customer();
                     randomCustomer = CustomersWithDelieverdParcel.ElementAt(num);//finds the customer by the random number
