@@ -23,16 +23,19 @@ namespace BL
 
             DroneForList drone = bl.GetDroneList().First(x => x.Id == droneID);
             Drone blDrone;
+            bool thereAreParcels = bl.ThereAreParcelsToAttribute(droneID);
+            bool enoughBattery = bl.enoughBatteryForCharging(drone);
 
-            while (!IsTimeRun())
+            while (!IsTimeRun() || ((drone.Battery ==100|| !enoughBattery) && !thereAreParcels))
             {
                 switch (drone.DroneStatuses)
                 {
                     case DroneStatuses.Available:
-
-                        if (!bl.ThereAreParcelsToAttribute(droneID))
+                        thereAreParcels = bl.ThereAreParcelsToAttribute(droneID);
+                        if (!thereAreParcels)
                         {
-                            if (drone.Battery < 100)
+                            enoughBattery = bl.enoughBatteryForCharging(drone);
+                            if (drone.Battery < 100 && enoughBattery)
                             {
                                 battery = drone.Battery;
                                 List<DO.Station> stations1 = myDal.CopyStationArray().ToList();
@@ -149,6 +152,7 @@ namespace BL
                 Thread.Sleep(delay);
             }
         }
+
         /// <summary>
         ///updates the location of the drone 
         /// </summary>

@@ -93,6 +93,7 @@ namespace PL
             CustForUpdate = customer;
             originalCustomerName = customer.Name;
             originalPhoneNumber = customer.PhoneNumber;
+            blockLocation.Text = customer.Location.ToString();
             this.myBl = myBl;
             sentIdList = customer.SentParcels.Select(item => item.Id).ToList();
             recievedIdList = customer.ReceiveParcels.Select(item => item.Id).ToList();

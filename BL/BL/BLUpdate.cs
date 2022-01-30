@@ -176,15 +176,16 @@ namespace BL
             //finds the battery use for sending the drone to the clossest station
             double batteryUse = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, droneForList.CurrentLocation.Latitude, droneForList.CurrentLocation.Longitude) * myDal.GetElectricityUse()[0];
             //send the drone only if the drone has enough battery and the station has available charging slots.
-            if ((droneForList.Battery - batteryUse) < 0 || clossestStation.ChargeSlots == 0)
+            bool eoungh = enoughBatteryForCharging(droneForList);
+            if (!eoungh || clossestStation.ChargeSlots == 0)
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
             double[] electricity = myDal.GetElectricityUse();
             droneForList.CurrentLocation = new();
-            if (droneForList.Battery - batteryUse >= 0)
+            if (eoungh==true)
                 droneForList.Battery -= batteryUse;
             else
                 droneForList.Battery = 0;
-            droneForList.CurrentLocation.Latitude = clossestStation.Lattitude;
+            //droneForList.CurrentLocation.Latitude = clossestStation.Lattitude;
             droneForList.CurrentLocation.Longitude = clossestStation.Longitude;
             droneForList.DroneStatuses = DroneStatuses.Maintenance;
             DO.Drone dalDrone = new DO.Drone()
@@ -202,6 +203,27 @@ namespace BL
                 throw new FailedToUpdateException("ERROR", custEx);
             }
         }
+
+        /// <summary>
+        /// checks if theres enough battery for charging
+        /// </summary>
+        /// <param name="droneForList"></param>
+        /// <returns></returns>
+        public bool enoughBatteryForCharging(DroneForList droneForList)
+        {
+            //finding all the available charging slots in station.
+            List<DO.Station> stations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
+            DO.Station clossestStation = new DO.Station();
+            //finds the clossest station to the current location of the drone
+            clossestStation = myDal.GetClossestStation(droneForList.CurrentLocation.Latitude, droneForList.CurrentLocation.Longitude, stations);
+            //finds the battery use for sending the drone to the clossest station
+            double batteryUse = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, droneForList.CurrentLocation.Latitude, droneForList.CurrentLocation.Longitude) * myDal.GetElectricityUse()[0];
+            if (droneForList.Battery - batteryUse < 0)
+                return false;
+            return true;
+        }
+
+
 
         /// <summary>
         /// recieves a drone ID and attributes a parcel to the drone

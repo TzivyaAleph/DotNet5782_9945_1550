@@ -553,7 +553,14 @@ namespace PL
             worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
             worker.DoWork += (sender, args) => myBl.StartSimulatur((int)args.Argument, () => worker.ReportProgress(0), () => worker.CancellationPending);
             worker.ProgressChanged += (sender, args) => UpdateDroneWindow();
+            worker.RunWorkerCompleted += (sender, args) => AutomaticCompleted();
             worker.RunWorkerAsync(SelectedDrone.Id);
+        }
+
+        private void AutomaticCompleted()
+        {
+            IsAutomaticMode = false;
+            MessageBox.Show("Process finished successfully!");
         }
 
         /// <summary>
