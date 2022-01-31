@@ -14,20 +14,47 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-       
-        <ListView ItemsSource='{Binding Stations}' Grid.Column="0" Background="LightGray" FontStyle="Italic" x:Name="StationsListView" MouseDoubleClick="StationsListView_MouseDoubleClick" SelectionChanged="StationsListView_SelectionChanged" Foreground="#FF090A0D">
+
+        <Label x:Name="TXStat" Content="Stations" Grid.Column="2" HorizontalAlignment="Center" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="17" FontStyle="Italic"  />
+
+        <ListView  x:Name="StationsListView" Grid.ColumnSpan="2" Background="LightGray" MouseDoubleClick="StationsListView_MouseDoubleClick" SelectionChanged="StationsListView_SelectionChanged" Grid.Row="1"  ItemsSource="{Binding Stations, Mode=OneWay}"  >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Width="150" Header="ID">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding Id}" TextAlignment="Right" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="150"  Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding Name}" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="200"  Header="Available Charging Slots">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding AvailableChargingSlots}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="200"  Header="Busy Charging Slots">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding UnAvailableChargingSlots}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
+
             <ListView.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
@@ -38,7 +65,9 @@
                 </GroupStyle>
             </ListView.GroupStyle>
         </ListView>
-        <Grid x:Name="bottomGrid"  Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Bottom" Height="100">
+
+
+        <!--<Grid x:Name="bottomGrid"  Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Bottom" Height="100">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -47,6 +76,13 @@
             <Button x:Name="stationAdd"  FontWeight="Bold" Content="add station" Click="stationAdd_Click" Grid.ColumnSpan="2" />
             <Button x:Name="cancelAdd"  FontWeight="Bold" Grid.Row="1" Content="Close" Grid.ColumnSpan="2" Click="cancelAdd_Click"  />
             <ToggleButton Grid.Row="2" FontWeight="Bold"  Content="Group by available slots" IsChecked="{Binding IsGroupingMode, Mode=TwoWay}"></ToggleButton>
-        </Grid>
+        </Grid>-->
+
+        <UniformGrid DockPanel.Dock="Bottom"  Rows="1" Grid.Row="2" HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <Button x:Name="stationAdd" Content="add station" Click="stationAdd_Click" Grid.Column="0"  FontSize="18" Margin="5" Padding="8,3"/>
+            <Button x:Name="cancelAdd" Grid.Column="2" FontSize="18" Content="Close" Click="cancelAdd_Click"  Margin="5" Padding="8,3"/>
+            <ToggleButton  x:Name="groupingButton"  Grid.Column="3" FontSize="18"  Content="Group by available slots" IsChecked="{Binding IsGroupingMode, Mode=TwoWay}" Margin="5" Padding="8,3"/>
+        </UniformGrid>
     </Grid>
 </Window>

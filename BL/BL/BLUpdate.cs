@@ -185,7 +185,7 @@ namespace BL
                 droneForList.Battery -= batteryUse;
             else
                 droneForList.Battery = 0;
-            //droneForList.CurrentLocation.Latitude = clossestStation.Lattitude;
+            droneForList.CurrentLocation.Latitude = clossestStation.Lattitude;
             droneForList.CurrentLocation.Longitude = clossestStation.Longitude;
             droneForList.DroneStatuses = DroneStatuses.Maintenance;
             DO.Drone dalDrone = new DO.Drone()
@@ -306,10 +306,6 @@ namespace BL
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = new();
             droneToAttribute = drones[index];
-            if (droneToAttribute.DroneStatuses != DroneStatuses.Available)//checkes if the drone is available
-            {
-                throw new InvalidInputException($"drone {droneId} is not available !!");
-            }
             List<DO.Parcel> parcels = myDal.CopyParcelArray(par => par.IsDeleted == false && par.DroneID == 0 && par.Delivered == null).ToList();//gets the non attributed parcels list that aren't deleted and weren't delivered yet
             //parcels.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));//sorts the non attributed parcels list by the priority 
             parcels.RemoveAll(p => (int)p.Weight > (int)droneToAttribute.Weight);

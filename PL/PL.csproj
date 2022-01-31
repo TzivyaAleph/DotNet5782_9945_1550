@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="170814-29667fc33f27c58f33f440ba8026215c.gif" />
+    <None Remove="custumersList.jpg" />
+    <None Remove="download.jpg" />
     <None Remove="Images\drone.jpg" />
     <None Remove="Images\droneBackground.jpg" />
     <None Remove="Images\main.jpg" />
+    <None Remove="user.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +30,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="170814-29667fc33f27c58f33f440ba8026215c.gif" />
+    <Resource Include="custumersList.jpg" />
+    <Resource Include="download.jpg" />
+    <Resource Include="user.png" />
   </ItemGroup>
 
 </Project>
