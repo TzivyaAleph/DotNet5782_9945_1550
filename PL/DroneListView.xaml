@@ -32,26 +32,7 @@
             <Label Content="Select Status:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17" FontStyle="Italic"  />
             <Label Content="Select Weight:" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17" FontStyle="Italic"   />
         </Grid>
-        
-        <!--<ListView  x:Name="DronesListView" ItemsSource='{Binding Drones}' Grid.Row="1" Grid.Column="0" Background="LightGray" FontStyle="Italic" MouseDoubleClick="DronesListView_MouseDoubleClick" SelectionChanged="DronesListView_SelectionChanged" Foreground="#FF090A0D">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-            <ListView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock FontWeight="Bold"  Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </ListView.GroupStyle>
-        </ListView>-->
-
-
-
+       
 
         <ListView x:Name="DronesListView" Background="LightGray" MouseDoubleClick="DronesListView_MouseDoubleClick" ItemsSource="{Binding Drones, Mode=OneWay}" SelectionChanged="DronesListView_SelectionChanged"   Margin="5" Grid.Row="1">
             <ListView.View>
@@ -122,23 +103,6 @@
             </ListView.GroupStyle>
         </ListView>
 
-
-
-
-        <!--<StackPanel x:Name="buttons"  Orientation="Horizontal" Grid.Row="2"   >
-            <Grid p >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="undoFilter" Grid.Column="0" HorizontalAlignment="Center"  FontWeight="Bold"  Content="undo filter" Click="undoFilter_Click" />
-                <Button x:Name="droneAdd" Grid.Column="1" FontWeight="Bold"  Content="add drone" Click="droneAdd_Click" />
-                <Button x:Name="cancelAdd" Grid.Column="2" FontWeight="Bold"  Content="Close" Click="cancelAdd_Click"  />
-                <ToggleButton x:Name="groupingButton"  Grid.Column="3" Content="group list by drone status" FontWeight="Bold" IsChecked="{Binding IsGroupingMode, Mode=TwoWay}" Checked="groupingButton_Checked"/>
-            </Grid>
-        </StackPanel>-->
 
         <UniformGrid DockPanel.Dock="Bottom" Margin="20" Rows="1" Grid.Row="2" HorizontalAlignment="Right"
             VerticalAlignment="Bottom">

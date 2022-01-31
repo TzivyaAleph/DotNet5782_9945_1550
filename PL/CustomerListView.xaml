@@ -7,27 +7,104 @@
         mc:Ignorable="d"
         Title="CustomerListView" Height="450" Width="800">
     
-    <Grid x:Name="CustomerGrid">
+    <Grid x:Name="CustomerGrid" >
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFFAF1E7"/>
                 <GradientStop Color="#FFE0A582" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <ListView x:Name="customersList" ItemsSource='{Binding Customers}' MouseDoubleClick="customersList_MouseDoubleClick" SelectionChanged="customersList_SelectionChanged"  Grid.Column="0"  Background="LightGray" FontStyle="Italic"  Foreground="#FF090A0D" >
+        <Grid x:Name="upGrid" Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="TXCust"  Content="Customers" Grid.Column="2" HorizontalAlignment="Center" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="17" FontStyle="Italic"  />
+            <Image  x:Name="IMCust" Grid.Column="3"  VerticalAlignment="Center"  HorizontalAlignment="Center" Source="/custumersList.jpg"/>
+        </Grid>
+
+
+        <!--<ListView x:Name="customersList" ItemsSource='{Binding Customers}' MouseDoubleClick="customersList_MouseDoubleClick" SelectionChanged="customersList_SelectionChanged"  Grid.Column="0"  Background="LightGray" FontStyle="Italic"  Foreground="#FF090A0D" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
+        </ListView>-->
+
+        <!--<StackPanel   Grid.Row="0">
+            <Label x:Name="TXCust"  HorizontalAlignment="Center" Content="Cusumers" FontSize="20" FontWeight="SemiBold" />
+            <Image  x:Name="IMCust"  HorizontalAlignment="Left"  Source="/custumersList.jpg"/>
+        </StackPanel>-->
+
+        <ListView  x:Name="customersList" Grid.ColumnSpan="2" Background="LightGray" MouseDoubleClick="customersList_MouseDoubleClick" SelectionChanged="customersList_SelectionChanged" Grid.Row="1"  ItemsSource="{Binding Customers, Mode=OneWay}"   Margin="5" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="100" Header="Id">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding Id}" TextAlignment="Right" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100"  Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding Name}" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100"  Header="Phone Number">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding Phone}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100"  Header="Provided Parcels">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding ParcelProvided}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100"  Header="UnProvided Parcels">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding ParcelNotProvided}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100"  Header="Recieved Parcels">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding ParcelRecieved}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100"  Header="Parcels On The Way">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-5,-1" Text="{Binding ParcelOnTheWay}" TextAlignment="Center" Padding="2"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
         </ListView>
 
-        <Grid x:Name="BottomGrid" Grid.Column="1" Grid.Row="3" >
+
+        <!--<Grid x:Name="BottomGrid" Grid.Column="1" Grid.Row="3" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -38,7 +115,12 @@
             </Grid.RowDefinitions>
             <Button x:Name="customerAdd" Content="Add customer" Grid.Row="4"    FontWeight="Bold" Grid.ColumnSpan="2"  Click="customerAdd_Click"/>
             <Button x:Name="cancelAdd"  FontWeight="Bold" Grid.Row="6" Content="Close" Grid.ColumnSpan="2"  Click="cancelAdd_Click" />
-        </Grid>
+        </Grid>-->
+
+        <UniformGrid DockPanel.Dock="Bottom" Grid.ColumnSpan="2"   Rows="1" Grid.Row="2" VerticalAlignment="Stretch">
+            <Button x:Name="customerAdd"  Content="Add customer" Click="customerAdd_Click"  FontSize="18"  Padding="6,3" Margin="65,0,117,0"/>
+            <Button x:Name="cancelAdd" FontSize="18" Content="Close" Click="cancelAdd_Click" Margin="65,0,117,0" Padding="6,3"/>
+        </UniformGrid>
     </Grid>
 
 </Window>

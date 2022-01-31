@@ -29,7 +29,13 @@ namespace PL
         private Station selectedStation;
         private string originalStationName; //temp to hold the station's name of the station from the list view window (this will not be used for items source)
         private int originalNumOfSlots; //temp to hold the station's Num Of Slots of the station from the list view window (this will not be used for items source)
-        public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
+        /// <summary>
+        /// to know wich window to open: update or add
+        /// </summary>
+        public bool IsUpdateMode { get; set; } 
+        /// <summary>
+        /// for binding
+        /// </summary>
         public int TotalNumOfSlots { get; set; }
         private List<DroneCharge> droneCharges;
 
@@ -99,14 +105,22 @@ namespace PL
         /// <param name="st"></param>
         public StationView(IBL bl, Station st)
         {
-            InitializeComponent();
-            DataContext = this;//binding the data
-            SelectedStation = st;
-            DroneCharges = SelectedStation.DroneCharges;
-            originalStationName = st.Name;
-            originalNumOfSlots = st.ChargeSlots;
-            myBl = bl;
-            IsUpdateMode = true;
+            try
+            {
+                InitializeComponent();
+                DataContext = this;//binding the data
+                SelectedStation = st;
+                DroneCharges = SelectedStation.DroneCharges;
+                originalStationName = st.Name;
+                originalNumOfSlots = st.ChargeSlots;
+                myBl = bl;
+                IsUpdateMode = true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open the update window!");
+            }
+
         }
 
         /// <summary>
@@ -130,7 +144,12 @@ namespace PL
             }
             catch (FailedToAddException ex)
             {
-                MessageBox.Show("Failed to add -" + ex.ToString());
+                if (ex.InnerException != null)
+                {
+                    MessageBox.Show("Failed To Add - "+ex.ToString() + " " + ex.InnerException.ToString());
+                }
+                else
+                    MessageBox.Show("Failed To Add - "+ex.ToString());
             }
             catch (InvalidInputException ex)
             {
@@ -172,6 +191,15 @@ namespace PL
                     }
                     catch (FailedToUpdateException ex)
                     {
+                        if (ex.InnerException != null)
+                        {
+                            MessageBox.Show("Failed To update - " + ex.ToString() + " " + ex.InnerException.ToString());
+                        }
+                        else
+                            MessageBox.Show("Failed To update - " + ex.ToString());
+                    }
+                    catch(InputDoesNotExist ex)
+                    {
                         MessageBox.Show("Failed to update - " + ex.ToString());
                     }
                     catch (InvalidInputException ex)
@@ -189,11 +217,32 @@ namespace PL
         /// <param name="e"></param>
         private void dronesInStation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DroneCharge d = dronesInStation.SelectedItem as DroneCharge;
-            Drone dr = new Drone();
-            dr = myBl.GetDrone(d.Id);//gets the selected drone as drone instead of drone for list 
-            DroneView droneWindow = new DroneView(myBl, dr);
-            droneWindow.Show();
+            try
+            {
+                DroneCharge d = dronesInStation.SelectedItem as DroneCharge;
+                Drone dr = new Drone();
+                if(d!=null)
+                {
+                    dr = myBl.GetDrone(d.Id);//gets the selected drone as drone instead of drone for list 
+                    DroneView droneWindow = new DroneView(myBl, dr);
+                    droneWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Please select a station!");
+                }
+            }
+            catch (InvalidInputException ex)
+            {
+                MessageBox.Show("Cant show drone data - " + ex.ToString());
+            }
+            catch (FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                    MessageBox.Show("Cant show drone data- " + ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show("Cant show drone data - " + ex.ToString());
+            }
         }
 
         /// <summary>

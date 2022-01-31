@@ -23,16 +23,19 @@ namespace BL
 
             DroneForList drone = bl.GetDroneList().First(x => x.Id == droneID);
             Drone blDrone;
+            bool thereAreParcels = bl.ThereAreParcelsToAttribute(droneID);
+            bool enoughBattery = bl.enoughBatteryForCharging(drone);
 
-            while (!IsTimeRun())
+            while (!IsTimeRun() && drone.Battery !=100 && enoughBattery || thereAreParcels)
             {
                 switch (drone.DroneStatuses)
                 {
                     case DroneStatuses.Available:
-
-                        if (!bl.ThereAreParcelsToAttribute(droneID))
+                        thereAreParcels = bl.ThereAreParcelsToAttribute(droneID);
+                        if (!thereAreParcels)
                         {
-                            if (drone.Battery < 100)
+                            enoughBattery = bl.enoughBatteryForCharging(drone);
+                            if (drone.Battery < 100 && enoughBattery)
                             {
                                 battery = drone.Battery;
                                 List<DO.Station> stations1 = myDal.CopyStationArray().ToList();
@@ -48,7 +51,7 @@ namespace BL
                                 }
                                 blDrone = bl.GetDrone(drone.Id);
                                 drone.Battery = battery;//restarting the battery
-                                bl.SendDroneToChargeSlot(blDrone);//here it will change it to the correct battery.
+                                bl.SendDroneToChargeSlot(blDrone);//here it will change it to the correct battery
                                 ReportProgressInSimultor();
                             }
                         }
@@ -61,9 +64,9 @@ namespace BL
                         break;
 
                     case DroneStatuses.Maintenance:
-
+                        blDrone = bl.GetDrone(drone.Id);
                         List<DO.Station> stations = myDal.CopyStationArray().ToList();
-                        DO.Station station = stations.FirstOrDefault(item => item.Lattitude == drone.CurrentLocation.Latitude && item.Longitude == drone.CurrentLocation.Longitude);
+                        DO.Station station = stations.FirstOrDefault(item => item.Lattitude == blDrone.CurrentLocation.Latitude && item.Longitude == blDrone.CurrentLocation.Longitude);
                         DO.DroneCharge droneCharge = myDal.GetDroneCharge(station.Id, droneID);
                         TimeSpan timeCharge = (TimeSpan)(DateTime.Now - droneCharge.SentToCharge);
                         double hoursnInCahrge = timeCharge.Hours + (((double)timeCharge.Minutes) / 60) + (((double)timeCharge.Seconds) / 3600);
@@ -149,6 +152,7 @@ namespace BL
                 Thread.Sleep(delay);
             }
         }
+
         /// <summary>
         ///updates the location of the drone 
         /// </summary>

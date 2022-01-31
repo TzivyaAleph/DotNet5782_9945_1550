@@ -103,6 +103,7 @@ namespace PL
                 this.myBl = myBl;
                 sentIdList = customer.SentParcels.Select(item => item.Id).ToList();
                 recievedIdList = customer.ReceiveParcels.Select(item => item.Id).ToList();
+                blockLocation.Text = customer.Location.ToString();
                 IsUpdateMode = true;
             }
             catch (Exception)
