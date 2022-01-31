@@ -99,7 +99,7 @@
                 <DatePicker Text="0" SelectedDate="{Binding ParcelToDelete.Delivered}" Grid.Row="10" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
                 <StackPanel Grid.Row="11" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Delete" Width="150" Click="Button_Click" IsEnabled="{Binding ParcelToDelete.DroneInParcel.Id, Converter={StaticResource StringNotEmptyToBoolConverter}, ConverterParameter=delete}" />
-                    <Button Content="Cancel"  Width="150" Click="Button_Click_1" />
+                    <Button Content="Cancel"  Width="150" Click="CancelButton_Click" />
                 </StackPanel>
             </Grid>
         </Grid>

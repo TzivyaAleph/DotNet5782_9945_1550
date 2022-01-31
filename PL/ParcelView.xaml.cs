@@ -43,7 +43,7 @@ namespace PL
             }
         }
 
-        Parcel parcelToAdd;
+        private Parcel parcelToAdd;
 
         /// <summary>
         /// parcel property for adding
@@ -63,11 +63,18 @@ namespace PL
         /// <param name="parcel">the parcel to delete</param>
         public ParcelView(IBL myBl, Parcel parcel)
         {
-            InitializeComponent();
-            DataContext = this;//binding the data
-            ParcelToDelete = parcel;
-            this.myBl = myBl;
-            IsDeleteeMode = true;
+            try
+            {
+                InitializeComponent();
+                DataContext = this;//binding the data
+                ParcelToDelete = parcel;
+                this.myBl = myBl;
+                IsDeleteeMode = true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open the update window!");
+            }
         }
 
         /// <summary>
@@ -118,7 +125,10 @@ namespace PL
             }
             catch (FailedToAddException ex)
             {
-                MessageBox.Show("Failed to add -" + ex.ToString());
+                if (ex.InnerException != null)
+                    MessageBox.Show("Failed to add - " + ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show("Failed to add - " + ex.ToString());
             }
             catch (InvalidInputException ex)
             {
@@ -147,10 +157,25 @@ namespace PL
         /// <param name="e"></param>
         private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Customer customer = new Customer();
-            customer = myBl.GetCustomer(ParcelToDelete.Recipient.Id);//finds the custumer that we will open the window for
-            CustomerView customerView = new CustomerView(myBl, customer);
-            customerView.Show();
+            try
+            {
+                Customer customer = new Customer();
+                customer = myBl.GetCustomer(ParcelToDelete.Recipient.Id);//finds the custumer that we will open the window for
+                CustomerView customerView = new CustomerView(myBl, customer);
+                customerView.Show();
+            }
+            catch(InvalidInputException ex)
+            {
+                MessageBox.Show("Cant show recipient data - " + ex.ToString());
+            }
+            catch(FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                    MessageBox.Show("Cant show recipient data- " + ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show("Cant show recipient data - " + ex.ToString());
+            }
+
         }
 
         /// <summary>
@@ -160,10 +185,25 @@ namespace PL
         /// <param name="e"></param>
         private void TextBox_MouseDoubleClick_1(object sender, MouseButtonEventArgs e)
         {
-            Customer customer = new Customer();
-            customer = myBl.GetCustomer(ParcelToDelete.Sender.Id);//finds the custumer that we will open the window for
-            CustomerView customerView = new CustomerView(myBl, customer);
-            customerView.Show();
+            try
+            {
+                Customer customer = new Customer();
+                customer = myBl.GetCustomer(ParcelToDelete.Sender.Id);//finds the custumer that we will open the window for
+                CustomerView customerView = new CustomerView(myBl, customer);
+                customerView.Show();
+            }
+            catch (InvalidInputException ex)
+            {
+                MessageBox.Show("Cant show sender data - " + ex.ToString());
+            }
+            catch (FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                    MessageBox.Show("Cant show sender data- " + ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show("Cant show sender data - " + ex.ToString());
+            }
+
         }
 
         /// <summary>
@@ -173,10 +213,24 @@ namespace PL
         /// <param name="e"></param>
         private void TextBox_MouseDoubleClick_2(object sender, MouseButtonEventArgs e)
         {
-            Drone drone = new Drone();
-            drone = myBl.GetDrone(ParcelToDelete.DroneInParcel.Id);//finds the drone that attributted to the parcel
-            DroneView droneView = new DroneView(myBl, drone);
-            droneView.Show();
+            try
+            {
+                Drone drone = new Drone();
+                drone = myBl.GetDrone(ParcelToDelete.DroneInParcel.Id);//finds the drone that attributted to the parcel
+                DroneView droneView = new DroneView(myBl, drone);
+                droneView.Show();
+            }
+            catch (InvalidInputException ex)
+            {
+                MessageBox.Show("Cant show drone data - " + ex.ToString());
+            }
+            catch (FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                    MessageBox.Show("Cant show drone data- " + ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show("Cant show drone data - " + ex.ToString());
+            }
         }
 
         /// <summary>
@@ -203,14 +257,5 @@ namespace PL
             }
         }
 
-        /// <summary>
-        /// closing window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
     }
 }

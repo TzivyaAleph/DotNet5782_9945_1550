@@ -28,6 +28,7 @@ namespace PL
         private CollectionView collectionView;//collectionView for the grouping
         private bool isGroupingMode;//to notify if the grouping button in checked
         public event PropertyChangedEventHandler PropertyChanged= delegate { };
+
         //prop for binding to the grouping button
         public bool IsGroupingMode
         {
@@ -41,6 +42,7 @@ namespace PL
                     UndoGrouping();
             }
         }
+
         //prop for the stations list - for binding to the items source in the xml
         public List<StationForList> Stations
         {
@@ -58,10 +60,18 @@ namespace PL
         /// <param name="Bl">Ibl object</param>
         public StationListView(IBL Bl)
         {
-            myBl = Bl;
-            DataContext = this;
-            InitializeComponent();
-            GetStationListFromBL();
+            try
+            {
+                myBl = Bl;
+                DataContext = this;
+                InitializeComponent();
+                GetStationListFromBL();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open station's list");
+            }
+
         }
 
         /// <summary>
@@ -71,12 +81,29 @@ namespace PL
         /// <param name="e"></param>
         private void StationsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            StationForList s = StationsListView.SelectedItem as StationForList;
-            Station st = new Station();
-            st = myBl.GetStation(s.Id);//gets the selected station as station instead of station for list 
-            StationView stationWindow = new StationView(myBl, st);
-            stationWindow.OnUpdate += StationWindow_onUpdate;//registers to event that is announced when a station was added or updated 
-            stationWindow.Show();
+            try
+            {
+                StationForList s = StationsListView.SelectedItem as StationForList;
+                Station st = new Station();
+                if (s != null)
+                {
+                    st = myBl.GetStation(s.Id);//gets the selected station as station instead of station for list 
+                    StationView stationWindow = new StationView(myBl, st);
+                    stationWindow.OnUpdate += StationWindow_onUpdate;//registers to event that is announced when a station was added or updated 
+                    stationWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Please select a station!");
+                }
+            }
+            catch (FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                    MessageBox.Show("Failed to show station data - " + ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show("Failed to show station data - " + ex.ToString());
+            }
         }
 
         /// <summary>
@@ -86,9 +113,17 @@ namespace PL
         /// <param name="e"></param>
         private void stationAdd_Click(object sender, RoutedEventArgs e)
         {
-            StationView stationWindow = new StationView(myBl);
-            stationWindow.OnUpdate += StationWindow_onUpdate;
-            stationWindow.Show();
+            try
+            {
+                StationView stationWindow = new StationView(myBl);
+                stationWindow.OnUpdate += StationWindow_onUpdate;
+                stationWindow.Show();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error loading the adding window");
+            }
+
         }
 
         /// <summary>
@@ -107,11 +142,6 @@ namespace PL
         private void cancelAdd_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void StationsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         /// <summary>
@@ -139,9 +169,17 @@ namespace PL
         /// </summary>
         private void GetStationListFromBL()
         {
-            Stations = myBl.GetStationList().ToList();
-            if (IsGroupingMode)
-                GroupList();
+            try
+            {
+                Stations = myBl.GetStationList().ToList();
+                if (IsGroupingMode)
+                    GroupList();
+            }
+            catch (InputDoesNotExist ex)
+            {
+                MessageBox.Show("Failed to get list - " + ex.ToString());
+            }
+
         }
     }
 }

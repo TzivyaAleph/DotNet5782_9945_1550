@@ -105,13 +105,21 @@ namespace PL
         /// <param name="Bl"></param>
         public ParcelListView(IBL Bl)
         {
-            myBl = Bl;
-            DataContext = this;
-            InitializeComponent();
-            GetParcelListFromBL();
-            StatusSelector.ItemsSource = Enum.GetValues(typeof(Status));
-            WeightSelector.ItemsSource = Enum.GetValues(typeof(Weight));
-            PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priority));
+            try
+            {
+                myBl = Bl;
+                DataContext = this;
+                InitializeComponent();
+                GetParcelListFromBL();
+                StatusSelector.ItemsSource = Enum.GetValues(typeof(Status));
+                WeightSelector.ItemsSource = Enum.GetValues(typeof(Weight));
+                PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priority));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open parcel's list");
+            }
+
         }
 
         /// <summary>
@@ -139,7 +147,14 @@ namespace PL
         /// </summary>
         private void GetParcelListFromBL()
         {
-            Parcels = myBl.GetParcelList().ToList();
+            try
+            {
+                Parcels = myBl.GetParcelList().ToList();
+            }
+            catch(InputDoesNotExist ex)
+            {
+                MessageBox.Show("Failed to get list - "+ ex.ToString());
+            }
             if (SelectedWeight != null || SelectedStatus != null || SelectedPriority != null)
                 FilterList();
             if (IsGroupingMode)
@@ -161,23 +176,30 @@ namespace PL
         /// </summary>
         private void FilterList()
         {
-            //if all three filters are selected
-            if (SelectedWeight != null && SelectedStatus != null && SelectedPriority != null)
-                parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Status == SelectedStatus && p.Priority == SelectedPriority);
-            else if (SelectedWeight != null && SelectedStatus != null)
-                parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Status == SelectedStatus);
-            else if (SelectedWeight != null && SelectedPriority != null)
-                parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Priority == SelectedPriority);
-            else if (SelectedStatus != null && SelectedPriority != null)
-                parcelsList.ItemsSource = parcels.Where(p => p.Status == SelectedStatus && p.Priority == SelectedPriority);
-            else if (selectedWeight != null)
-                parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight);
-            else if (SelectedPriority != null)
-                parcelsList.ItemsSource = parcels.Where(p => p.Priority == SelectedPriority);
-            else
-                parcelsList.ItemsSource = parcels.Where(p => p.Status == SelectedStatus);
-            if (IsGroupingMode)
-                GroupList();
+            try
+            {
+                //if all three filters are selected
+                if (SelectedWeight != null && SelectedStatus != null && SelectedPriority != null)
+                    parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Status == SelectedStatus && p.Priority == SelectedPriority);
+                else if (SelectedWeight != null && SelectedStatus != null)
+                    parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Status == SelectedStatus);
+                else if (SelectedWeight != null && SelectedPriority != null)
+                    parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight && p.Priority == SelectedPriority);
+                else if (SelectedStatus != null && SelectedPriority != null)
+                    parcelsList.ItemsSource = parcels.Where(p => p.Status == SelectedStatus && p.Priority == SelectedPriority);
+                else if (selectedWeight != null)
+                    parcelsList.ItemsSource = parcels.Where(p => p.Weight == SelectedWeight);
+                else if (SelectedPriority != null)
+                    parcelsList.ItemsSource = parcels.Where(p => p.Priority == SelectedPriority);
+                else
+                    parcelsList.ItemsSource = parcels.Where(p => p.Status == SelectedStatus);
+                if (IsGroupingMode)
+                    GroupList();
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Filter Failed!!");
+            }
         }
 
         /// <summary>
@@ -199,12 +221,31 @@ namespace PL
         /// <param name="e"></param>
         private void parcelsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ParcelForList p = parcelsList.SelectedItem as ParcelForList;
-            Parcel par = new Parcel();
-            par = myBl.GetParcel(p.Id);//gets the selected station as station instead of station for list 
-            ParcelView parcelWindow = new ParcelView(myBl, par);
-            parcelWindow.OnUpdate += ParcelView_onUpdate;//registers to event that is announced when a station was added or updated 
-            parcelWindow.Show();
+            try
+            {
+                ParcelForList p = parcelsList.SelectedItem as ParcelForList;
+                //checks if click on parcel
+                if (p != null)
+                {
+                    Parcel par = new Parcel();
+                    par = myBl.GetParcel(p.Id);//gets the selected station as station instead of station for list 
+                    ParcelView parcelWindow = new ParcelView(myBl, par);
+                    parcelWindow.OnUpdate += ParcelView_onUpdate;//registers to event that is announced when a station was added or updated 
+                    parcelWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Please select a parcel!");
+                }
+            }
+            catch (FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                    MessageBox.Show("Failed to show parcel data - " + ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show("Failed to show parcel data - " + ex.ToString());
+            }
+
         }
 
         /// <summary>
@@ -222,9 +263,18 @@ namespace PL
         /// <param name="e"></param>
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            ParcelView parcelWindow = new ParcelView(myBl);
-            parcelWindow.OnUpdate += ParcelView_onUpdate;//registers to event that is announced when a station was added or updated 
-            parcelWindow.Show();
+            try
+            {
+                ParcelView parcelWindow = new ParcelView(myBl);
+                parcelWindow.OnUpdate += ParcelView_onUpdate;//registers to event that is announced when a station was added or updated 
+                parcelWindow.Show();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error loading the adding window");
+            }
         }
+
+ 
     }
 }
