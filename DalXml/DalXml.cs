@@ -180,7 +180,7 @@ namespace Dal
                                                   PhoneNumber = cus.Element("PhoneNumber").Value,
                                                   Longtitude = double.Parse(cus.Element("Longtitude").Value),
                                                   Lattitude = double.Parse(cus.Element("Lattitude").Value),
-                                                  IsDeleted = false,
+                                                  IsDeleted = bool.Parse(cus.Element("IsDeleted").Value),
                                                   Password = cus.Element("Password").Value,
                                                   CustomerType = (CustomersType)Enum.Parse(typeof(CustomersType), cus.Element("CustomerType").Value)
                                               };
@@ -266,7 +266,7 @@ namespace Dal
                             PhoneNumber = per.Element("PhoneNumber").Value,
                             Longtitude= double.Parse(per.Element("Longtitude").Value),
                             Lattitude= double.Parse(per.Element("Lattitude").Value),
-                            IsDeleted=false,
+                            IsDeleted=bool.Parse(per.Element("IsDeleted").Value),
                             Password=per.Element("Password").Value,
                             CustomerType= (CustomersType)Enum.Parse(typeof(CustomersType), per.Element("CustomerType").Value)
                           }
@@ -429,6 +429,7 @@ namespace Dal
                 custFound = true;
                 cust.Element("Name").Value = customer.Name;
                 cust.Element("PhoneNumber").Value = customer.PhoneNumber;
+                cust.Element("IsDeleted").Value =customer.IsDeleted.ToString();
             }
 
             if (custFound==false)

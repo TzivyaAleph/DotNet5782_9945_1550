@@ -94,16 +94,16 @@
                 <Label Content="Recieved parcels's ID:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
                 <TextBox Text="{Binding CustForUpdate.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
                 <TextBox Text="{Binding CustForUpdate.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox Text="{Binding CustForUpdate.PhoneNumber}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CustForUpdate.PhoneNumber}" MaxLength="10" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <TextBox Text="{Binding CustForUpdate.Location.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False" />
                 <TextBox Text="{Binding CustForUpdate.Location.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
                 <TextBox Text="{Binding CustForUpdate.CustomerType, Mode=TwoWay}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsEnabled="False"/>
                 <ListBox x:Name="listBoxSent" ItemsSource='{Binding SentIdList}' Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" MouseDoubleClick="listBoxSent_MouseDoubleClick"/>
                 <ListBox x:Name="listBoxRecieved" ItemsSource='{Binding RecievedIdList}' Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" MouseDoubleClick="listBoxRecieved_MouseDoubleClick"/>
                 <StackPanel Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Update" Width="150" Click="Button_Click_1"/>
-                    <Button Content="cancel"  Width="150" Click="Button_Click" Visibility="{Binding CustForUpdate.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
-                    <Button Content="Delete Customer"  Width="150" Click="Button_Click_2"/>
+                    <Button Content="Update" Width="150" Click="Button_Click_1" Visibility="{Binding CustForUpdate.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                    <Button Content="Close"  Width="150" Click="Button_Click"/>
+                    <Button Content="Delete Customer"  Width="150" Click="Button_Click_2" Visibility="{Binding CustForUpdate.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                 </StackPanel>
             </Grid>
         </Grid>
