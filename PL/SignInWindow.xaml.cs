@@ -28,7 +28,12 @@ namespace PL
         public CustomersType CustomerType { get; set; }
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         private int? idForSignIn;
+        public string Password { get; set; }
+        public bool IsUserTypeChosen { get; set; }
 
+        /// <summary>
+        /// prop to bind to the id the user puts in 
+        /// </summary>
         public int? IdForSignIn
         {
             get { return idForSignIn; }
@@ -38,9 +43,6 @@ namespace PL
                 PropertyChanged(this, new PropertyChangedEventArgs("IdForSignIn"));
             }
         }
-
-        public string Password { get; set; }
-        public bool IsUserTypeChosen { get; set; }
 
         /// <summary>
         /// prop to bind the customer radio button
@@ -99,10 +101,22 @@ namespace PL
         /// <param name="e"></param>
         private void newCustomer_Click(object sender, RoutedEventArgs e)
         {
-            CustomerView newCustomer = new CustomerView(myBl);
-            newCustomer.Show();
+            try
+            {
+                CustomerView newCustomer = new CustomerView(myBl);
+                newCustomer.Show();
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Failed loading the add customer window");
+            }
         }
 
+        /// <summary>
+        /// button to sign into the system
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void signIn_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -156,7 +170,12 @@ namespace PL
         {
             Close();
         }
-
+        
+        /// <summary>
+        /// updates the password property when it was changed by the user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void password_PasswordChanged(object sender, RoutedEventArgs e)
         {
             Password = password.Password;

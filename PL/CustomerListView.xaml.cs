@@ -24,10 +24,11 @@ namespace PL
     {
         private IBL myBl;
         private List<CustomerForList> customers;
-
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        //property for the customers list - for binding to the items source in the xaml
+        /// <summary>
+        /// property for the customers list - for binding to the items source in the xaml
+        /// </summary>
         public List<CustomerForList> Customers
         {
             get { return customers; }
@@ -53,7 +54,7 @@ namespace PL
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to open customer list");
+                MessageBox.Show("Failed opening customer list");
             }
         }
 
@@ -103,11 +104,6 @@ namespace PL
             Customers = myBl.GetCustomerList().ToList();
         }
 
-        private void customersList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// opens the customer view window for adding
         /// </summary>
@@ -142,6 +138,10 @@ namespace PL
             {
                 MessageBox.Show("ERROR");
             }
+        }
+
+        private void customersList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
         }
     }
 }
