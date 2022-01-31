@@ -103,7 +103,7 @@ namespace PL
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to open drones' list");
+                MessageBox.Show("Failed opening drones' list");
             }
         }
 

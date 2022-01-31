@@ -325,7 +325,7 @@ namespace PL
                 {
                     MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
                 }
-                catch(InputDoesNotExist ex)
+                catch (InputDoesNotExist ex)
                 {
                     MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
                 }
@@ -394,6 +394,10 @@ namespace PL
                 {
                     MessageBox.Show("Failed to attribute - " + ex.ToString());
                 }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error accourd");
+                }
             }
         }
 
@@ -416,7 +420,15 @@ namespace PL
                     }
                     RefreshProperties();
                 }
-                catch (BO.FailedToUpdateException ex)
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to pick up - " + ex.ToString());
+                }
+                catch (InputDoesNotExist ex)
+                {
+                    MessageBox.Show("Failed to pick up - " + ex.ToString());
+                }
+                catch (InvalidInputException ex)
                 {
                     MessageBox.Show("Failed to pick up - " + ex.ToString());
                 }
@@ -444,9 +456,13 @@ namespace PL
                     if (SelectedDrone.ParcelInDelivery == null && SelectedDrone.IsDeleted)
                         Close();
                 }
-                catch (BO.FailedToUpdateException ex)
+                catch (FailedToUpdateException ex)
                 {
-                    MessageBox.Show("Failed to pick up - " + ex.ToString());
+                    MessageBox.Show("Failed to deliver - " + ex.ToString());
+                }
+                catch (InputDoesNotExist ex)
+                {
+                    MessageBox.Show("Failed to deliver - " + ex.ToString());
                 }
             }
         }
@@ -516,13 +532,32 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// opens the parcel that the drone is holding by a double click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void parcelView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ParcelInDelivery p = parcelView.SelectedItem as ParcelInDelivery;
-            Parcel par = new Parcel();
-            par = myBl.GetParcel(p.Id);//gets the selected station as station instead of station for list 
-            ParcelView parcelWindow = new ParcelView(myBl, par);
-            parcelWindow.Show();
+            try
+            {
+                ParcelInDelivery p = parcelView.SelectedItem as ParcelInDelivery;
+                if (p != null)
+                {
+                    Parcel par = new Parcel();
+                    par = myBl.GetParcel(p.Id);//gets the selected station as station instead of station for list 
+                    ParcelView parcelWindow = new ParcelView(myBl, par);
+                    parcelWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Please select a parcel");
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error occured");
+            }
         }
 
         /// <summary>
@@ -530,49 +565,25 @@ namespace PL
         /// </summary>
         private void UpdateDroneWindow()
         {
-            OnUpdate();//updates the list of drone
-            SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
-            RefreshProperties();
-            InitializeParcelInDrone();
+            try
+            {
+                OnUpdate();//updates the list of drone
+                SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                RefreshProperties();
+                InitializeParcelInDrone();
+            }
+            catch(FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                    MessageBox.Show("Failed to update drone window - " + ex.ToString() + " " + ex.InnerException.ToString());
+                else
+                    MessageBox.Show("Failed to update drone window - " + ex.ToString());
+            }
+            catch(InputDoesNotExist ex)
+            {
+                MessageBox.Show("Failed to update drone window -" + ex.ToString());
+            }
         }
-
-
-
-        //private void WindowUp()
-        //{
-
-        //    if (SelectedDrone.ParcelInDelivery != default)
-        //        parcelView.Visibility = Visibility.Visible;
-        //    if (SelectedDrone.DroneStatuses == DroneStatuses.Available)//if the drone is available
-        //    {
-        //        parcelView.Visibility = Visibility.Collapsed;
-        //        DroneCharging.Visibility = Visibility.Visible;
-        //        DroneActions.Visibility = Visibility.Visible;
-        //        DroneCharging.Content = "Send drone to charging";
-        //        DroneActions.Content = "Send drone to delievery";
-        //    }
-        //    if (SelectedDrone.DroneStatuses == DroneStatuses.Maintenance)//if the drone is in charge
-        //    {
-        //        DroneCharging.Content = "Release drone from charging";
-        //        DroneActions.Visibility = Visibility.Collapsed;
-        //    }
-        //    else//meens the drone is in delivery
-        //    {
-        //        //if the drone is in delivery and the parcel in the drone isnt on the way
-        //        if (SelectedDrone.DroneStatuses == DroneStatuses.Delivered && SelectedDrone.ParcelInDelivery.OnTheWay == false)
-        //        {
-        //            DroneCharging.Visibility = Visibility.Collapsed;
-        //            DroneActions.Content = "Pick up parcel";
-        //        }
-        //        //if the drone is in delivery and the parcel in the drone is on the way
-        //        if (SelectedDrone.DroneStatuses == DroneStatuses.Delivered && SelectedDrone.ParcelInDelivery.OnTheWay == true)
-        //        {
-        //            DroneCharging.Visibility = Visibility.Hidden;
-        //            DroneActions.Content = "Supply parcel";
-        //        }
-        //    }
-        //    OnUpdate();
-        //}
 
         /// <summary>
         /// button to start the simulator
@@ -581,11 +592,18 @@ namespace PL
         /// <param name="e"></param>
         private void automatic_Click(object sender, RoutedEventArgs e)
         {
-            IsAutomaticMode = true;
-            worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
-            worker.DoWork += (sender, args) => myBl.StartSimulatur((int)args.Argument, () => worker.ReportProgress(0), () => worker.CancellationPending);
-            worker.ProgressChanged += (sender, args) => UpdateDroneWindow();
-            worker.RunWorkerAsync(SelectedDrone.Id);
+            try
+            {
+                IsAutomaticMode = true;
+                worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
+                worker.DoWork += (sender, args) => myBl.StartSimulatur((int)args.Argument, () => worker.ReportProgress(0), () => worker.CancellationPending);
+                worker.ProgressChanged += (sender, args) => UpdateDroneWindow();
+                worker.RunWorkerAsync(SelectedDrone.Id);
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Failed running automatic mode");
+            }
         }
 
         /// <summary>
@@ -595,8 +613,15 @@ namespace PL
         /// <param name="e"></param>
         private void stopAutomatic_Click(object sender, RoutedEventArgs e)
         {
-            IsAutomaticMode = false;
-            worker.CancelAsync();
+            try
+            {
+                IsAutomaticMode = false;
+                worker.CancelAsync();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed stoping automatic mode");
+            }
         }
     }
 }

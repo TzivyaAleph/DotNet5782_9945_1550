@@ -131,7 +131,10 @@ namespace PL
             collectionView = (CollectionView)CollectionViewSource.GetDefaultView(parcelsList.ItemsSource);
             //describe how we want to make the groups
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Sender");
-            collectionView.GroupDescriptions.Add(groupDescription);
+            if(!collectionView.GroupDescriptions.Contains(groupDescription))
+            {
+                collectionView.GroupDescriptions.Add(groupDescription);
+            }
         }
 
         /// <summary>
