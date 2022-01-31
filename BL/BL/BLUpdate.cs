@@ -167,7 +167,9 @@ namespace BL
             }
             //only send to charge slots when drone available
             if (droneForList.DroneStatuses != DroneStatuses.Available)
+            {
                 throw new FailedToUpdateException($"Drone {droneForList.Id} is not available");
+            }
             //finding all the available charging slots in station.
             List<DO.Station> stations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
             DO.Station clossestStation = new DO.Station();
@@ -179,6 +181,7 @@ namespace BL
             bool eoungh = enoughBatteryForCharging(droneForList);
             if (!eoungh || clossestStation.ChargeSlots == 0)
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
+            }
             double[] electricity = myDal.GetElectricityUse();
             droneForList.CurrentLocation = new();
             if (eoungh==true)

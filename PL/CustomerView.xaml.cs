@@ -31,9 +31,12 @@ namespace PL
         private List<int> sentIdList;
         private IBL myBl;
         private List<int> recievedIdList;
+        private Customer custForUpdate;
         public List<CustomersType> CustomerTypeOptions { get; set; }
 
-        //property for the parcels id list - for binding to the items source in the xaml
+        /// <summary>
+        /// property for the parcels id list - for binding to the items source in the xaml
+        /// </summary>
         public List<int> SentIdList
         {
             get { return sentIdList; }
@@ -44,7 +47,9 @@ namespace PL
             }
         }
 
-        //property for the parcels id list - for binding to the items source in the xaml
+        /// <summary>
+        /// property for the parcels id list - for binding to the items source in the xaml
+        /// </summary>
         public List<int> RecievedIdList
         {
             get { return recievedIdList; }
@@ -67,7 +72,7 @@ namespace PL
                 PropertyChanged(this, new PropertyChangedEventArgs("CustomerToAdd"));
             }
         }
-        private Customer custForUpdate;
+
         /// <summary>
         /// customer property for update a customer from the list
         /// </summary>
@@ -88,16 +93,23 @@ namespace PL
         /// <param name="customer"></param>
         public CustomerView(IBL myBl, Customer customer)
         {
-            InitializeComponent();
-            DataContext = this;//binding the data
-            CustForUpdate = customer;
-            originalCustomerName = customer.Name;
-            originalPhoneNumber = customer.PhoneNumber;
-            blockLocation.Text = customer.Location.ToString();
-            this.myBl = myBl;
-            sentIdList = customer.SentParcels.Select(item => item.Id).ToList();
-            recievedIdList = customer.ReceiveParcels.Select(item => item.Id).ToList();
-            IsUpdateMode = true;
+            try
+            {
+                InitializeComponent();
+                DataContext = this;//binding the data
+                CustForUpdate = customer;
+                originalCustomerName = customer.Name;
+                originalPhoneNumber = customer.PhoneNumber;
+                this.myBl = myBl;
+                sentIdList = customer.SentParcels.Select(item => item.Id).ToList();
+                recievedIdList = customer.ReceiveParcels.Select(item => item.Id).ToList();
+                blockLocation.Text = customer.Location.ToString();
+                IsUpdateMode = true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open the update window!");
+            }
         }
 
         /// <summary>
@@ -119,7 +131,7 @@ namespace PL
             }
             catch (FailedToGetException ex)
             {
-                MessageBox.Show("Failed to add!!" + ex.ToString());
+                MessageBox.Show("Failed to open the adding window!" + ex.ToString());
             }
         }
 
@@ -160,7 +172,14 @@ namespace PL
         /// <param name="e"></param>
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            try
+            {
+                Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to close window!");
+            }
         }
 
         /// <summary>
@@ -168,9 +187,16 @@ namespace PL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CloseWindow_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            try
+            {
+                Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to close window!");
+            }
         }
 
         /// <summary>
@@ -178,10 +204,12 @@ namespace PL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void UpdateCustomer_Click(object sender, RoutedEventArgs e)
         {
             if (originalCustomerName == CustForUpdate.Name && originalPhoneNumber == CustForUpdate.PhoneNumber)
+            {
                 MessageBox.Show("Fill in the following details to update");
+            }
             else
             {
                 var result = MessageBox.Show("Save updates to current customer?", "myApp", MessageBoxButton.YesNo);
@@ -226,11 +254,28 @@ namespace PL
         /// <param name="e"></param>
         private void listBoxSent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            int id = (int)listBoxSent.SelectedItem;
-            Parcel parcel = new Parcel();
-            parcel = myBl.GetParcel(id);//gets the selected item as parcel.
-            ParcelView parcelView = new ParcelView(myBl, parcel);
-            parcelView.Show();
+            //only click on a list item
+            try
+            {
+                int id = (int)listBoxSent.SelectedItem;
+                Parcel parcel = new Parcel();
+                parcel = myBl.GetParcel(id);//gets the selected item as parcel.
+                ParcelView parcelView = new ParcelView(myBl, parcel);
+                parcelView.Show();
+            }
+            catch (FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    MessageBox.Show(ex.ToString()+" "+ex.InnerException.ToString());
+                }
+                else
+                    MessageBox.Show(ex.ToString());
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Error loading the sent parcel");
+            }
         }
 
         /// <summary>
@@ -240,15 +285,35 @@ namespace PL
         /// <param name="e"></param>
         private void listBoxRecieved_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
-            int id = (int)listBoxRecieved.SelectedItem;
-            Parcel parcel = new Parcel();
-            parcel = myBl.GetParcel(id);//gets the selected item as parcel.
-            ParcelView parcelView = new ParcelView(myBl, parcel);
-            parcelView.Show();
+            try
+            {
+                int id = (int)listBoxRecieved.SelectedItem;
+                Parcel parcel = new Parcel();
+                parcel = myBl.GetParcel(id);//gets the selected item as parcel.
+                ParcelView parcelView = new ParcelView(myBl, parcel);
+                parcelView.Show();
+            }
+            catch (FailedToGetException ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    MessageBox.Show(ex.ToString() + " " + ex.InnerException.ToString());
+                }
+                else
+                    MessageBox.Show(ex.ToString());
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error loading the sent parcel");
+            }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// button to delete a customer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteCustomer_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show("Delete customer?", "myApp", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)

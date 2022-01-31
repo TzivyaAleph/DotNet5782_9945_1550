@@ -44,10 +44,17 @@ namespace PL
         /// <param name="myBl"></param>
         public CustomerListView(IBL myBl)
         {
-            this.myBl = myBl;
-            DataContext = this;
-            InitializeComponent();
-            GetCustomerListFromBL();
+            try
+            {
+                this.myBl = myBl;
+                DataContext = this;
+                InitializeComponent();
+                GetCustomerListFromBL();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open customer list");
+            }
         }
 
         /// <summary>
@@ -57,12 +64,27 @@ namespace PL
         /// <param name="e"></param>
         private void customersList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            CustomerForList c = customersList.SelectedItem as CustomerForList;
-            Customer customer = new Customer();
-            customer = myBl.GetCustomer(c.Id);//gets the selected customer as customer instead of customer for list 
-            CustomerView customerWindow = new CustomerView(myBl, customer);
-            customerWindow.OnUpdate += StationWindow_onUpdate;//registers to event that is announced when a station was added or updated 
-            customerWindow.Show();
+            //double click only on a customer
+            try
+            {
+                CustomerForList c = customersList.SelectedItem as CustomerForList;
+                if (c != null)
+                {
+                    Customer customer = new Customer();
+                    customer = myBl.GetCustomer(c.Id);//gets the selected customer as customer instead of customer for list 
+                    CustomerView customerWindow = new CustomerView(myBl, customer);
+                    customerWindow.OnUpdate += StationWindow_onUpdate;//registers to event that is announced when a station was added or updated 
+                    customerWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Please select a customer!");
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error occured");
+            }
         }
 
         /// <summary>
@@ -73,6 +95,9 @@ namespace PL
             GetCustomerListFromBL();
         }
 
+        /// <summary>
+        /// gets the customers list 
+        /// </summary>
         private void GetCustomerListFromBL()
         {
             Customers = myBl.GetCustomerList().ToList();
@@ -90,14 +115,33 @@ namespace PL
         /// <param name="e"></param>
         private void customerAdd_Click(object sender, RoutedEventArgs e)
         {
-            CustomerView customerView = new CustomerView(myBl);
-            customerView.OnUpdate += StationWindow_onUpdate;
-            customerView.Show();
+            try
+            {
+                CustomerView customerView = new CustomerView(myBl);
+                customerView.OnUpdate += StationWindow_onUpdate;
+                customerView.Show();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error loading the adding window");
+            }
         }
 
+        /// <summary>
+        /// button to close the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cancelAdd_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            try
+            {
+                Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("ERROR");
+            }
         }
     }
 }

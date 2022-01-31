@@ -17,7 +17,7 @@
         <Grid.Background>
             <ImageBrush x:Name="myImage"  ></ImageBrush>
         </Grid.Background>
-        <Grid x:Name="GDAdd" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True" d:IsHidden="True">
+        <Grid x:Name="GDAdd" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -61,7 +61,7 @@
         </Grid>
 
 
-        <Grid x:Name="UpdateGD" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}" AllowDrop="True">
+        <Grid x:Name="UpdateGD" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}" AllowDrop="True" d:IsHidden="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -102,9 +102,9 @@
                 <ListBox x:Name="listBoxSent" ItemsSource='{Binding SentIdList}' Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" MouseDoubleClick="listBoxSent_MouseDoubleClick"/>
                 <ListBox x:Name="listBoxRecieved" ItemsSource='{Binding RecievedIdList}' Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" MouseDoubleClick="listBoxRecieved_MouseDoubleClick"/>
                 <StackPanel Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Update" Width="150" Click="Button_Click_1"/>
-                    <Button Content="cancel"  Width="150" Click="Button_Click" Visibility="{Binding CustForUpdate.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
-                    <Button Content="Delete Customer"  Width="150" Click="Button_Click_2"/>
+                    <Button Content="Update" Width="150" Click="UpdateCustomer_Click" Visibility="{Binding CustForUpdate.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                    <Button Content="Close"  Width="150" Click="CloseWindow_Click"/>
+                    <Button Content="Delete Customer"  Width="150" Click="DeleteCustomer_Click" Visibility="{Binding CustForUpdate.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                 </StackPanel>
             </Grid>
         </Grid>

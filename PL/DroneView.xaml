@@ -12,6 +12,9 @@
         <Converters:DroneStatusToBoolConverter x:Key="DroneStatusToBoolConverter"/>
         <Converters:DroneStatusToBoolConverterForRelease x:Key="DroneStatusToBoolConverterForRelease"/>
         <Converters:DroneStatusToBoolConverterForPickUp x:Key="DroneStatusToBoolConverterForPickUp"/>
+        <Converters:AllTrueToBoolConverter x:Key="AllTrueToBoolConverter"/>
+        <Converters:StringNotEmptyToBoolConverter x:Key="StringNotEmptyToBoolConverter"/>
+        <Converters:ValueAndParameterEqualToBoolConverter x:Key="ValueAndParameterEqualToBoolConverter"/>
     </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="Images/droneBackground.jpg"></ImageBrush>
@@ -20,7 +23,7 @@
         <Grid.Background>
             <ImageBrush x:Name="myImage"  ></ImageBrush>
         </Grid.Background>
-        <Grid x:Name="GridNewDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True" d:IsHidden="True">
+        <Grid x:Name="GridNewDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -62,11 +65,21 @@
                 <TextBox x:Name="txtLatitude" Text="0" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" />
                 <Label x:Name="txtStationName" FontWeight="Bold" Content="Choose station to put the drone in it: " Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <ComboBox Name="cbxStations" ItemsSource="{Binding Names}" SelectedItem="{Binding Names}" VerticalAlignment="Center"  Grid.Row="4" Grid.Column="2" Margin="110,0,106,0" />
-                <Button x:Name="addButton" Content="Add"  FontSize="30" Click="addButton_Click" Grid.Column="3" Grid.Row="6"/>
+                <Button x:Name="addButton" Content="Add"  FontSize="30" Click="addButton_Click" Grid.Column="3" Grid.Row="6">
+                    <!--<Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource AllTrueToBoolConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding ElementName="txtID" Path="Text" Converter="{StaticResource StringNotEmptyToBoolConverter}"/>
+                                <Binding ElementName="txtModel" Path="Text" Converter="{StaticResource StringNotEmptyToBoolConverter}"/>
+                                <Binding ElementName="cbxStations" Path="SelectedIndex" Converter="{StaticResource ValueAndParameterEqualToBoolConverter}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Button.IsEnabled>-->
+                </Button>
                 <Button x:Name="ButtonCancel" Content="cancel" FontSize="30" Click="ButtonCancel_Click" Grid.Column="3" Grid.Row="7"/>
             </Grid>
         </Grid>
-        <Grid x:Name="GridUpdateDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid x:Name="GridUpdateDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}" d:IsHidden="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="9*"/>
                 <RowDefinition Height="*"/>
