@@ -33,7 +33,7 @@ namespace PL
         public bool IsUpdateMode { get; set; } //to know wich window to open: update or add
         public event Action OnUpdate = delegate { }; //event that will refresh the drones list every time we update a drone
         public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
-        private List <ParcelInDelivery> parcelsInDrone;
+        private List<ParcelInDelivery> parcelsInDrone;
         private bool isAutomaticMode;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace PL
         public bool IsAutomaticMode
         {
             get { return isAutomaticMode; }
-            set 
+            set
             {
                 isAutomaticMode = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("IsAutomaticMode"));
@@ -52,11 +52,11 @@ namespace PL
         /// <summary>
         /// a list to put the parcels that the drone is holding
         /// </summary>
-        public List <ParcelInDelivery> ParcelsInDrone
+        public List<ParcelInDelivery> ParcelsInDrone
         {
             get { return parcelsInDrone; }
             set
-            { 
+            {
                 parcelsInDrone = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("ParcelsInDrone"));
             }
@@ -108,7 +108,7 @@ namespace PL
             get
             {
                 return selectedDrone != null && selectedDrone.DroneStatuses == DroneStatuses.Delivered &&
-                    selectedDrone.ParcelInDelivery.OnTheWay == true;              
+                    selectedDrone.ParcelInDelivery.OnTheWay == true;
             }
         }
 
@@ -145,7 +145,7 @@ namespace PL
             }
             catch (FailedToGetException ex)
             {
-                MessageBox.Show("Failed to add!!" + ex.ToString());
+                MessageBox.Show("Failed to add!" + ex.ToString());
             }
         }
 
@@ -156,15 +156,28 @@ namespace PL
         /// <param name="dr">the selected drone</param>
         public DroneView(BlApi.IBL bl, Drone dr)
         {
-            InitializeComponent();
-            SelectedDrone = dr;
-            Initialize();
-            originalDroneModel = dr.Model;
-            myBl = bl;
-            IsUpdateMode = true;
-            InitializeParcelInDrone();
+            try
+            {
+                InitializeComponent();
+                SelectedDrone = dr;
+                Initialize();
+                originalDroneModel = dr.Model;
+                myBl = bl;
+                IsUpdateMode = true;
+                if (SelectedDrone.ParcelInDelivery != null)
+                {
+                    InitializeParcelInDrone();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open the update window!");
+            }
         }
 
+        /// <summary>
+        /// initializes the parcels the drone has
+        /// </summary>
         private void InitializeParcelInDrone()
         {
             ParcelsInDrone = new List<ParcelInDelivery>();
@@ -188,11 +201,10 @@ namespace PL
         /// <param name="e"></param>
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            if (txtID.Text != "0" && txtModel.Text.Length!=0 && cbxStations.SelectedIndex>-1)
+            if (txtID.Text != "0" && txtModel.Text.Length != 0 && cbxStations.SelectedIndex > -1)
             {
                 try
                 {
-
                     //finds the station with the input name and sends the station id to bl add
                     List<StationForList> stations = myBl.GetStationList().ToList();
                     StationForList stationForList = stations.FirstOrDefault(x => x.Name == cbxStations.Text);
@@ -204,7 +216,9 @@ namespace PL
                         myBl.AddDrone(DroneToAdd, stationId);
                         res = MessageBox.Show("Added succecfully!!");
                         if (res != MessageBoxResult.None)
+                        {
                             OnUpdate();//updates the list of drones in the previous window.
+                        }
                         Close();
                     }
                 }
@@ -256,6 +270,7 @@ namespace PL
         /// <param name="e"></param>
         private void UpdateModelBtn_Click(object sender, RoutedEventArgs e)
         {
+
             //checkes if the model was updated by the user
             if (originalDroneModel != SelectedDrone.Model)
             {
@@ -278,6 +293,11 @@ namespace PL
                     }
                 }
             }
+            else
+            {
+                MessageBox.Show("Enter a model to update");
+            }
+
         }
 
         /// <summary>
@@ -301,7 +321,11 @@ namespace PL
                     }
                     RefreshProperties();
                 }
-                catch (BO.FailedToUpdateException ex)
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
+                }
+                catch(InputDoesNotExist ex)
                 {
                     MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
                 }
@@ -329,7 +353,11 @@ namespace PL
                     }
                     RefreshProperties();
                 }
-                catch (BO.FailedToUpdateException ex)
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed releasing drone - " + ex.ToString());
+                }
+                catch (InputDoesNotExist ex)
                 {
                     MessageBox.Show("Failed releasing drone - " + ex.ToString());
                 }
@@ -358,7 +386,11 @@ namespace PL
                     RefreshProperties();
 
                 }
-                catch (BO.FailedToUpdateException ex)
+                catch (FailedToUpdateException ex)
+                {
+                    MessageBox.Show("Failed to attribute - " + ex.ToString());
+                }
+                catch (InputDoesNotExist ex)
                 {
                     MessageBox.Show("Failed to attribute - " + ex.ToString());
                 }

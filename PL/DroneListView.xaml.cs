@@ -92,12 +92,19 @@ namespace PL
         /// <param name="Bl"></param>
         public DroneListView(IBL Bl)
         {
-            myBl = Bl;
-            DataContext = this;
-            InitializeComponent();
-            GetDroneListFromBL();
-            StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
-            WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.Weight));
+            try
+            {
+                myBl = Bl;
+                DataContext = this;
+                InitializeComponent();
+                GetDroneListFromBL();
+                StatusSelector.ItemsSource = Enum.GetValues(typeof(BO.DroneStatuses));
+                WeightSelector.ItemsSource = Enum.GetValues(typeof(BO.Weight));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open drones' list");
+            }
         }
 
         /// <summary>
@@ -135,9 +142,16 @@ namespace PL
         /// <param name="e"></param>
         private void droneAdd_Click(object sender, RoutedEventArgs e)
         {
-            DroneView droneWindow = new DroneView(myBl);
-            droneWindow.OnUpdate += DroneWindow_onUpdate;
-            droneWindow.Show();
+            try
+            {
+                DroneView droneWindow = new DroneView(myBl);
+                droneWindow.OnUpdate += DroneWindow_onUpdate;
+                droneWindow.Show();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error loading the adding window");
+            }
         }
 
         /// <summary>
@@ -147,6 +161,7 @@ namespace PL
         /// <param name="e"></param>
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //only click on a drone
             try
             {
                 DroneForList d = DronesListView.SelectedItem as DroneForList;
@@ -159,9 +174,11 @@ namespace PL
                     droneWindow.Show();
                 }
                 else
+                {
                     MessageBox.Show("Please select a drone!");
+                }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 MessageBox.Show("Error occured");
             }
@@ -175,10 +192,6 @@ namespace PL
             GetDroneListFromBL();
         }
 
-        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
         /// <summary>
         /// button to close the drone list view window
         /// </summary>
@@ -187,11 +200,6 @@ namespace PL
         private void cancelAdd_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         /// <summary>
@@ -227,6 +235,15 @@ namespace PL
         }
 
         private void groupingButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

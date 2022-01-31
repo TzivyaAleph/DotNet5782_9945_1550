@@ -167,7 +167,9 @@ namespace BL
             }
             //only send to charge slots when drone available
             if (droneForList.DroneStatuses != DroneStatuses.Available)
+            {
                 throw new FailedToUpdateException($"Drone {droneForList.Id} is not available");
+            }
             //finding all the available charging slots in station.
             List<DO.Station> stations = myDal.CopyStationArray(x => x.ChargeSlots > 0).ToList();
             DO.Station clossestStation = new DO.Station();
@@ -177,7 +179,9 @@ namespace BL
             double batteryUse = myDal.getDistanceFromLatLonInKm(clossestStation.Lattitude, clossestStation.Longitude, droneForList.CurrentLocation.Latitude, droneForList.CurrentLocation.Longitude) * myDal.GetElectricityUse()[0];
             //send the drone only if the drone has enough battery and the station has available charging slots.
             if ((droneForList.Battery - batteryUse) < 0 || clossestStation.ChargeSlots == 0)
+            {
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
+            }
             double[] electricity = myDal.GetElectricityUse();
             droneForList.CurrentLocation = new();
             if (droneForList.Battery - batteryUse >= 0)

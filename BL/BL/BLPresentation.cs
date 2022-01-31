@@ -22,7 +22,9 @@ namespace BL
         public Parcel GetParcel(int parcelId)
         {
             if (parcelId < 200)
+            {
                 throw new InvalidInputException($"parcel id {parcelId} is not valid !!");
+            }
             DO.Parcel dalParcel = new DO.Parcel();
             //gets parcel from dal
             try
