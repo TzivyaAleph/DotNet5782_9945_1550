@@ -181,7 +181,6 @@ namespace BL
             bool eoungh = enoughBatteryForCharging(droneForList);
             if (!eoungh || clossestStation.ChargeSlots == 0)
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
-            }
             double[] electricity = myDal.GetElectricityUse();
             droneForList.CurrentLocation = new();
             if (eoungh==true)
@@ -212,6 +211,7 @@ namespace BL
         /// </summary>
         /// <param name="droneForList"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public bool enoughBatteryForCharging(DroneForList droneForList)
         {
             //finding all the available charging slots in station.
@@ -226,8 +226,6 @@ namespace BL
             return true;
         }
 
-
-
         /// <summary>
         /// recieves a drone ID and attributes a parcel to the drone
         /// </summary>
@@ -239,7 +237,6 @@ namespace BL
             {
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
-            List<DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
             List<DO.Parcel> parcels = myDal.CopyParcelArray(par =>par.IsDeleted==false&& par.DroneID == 0&& par.Delivered==null).ToList();//gets the non attributed parcels list that aren't deleted and weren't delivered yet
             int index = drones.FindIndex(item => item.Id == droneId);//searches for the index of the drone in the drones list
             DroneForList droneToAttribute = new();
@@ -286,21 +283,20 @@ namespace BL
             {
                 throw new InputDoesNotExist("the parcel does not exist !!");
             }
-            dalParcel.DroneID = droneToAttribute.Id;
-            dalParcel.Scheduled = DateTime.Now;
+            List<DO.Drone> dalDrones = myDal.CopyDroneArray().ToList();
             try
             {
-                myDal.UpdateParcel(dalParcel);
+                DO.Drone drone = dalDrones.FirstOrDefault(x => x.Id == droneId);
+                myDal.AttributingParcelToDrone(dalParcel, drone);
             }
             catch (DO.ExistingObjectException parEx)
             {
                 throw new FailedToUpdateException("ERROR", parEx);
             }
-
         }
 
         /// <summary>
-        /// 
+        /// checks if theres parcels to attribute
         /// </summary>
         /// <param name="droneId"></param>
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -326,7 +322,6 @@ namespace BL
                 return false;
             return true;
         }
-
 
         /// <summary>
         /// checks if thre drone has enough battery  to attributted to specific parcel

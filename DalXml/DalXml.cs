@@ -448,7 +448,7 @@ namespace Dal
         public void AttributingParcelToDrone(Parcel p, DO.Drone d)
         {
             p.DroneID = d.Id;
-            p.Requested = DateTime.Now;
+            p.Scheduled = DateTime.Now;
             UpdateParcel(p);
         }
 
