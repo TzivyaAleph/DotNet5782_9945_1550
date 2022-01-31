@@ -25,7 +25,7 @@ namespace BL
             {
 
             }
-            if (droneId < 1000 || droneId > 10000)
+            if (droneId < 1000 || droneId > 10000)//hello
             {
                 throw new InvalidInputException($"id {droneId} is not valid !!");
             }
