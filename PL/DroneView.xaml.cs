@@ -59,6 +59,7 @@ namespace PL
             {
                 parcelsInDrone = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("ParcelsInDrone"));
+                PropertyChanged(this, new PropertyChangedEventArgs("SelectedDrone"));
             }
         }
 

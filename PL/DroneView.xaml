@@ -128,7 +128,6 @@
                 </Grid.RowDefinitions>
                 <Label Content="Parcel In Delivery:" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontWeight="Bold" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}"/>
                 <ListBox x:Name="parcelView" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" ItemsSource="{Binding ParcelsInDrone}" MouseDoubleClick="parcelView_MouseDoubleClick"></ListBox>
-                <!--<TextBox x:Name="parcelViewInTextBox" Text="{Binding SelectedDrone.ParcelInDelivery}" Width="230" Height="300" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding SelectedDrone.DroneStatuses, Converter={StaticResource DroneStatusToBoolConverterForPickUp}}" ></TextBox>-->
             </Grid>
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Width="700">
                 <Button x:Name="updateModelBtn" Content="Update" Width="100" Click="UpdateModelBtn_Click" Visibility="{Binding SelectedDrone.IsDeleted, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>

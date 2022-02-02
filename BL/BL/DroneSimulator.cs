@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace BL
 {
+    /// <summary>
+    /// activate a simulator on adrone
+    /// </summary>
     internal class Simulator
     {
         BL bl;
@@ -34,12 +37,12 @@ namespace BL
                         thereAreParcels = bl.ThereAreParcelsToAttribute(droneID);
                         if (!thereAreParcels)
                         {
+                            List<DO.Station> stations1 = myDal.CopyStationArray().ToList();
+                            DO.Station baseStation = myDal.GetClossestStation(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, stations1);
                             enoughBattery = bl.enoughBatteryForCharging(drone);
-                            if (drone.Battery < 100 && enoughBattery)
+                            if (drone.Battery < 100 && enoughBattery && baseStation.ChargeSlots!=0)
                             {
                                 battery = drone.Battery;
-                                List<DO.Station> stations1 = myDal.CopyStationArray().ToList();
-                                DO.Station baseStation = myDal.GetClossestStation(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, stations1);
                                 //gets the distance from the drone to the closest station
                                 distance = myDal.getDistanceFromLatLonInKm(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, baseStation.Lattitude, baseStation.Longitude);
                                 while (distance > 0)
@@ -74,13 +77,13 @@ namespace BL
 
                         while (drone.Battery < 100)
                         {
-                            if (drone.Battery + 10 > 100)
+                            if (drone.Battery + 1 > 100)
                             {
                                 bl.GetDroneList().First(x => x.Id == droneID).Battery = 100;
                             }
                             else
                             {
-                                bl.GetDroneList().First(x => x.Id == droneID).Battery += 10;
+                                bl.GetDroneList().First(x => x.Id == droneID).Battery += 1;
                             }
                             ReportProgressInSimultor();
                             Thread.Sleep(delay);
