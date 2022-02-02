@@ -207,7 +207,6 @@ namespace BL
             }
         }
 
-
         /// <summary>
         /// checks if theres enough battery for charging
         /// </summary>
