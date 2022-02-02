@@ -21,7 +21,7 @@
 
         <Label x:Name="TXStat" Content="Stations" Grid.Column="2" HorizontalAlignment="Center" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="17" FontStyle="Italic"  />
 
-        <ListView  x:Name="StationsListView" Grid.ColumnSpan="2" Background="LightGray" MouseDoubleClick="StationsListView_MouseDoubleClick" SelectionChanged="StationsListView_SelectionChanged" Grid.Row="1"  ItemsSource="{Binding Stations, Mode=OneWay}"  >
+        <ListView  x:Name="StationsListView" Grid.ColumnSpan="2" Background="LightGray" MouseDoubleClick="StationsListView_MouseDoubleClick"  Grid.Row="1"  ItemsSource="{Binding Stations, Mode=OneWay}"  >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="150" Header="ID">

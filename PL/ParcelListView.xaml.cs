@@ -30,6 +30,22 @@ namespace PL
         public event PropertyChangedEventHandler PropertyChanged= delegate { };
         private CollectionView collectionView;//collectionView for the grouping
         private bool isGroupingMode;
+        bool closeChecked;
+
+        /// <summary>
+        /// func that ovverides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if(closeChecked==false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
 
         /// <summary>
         /// prop for filtering list by weight of parcel
@@ -171,6 +187,7 @@ namespace PL
         /// <param name="e"></param>
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             Close();
         }
 

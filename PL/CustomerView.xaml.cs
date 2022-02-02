@@ -33,6 +33,22 @@ namespace PL
         private List<int> recievedIdList;
         private Customer custForUpdate;
         public List<CustomersType> CustomerTypeOptions { get; set; }
+        bool closeChecked;
+
+        /// <summary>
+        /// func that overides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (closeChecked == false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
 
         /// <summary>
         /// property for the parcels id list - for binding to the items source in the xaml
@@ -152,6 +168,7 @@ namespace PL
                     res = MessageBox.Show("Added succecfully!!");
                     if (res != MessageBoxResult.None)
                         OnUpdate();//updates the list of stations in the previous window.
+                    closeChecked = true;
                     Close();
                 }
             }
@@ -166,36 +183,20 @@ namespace PL
         }
 
         /// <summary>
-        /// close window in adding grid
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Close();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Failed to close window!");
-            }
-        }
-
-        /// <summary>
-        /// closing window in update grid
+        /// button for closing the window
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void CloseWindow_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             try
             {
                 Close();
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to close window!");
+                MessageBox.Show("Failed closing window!");
             }
         }
 
@@ -328,6 +329,7 @@ namespace PL
                 {
                     MessageBox.Show("Failed to delete -" + ex.ToString());
                 }
+                closeChecked = true;
                 Close();
             }
         }

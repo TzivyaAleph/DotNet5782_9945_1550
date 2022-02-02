@@ -108,7 +108,7 @@
             VerticalAlignment="Bottom">
             <Button x:Name="undoFilter" Content="undo filter" Click="undoFilter_Click" Grid.Column="0"  FontSize="18" Margin="5" Padding="8,3"/>
             <Button Grid.Column="1" FontSize="18" Content="add drone" Click="droneAdd_Click" Margin="5" Padding="8,3"/>
-            <Button Grid.Column="2" FontSize="18" Content="Close" Click="cancelAdd_Click" Margin="5" Padding="8,3"/>
+            <Button Grid.Column="2" FontSize="18" Content="Close" Click="CloseButton_Click" Margin="5" Padding="8,3"/>
             <ToggleButton  x:Name="groupingButton"  Grid.Column="3" FontSize="18"  Content="group list by status" IsChecked="{Binding IsGroupingMode, Mode=TwoWay}" Checked="groupingButton_Checked" Margin="5" Padding="8,3"/>
         </UniformGrid>
     </Grid>

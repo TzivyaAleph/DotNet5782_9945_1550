@@ -31,6 +31,22 @@ namespace PL
         public bool IsDeleteeMode { get; set; } //to know which window to open: update or add
         private IBL myBl;
         Parcel parcelToDelete;
+        bool closeChecked;
+
+        /// <summary>
+        /// func that overides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (closeChecked == false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
 
         /// <summary>
         /// parcel property for deleting
@@ -120,6 +136,7 @@ namespace PL
                     res = MessageBox.Show("Added succecfully!!");
                     if (res != MessageBoxResult.None)
                         OnUpdate();//updates the list of stations in the previous window.
+                    closeChecked = true;
                     Close();
                 }
             }
@@ -147,6 +164,7 @@ namespace PL
         /// <param name="e"></param>
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             Close();
         }
 
@@ -253,6 +271,7 @@ namespace PL
                 {
                     MessageBox.Show("Failed to delete -" + ex.ToString());
                 }
+                closeChecked = true;
                 Close();
             }
         }

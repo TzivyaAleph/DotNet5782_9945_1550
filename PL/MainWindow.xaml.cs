@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,22 @@ namespace PL
     public partial class MainWindow : Window
     {
         private IBL myBl;
+        bool closeChecked;
+
+        /// <summary>
+        /// func that overides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (closeChecked == false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
 
         /// <summary>
         /// c-tor
@@ -120,6 +137,7 @@ namespace PL
         /// <param name="e"></param>
         private void exit_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             Close();
         }
     }
