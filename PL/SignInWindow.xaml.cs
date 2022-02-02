@@ -30,6 +30,22 @@ namespace PL
         private int? idForSignIn;
         public string Password { get; set; }
         public bool IsUserTypeChosen { get; set; }
+        bool closeChecked;
+
+        /// <summary>
+        /// func that overides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (closeChecked == false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
 
         /// <summary>
         /// prop to bind to the id the user puts in 
@@ -168,6 +184,7 @@ namespace PL
         /// <param name="e"></param>
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             Close();
         }
         

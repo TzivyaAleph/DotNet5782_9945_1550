@@ -56,7 +56,7 @@
                 <TextBox x:Name="password" MaxLength="9" Text="{Binding CustomerToAdd.Password, Mode=TwoWay}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <ComboBox x:Name="customerType" Grid.Column="1" Grid.Row="7" Height="22" ItemsSource="{Binding CustomerTypeOptions}" SelectedItem="{Binding CustomerToAdd.CustomerType}" />
                 <Button x:Name="addButton" Content="Add"  FontSize="30"  Grid.Column="3" Grid.Row="6" Click="addButton_Click"/>
-                <Button x:Name="CancelButton" Content="cancel" FontSize="30" Grid.Column="3" Grid.Row="7" Click="CancelButton_Click"/>
+                <Button x:Name="CancelButton" Content="cancel" FontSize="30" Grid.Column="3" Grid.Row="7" Click="CloseWindow_Click"/>
             </Grid>
         </Grid>
 

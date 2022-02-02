@@ -35,6 +35,22 @@ namespace PL
         public event PropertyChangedEventHandler PropertyChanged = delegate { };//event to tell us when a property was changed- so we know to refresh the binding
         private List<ParcelInDelivery> parcelsInDrone;
         private bool isAutomaticMode;
+        bool closeChecked;
+
+        /// <summary>
+        /// func that overides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (closeChecked == false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
 
         /// <summary>
         /// prop for a bool parameter that checks if the simulator is running
@@ -221,6 +237,7 @@ namespace PL
                         {
                             OnUpdate();//updates the list of drones in the previous window.
                         }
+                        closeChecked = true;
                         Close();
                     }
                 }
@@ -251,7 +268,7 @@ namespace PL
         /// <param name="e"></param>
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            closeChecked = true;
             Close();
         }
 
@@ -262,6 +279,7 @@ namespace PL
         /// <param name="e"></param>
         private void CloseWindowBtn_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             Close();
         }
 
@@ -467,7 +485,11 @@ namespace PL
                     chooseImageByStatus(SelectedDrone.DroneStatuses);
                     RefreshProperties();
                     if (SelectedDrone.ParcelInDelivery == null && SelectedDrone.IsDeleted)
+                    {
+                        closeChecked = true;
                         Close();
+                    }
+                        
                 }
                 catch (FailedToUpdateException ex)
                 {
@@ -541,6 +563,7 @@ namespace PL
                 {
                     MessageBox.Show("Failed to delete -" + ex.ToString());
                 }
+                closeChecked = true;
                 Close();
             }
         }

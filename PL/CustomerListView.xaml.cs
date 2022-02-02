@@ -25,6 +25,22 @@ namespace PL
         private IBL myBl;
         private List<CustomerForList> customers;
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        bool closeChecked;
+
+        /// <summary>
+        /// func that overides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (closeChecked == false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
 
         /// <summary>
         /// property for the customers list - for binding to the items source in the xaml
@@ -130,6 +146,7 @@ namespace PL
         /// <param name="e"></param>
         private void cancelAdd_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             try
             {
                 Close();

@@ -29,16 +29,29 @@ namespace PL
         private Station selectedStation;
         private string originalStationName; //temp to hold the station's name of the station from the list view window (this will not be used for items source)
         private int originalNumOfSlots; //temp to hold the station's Num Of Slots of the station from the list view window (this will not be used for items source)
+        private List<DroneCharge> droneCharges;
+        public int TotalNumOfSlots { get; set; }
+        bool closeChecked;
+
+        /// <summary>
+        /// func that overides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (closeChecked == false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
         /// <summary>
         /// to know wich window to open: update or add
         /// </summary>
         public bool IsUpdateMode { get; set; } 
-        /// <summary>
-        /// for binding
-        /// </summary>
-        public int TotalNumOfSlots { get; set; }
-        private List<DroneCharge> droneCharges;
-
+        
         /// <summary>
         /// drone charges list for the listbox of drone charging in the station
         /// </summary>
@@ -139,6 +152,7 @@ namespace PL
                     res = MessageBox.Show("Added succecfully!!");
                     if (res != MessageBoxResult.None)
                         OnUpdate();//updates the list of stations in the previous window.
+                    closeChecked = true;
                     Close();
                 }
             }
@@ -164,6 +178,7 @@ namespace PL
         /// <param name="e"></param>
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             Close();
         }
 
@@ -265,6 +280,7 @@ namespace PL
                 {
                     MessageBox.Show("Failed to delete -" + ex.ToString());
                 }
+                closeChecked = true;
                 Close();
             }
         }

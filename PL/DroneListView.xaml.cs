@@ -30,6 +30,22 @@ namespace PL
         private CollectionView collectionView;//collectionView for the grouping
         private bool isGroupingMode;//to notify if the grouping button in checked
         public event PropertyChangedEventHandler PropertyChanged= delegate { };
+        bool closeChecked;
+
+        /// <summary>
+        /// func that overides the closing window event to prevent closing the window by the x button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (closeChecked == false)
+            {
+                e.Cancel = true;
+            }
+            else
+                e.Cancel = false;
+        }
 
         /// <summary>
         /// prop for the drones list - for binding to the items source in the xml
@@ -197,8 +213,9 @@ namespace PL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelAdd_Click(object sender, RoutedEventArgs e)
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            closeChecked = true;
             Close();
         }
 

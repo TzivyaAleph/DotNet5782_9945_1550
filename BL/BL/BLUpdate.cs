@@ -181,6 +181,7 @@ namespace BL
             bool eoungh = enoughBatteryForCharging(droneForList);
             if (!eoungh || clossestStation.ChargeSlots == 0)
                 throw new FailedToUpdateException($"There are no available charge slots in station {clossestStation.Id}");
+          
             double[] electricity = myDal.GetElectricityUse();
             droneForList.CurrentLocation = new();
             if (eoungh==true)
@@ -205,6 +206,7 @@ namespace BL
                 throw new FailedToUpdateException("ERROR", custEx);
             }
         }
+
 
         /// <summary>
         /// checks if theres enough battery for charging
