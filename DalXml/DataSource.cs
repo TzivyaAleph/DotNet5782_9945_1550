@@ -116,7 +116,7 @@ namespace Dal
             {
                 Id = rand.Next(1000, 5000),
                 Name = "Ramot",
-                ChargeSlots = rand.Next(0, 51),
+                ChargeSlots = rand.Next(1, 51),
                 Lattitude = (double)getRandomDoubleNumber(31.75, 31.9),
                 Longitude = (double)getRandomDoubleNumber(35.195, 35.2),
                 IsDeleted = false

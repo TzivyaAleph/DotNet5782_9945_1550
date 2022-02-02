@@ -76,7 +76,7 @@ namespace Dal
         public void AttributingParcelToDrone(Parcel p, Drone d)//targil1
         {
             p.DroneID = d.Id;
-            p.Requested = DateTime.Now;
+            p.Scheduled = DateTime.Now;
             UpdateParcel(p);
         }
 

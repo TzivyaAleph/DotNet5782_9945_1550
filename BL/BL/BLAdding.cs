@@ -30,9 +30,9 @@ namespace BL
                 throw new InvalidInputException($"name is not valid !!");
             if(s.ChargeSlots<0||s.ChargeSlots>50)
                 throw new InvalidInputException($"number of slots {s.DroneCharges} is not valid !!");
-            if (s.StationLocation.Longitude > 35.195 || s.StationLocation.Longitude < 35.2)
+            if (s.StationLocation.Longitude < 35.195 || s.StationLocation.Longitude > 35.2)
                 throw new InvalidInputException($"Longitude {s.StationLocation.Longitude} is not valid !!");
-            if (s.StationLocation.Latitude > 31.75 || s.StationLocation.Latitude < 31.9)
+            if (s.StationLocation.Latitude < 31.75 || s.StationLocation.Latitude > 31.9)
                 throw new InvalidInputException($"Lattitude {s.StationLocation.Latitude} is not valid !!");
             s.DroneCharges = null;
             DO.Station tmp = new DO.Station
@@ -120,9 +120,9 @@ namespace BL
                 throw new InvalidInputException($"phone number is not valid !!");
             if (customer.PhoneNumber.Length!=10)
                 throw new InvalidInputException($"phone number {customer.PhoneNumber} is not valid !!");
-            if (customer.Location.Longitude > 35.195 || customer.Location.Longitude < 35.2)
+            if (customer.Location.Longitude < 35.195 || customer.Location.Longitude > 35.2)
                 throw new InvalidInputException($"Longitude {customer.Location.Longitude} is not valid !!");
-            if (customer.Location.Latitude > 31.75 || customer.Location.Latitude < 31.9)
+            if (customer.Location.Latitude < 31.75 || customer.Location.Latitude > 31.9)
                 throw new InvalidInputException($"Lattitude {customer.Location.Latitude} is not valid !!");
             DO.Customer newCustomer = new();
             object obj = newCustomer;

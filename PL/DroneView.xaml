@@ -23,7 +23,7 @@
         <Grid.Background>
             <ImageBrush x:Name="myImage"  ></ImageBrush>
         </Grid.Background>
-        <Grid x:Name="GridNewDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True">
+        <Grid x:Name="GridNewDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}" AllowDrop="True" d:IsHidden="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -79,7 +79,7 @@
                 <Button x:Name="ButtonCancel" Content="cancel" FontSize="30" Click="ButtonCancel_Click" Grid.Column="3" Grid.Row="7"/>
             </Grid>
         </Grid>
-        <Grid x:Name="GridUpdateDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}" d:IsHidden="True">
+        <Grid x:Name="GridUpdateDrone" Visibility="{Binding IsUpdateMode, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="9*"/>
                 <RowDefinition Height="*"/>
@@ -119,6 +119,7 @@
                 <TextBox Text="{Binding SelectedDrone.Model}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="False"/>
                 <ComboBox x:Name="Status" ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedDrone.DroneStatuses}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" IsEnabled="False"/>
                 <TextBlock Margin="-5,-1" Text="{Binding SelectedDrone.CurrentLocation}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Padding="2"/>
+                <Image x:Name="IMStatus" Grid.Row="4" Grid.Column="2" />
             </Grid>
             <Grid x:Name="gridForParcelTextBlock" Grid.Column="1">
                 <Grid.RowDefinitions>

@@ -49,8 +49,8 @@
                 <TextBox x:Name="txtID" MaxLength="4" Text="{Binding StationToAdd.Id}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <TextBox x:Name="txtName" Text="{Binding StationToAdd.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <TextBox x:Name="txtAvailable" MaxLength="2" Text="{Binding StationToAdd.ChargeSlots}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtLongitude" MaxLength="4" Text="{Binding StationToAdd.StationLocation.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                <TextBox x:Name="txtLattitude" MaxLength="4" Text="{Binding StationToAdd.StationLocation.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtLongitude"  Text="{Binding StationToAdd.StationLocation.Longitude, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                <TextBox x:Name="txtLattitude"  Text="{Binding StationToAdd.StationLocation.Latitude, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 <Button x:Name="addButton" Content="Add"  FontSize="30" Click="addButton_Click" Grid.Column="3" Grid.Row="6"/>
                 <Button x:Name="ButtonCancel" Content="cancel" FontSize="30" Click="ButtonCancel_Click" Grid.Column="3" Grid.Row="7"/>
             </Grid>

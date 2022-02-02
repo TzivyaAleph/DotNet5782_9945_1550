@@ -176,6 +176,7 @@ namespace PL
             {
                 InitializeComponent();
                 SelectedDrone = dr;
+                chooseImageByStatus(SelectedDrone.DroneStatuses);
                 Initialize();
                 originalDroneModel = dr.Model;
                 myBl = bl;
@@ -325,28 +326,35 @@ namespace PL
         /// <param name="e"></param>
         private void sendToCharge()
         {
-            var result = MessageBox.Show("Send drone to charge?", "myApp", MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
+            if (SelectedDrone.Battery != 100)
             {
-                try
+                var result = MessageBox.Show("Send drone to charge?", "myApp", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
                 {
-                    myBl.SendDroneToChargeSlot(SelectedDrone);
-                    var res = MessageBox.Show("Success");
-                    if (res != MessageBoxResult.None)
+                    try
                     {
-                        SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
-                        OnUpdate();
+                        myBl.SendDroneToChargeSlot(SelectedDrone);
+                        var res = MessageBox.Show("Success");
+                        if (res != MessageBoxResult.None)
+                        {
+                            SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                            OnUpdate();
+                        }
+                        RefreshProperties();
                     }
-                    RefreshProperties();
+                    catch (FailedToUpdateException ex)
+                    {
+                        MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
+                    }
+                    catch (InputDoesNotExist ex)
+                    {
+                        MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
+                    }
                 }
-                catch (FailedToUpdateException ex)
-                {
-                    MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
-                }
-                catch (InputDoesNotExist ex)
-                {
-                    MessageBox.Show("Failed sending drone to charge - " + ex.ToString());
-                }
+            }
+            else
+            {
+                MessageBox.Show("Battery is full!");
             }
         }
 
@@ -369,6 +377,7 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    chooseImageByStatus(SelectedDrone.DroneStatuses);
                     RefreshProperties();
                 }
                 catch (FailedToUpdateException ex)
@@ -401,6 +410,7 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    chooseImageByStatus(SelectedDrone.DroneStatuses);
                     RefreshProperties();
 
                 }
@@ -436,6 +446,7 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    chooseImageByStatus(SelectedDrone.DroneStatuses);
                     RefreshProperties();
                 }
                 catch (FailedToUpdateException ex)
@@ -470,6 +481,7 @@ namespace PL
                         SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                         OnUpdate();
                     }
+                    chooseImageByStatus(SelectedDrone.DroneStatuses);
                     RefreshProperties();
                     if (SelectedDrone.ParcelInDelivery == null && SelectedDrone.IsDeleted)
                     {
@@ -592,7 +604,9 @@ namespace PL
             {
                 OnUpdate();//updates the list of drone
                 SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
+                SelectedDrone = myBl.GetDrone(SelectedDrone.Id);
                 RefreshProperties();
+                chooseImageByStatus(SelectedDrone.DroneStatuses);
                 InitializeParcelInDrone();
             }
             catch(FailedToGetException ex)
@@ -609,6 +623,20 @@ namespace PL
         }
 
         /// <summary>
+        /// chooses an image by the status
+        /// </summary>
+        /// <param name="droneStatuses"></param>
+        private void chooseImageByStatus(DroneStatuses droneStatuses)
+        {
+            if (SelectedDrone.DroneStatuses == DroneStatuses.Available)
+                IMStatus.Source = new BitmapImage(new Uri("/Images/available.png", UriKind.Relative));
+            if (SelectedDrone.DroneStatuses == DroneStatuses.Delivered)
+                IMStatus.Source = new BitmapImage(new Uri("/Images/delivery.jpg", UriKind.Relative));
+            if (SelectedDrone.DroneStatuses == DroneStatuses.Maintenance)
+                IMStatus.Source = new BitmapImage(new Uri("/Images/battery.png", UriKind.Relative));
+        }
+
+        /// <summary>
         /// button to start the simulator
         /// </summary>
         /// <param name="sender"></param>
@@ -618,7 +646,7 @@ namespace PL
             try
             {
                 IsAutomaticMode = true;
-                worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
+                   worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
                 worker.DoWork += (sender, args) => myBl.StartSimulatur((int)args.Argument, () => worker.ReportProgress(0), () => worker.CancellationPending);
                 worker.ProgressChanged += (sender, args) => UpdateDroneWindow();
                 worker.RunWorkerCompleted += (sender, args) => AutomaticCompleted();
